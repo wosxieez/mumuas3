@@ -5,6 +5,8 @@ package com.xiaomu.util
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	
+	import coco.component.Alert;
+	
 	import org.idream.pomelo.Pomelo;
 	import org.idream.pomelo.PomeloEvent;
 	
@@ -27,18 +29,38 @@ package com.xiaomu.util
 		}
 		
 		private var pomelo:Pomelo = Pomelo.getIns()
-		private var username:String
+		public var username:String
 		private var roomname:String
 		private var roominfo:Object
+		private var isJoinRoom:Boolean = false
 		
 		public function createRoom(roomname:String, roominfo:Object, username:String):void {
 			this.username = username
 			this.roominfo = roominfo
 			this.roomname = roomname
+			this.isJoinRoom = false
 			
 			// 第一步去连接服务器
 			pomelo.init("127.0.0.1", 3014)
 			pomelo.addEventListener("handshake", onConnectHandler);
+		}
+		
+		public function joinRoom(roomname:String, username:String):void {
+			this.username = username
+			this.roomname = roomname
+			this.isJoinRoom = true
+			
+			// 第一步去连接服务器
+			pomelo.init("127.0.0.1", 3014)
+			pomelo.addEventListener("handshake", onConnectHandler);
+		}
+		
+		/**
+		 * 发送动作 
+		 * @param action
+		 */		
+		public function sendAction(action):void  {
+			pomelo.request('chat.roomHandler.sendAction', action)
 		}
 		
 		private function onConnectHandler(event:Event):void {
@@ -54,9 +76,18 @@ package com.xiaomu.util
 		
 		private function onQueryHandler(event:Event):void {
 			// 第四步 入口服务器连接成功 开始创建房间
-			pomelo.request('connector.entryHandler.createRoom', {roomname: this.roomname, roominfo: this.roominfo, username: this.username},
+			var route:String
+			var param:Object
+			if (isJoinRoom) {
+				route = 'connector.entryHandler.joinRoom'
+				param = {roomname: this.roomname, username: this.username}
+			} else {
+				route = 'connector.entryHandler.createRoom'
+				param = {roomname: this.roomname, roominfo: this.roominfo, username: this.username}
+			}
+			pomelo.request(route, param,
 				function(response:Object):void {
-					trace(JSON.stringify(response))
+					Alert.show(JSON.stringify(response))
 					if (response.code == 0) {
 						// 创建房间成功
 						pomelo.on('onNotification', function (e: PomeloEvent): void {

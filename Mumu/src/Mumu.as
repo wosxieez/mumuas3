@@ -1,6 +1,7 @@
 package
 {
 	import com.xiaomu.util.Assets;
+	import com.xiaomu.util.Audio;
 	import com.xiaomu.view.LoginView;
 	import com.xiaomu.view.MainView;
 	
@@ -12,19 +13,20 @@ package
 		{
 			super();
 			
-			Assets.getInstane().loadAssets('assets/mumu.png', 'assets/mumu.json');
+			Assets.getInstane().loadAssets('assets/mumu.png', 'assets/mumu.json')
+			Audio.getInstane().playBGM('assets/bgm.mp3')
 		}
 		
 		override protected function createChildren():void {
 			super.createChildren()
-				
+			
 			addChild(MainView.getInstane())
 			MainView.getInstane().pushView(LoginView)
 		}
 		
 		override protected function updateDisplayList():void {
 			super.updateDisplayList()
-				
+			
 			MainView.getInstane().width = width
 			MainView.getInstane().height = height
 		}

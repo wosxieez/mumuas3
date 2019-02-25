@@ -37,7 +37,6 @@ package com.xiaomu.util  {
 			thisFrameData = new Object();
 		}
 		
-		
 		public function loadAssets(png: String, json:String):void {
 			
 			loadCounter = 0
@@ -59,6 +58,7 @@ package com.xiaomu.util  {
 					loadCounter++;
 					if (loadCounter == length) {
 						dispatchEvent(new Event(Event.COMPLETE));
+						trace('资源加载完毕')
 					}
 				});
 				jsonLoader.load(new URLRequest(json));
@@ -89,7 +89,7 @@ package com.xiaomu.util  {
 			} 
 			catch(error:Error) 
 			{
-				
+				trace('找不到资源', name)
 			}
 			return bitmap;
 		}
