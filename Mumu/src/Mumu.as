@@ -14,7 +14,7 @@ package
 			super();
 			
 			Assets.getInstane().loadAssets('assets/mumu.png', 'assets/mumu.json')
-			Audio.getInstane().playBGM('assets/bgm.mp3')
+//			Audio.getInstane().playBGM('assets/bgm.mp3')
 		}
 		
 		override protected function createChildren():void {

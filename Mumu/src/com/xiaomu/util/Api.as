@@ -42,7 +42,9 @@ package com.xiaomu.util
 			
 			// 第一步去连接服务器
 			pomelo.init("127.0.0.1", 3014)
-			pomelo.addEventListener("handshake", onConnectHandler);
+			//			pomelo.init("106.14.148.139", 3014)
+			pomelo.addEventListener(PomeloEvent.HANDSHAKE, onConnectHandler);
+			pomelo.addEventListener(PomeloEvent.ERROR, pomeloErrorHandler);
 		}
 		
 		public function joinRoom(roomname:String, username:String):void {
@@ -52,9 +54,15 @@ package com.xiaomu.util
 			
 			// 第一步去连接服务器
 			pomelo.init("127.0.0.1", 3014)
-			pomelo.addEventListener("handshake", onConnectHandler);
+			//			pomelo.init("106.14.148.139", 3014)
+			pomelo.addEventListener(PomeloEvent.HANDSHAKE, onConnectHandler);
+			pomelo.addEventListener(PomeloEvent.ERROR, pomeloErrorHandler);
 		}
 		
+		protected function pomeloErrorHandler(event:PomeloEvent):void
+		{
+			Alert.show('连接服务器失败')
+		}
 		/**
 		 * 发送动作 
 		 * @param action

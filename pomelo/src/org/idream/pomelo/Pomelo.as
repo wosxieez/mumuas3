@@ -17,6 +17,7 @@ package org.idream.pomelo
 	import org.idream.pomelo.interfaces.IPackage;
 	
 	[Event(name="handshake", type="org.idream.pomelo.PomeloEvent")]
+	[Event(name="error", type="org.idream.pomelo.PomeloEvent")]
 	[Event(name="kicked", type = "org.idream.pomelo.PomeloEvent")]
 	[Event(name="close", type = "flash.events.Event")]
 	[Event(name="ioError", type="flash.events.IOErrorEvent")]
@@ -201,13 +202,14 @@ package org.idream.pomelo
 		private function onIOError(e:IOErrorEvent):void
 		{
 //			trace("[Pomelo] ", e);
-			this.dispatchEvent(e);
+			this.dispatchEvent(new PomeloEvent(PomeloEvent.ERROR))
+//			this.dispatchEvent(e);
 		}
 		
 		private function onSecurityError(e:SecurityErrorEvent):void
 		{
 //			trace("[Pomelo] ", e);
-			this.dispatchEvent(e);
+			this.dispatchEvent(new PomeloEvent(PomeloEvent.ERROR))
 		}
 		
 		private function onData(e:ProgressEvent):void

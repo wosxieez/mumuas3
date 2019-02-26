@@ -9,6 +9,8 @@ package org.idream.pomelo
 		 */
 		public static const HANDSHAKE:String = "handshake";
 		
+		public static const ERROR:String = "error";
+		
 		/**
 		 * 被 Pomelo 服务器踢出
 		 */

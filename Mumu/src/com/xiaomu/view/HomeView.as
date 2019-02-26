@@ -13,6 +13,7 @@ package com.xiaomu.view
 	import flash.geom.Point;
 	
 	import coco.component.Image;
+	import coco.component.Label;
 	import coco.core.UIComponent;
 	
 	public class HomeView extends UIComponent
@@ -26,15 +27,22 @@ package com.xiaomu.view
 		
 		private var bg:Image
 		private var bgline:Image
-		private var user1line:Image
-		private var user1bg:Image
-		private var user1icon:Image
-		private var user2line:Image
-		private var user2bg:Image
-		private var user2icon:Image
-		private var user3line:Image
-		private var user3bg:Image
-		private var user3icon:Image
+		
+		private var preUserLine:Image
+		private var preUserBG:Image
+		private var preUserIcon:Image
+		private var preUserNameLabel:Label
+		
+		private var myUserLine:Image
+		private var myUserBG:Image
+		private var myUserIcon:Image
+		private var myUserNameLabel:Label
+		
+		private var nextUserLine:Image
+		private var nextUserBG:Image
+		private var nextUserIcon:Image
+		private var nextUserNameLabel:Label
+		
 		private var cardLayer: UIComponent
 		private var dealCardUI: CardUI
 		private var iconLayer:UIComponent
@@ -44,6 +52,10 @@ package com.xiaomu.view
 		private var myHandCardUIs:Array = []
 		private var myGroupCardUIs:Array = []
 		private var myPassCardUIs:Array = []
+		private var preGroupCardUIs:Array = []
+		private var prePassCardUIs:Array = []
+		private var nextGroupCardUIs:Array = []
+		private var nextPassCardUIs:Array = []
 		private var roominfo:Object
 		private var oldPoint:Point
 		private var isDrag:Boolean = false
@@ -55,6 +67,8 @@ package com.xiaomu.view
 		private var canChiButton:Image
 		private var cancelButton:Image
 		private var newCardTip:Image
+		private var checkWaitTip:Image
+		private var checkUsername: String
 		
 		override protected function createChildren():void {
 			super.createChildren()
@@ -73,6 +87,9 @@ package com.xiaomu.view
 			addChild(cardLayer)
 			
 			dealCardUI = new CardUI()
+			dealCardUI.border = 1
+			dealCardUI.visible = false
+			dealCardUI.width = 30
 			dealCardUI.height = 70
 			dealCardUI.card = 10
 			cardLayer.addChild(dealCardUI)
@@ -82,47 +99,63 @@ package com.xiaomu.view
 			addChild(iconLayer)
 			
 			// 增加三个图像
-			user1line = new Image()
-			user1line.width = 80
-			user1line.height = 30
-			user1line.source = Assets.getInstane().getAssets('fight_userinfo_bg2.png')
-			iconLayer.addChild(user1line)
-			user1bg = new Image()
-			user1bg.width = user1bg.height = 30
-			user1bg.source = Assets.getInstane().getAssets('fight_userinfo_circle_bg.png')
-			iconLayer.addChild(user1bg)
-			user1icon = new Image()
-			user1icon.width = user1icon.height = 20
-			user1icon.source = Assets.getInstane().getAssets('avatar1.png')
-			iconLayer.addChild(user1icon)
+			preUserLine = new Image()
+			preUserLine.width = 80
+			preUserLine.height = 30
+			preUserLine.source = Assets.getInstane().getAssets('fight_userinfo_bg2.png')
+			iconLayer.addChild(preUserLine)
+			preUserBG = new Image()
+			preUserBG.width = preUserBG.height = 30
+			preUserBG.source = Assets.getInstane().getAssets('fight_userinfo_circle_bg.png')
+			iconLayer.addChild(preUserBG)
+			preUserIcon = new Image()
+			preUserIcon.width = preUserIcon.height = 20
+			preUserIcon.source = Assets.getInstane().getAssets('avatar1.png')
+			iconLayer.addChild(preUserIcon)
+			preUserNameLabel = new Label()
+			preUserNameLabel.color = 0xFFFFFF
+			preUserNameLabel.height = 30
+			preUserNameLabel.height = 30
+			iconLayer.addChild(preUserNameLabel)
 			
-			user2line = new Image()
-			user2line.width = 80
-			user2line.height = 30
-			user2line.source = Assets.getInstane().getAssets('fight_userinfo_bg2.png')
-			iconLayer.addChild(user2line)
-			user2bg = new Image()
-			user2bg.width = user2bg.height = 30
-			user2bg.source = Assets.getInstane().getAssets('fight_userinfo_circle_bg.png')
-			iconLayer.addChild(user2bg)
-			user2icon = new Image()
-			user2icon.width = user2icon.height = 20
-			user2icon.source = Assets.getInstane().getAssets('avatar2.png')
-			iconLayer.addChild(user2icon)
+			myUserLine = new Image()
+			myUserLine.width = 80
+			myUserLine.height = 30
+			myUserLine.source = Assets.getInstane().getAssets('fight_userinfo_bg2.png')
+			iconLayer.addChild(myUserLine)
+			myUserBG = new Image()
+			myUserBG.width = myUserBG.height = 30
+			myUserBG.source = Assets.getInstane().getAssets('fight_userinfo_circle_bg.png')
+			iconLayer.addChild(myUserBG)
+			myUserIcon = new Image()
+			myUserIcon.width = myUserIcon.height = 20
+			myUserIcon.source = Assets.getInstane().getAssets('avatar2.png')
+			iconLayer.addChild(myUserIcon)
+			myUserNameLabel = new Label()
+			myUserNameLabel.color = 0xFFFFFF
+			myUserNameLabel.height = 30
+			myUserNameLabel.height = 30
+			iconLayer.addChild(myUserNameLabel)
 			
-			user3line = new Image()
-			user3line.width = 80
-			user3line.height = 30
-			user3line.source = Assets.getInstane().getAssets('fight_userinfo_bg2.png')
-			iconLayer.addChild(user3line)
-			user3bg = new Image()
-			user3bg.width = user3bg.height = 30
-			user3bg.source = Assets.getInstane().getAssets('fight_userinfo_circle_bg.png')
-			iconLayer.addChild(user3bg)
-			user3icon = new Image()
-			user3icon.width = user3icon.height = 20
-			user3icon.source = Assets.getInstane().getAssets('avatar3.png')
-			iconLayer.addChild(user3icon)
+			nextUserLine = new Image()
+			nextUserLine.width = 80
+			nextUserLine.height = 30
+			nextUserLine.source = Assets.getInstane().getAssets('fight_userinfo_bg2.png')
+			iconLayer.addChild(nextUserLine)
+			nextUserBG = new Image()
+			nextUserBG.width = nextUserBG.height = 30
+			nextUserBG.source = Assets.getInstane().getAssets('fight_userinfo_circle_bg.png')
+			iconLayer.addChild(nextUserBG)
+			nextUserIcon = new Image()
+			nextUserIcon.width = nextUserIcon.height = 20
+			nextUserIcon.source = Assets.getInstane().getAssets('avatar3.png')
+			iconLayer.addChild(nextUserIcon)
+			nextUserNameLabel = new Label()
+			nextUserNameLabel.color = 0xFFFFFF
+			nextUserNameLabel.height = 30
+			nextUserNameLabel.height = 30
+			nextUserNameLabel.height = 30
+			addChild(nextUserNameLabel)
 			
 			canPengButton = new Image()
 			canPengButton.source = Assets.getInstane().getAssets('oprate_peng0.png')
@@ -151,12 +184,43 @@ package com.xiaomu.view
 			newCardTip.visible = false
 			newCardTip.source = Assets.getInstane().getAssets('fight_txt_finger_tips.png')
 			iconLayer.addChild(newCardTip)
+			
+			checkWaitTip = new Image()
+			checkWaitTip.width = 16
+			checkWaitTip.height = 16
+			checkWaitTip.visible = false
+			checkWaitTip.source = Assets.getInstane().getAssets('wait.png')
+			iconLayer.addChild(checkWaitTip)
 		}
 		
 		override protected function commitProperties():void {
 			super.commitProperties()
-			this.myUser = {username: 'wosxieez', handCards: [1, 3, 5, 4, 4, 3, 11, 15, 18, 19, 11, 10, 9, 9, 8, 16, 17, 18, 9, 10, 8]}
+			this.preUser = {username: 'wosxieez0', 
+				handCards: [1, 3, 5, 4, 4, 3, 11, 15, 18, 19, 11, 10, 9, 9, 8, 16, 17, 18, 9, 10, 8],
+				groupCards: [{name: 'ti', cards: [1, 1, 1, 1]}],
+				passCards:[2, 4, 9]}
+			this.nextUser = {username: 'wosxieez2', 
+				handCards: [1, 3, 5, 4, 4, 3, 11, 15, 18, 19, 11, 10, 9, 9, 8, 16, 17, 18, 9, 10, 8],
+				groupCards: [{name: 'ti', cards: [1, 1, 1, 1]}],
+				passCards:[2, 4, 9]}
+			this.myUser = {username: 'wosxieez1', 
+				handCards: [1, 3, 5, 4, 4, 4, 4, 3, 11, 15, 18, 19, 11, 10, 9, 9, 8, 16, 17, 18, 9, 10, 8],
+				groupCards: [{name: 'ti', cards: [1, 1, 1, 1]}],
+				passCards:[2, 4, 9]}
+			
+			preUserNameLabel.text = preUser.username
+			myUserNameLabel.text = myUser.username
+			nextUserNameLabel.text = nextUser.username
+			
 			updateMyHandCardUIs()
+			updateMyGroupCardUIs()
+			updateMyPassCardUIs()
+			
+			updatePreGroupCardUIs()
+			updatePrePassCardUIs()
+			
+			updateNextGroupCardUIs()
+			updateNextPassCardUIs()
 		}
 		
 		override protected function updateDisplayList():void {
@@ -168,38 +232,41 @@ package com.xiaomu.view
 			bgline.width = width
 			bgline.y = height - 60
 			
-			dealCardUI.x = (width - dealCardUI.width) / 2
-			dealCardUI.y = (height - dealCardUI.height) / 2 - 50
+			preUserLine.x = 20
+			preUserLine.y = 10
+			preUserBG.x = preUserLine.x - 15
+			preUserBG.y = preUserLine.y
+			preUserIcon.x = preUserBG.x + 5
+			preUserIcon.y = preUserBG.y + 5
+			preUserNameLabel.y = preUserLine.y
+			preUserNameLabel.x = preUserBG.x + 30
 			
-			user1line.x = 20
-			user1line.y = 10
-			user1bg.x = user1line.x - 15
-			user1bg.y = user1line.y
-			user1icon.x = user1bg.x + 5
-			user1icon.y = user1bg.y + 5
+			myUserLine.x = width / 2 - 40
+			myUserLine.y = height - 35
+			myUserBG.x = myUserLine.x - 5
+			myUserBG.y = myUserLine.y
+			myUserIcon.x = myUserBG.x + 5
+			myUserIcon.y = myUserBG.y + 5
+			myUserNameLabel.y = myUserLine.y
+			myUserNameLabel.x = myUserBG.x + 30
 			
-			user2line.x = width / 2 - 40
-			user2line.y = height - 35
-			user2bg.x = user2line.x - 5
-			user2bg.y = user2line.y
-			user2icon.x = user2bg.x + 5
-			user2icon.y = user2bg.y + 5
-			
-			user3line.x = width - 80
-			user3line.y = 10
-			user3bg.x = user3line.x - 15
-			user3bg.y = user3line.y
-			user3icon.x = user3bg.x + 5
-			user3icon.y = user3bg.y + 5
+			nextUserLine.x = width - 80
+			nextUserLine.y = 10
+			nextUserBG.x = nextUserLine.x - 15
+			nextUserBG.y = nextUserLine.y
+			nextUserIcon.x = nextUserBG.x + 5
+			nextUserIcon.y = nextUserBG.y + 5
+			nextUserNameLabel.y = nextUserLine.y 
+			nextUserNameLabel.x = nextUserBG.x + 30
 			
 			canPengButton.x = width - canPengButton.width - 20
-			canPengButton.y = (height - canChiButton.height) / 2 - 20
+			canPengButton.y = (height - canChiButton.height) / 2 - 10
 			
 			canChiButton.x = width - canChiButton.width - 20
-			canChiButton.y = (height - canChiButton.height) / 2 - 20
+			canChiButton.y = (height - canChiButton.height) / 2 - 10
 			
 			cancelButton.x = width - cancelButton.width - 20
-			cancelButton.y = (height - cancelButton.height) / 2 + 20
+			cancelButton.y = (height - cancelButton.height) / 2 + 30
 			
 			newCardTip.x = (width - newCardTip.width) / 2
 			newCardTip.y = (height - newCardTip.height) / 2
@@ -209,9 +276,9 @@ package com.xiaomu.view
 			super.drawSkin()
 		}
 		
-		private function initRoomInfo(roominfo:Object):void {
-			if (roominfo) {
-				this.roominfo = roominfo
+		private function updateRoomInfo(room:Object):void {
+			if (room) {
+				this.roominfo = room
 				for (var i:int = 0; i < roominfo.users.length; i++) {
 					if (roominfo.users[i].username == Api.getInstane().username) {
 						var endUsers:Array = roominfo.users.slice(i)
@@ -223,9 +290,52 @@ package com.xiaomu.view
 						break
 					}
 				}
+				
+				if (preUser) {
+					preUserNameLabel.text = preUser.username
+				} 
+				
+				if (myUser) {
+					myUserNameLabel.text = myUser.username
+				} 
+				
+				if (nextUser) {
+					nextUserNameLabel.text = nextUser.username
+				} 
 			}
 		}
-		
+		private function updateNewCard():void {
+			if (roominfo) {
+				dealCardUI.visible = true
+				dealCardUI.card = roominfo.deal_card
+				if (roominfo.deal_username == this.preUser.username) {
+					dealCardUI.y = 50
+					dealCardUI.x = 100
+				} else if (roominfo.deal_username == this.nextUser.username) {
+					dealCardUI.y = 50
+					dealCardUI.x = width - 130
+				} else {
+					dealCardUI.x = (width - dealCardUI.width) / 2
+					dealCardUI.y = (height - dealCardUI.height) / 2 - 30
+				}
+				Audio.getInstane().playCard(dealCardUI.card)
+			} else {
+				dealCardUI.visible = false
+			}
+		}
+		private function updateWaitTip():void {
+			if (checkUsername == preUser.username) {
+				checkWaitTip.visible = true
+				checkWaitTip.x = preUserIcon.x + 15
+				checkWaitTip.y = preUserIcon.y - 15
+			} else if (checkUsername == nextUser.username) {
+				checkWaitTip.visible = true
+				checkWaitTip.x = nextUserIcon.x + 15
+				checkWaitTip.y = nextUserIcon.y - 15
+			} else {
+				checkWaitTip.visible = false
+			}
+		}
 		/**
 		 *  更新我的牌视图
 		 */		
@@ -238,14 +348,29 @@ package com.xiaomu.view
 					oldMyHandCardUIs.push(cardUI)
 				}
 				myHandCardUIs = []
-				const cardWidth:Number = 35
-				const cardHeight:Number = 50
+				const cardWidth:Number = 30
+				const cardHeight:Number = 45
 				const horizontalGap:Number = 2
 				const verticalGap:Number = 30
 				var newCardUI:CardUI
 				var startX:Number = (width - riffleCards.length * (cardWidth + horizontalGap)) / 2
 				for (var i:int = 0; i < riffleCards.length; i++) {
 					var groupCards:Array = riffleCards[i]
+					var canDeal:Boolean = true
+					if (groupCards && groupCards.length >= 3) {
+						canDeal = false
+						var compareCard:int = 0
+						for each(var item:int in groupCards) {
+							if (compareCard > 0) {
+								if (compareCard != item) {
+									canDeal = true
+									break
+								}
+							} else {
+								compareCard = item
+							}
+						}
+					}
 					for (var j:int = 0; j < groupCards.length; j++) {
 						newCardUI = oldMyHandCardUIs.pop()
 						if (!newCardUI) {
@@ -255,6 +380,7 @@ package com.xiaomu.view
 							cardLayer.addChild(newCardUI)
 						}
 						newCardUI.visible = true
+						newCardUI.canDeal = canDeal
 						newCardUI.width = cardWidth
 						newCardUI.height = cardHeight
 						newCardUI.x = startX + i * (newCardUI.width + horizontalGap)
@@ -268,6 +394,7 @@ package com.xiaomu.view
 				
 			}
 		}
+		
 		/**
 		 *  更新我的组合牌视图
 		 */		
@@ -280,14 +407,14 @@ package com.xiaomu.view
 					oldMyGroupCardUIs.push(cardUI)
 				}
 				myGroupCardUIs = []
-				const cardWidth:Number = 20
-				const cardHeight:Number = 25
-				const horizontalGap:Number = 2
-				const verticalGap:Number = 20
+				const cardWidth:Number = 16
+				const cardHeight:Number = 20
+				const horizontalGap:Number = 1
+				const verticalGap:Number = 14
 				var newCardUI:CardUI
 				var startX:Number = 10
 				for (var i:int = 0; i < riffleCards.length; i++) {
-					var groupCards:Array = riffleCards[i]
+					var groupCards:Array = riffleCards[i].cards
 					for (var j:int = 0; j < groupCards.length; j++) {
 						newCardUI = oldMyGroupCardUIs.pop()
 						if (!newCardUI) {
@@ -298,8 +425,8 @@ package com.xiaomu.view
 						newCardUI.width = cardWidth
 						newCardUI.height = cardHeight
 						newCardUI.x = startX + i * (newCardUI.width + horizontalGap)
-						newCardUI.y = height - newCardUI.height - j * verticalGap - 50
-						newCardUI.card = riffleCards[i][j]
+						newCardUI.y = height - newCardUI.height - j * verticalGap - 45
+						newCardUI.card = groupCards[j]
 						newCardUI.type = CardUI.TYPE_SMALL_CARD
 						cardLayer.setChildIndex(newCardUI, 0)
 						myGroupCardUIs.push(newCardUI)
@@ -320,9 +447,9 @@ package com.xiaomu.view
 					oldMyPassCardUIs.push(cardUI)
 				}
 				myPassCardUIs = []
-				const cardWidth:Number = 20
-				const cardHeight:Number = 25
-				const horizontalGap:Number = 2
+				const cardWidth:Number = 16
+				const cardHeight:Number = 20
+				const horizontalGap:Number = 1
 				var newCardUI:CardUI
 				var startX:Number = 10
 				for (var i:int = 0; i < riffleCards.length; i++) {
@@ -345,10 +472,168 @@ package com.xiaomu.view
 			}
 		}
 		
+		
+		/**
+		 *  更新上家的组合牌视图
+		 */		
+		private function updatePreGroupCardUIs():void {
+			if (preUser) {
+				const riffleCards:Array = this.preUser.groupCards
+				var oldPreGroupCardUIs:Array = []
+				for each(var cardUI: CardUI in preGroupCardUIs) {
+					cardUI.visible = false
+					oldPreGroupCardUIs.push(cardUI)
+				}
+				preGroupCardUIs = []
+				const cardWidth:Number = 16
+				const cardHeight:Number = 20
+				const horizontalGap:Number = 1
+				const verticalGap:Number = 14
+				var newCardUI:CardUI
+				var startX:Number = 10
+				for (var i:int = 0; i < riffleCards.length; i++) {
+					var groupCards:Array = riffleCards[i].cards
+					for (var j:int = 0; j < groupCards.length; j++) {
+						newCardUI = oldPreGroupCardUIs.pop()
+						if (!newCardUI) {
+							newCardUI = new CardUI()
+							cardLayer.addChild(newCardUI)
+						}
+						newCardUI.visible = true
+						newCardUI.width = cardWidth
+						newCardUI.height = cardHeight
+						newCardUI.x = startX + i * (newCardUI.width + horizontalGap)
+						newCardUI.y = newCardUI.height - j * verticalGap + 60
+						newCardUI.card = groupCards[j]
+						newCardUI.type = CardUI.TYPE_SMALL_CARD
+						cardLayer.setChildIndex(newCardUI, 0)
+						preGroupCardUIs.push(newCardUI)
+					}
+				}
+				
+			}
+		}
+		
+		/**
+		 *  更新上家的弃牌视图
+		 */		
+		private function updatePrePassCardUIs():void {
+			if (preUser) {
+				const riffleCards:Array = this.preUser.passCards
+				var oldPrePassCardUIs:Array = []
+				for each(var cardUI: CardUI in prePassCardUIs) {
+					cardUI.visible = false
+					oldPrePassCardUIs.push(cardUI)
+				}
+				prePassCardUIs = []
+				const cardWidth:Number = 16
+				const cardHeight:Number = 20
+				const horizontalGap:Number = 1
+				var newCardUI:CardUI
+				var startX:Number = 10
+				for (var i:int = 0; i < riffleCards.length; i++) {
+					newCardUI = oldPrePassCardUIs.pop()
+					if (!newCardUI) {
+						newCardUI = new CardUI()
+						cardLayer.addChild(newCardUI)
+					}
+					newCardUI.visible = true
+					newCardUI.width = cardWidth
+					newCardUI.height = cardHeight
+					newCardUI.x = startX + i * (newCardUI.width + horizontalGap)
+					newCardUI.y = newCardUI.height + 85
+					newCardUI.card = riffleCards[i]
+					newCardUI.type = CardUI.TYPE_SMALL_CARD
+					cardLayer.setChildIndex(newCardUI, 0)
+					prePassCardUIs.push(newCardUI)
+				}
+				
+			}
+		}
+		
+		
+		/**
+		 *  更新上家的组合牌视图
+		 */		
+		private function updateNextGroupCardUIs():void {
+			if (nextUser) {
+				const riffleCards:Array = this.nextUser.groupCards
+				var oldNextGroupCardUIs:Array = []
+				for each(var cardUI: CardUI in nextGroupCardUIs) {
+					cardUI.visible = false
+					oldNextGroupCardUIs.push(cardUI)
+				}
+				nextGroupCardUIs = []
+				const cardWidth:Number = 16
+				const cardHeight:Number = 20
+				const horizontalGap:Number = 1
+				const verticalGap:Number = 14
+				var newCardUI:CardUI
+				var startX:Number = width - cardWidth - 10
+				for (var i:int = 0; i < riffleCards.length; i++) {
+					var groupCards:Array = riffleCards[i].cards
+					for (var j:int = 0; j < groupCards.length; j++) {
+						newCardUI = oldNextGroupCardUIs.pop()
+						if (!newCardUI) {
+							newCardUI = new CardUI()
+							cardLayer.addChild(newCardUI)
+						}
+						newCardUI.visible = true
+						newCardUI.width = cardWidth
+						newCardUI.height = cardHeight
+						newCardUI.x = startX - i * (newCardUI.width + horizontalGap)
+						newCardUI.y = newCardUI.height - j * verticalGap + 60
+						newCardUI.card = groupCards[j]
+						newCardUI.type = CardUI.TYPE_SMALL_CARD
+						cardLayer.setChildIndex(newCardUI, 0)
+						nextGroupCardUIs.push(newCardUI)
+					}
+				}
+				
+			}
+		}
+		
+		/**
+		 *  更新上家的弃牌视图
+		 */		
+		private function updateNextPassCardUIs():void {
+			if (nextUser) {
+				const riffleCards:Array = this.nextUser.passCards
+				var oldNextPassCardUIs:Array = []
+				for each(var cardUI: CardUI in nextPassCardUIs) {
+					cardUI.visible = false
+					oldNextPassCardUIs.push(cardUI)
+				}
+				nextPassCardUIs = []
+				const cardWidth:Number = 16
+				const cardHeight:Number = 20
+				const horizontalGap:Number = 1
+				var newCardUI:CardUI
+				var startX:Number = width - cardWidth - 10
+				for (var i:int = 0; i < riffleCards.length; i++) {
+					newCardUI = oldNextPassCardUIs.pop()
+					if (!newCardUI) {
+						newCardUI = new CardUI()
+						cardLayer.addChild(newCardUI)
+					}
+					newCardUI.visible = true
+					newCardUI.width = cardWidth
+					newCardUI.height = cardHeight
+					newCardUI.x = startX - i * (newCardUI.width + horizontalGap)
+					newCardUI.y = newCardUI.height + 85
+					newCardUI.card = riffleCards[i]
+					newCardUI.type = CardUI.TYPE_SMALL_CARD
+					cardLayer.setChildIndex(newCardUI, 0)
+					nextPassCardUIs.push(newCardUI)
+				}
+				
+			}
+		}
+		
 		protected function cardUI_mouseDownHandler(event:MouseEvent):void
 		{
 			const cardUI:CardUI = event.currentTarget as CardUI
-			if (cardUI && this.isCheckNewCard) {
+			if (cardUI && cardUI.canDeal && this.isCheckNewCard) {
 				oldPoint = cardLayer.localToGlobal(new Point(cardUI.x, cardUI.y))
 				cardUI.startDrag()
 				isDrag = true
@@ -378,20 +663,57 @@ package com.xiaomu.view
 		
 		protected function onNotificationHandler(event:ApiEvent):void
 		{
+			newCardTip.visible = cancelButton.visible = canChiButton.visible = canPengButton.visible = false
+				
 			const notification: Object = event.notification
 			switch(notification.name)
 			{
 				case Notifications.onNewRound:
 				{
-					initRoomInfo(notification.data)
+					dealCardUI.visible = false
+					updateRoomInfo(notification.data)
 					updateMyHandCardUIs()
+					updateMyGroupCardUIs()
+					updateMyPassCardUIs()
+					updatePreGroupCardUIs()
+					updatePrePassCardUIs()
+					updateNextGroupCardUIs()
+					updateNextPassCardUIs()
 					break;
+				}
+				case Notifications.onTi : {
+					trace('有玩家提牌')
+					dealCardUI.visible = false
+					Audio.getInstane().playHandle('ti')
+					updateRoomInfo(notification.data)
+					updateMyHandCardUIs()
+					updateMyGroupCardUIs()
+					updateMyPassCardUIs()
+					updatePreGroupCardUIs()
+					updatePrePassCardUIs()
+					updateNextGroupCardUIs()
+					updateNextPassCardUIs()
+					break
+				}
+				case Notifications.onPao: {
+					trace('有玩家跑牌')
+					dealCardUI.visible = false
+					Audio.getInstane().playHandle('pao')
+					updateRoomInfo(notification.data)
+					updateMyHandCardUIs()
+					updateMyGroupCardUIs()
+					updateMyPassCardUIs()
+					updatePreGroupCardUIs()
+					updatePrePassCardUIs()
+					updateNextGroupCardUIs()
+					updateNextPassCardUIs()
+					break
 				}
 				case Notifications.checkNewCard: {
 					// 请出牌
-					cancelButton.visible = canChiButton.visible = canPengButton.visible = false
-					
-					if (notification.data.username == Api.getInstane().username) {
+					checkUsername = notification.data.username
+					updateWaitTip()
+					if (checkUsername == Api.getInstane().username) {
 						trace('请出牌')
 						newCardTip.visible = true
 						isCheckNewCard = true
@@ -399,21 +721,26 @@ package com.xiaomu.view
 					break
 				}
 				case Notifications.onNewCard: {
-					trace('新牌')
-					cancelButton.visible = canChiButton.visible = canPengButton.visible = false
-					dealCardUI.card = notification.data.deal_card
-					Audio.getInstane().playCard(notification.data.deal_card)
-					initRoomInfo(notification.data)
+					trace('有玩家发新牌')
+					checkUsername = null
+					updateRoomInfo(notification.data)
+					updateNewCard()
+					updateWaitTip()
 					updateMyHandCardUIs()
 					updateMyGroupCardUIs()
 					updateMyPassCardUIs()
+					updatePreGroupCardUIs()
+					updatePrePassCardUIs()
+					updateNextGroupCardUIs()
+					updateNextPassCardUIs()
 					break
 				}
 				case Notifications.checkPeng: {
 					// 检查碰
 					trace('检查碰', notification.data)
-					cancelButton.visible = canChiButton.visible = canPengButton.visible = false
-					if (notification.data.username == Api.getInstane().username) {
+					checkUsername = notification.data.username
+					updateWaitTip()
+					if (checkUsername == Api.getInstane().username) {
 						const canPengCards:Array = CardUtil.getInstane().canPeng(this.myUser.handCards, notification.data.card)
 						if (canPengCards) {
 							thisCanPengCards = canPengCards
@@ -428,17 +755,26 @@ package com.xiaomu.view
 				}
 				case Notifications.onPeng: {
 					trace('有人碰')
+					dealCardUI.visible = false
 					Audio.getInstane().playHandle('peng')
-					initRoomInfo(notification.data)
+					checkUsername = null
+					updateWaitTip()
+					updateRoomInfo(notification.data)
 					updateMyHandCardUIs()
 					updateMyGroupCardUIs()
 					updateMyPassCardUIs()
+					updatePreGroupCardUIs()
+					updatePrePassCardUIs()
+					updateNextGroupCardUIs()
+					updateNextPassCardUIs()
 					break
 				}
 				case Notifications.checkEat: {
 					// 检查吃
 					trace('检查吃')
-					cancelButton.visible = canChiButton.visible = canPengButton.visible = false
+					newCardTip.visible = cancelButton.visible = canChiButton.visible = canPengButton.visible = false
+					checkUsername = notification.data.username
+					updateWaitTip()
 					if (notification.data.username == Api.getInstane().username) {
 						const canChiCards:Array = CardUtil.getInstane().canChi(this.myUser.handCards, notification.data.card)
 						if (canChiCards) {
@@ -454,11 +790,18 @@ package com.xiaomu.view
 				}
 				case Notifications.onEat: {
 					trace('有人吃')
+					dealCardUI.visible = false
 					Audio.getInstane().playHandle('chi')
-					initRoomInfo(notification.data)
+					checkUsername = null
+					updateWaitTip()
+					updateRoomInfo(notification.data)
 					updateMyHandCardUIs()
 					updateMyGroupCardUIs()
 					updateMyPassCardUIs()
+					updatePreGroupCardUIs()
+					updatePrePassCardUIs()
+					updateNextGroupCardUIs()
+					updateNextPassCardUIs()
 					break
 				}
 				default:

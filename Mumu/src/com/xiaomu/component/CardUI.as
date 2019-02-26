@@ -16,6 +16,7 @@ package com.xiaomu.component
 			mouseChildren = false
 		}
 		
+		public var border:Number = 0
 		
 		public static const TYPE_FULL_CARD:String = 'full_card'
 		public static const TYPE_BIG_CARD:String = 'big_card'
@@ -47,6 +48,20 @@ package com.xiaomu.component
 			invalidateProperties()
 		}
 		
+		private var _canDeal:Boolean = true 
+		public function get canDeal():Boolean
+		{
+			return _canDeal;
+		}
+
+		public function set canDeal(value:Boolean):void
+		{
+			_canDeal = value;
+			invalidateProperties()
+		}
+
+// 是否能出牌
+		
 		private var imageDisplay:Image
 		
 		
@@ -63,6 +78,8 @@ package com.xiaomu.component
 			if (card > 0) {
 				imageDisplay.source = Assets.getInstane().getAssets('fight_' + type + '_' + card + '.png')
 			}
+			
+			imageDisplay.alpha = canDeal ? 1 : .6
 		}
 		
 		override protected function measure():void {
@@ -72,8 +89,25 @@ package com.xiaomu.component
 		override protected function updateDisplayList():void {
 			super.updateDisplayList()
 			
-			imageDisplay.width = width
-			imageDisplay.height = height
+			if (border > 0) {
+				imageDisplay.width = width - 2 * border
+				imageDisplay.height = height - 2 * border
+				imageDisplay.x = imageDisplay.y = border
+			} else {
+				imageDisplay.width = width
+				imageDisplay.height = height
+			}
+		}
+		
+		override protected function drawSkin():void {
+			super.drawSkin()
+			
+			if (border > 0) {
+				graphics.clear()
+				graphics.beginFill(0xFF0000)
+				graphics.drawRoundRect(0, 0, width, height, 2)
+				graphics.endFill()
+			}
 		}
 		
 	}
