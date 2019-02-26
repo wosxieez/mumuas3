@@ -2,8 +2,9 @@ package
 {
 	import com.xiaomu.util.Assets;
 	import com.xiaomu.util.Audio;
-	import com.xiaomu.view.LoginView;
+	import com.xiaomu.view.HallView;
 	import com.xiaomu.view.MainView;
+	import com.xiaomu.view.registered.RegisterView;
 	
 	import coco.core.Application;
 	
@@ -21,7 +22,7 @@ package
 			super.createChildren()
 			
 			addChild(MainView.getInstane())
-			MainView.getInstane().pushView(LoginView)
+			MainView.getInstane().pushView(RegisterView)
 		}
 		
 		override protected function updateDisplayList():void {
