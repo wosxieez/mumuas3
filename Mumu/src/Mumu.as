@@ -1,8 +1,6 @@
 package
 {
 	import com.xiaomu.util.Assets;
-	import com.xiaomu.util.Audio;
-	import com.xiaomu.view.HallView;
 	import com.xiaomu.view.MainView;
 	import com.xiaomu.view.registered.RegisterView;
 	

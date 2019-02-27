@@ -87,7 +87,7 @@ package com.xiaomu.view
 			addChild(cardLayer)
 			
 			dealCardUI = new CardUI()
-			dealCardUI.border = 1
+			dealCardUI.border = 2
 			dealCardUI.visible = false
 			dealCardUI.width = 30
 			dealCardUI.height = 70
@@ -310,13 +310,13 @@ package com.xiaomu.view
 				dealCardUI.card = roominfo.deal_card
 				if (roominfo.deal_username == this.preUser.username) {
 					dealCardUI.y = 50
-					dealCardUI.x = 100
+					dealCardUI.x = 120
 				} else if (roominfo.deal_username == this.nextUser.username) {
 					dealCardUI.y = 50
-					dealCardUI.x = width - 130
+					dealCardUI.x = width - 150
 				} else {
 					dealCardUI.x = (width - dealCardUI.width) / 2
-					dealCardUI.y = (height - dealCardUI.height) / 2 - 30
+					dealCardUI.y = (height - dealCardUI.height) / 2 - 20
 				}
 				Audio.getInstane().playCard(dealCardUI.card)
 			} else {
@@ -414,13 +414,18 @@ package com.xiaomu.view
 				var newCardUI:CardUI
 				var startX:Number = 10
 				for (var i:int = 0; i < riffleCards.length; i++) {
-					var groupCards:Array = riffleCards[i].cards
-					for (var j:int = 0; j < groupCards.length; j++) {
+					var group:Object = riffleCards[i]
+					var groupCards:Array = group.cards
+					var cardsLength:int = groupCards.length
+					for (var j:int = 0; j < cardsLength; j++) {
 						newCardUI = oldMyGroupCardUIs.pop()
 						if (!newCardUI) {
 							newCardUI = new CardUI()
 							cardLayer.addChild(newCardUI)
 						}
+						newCardUI.isReverse = false
+						if (group.name == 'ti' || group.name == 'wei') newCardUI.isReverse = true
+						if (j == (cardsLength - 1)) newCardUI.isReverse = false
 						newCardUI.visible = true
 						newCardUI.width = cardWidth
 						newCardUI.height = cardHeight
@@ -492,13 +497,18 @@ package com.xiaomu.view
 				var newCardUI:CardUI
 				var startX:Number = 10
 				for (var i:int = 0; i < riffleCards.length; i++) {
-					var groupCards:Array = riffleCards[i].cards
-					for (var j:int = 0; j < groupCards.length; j++) {
+					var group:Object = riffleCards[i]
+					var groupCards:Array = group.cards
+					var cardsLength:int = groupCards.length
+					for (var j:int = 0; j < cardsLength; j++) {
 						newCardUI = oldPreGroupCardUIs.pop()
 						if (!newCardUI) {
 							newCardUI = new CardUI()
 							cardLayer.addChild(newCardUI)
 						}
+						newCardUI.isReverse = false
+						if (group.name == 'ti' || group.name == 'wei') newCardUI.isReverse = true
+						if (j == (cardsLength - 1)) newCardUI.isReverse = false
 						newCardUI.visible = true
 						newCardUI.width = cardWidth
 						newCardUI.height = cardHeight
@@ -571,13 +581,18 @@ package com.xiaomu.view
 				var newCardUI:CardUI
 				var startX:Number = width - cardWidth - 10
 				for (var i:int = 0; i < riffleCards.length; i++) {
-					var groupCards:Array = riffleCards[i].cards
-					for (var j:int = 0; j < groupCards.length; j++) {
+					var group:Object = riffleCards[i]
+					var groupCards:Array = group.cards
+					var cardsLength:int = groupCards.length
+					for (var j:int = 0; j < cardsLength; j++) {
 						newCardUI = oldNextGroupCardUIs.pop()
 						if (!newCardUI) {
 							newCardUI = new CardUI()
 							cardLayer.addChild(newCardUI)
 						}
+						newCardUI.isReverse = false
+						if (group.name == 'ti' || group.name == 'wei') newCardUI.isReverse = true
+						if (j == (cardsLength - 1)) newCardUI.isReverse = false
 						newCardUI.visible = true
 						newCardUI.width = cardWidth
 						newCardUI.height = cardHeight
@@ -670,8 +685,13 @@ package com.xiaomu.view
 			{
 				case Notifications.onNewRound:
 				{
-					dealCardUI.visible = false
 					updateRoomInfo(notification.data)
+					// 如果自己是庄家不显示翻开的牌
+					if (roominfo.banker_username == Api.getInstane().username) {
+						dealCardUI.visible = false
+					} else {
+						updateNewCard()
+					}
 					updateMyHandCardUIs()
 					updateMyGroupCardUIs()
 					updateMyPassCardUIs()
@@ -709,6 +729,20 @@ package com.xiaomu.view
 					updateNextPassCardUIs()
 					break
 				}
+				case Notifications.onWei: {
+					trace('有玩家偎牌')
+					dealCardUI.visible = false
+					Audio.getInstane().playHandle('wei')
+					updateRoomInfo(notification.data)
+					updateMyHandCardUIs()
+					updateMyGroupCardUIs()
+					updateMyPassCardUIs()
+					updatePreGroupCardUIs()
+					updatePrePassCardUIs()
+					updateNextGroupCardUIs()
+					updateNextPassCardUIs()
+					break
+				}	
 				case Notifications.checkNewCard: {
 					// 请出牌
 					checkUsername = notification.data.username

@@ -49,6 +49,7 @@ package com.xiaomu.component
 		}
 		
 		private var _canDeal:Boolean = true 
+			
 		public function get canDeal():Boolean
 		{
 			return _canDeal;
@@ -59,11 +60,21 @@ package com.xiaomu.component
 			_canDeal = value;
 			invalidateProperties()
 		}
+		
+		private var _isReverse:Boolean = false
 
-// 是否能出牌
-		
+		public function get isReverse():Boolean
+		{
+			return _isReverse;
+		}
+
+		public function set isReverse(value:Boolean):void
+		{
+			_isReverse = value;
+			invalidateProperties()
+		}
+
 		private var imageDisplay:Image
-		
 		
 		override protected function createChildren():void {
 			super.createChildren()
@@ -75,8 +86,10 @@ package com.xiaomu.component
 		override protected function commitProperties():void {
 			super.commitProperties()
 			
-			if (card > 0) {
+			if (!isReverse && card > 0) {
 				imageDisplay.source = Assets.getInstane().getAssets('fight_' + type + '_' + card + '.png')
+			} else {
+				imageDisplay.source = Assets.getInstane().getAssets('fight_big_card.png')
 			}
 			
 			imageDisplay.alpha = canDeal ? 1 : .6
@@ -105,7 +118,7 @@ package com.xiaomu.component
 			if (border > 0) {
 				graphics.clear()
 				graphics.beginFill(0xFF0000)
-				graphics.drawRoundRect(0, 0, width, height, 2)
+				graphics.drawRoundRect(0, 0, width, height, 4)
 				graphics.endFill()
 			}
 		}
