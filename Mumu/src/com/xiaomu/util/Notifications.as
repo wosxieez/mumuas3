@@ -18,5 +18,6 @@ package com.xiaomu.util
 		public static const checkPeng:int = 12    // 检查碰
 		public static const checkEat:int = 13      // 检查吃
 		public static const checkNewCard:int = 14       // 检查出牌
+		public static const checkHu:int = 15       // 检查胡
 	}
 }

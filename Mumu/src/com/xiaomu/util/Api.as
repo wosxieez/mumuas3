@@ -41,8 +41,8 @@ package com.xiaomu.util
 			this.isJoinRoom = false
 			
 			// 第一步去连接服务器
-			//			pomelo.init("127.0.0.1", 3014)
-			pomelo.init("106.14.148.139", 3014)
+						pomelo.init("127.0.0.1", 3014)
+//			pomelo.init("106.14.148.139", 3014)
 			pomelo.addEventListener(PomeloEvent.HANDSHAKE, onConnectHandler);
 			pomelo.addEventListener(PomeloEvent.ERROR, pomeloErrorHandler);
 		}
@@ -53,8 +53,8 @@ package com.xiaomu.util
 			this.isJoinRoom = true
 			
 			// 第一步去连接服务器
-			//			pomelo.init("127.0.0.1", 3014)
-			pomelo.init("106.14.148.139", 3014)
+						pomelo.init("127.0.0.1", 3014)
+//			pomelo.init("106.14.148.139", 3014)
 			pomelo.addEventListener(PomeloEvent.HANDSHAKE, onConnectHandler);
 			pomelo.addEventListener(PomeloEvent.ERROR, pomeloErrorHandler);
 		}

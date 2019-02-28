@@ -838,6 +838,10 @@ package com.xiaomu.view
 					updateNextPassCardUIs()
 					break
 				}
+				case Notifications.checkHu: {
+					trace('检查胡', notification.data)
+					break
+				}
 				default:
 				{
 					break;
