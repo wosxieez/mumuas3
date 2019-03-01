@@ -1,16 +1,21 @@
 package com.xiaomu.view
 {
+	import com.xiaomu.event.ApiEvent;
 	import com.xiaomu.util.Api;
 	import com.xiaomu.util.Assets;
 	import com.xiaomu.view.registered.RegisterView;
 	import com.xiaomu.view.user.UserInfo;
 	
-	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.utils.setTimeout;
 	
 	import coco.component.Button;
+	import coco.component.HorizontalAlign;
 	import coco.component.Image;
+	import coco.component.List;
+	import coco.component.VerticalAlign;
 	import coco.core.UIComponent;
+	import coco.event.UIEvent;
 	
 	/**
 	 * 大厅界面
@@ -27,6 +32,20 @@ package com.xiaomu.view
 		private var joinRoom:Button;
 		private var goBackBtn : Button;
 		private var userInfo : UserInfo;
+		private var groupsList:List
+		private var _groupsData:Array
+		
+		public function get groupsData():Array
+		{
+			return _groupsData;
+		}
+
+		public function set groupsData(value:Array):void
+		{
+			_groupsData = value;
+			invalidateProperties()
+		}
+
 		override protected function createChildren():void {
 			super.createChildren()
 			
@@ -37,32 +56,22 @@ package com.xiaomu.view
 			userInfo = new UserInfo();
 			addChild(userInfo);
 			
-			createRoom = new Button()
-			createRoom.width = 100;
-			createRoom.height = 30;
-			createRoom.label = '创建房间'
-			createRoom.addEventListener(MouseEvent.CLICK, function (e:MouseEvent):void {
-				Api.getInstane().createRoom('001', {count: 3}, 'wosxieez' + new Date().getMilliseconds())
-				MainView.getInstane().pushView(HomeView)
-			})
-			addChild(createRoom)
+			groupsList = new List()
+			groupsList.labelField = 'name'
+			groupsList.itemRendererRowCount = 1
+			groupsList.padding = 50
+			groupsList.verticalAlign = VerticalAlign.JUSTIFY
+			groupsList.horizontalAlign = HorizontalAlign.JUSTIFY
+			groupsList.addEventListener(UIEvent.CHANGE, groupsList_changeHandler)
+			addChild(groupsList)
 			
-			joinRoom = new Button()
-			joinRoom.width = 100;
-			joinRoom.height = 30;
-			joinRoom.label = '加入房间'
-			joinRoom.addEventListener(MouseEvent.CLICK, function (e:MouseEvent):void {
-				Api.getInstane().joinRoom('001', 'wosxieez' + new Date().getMilliseconds())
-				MainView.getInstane().pushView(HomeView)
-			})
-			addChild(joinRoom)
-			
-			goBackBtn = new Button();
-			goBackBtn.width = 50;
-			goBackBtn.height = 20;
-			goBackBtn.label = '返回';
-			goBackBtn.addEventListener(MouseEvent.CLICK,goBackHandler);
-			addChild(goBackBtn);
+			Api.getInstane().addEventListener(ApiEvent.GET_GROUPS_SUCCESS, getGroupsSuccessHandler)
+			Api.getInstane().getGroups()
+		}
+		
+		override protected function commitProperties():void {
+			super.commitProperties()
+			groupsList.dataProvider = groupsData
 		}
 		
 		protected function goBackHandler(event:MouseEvent):void
@@ -76,13 +85,21 @@ package com.xiaomu.view
 			bg.width = width;
 			bg.height = height;
 			
-			createRoom.x = (width-createRoom.width)/2;
-			createRoom.y = height/2
-			
-			joinRoom.x = (width-joinRoom.width)/2;
-			joinRoom.y = createRoom.y+createRoom.height+20
-			
-			goBackBtn.x = width-goBackBtn.width;
+			groupsList.width = width
+			groupsList.height = height
+		}
+		
+		protected function getGroupsSuccessHandler(event:ApiEvent):void
+		{
+			groupsData = event.data as Array
+		}
+		
+		protected function groupsList_changeHandler(event:UIEvent):void
+		{
+			const groupid:int = groupsList.selectedItem.id
+			setTimeout(function ():void { groupsList.selectedIndex = -1 }, 200)
+			MainView.getInstane().pushView(GroupView)
+			Api.getInstane().getRooms(groupid)
 		}
 		
 	}

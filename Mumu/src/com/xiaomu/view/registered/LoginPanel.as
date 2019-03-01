@@ -1,11 +1,12 @@
 package com.xiaomu.view.registered
 {
+	import com.xiaomu.event.ApiEvent;
+	import com.xiaomu.util.Api;
 	import com.xiaomu.view.HallView;
 	import com.xiaomu.view.MainView;
 	
 	import flash.events.MouseEvent;
 	
-	import coco.component.Alert;
 	import coco.component.Button;
 	import coco.component.Label;
 	import coco.component.TextInput;
@@ -66,9 +67,14 @@ package com.xiaomu.view.registered
 		protected function loginHandler(event:MouseEvent):void
 		{
 			///登录成功，进入大厅
-			MainView.getInstane().pushView(HallView);
+			Api.getInstane().addEventListener(ApiEvent.LOGIN_SUCCESS, login_successHandler)
+			Api.getInstane().login('wosxieez', 'wosxieez')
 		}		
 		
+		protected function login_successHandler(event:ApiEvent):void
+		{
+			MainView.getInstane().pushView(HallView)
+		}		
 		
 		override protected function updateDisplayList():void
 		{
