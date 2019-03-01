@@ -15,6 +15,7 @@ package com.xiaomu.view
 	import coco.component.Image;
 	import coco.component.Label;
 	import coco.core.UIComponent;
+	import coco.manager.PopUpManager;
 	
 	public class HomeView extends UIComponent
 	{
@@ -59,16 +60,19 @@ package com.xiaomu.view
 		private var roominfo:Object
 		private var oldPoint:Point
 		private var isDrag:Boolean = false
-		private var isCheckNewCard:Boolean = false // 是否在等待出牌
 		private var thisCanPengCards:Array
 		private var thisCanChiCards:Array
+		private var thisCanHuDatas:Array
 		
+		private var canHuButton:Image
 		private var canPengButton:Image
 		private var canChiButton:Image
 		private var cancelButton:Image
 		private var newCardTip:Image
 		private var checkWaitTip:Image
 		private var checkUsername: String
+		private var isCheckNewCard:Boolean = false // 是否在等待出牌
+		private var isHu:Boolean = false
 		
 		override protected function createChildren():void {
 			super.createChildren()
@@ -178,6 +182,13 @@ package com.xiaomu.view
 			cancelButton.addEventListener(MouseEvent.CLICK, cancelButton_clickHandler)
 			iconLayer.addChild(cancelButton)
 			
+			canHuButton = new Image()
+			canHuButton.source = Assets.getInstane().getAssets('oprate_hu0.png')
+			canHuButton.width = canHuButton.height = 30
+			canHuButton.visible = false
+			canHuButton.addEventListener(MouseEvent.CLICK,canHuButton_clickHandler)
+			iconLayer.addChild(canHuButton)
+			
 			newCardTip = new Image()
 			newCardTip.width = 100
 			newCardTip.height = 16
@@ -261,6 +272,9 @@ package com.xiaomu.view
 			
 			canPengButton.x = width - canPengButton.width - 20
 			canPengButton.y = (height - canChiButton.height) / 2 - 10
+			
+			canHuButton.x = canPengButton.x
+			canHuButton.y = canPengButton.y
 			
 			canChiButton.x = width - canChiButton.width - 20
 			canChiButton.y = (height - canChiButton.height) / 2 - 10
@@ -678,8 +692,9 @@ package com.xiaomu.view
 		
 		protected function onNotificationHandler(event:ApiEvent):void
 		{
-			newCardTip.visible = cancelButton.visible = canChiButton.visible = canPengButton.visible = false
-				
+			isCheckNewCard = isHu = false
+			newCardTip.visible = cancelButton.visible = canChiButton.visible = canPengButton.visible = canHuButton.visible = false
+			
 			const notification: Object = event.notification
 			switch(notification.name)
 			{
@@ -840,6 +855,24 @@ package com.xiaomu.view
 				}
 				case Notifications.checkHu: {
 					trace('检查胡', notification.data)
+					if (notification.data.username == Api.getInstane().username) {
+						isHu = canHuButton.visible = cancelButton.visible = true
+						thisCanHuDatas = notification.data.data
+					}
+					break
+				}
+				case Notifications.onWin: {
+					trace(notification.data)
+					var room:Object = notification.data
+					Audio.getInstane().playHandle('hu')
+					for each(var user:Object in room.users) {
+						if (user.username == room.win_username) {
+							WinPanel.getInstane().title = user.username + '胡牌'
+							WinPanel.getInstane().winGroupCards = user.groupCards
+							PopUpManager.centerPopUp(PopUpManager.addPopUp(WinPanel.getInstane()))
+							break
+						}
+					}
 					break
 				}
 				default:
@@ -851,22 +884,29 @@ package com.xiaomu.view
 		
 		protected function canPengButton_clickHandler(event:MouseEvent):void
 		{
-			canPengButton.visible = canChiButton.visible = cancelButton.visible = false
+			isHu = canHuButton.visible = canPengButton.visible = canChiButton.visible = cancelButton.visible = false
 			const action:Object = { name: Actions.Peng, data: thisCanPengCards }
 			Api.getInstane().sendAction(action)
 		}
 		
 		protected function canChiButton_clickHandler(event:MouseEvent):void
 		{
-			canPengButton.visible = canChiButton.visible = cancelButton.visible = false
+			isHu = canHuButton.visible = canPengButton.visible = canChiButton.visible = cancelButton.visible = false
 			const action:Object = { name: Actions.Chi, data: thisCanChiCards }
 			Api.getInstane().sendAction(action)
 		}
 		
 		protected function cancelButton_clickHandler(event:MouseEvent):void
 		{
-			canPengButton.visible = canChiButton.visible = cancelButton.visible = false
+			isHu = canHuButton.visible = canPengButton.visible = canChiButton.visible = cancelButton.visible = false
 			const action:Object = { name: Actions.Cancel, data: '' }
+			Api.getInstane().sendAction(action)
+		}
+		
+		protected function canHuButton_clickHandler(event:MouseEvent):void
+		{
+			isHu = canHuButton.visible = canPengButton.visible = canChiButton.visible = cancelButton.visible = false
+			const action:Object = { name: Actions.Hu, data: thisCanHuDatas }
 			Api.getInstane().sendAction(action)
 		}
 		
