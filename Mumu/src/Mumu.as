@@ -1,6 +1,5 @@
 package
 {
-	import com.xiaomu.util.Assets;
 	import com.xiaomu.view.MainView;
 	import com.xiaomu.view.registered.RegisterView;
 	
@@ -11,9 +10,6 @@ package
 		public function Mumu()
 		{
 			super();
-			
-			Assets.getInstane().loadAssets('assets/mumu.png', 'assets/mumu.json')
-//			Audio.getInstane().playBGM('assets/bgm.mp3')
 		}
 		
 		override protected function createChildren():void {

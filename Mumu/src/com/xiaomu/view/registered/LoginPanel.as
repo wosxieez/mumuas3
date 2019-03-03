@@ -1,10 +1,11 @@
 package com.xiaomu.view.registered
 {
-	import com.xiaomu.event.ApiEvent;
-	import com.xiaomu.util.Api;
+	import com.xiaomu.util.AppData;
+	import com.xiaomu.util.HttpApi;
 	import com.xiaomu.view.HallView;
 	import com.xiaomu.view.MainView;
 	
+	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
 	import coco.component.Button;
@@ -41,6 +42,7 @@ package com.xiaomu.view.registered
 			addChild(labPsw);
 			
 			phoneNumInput =  new TextInput();
+			phoneNumInput.text = '2'
 			phoneNumInput.maxChars = 11;
 			phoneNumInput.width = 100;
 			phoneNumInput.height = 20;
@@ -49,6 +51,7 @@ package com.xiaomu.view.registered
 			
 			
 			passwordInput = new TextInput();
+			passwordInput.text = '2'
 			passwordInput.maxChars = 12;
 			passwordInput.width = 100;
 			passwordInput.height = 20;
@@ -66,14 +69,21 @@ package com.xiaomu.view.registered
 		
 		protected function loginHandler(event:MouseEvent):void
 		{
-			///登录成功，进入大厅
-			Api.getInstane().addEventListener(ApiEvent.LOGIN_SUCCESS, login_successHandler)
-			Api.getInstane().login('wosxieez', 'wosxieez')
-		}		
-		
-		protected function login_successHandler(event:ApiEvent):void
-		{
-			MainView.getInstane().pushView(HallView)
+			HttpApi.getInstane().login(phoneNumInput.text, passwordInput.text, function (ee:Event):void {
+				try
+				{
+					const response:Object = JSON.parse(ee.currentTarget.data)
+					trace(JSON.stringify(response))
+					if (response.result == 0 && response.message.length > 0) {
+						AppData.getInstane().user = response.message[0]
+						HallView(MainView.getInstane().pushView(HallView)).init()
+					} 
+				} 
+				catch(error:Error) 
+				{
+				}
+			}, function (ee:Event):void {
+			})
 		}		
 		
 		override protected function updateDisplayList():void
@@ -98,10 +108,10 @@ package com.xiaomu.view.registered
 		{
 			super.drawSkin();
 			
-//			graphics.clear();
-//			graphics.beginFill(0xff0000,0.2);
-//			graphics.drawRect(0,0,width,height);
-//			graphics.endFill();
+			//			graphics.clear();
+			//			graphics.beginFill(0xff0000,0.2);
+			//			graphics.drawRect(0,0,width,height);
+			//			graphics.endFill();
 		}
 	}
 }

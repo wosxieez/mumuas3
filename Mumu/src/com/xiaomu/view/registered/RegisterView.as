@@ -7,7 +7,6 @@ package com.xiaomu.view.registered
 	
 	import coco.component.Button;
 	import coco.component.Image;
-	import coco.component.Label;
 	import coco.core.UIComponent;
 	
 	/**

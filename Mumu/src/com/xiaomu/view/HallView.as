@@ -1,8 +1,9 @@
 package com.xiaomu.view
 {
-	import com.xiaomu.event.ApiEvent;
 	import com.xiaomu.util.Api;
+	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.Assets;
+	import com.xiaomu.util.Audio;
 	import com.xiaomu.view.registered.RegisterView;
 	import com.xiaomu.view.user.UserInfo;
 	
@@ -39,13 +40,13 @@ package com.xiaomu.view
 		{
 			return _groupsData;
 		}
-
+		
 		public function set groupsData(value:Array):void
 		{
 			_groupsData = value;
 			invalidateProperties()
 		}
-
+		
 		override protected function createChildren():void {
 			super.createChildren()
 			
@@ -57,16 +58,12 @@ package com.xiaomu.view
 			addChild(userInfo);
 			
 			groupsList = new List()
-			groupsList.labelField = 'name'
 			groupsList.itemRendererRowCount = 1
 			groupsList.padding = 50
 			groupsList.verticalAlign = VerticalAlign.JUSTIFY
 			groupsList.horizontalAlign = HorizontalAlign.JUSTIFY
 			groupsList.addEventListener(UIEvent.CHANGE, groupsList_changeHandler)
 			addChild(groupsList)
-			
-			Api.getInstane().addEventListener(ApiEvent.GET_GROUPS_SUCCESS, getGroupsSuccessHandler)
-			Api.getInstane().getGroups()
 		}
 		
 		override protected function commitProperties():void {
@@ -89,17 +86,20 @@ package com.xiaomu.view
 			groupsList.height = height
 		}
 		
-		protected function getGroupsSuccessHandler(event:ApiEvent):void
-		{
-			groupsData = event.data as Array
-		}
+		private var i:int = 1
 		
 		protected function groupsList_changeHandler(event:UIEvent):void
 		{
-			const groupid:int = groupsList.selectedItem.id
+			var groupid:int = int(groupsList.selectedItem)
 			setTimeout(function ():void { groupsList.selectedIndex = -1 }, 200)
-			MainView.getInstane().pushView(GroupView)
-			Api.getInstane().getRooms(groupid)
+			Api.getInstane().joinGroup('wosxieez' + i++, 2)
+			//			GroupView(MainView.getInstane().pushView(GroupView)).init(groupid)
+		}
+		
+		public function init():void {
+			groupsData = AppData.getInstane().user.group_ids.split(',')
+			//			Audio.getInstane().playBGM('assets/bgm.mp3')
+			Assets.getInstane().loadAssets('assets/mumu.png', 'assets/mumu.json')
 		}
 		
 	}

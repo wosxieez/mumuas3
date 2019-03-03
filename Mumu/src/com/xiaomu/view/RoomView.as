@@ -4,6 +4,7 @@ package com.xiaomu.view
 	import com.xiaomu.event.ApiEvent;
 	import com.xiaomu.util.Actions;
 	import com.xiaomu.util.Api;
+	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.Assets;
 	import com.xiaomu.util.Audio;
 	import com.xiaomu.util.CardUtil;
@@ -17,9 +18,9 @@ package com.xiaomu.view
 	import coco.core.UIComponent;
 	import coco.manager.PopUpManager;
 	
-	public class HomeView extends UIComponent
+	public class RoomView extends UIComponent
 	{
-		public function HomeView()
+		public function RoomView()
 		{
 			super();
 			
@@ -79,7 +80,7 @@ package com.xiaomu.view
 			
 			// 背景层
 			bg = new Image()
-			bg.source = Assets.getInstane().getAssets('fight_bg.png')
+			bg.source = 'assets/room_bg.png'
 			addChild(bg)
 			
 			bgline = new Image()
@@ -294,7 +295,7 @@ package com.xiaomu.view
 			if (room) {
 				this.roominfo = room
 				for (var i:int = 0; i < roominfo.users.length; i++) {
-					if (roominfo.users[i].username == Api.getInstane().username) {
+					if (roominfo.users[i].username == AppData.getInstane().user.username) {
 						var endUsers:Array = roominfo.users.slice(i)
 						var startUsers:Array = roominfo.users.slice(0, i)
 						var orderUsers:Array = endUsers.concat(startUsers)
@@ -702,7 +703,7 @@ package com.xiaomu.view
 				{
 					updateRoomInfo(notification.data)
 					// 如果自己是庄家不显示翻开的牌
-					if (roominfo.banker_username == Api.getInstane().username) {
+					if (roominfo.banker_username == AppData.getInstane().user.username) {
 						dealCardUI.visible = false
 					} else {
 						updateNewCard()
@@ -762,7 +763,7 @@ package com.xiaomu.view
 					// 请出牌
 					checkUsername = notification.data.username
 					updateWaitTip()
-					if (checkUsername == Api.getInstane().username) {
+					if (checkUsername == AppData.getInstane().user.username) {
 						trace('请出牌')
 						newCardTip.visible = true
 						isCheckNewCard = true
@@ -789,7 +790,7 @@ package com.xiaomu.view
 					trace('检查碰', notification.data)
 					checkUsername = notification.data.username
 					updateWaitTip()
-					if (checkUsername == Api.getInstane().username) {
+					if (checkUsername == AppData.getInstane().user.username) {
 						const canPengCards:Array = CardUtil.getInstane().canPeng(this.myUser.handCards, notification.data.card)
 						if (canPengCards) {
 							thisCanPengCards = canPengCards
@@ -824,7 +825,7 @@ package com.xiaomu.view
 					newCardTip.visible = cancelButton.visible = canChiButton.visible = canPengButton.visible = false
 					checkUsername = notification.data.username
 					updateWaitTip()
-					if (notification.data.username == Api.getInstane().username) {
+					if (notification.data.username == AppData.getInstane().user.username) {
 						const canChiCards:Array = CardUtil.getInstane().canChi(this.myUser.handCards, notification.data.card)
 						if (canChiCards) {
 							thisCanChiCards = canChiCards
@@ -855,7 +856,7 @@ package com.xiaomu.view
 				}
 				case Notifications.checkHu: {
 					trace('检查胡', notification.data)
-					if (notification.data.username == Api.getInstane().username) {
+					if (notification.data.username == AppData.getInstane().user.username) {
 						isHu = canHuButton.visible = cancelButton.visible = true
 						thisCanHuDatas = notification.data.data
 					}
@@ -908,6 +909,10 @@ package com.xiaomu.view
 			isHu = canHuButton.visible = canPengButton.visible = canChiButton.visible = cancelButton.visible = false
 			const action:Object = { name: Actions.Hu, data: thisCanHuDatas }
 			Api.getInstane().sendAction(action)
+		}
+		
+		public function init(roominfo:Object): void {
+			Api.getInstane().joinRoom(roominfo)
 		}
 		
 	}

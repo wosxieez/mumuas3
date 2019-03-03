@@ -6,10 +6,12 @@ package org.idream.pomelo
 	import flash.events.OutputProgressEvent;
 	import flash.events.ProgressEvent;
 	import flash.events.SecurityErrorEvent;
+	import flash.events.TimerEvent;
 	import flash.net.Socket;
 	import flash.system.Security;
 	import flash.utils.ByteArray;
 	import flash.utils.Dictionary;
+	import flash.utils.Timer;
 	import flash.utils.clearTimeout;
 	import flash.utils.setTimeout;
 	
@@ -45,13 +47,6 @@ package org.idream.pomelo
 		private var _useWeakReference:Boolean;
 		private var _routesAndCallbacks:Array = new Array();
 		
-		private static var _pomelo:Pomelo;
-		
-		public static function getIns():Pomelo
-		{
-			return _pomelo ||= new Pomelo(false);
-		}
-		
 		public var heartbeat:int;
 		
 		public function Pomelo(useWeakReference:Boolean = true)
@@ -60,7 +55,7 @@ package org.idream.pomelo
 			_message = new Message();
 			_useWeakReference = useWeakReference;
 			
-//			trace("[Pomelo] start:", JSON.stringify(info));
+			//			trace("[Pomelo] start:", JSON.stringify(info));
 		}
 		
 		/**
@@ -78,7 +73,7 @@ package org.idream.pomelo
 			
 			_handshake = callback;
 			
-//			trace("[Pomelo] load policy file:", "xmlsocket://" + host + ":3843");
+			//			trace("[Pomelo] load policy file:", "xmlsocket://" + host + ":3843");
 			Security.loadPolicyFile("xmlsocket://" + host + ":" + cross);
 			
 			if (!_socket)
@@ -93,7 +88,7 @@ package org.idream.pomelo
 				_socket.addEventListener(SecurityErrorEvent.SECURITY_ERROR, onSecurityError, false, 0, _useWeakReference);
 			}
 			
-//			trace("[Pomelo] start to connect server ...");
+			//			trace("[Pomelo] start to connect server ...");
 			_socket.connect(host, port);
 		}
 		
@@ -102,9 +97,10 @@ package org.idream.pomelo
 		 */
 		public function disconnect():void
 		{
-//			trace("[Pomelo] client close ...");
+			//			trace("[Pomelo] client close ...");
 			if (_socket && _socket.connected) _socket.close();
 			if (_hb) clearTimeout(_hb);
+			stopBeat()
 		}
 		
 		/**
@@ -167,7 +163,7 @@ package org.idream.pomelo
 		
 		private function send(reqId:int, route:String, msg:Object):void
 		{
-//			trace("[Pomelo] send msg: ", JSON.stringify(msg));
+			//			trace("[Pomelo] send msg: ", JSON.stringify(msg));
 			
 			var byte:ByteArray;
 			
@@ -183,38 +179,41 @@ package org.idream.pomelo
 		
 		private function onConnect(e:Event):void
 		{
-//			trace("[Pomelo] connect success ...");
+			//			trace("[Pomelo] connect success ...");
 			_socket.writeBytes(_package.encode(Package.TYPE_HANDSHAKE, Protocol.strencode(JSON.stringify(info))));
 			_socket.flush();
 		}
 		
 		private function onOutputProgress(e:OutputProgressEvent):void
 		{
-//			trace("[Pomelo] flush ...");
+			//			trace("[Pomelo] flush ...");
 		}
 		
 		private function onClose(e:Event):void
 		{
-//			trace("[Pomelo] connect close ...");
+			//			trace("[Pomelo] connect close ...");
+			stopBeat()
 			this.dispatchEvent(e);
 		}
 		
 		private function onIOError(e:IOErrorEvent):void
 		{
-//			trace("[Pomelo] ", e);
+			//			trace("[Pomelo] ", e);
+			stopBeat()
 			this.dispatchEvent(new PomeloEvent(PomeloEvent.ERROR))
-//			this.dispatchEvent(e);
+			//			this.dispatchEvent(e);
 		}
 		
 		private function onSecurityError(e:SecurityErrorEvent):void
 		{
-//			trace("[Pomelo] ", e);
+			//			trace("[Pomelo] ", e);
+			stopBeat()
 			this.dispatchEvent(new PomeloEvent(PomeloEvent.ERROR))
 		}
 		
 		private function onData(e:ProgressEvent):void
 		{
-//			trace("[Pomelo] client received:", _socket.bytesAvailable);
+			//			trace("[Pomelo] client received:", _socket.bytesAvailable);
 			
 			do
 			{
@@ -231,7 +230,7 @@ package org.idream.pomelo
 					_pkg = _package.decode(_socket);
 				}
 				
-//				trace("[Package] type:", _pkg.type, "length:", _pkg.length);
+				//				trace("[Package] type:", _pkg.type, "length:", _pkg.length);
 				
 				if (_pkg.body)
 				{
@@ -239,7 +238,7 @@ package org.idream.pomelo
 					{
 						case Package.TYPE_HANDSHAKE:
 							var message:String = _pkg.body.readUTFBytes(_pkg.body.length);
-//							trace("[Handshake] message:", message);
+							//							trace("[Handshake] message:", message);
 							
 							var response:Object = JSON.parse(message);
 							
@@ -257,6 +256,7 @@ package org.idream.pomelo
 								_socket.flush();
 								
 								this.dispatchEvent(new PomeloEvent(PomeloEvent.HANDSHAKE));
+								startBeat()
 							}
 							
 							if (_handshake != null) _handshake.call(this, response);
@@ -280,7 +280,7 @@ package org.idream.pomelo
 						case Package.TYPE_DATA:
 							var msg:Object = _message.decode(_pkg.body);
 							
-//							trace("[Message] route:", msg.route, "body:", JSON.stringify(msg.body));
+							//							trace("[Message] route:", msg.route, "body:", JSON.stringify(msg.body));
 							
 							if (!msg.id)
 							{
@@ -302,26 +302,26 @@ package org.idream.pomelo
 					}
 				}
 				
-//				trace("[Pomelo] client next:", _socket.bytesAvailable);
+				//				trace("[Pomelo] client next:", _socket.bytesAvailable);
 			}
 			while (!_pkg && _socket.bytesAvailable > 4);
 		}
-
+		
 		public function get message():IMessage
 		{
 			return _message;
 		}
-
+		
 		public function set message(value:IMessage):void
 		{
 			_message = value;
 		}
 		
 		/**
-		* if you use new Pomelo(false)
-		* (not using weak reference)
-		* don't forget to call destroy()
-		*/
+		 * if you use new Pomelo(false)
+		 * (not using weak reference)
+		 * don't forget to call destroy()
+		 */
 		public function destroy():void
 		{
 			for (var r:int=_routesAndCallbacks.length-1;r>=0;r--)
@@ -335,7 +335,28 @@ package org.idream.pomelo
 			_socket.removeEventListener(ProgressEvent.SOCKET_DATA, onData);
 			_socket.removeEventListener(IOErrorEvent.IO_ERROR, onIOError);
 			_socket.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, onSecurityError);
+			
+			stopBeat()
 		}
+		
+		private var checkTimer:Timer = new Timer(30000);
+		
+		private function startBeat():void {
+			checkTimer.addEventListener(TimerEvent.TIMER, checkTimer_timerHandler);
+			checkTimer.start();
+		}
+		
+		private function stopBeat():void {
+			checkTimer.removeEventListener(TimerEvent.TIMER, checkTimer_timerHandler);
+			checkTimer.stop();
+		}
+		
+		protected function checkTimer_timerHandler(event:TimerEvent):void
+		{
+			beat()
+		}
+		
+		
 	}
 }
 
