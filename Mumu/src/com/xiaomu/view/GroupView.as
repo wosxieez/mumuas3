@@ -12,8 +12,8 @@ package com.xiaomu.view
 	import flash.events.MouseEvent;
 	import flash.utils.setTimeout;
 	
+	import coco.component.Alert;
 	import coco.component.Button;
-	import coco.component.HorizontalAlign;
 	import coco.component.Image;
 	import coco.component.List;
 	import coco.core.UIComponent;
@@ -31,7 +31,8 @@ package com.xiaomu.view
 		{
 			super();
 			
-			Api.getInstane().addEventListener(ApiEvent.JOIN_GROUP, joinGroupHandler)
+			Api.getInstane().addEventListener(ApiEvent.JOIN_GROUP_SUCCESS, joinGroupSuccessHandler)
+			Api.getInstane().addEventListener(ApiEvent.JOIN_GROUP_FAULT, joinGroupFaultHandler)
 			Api.getInstane().addEventListener(ApiEvent.ON_GROUP, onGroupHandler)
 		}
 		
@@ -183,7 +184,7 @@ package com.xiaomu.view
 			return null
 		}
 		
-		protected function joinGroupHandler(event:ApiEvent):void
+		protected function joinGroupSuccessHandler(event:ApiEvent):void
 		{
 			const onlineUsernames:Array = event.data as Array
 			var user:Object
@@ -208,6 +209,11 @@ package com.xiaomu.view
 			})
 			
 			invalidateProperties()
+		}
+		
+		protected function joinGroupFaultHandler(event:ApiEvent):void {
+			Alert.show(JSON.stringify(event.data))
+			MainView.getInstane().popView()
 		}
 		
 		protected function onGroupHandler(event:ApiEvent):void

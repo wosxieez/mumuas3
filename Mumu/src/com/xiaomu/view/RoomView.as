@@ -74,6 +74,8 @@ package com.xiaomu.view
 		private var checkUsername: String
 		private var isCheckNewCard:Boolean = false // 是否在等待出牌
 		private var isHu:Boolean = false
+			
+		private var backBtn:Image
 		
 		override protected function createChildren():void {
 			super.createChildren()
@@ -203,6 +205,12 @@ package com.xiaomu.view
 			checkWaitTip.visible = false
 			checkWaitTip.source = Assets.getInstane().getAssets('wait.png')
 			iconLayer.addChild(checkWaitTip)
+				
+			backBtn = new Image()
+			backBtn.source = 'assets/backbtn.png'
+			backBtn.addEventListener(MouseEvent.CLICK, back_clickHandler)
+			backBtn.width = backBtn.height = 20
+			addChild(backBtn)
 		}
 		
 		override protected function commitProperties():void {
@@ -285,6 +293,9 @@ package com.xiaomu.view
 			
 			newCardTip.x = (width - newCardTip.width) / 2
 			newCardTip.y = (height - newCardTip.height) / 2
+				
+			backBtn.x = width - backBtn.width - 2
+			backBtn.y = height - backBtn.height - 20
 		}
 		
 		override protected function drawSkin():void {
@@ -913,6 +924,12 @@ package com.xiaomu.view
 		
 		public function init(roominfo:Object): void {
 			Api.getInstane().joinRoom(roominfo)
+		}
+		
+		protected function back_clickHandler(event:MouseEvent):void
+		{
+			Api.getInstane().leaveRoom()
+			MainView.getInstane().popView()
 		}
 		
 	}

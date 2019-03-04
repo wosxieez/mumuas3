@@ -80,7 +80,7 @@ package com.xiaomu.util
 				function(response:Object):void {
 					if (response.code == 0) {
 						// 登录成功
-						const je:ApiEvent = new ApiEvent(ApiEvent.JOIN_GROUP)
+						const je:ApiEvent = new ApiEvent(ApiEvent.JOIN_GROUP_SUCCESS)
 						je.data = response.data
 						dispatchEvent(je)
 						
@@ -95,6 +95,9 @@ package com.xiaomu.util
 							dispatchEvent(apiEvent)
 						})
 					} else {
+						const jef:ApiEvent = new ApiEvent(ApiEvent.JOIN_GROUP_FAULT)
+						jef.data = response.data
+						dispatchEvent(jef)
 					}
 				})
 		}
@@ -110,6 +113,17 @@ package com.xiaomu.util
 			pomelo.request('connector.entryHandler.joinRoom', roominfo,
 				function(response:Object):void {
 					Alert.show(JSON.stringify(response))
+					if (response.code == 0) {
+						
+					} else {
+					}
+				})
+		}
+		
+		public function leaveRoom():void {
+			if (!pomelo) return
+			pomelo.request('connector.entryHandler.leaveRoom', {},
+				function(response:Object):void {
 					if (response.code == 0) {
 						
 					} else {

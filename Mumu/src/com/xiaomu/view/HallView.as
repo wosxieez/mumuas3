@@ -16,7 +16,6 @@ package com.xiaomu.view
 	import coco.component.VerticalAlign;
 	import coco.core.UIComponent;
 	import coco.event.UIEvent;
-	import coco.manager.PopUpManager;
 	
 	/**
 	 * 大厅界面
