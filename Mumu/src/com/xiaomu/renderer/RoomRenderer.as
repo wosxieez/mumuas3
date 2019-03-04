@@ -76,6 +76,7 @@ package com.xiaomu.renderer
 			
 			joiner3.x = (width-joiner3.width)/2;
 			joiner3.y = 0;
+			joiner1.visible = joiner2.visible = joiner3.visible = false;
 			
 			tableImg.x = (width-tableImg.width)/2;
 			tableImg.y = joiner3.height+joiner3.y+10;
