@@ -278,21 +278,21 @@ package org.idream.pomelo
 							break;
 						
 						case Package.TYPE_DATA:
-							var msg:Object = _message.decode(_pkg.body);
-							
-							//							trace("[Message] route:", msg.route, "body:", JSON.stringify(msg.body));
-							
-							if (!msg.id)
-							{
-								this.dispatchEvent(new PomeloEvent(msg.route, msg.body));
+							if (_message) {
+								var msg:Object = _message.decode(_pkg.body);
+								
+								if (!msg.id)
+								{
+									this.dispatchEvent(new PomeloEvent(msg.route, msg.body));
+								}
+								else
+								{
+									requests[msg.id].callback.call(this, msg.body);
+									requests[msg.id] = null;
+								}
+								
+								_pkg = null;
 							}
-							else
-							{
-								requests[msg.id].callback.call(this, msg.body);
-								requests[msg.id] = null;
-							}
-							
-							_pkg = null;
 							break;
 						
 						case Package.TYPE_KICK:

@@ -1,4 +1,4 @@
-package com.xiaomu.view.registered
+package com.xiaomu.view.login
 {
 	import coco.component.Button;
 	import coco.component.Label;

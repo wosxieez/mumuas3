@@ -1,10 +1,9 @@
-package com.xiaomu.view.registered
+package com.xiaomu.view.login
 {
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.HttpApi;
 	import com.xiaomu.view.HallView;
 	import com.xiaomu.view.MainView;
-	import com.xiaomu.view.home.HomeView;
 	
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -135,8 +134,7 @@ package com.xiaomu.view.registered
 					trace(JSON.stringify(response))
 					if (response.result == 0 && response.message.length > 0) {
 						AppData.getInstane().user = response.message[0]
-//						HallView(MainView.getInstane().pushView(HallView)).init()
-						HomeView(MainView.getInstane().pushView(HomeView))
+						HallView(MainView.getInstane().pushView(HallView)).init()
 					} 
 				} 
 				catch(error:Error) 

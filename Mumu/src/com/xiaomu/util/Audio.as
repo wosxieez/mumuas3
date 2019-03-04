@@ -25,13 +25,37 @@ package com.xiaomu.util
 			return instance
 		}
 		
+		private var bgSoundChannel:SoundChannel
 		private var bgSound:Sound
 		
 		public function playBGM(url:String):void {
+			if (bgSoundChannel) {
+				try
+				{
+					bgSoundChannel.stop()
+				} 
+				catch(error:Error) 
+				{
+					
+				}
+			}
+			
 			bgSound = new Sound(new URLRequest(url))
-			bgSound.play(0, 1000000)
+			bgSoundChannel = bgSound.play(0, 1000000)
 		}
 		
+		public function stopBGM():void {
+			if (bgSoundChannel) {
+				try
+				{
+					bgSoundChannel.stop()
+				} 
+				catch(error:Error) 
+				{
+					
+				}
+			}
+		}
 		
 		private var cardChannel:SoundChannel
 		private var cardSound:Sound
