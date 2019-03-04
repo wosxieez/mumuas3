@@ -36,7 +36,7 @@ package com.xiaomu.view
 			Api.getInstane().addEventListener(ApiEvent.ON_GROUP, onGroupHandler)
 		}
 		
-		private var bg : Image;
+//		private var bg : Image;
 		private var roomsList:List
 		private var usersList:List
 		private var goback:Button;
@@ -69,21 +69,21 @@ package com.xiaomu.view
 		override protected function createChildren():void {
 			super.createChildren()
 			
-			bg = new Image();
-			bg.source = 'assets/room/club_bg.png';
-			addChild(bg);
+//			bg = new Image();
+//			bg.source = 'assets/room/club_bg.png';
+//			addChild(bg);
 			
 			roomsList = new List()
 			roomsList.itemRendererClass = RoomRenderer
 			roomsList.itemRendererColumnCount = 3
-			roomsList.itemRendererHeight = 70;
-			roomsList.itemRendererWidth = 120;
+			roomsList.itemRendererHeight = 80;
+			roomsList.itemRendererWidth = 140;
 			roomsList.gap = 10
 			roomsList.addEventListener(UIEvent.CHANGE, roomsList_changeHandler)
 			addChild(roomsList)
 			
 			usersList = new List()
-			usersList.width = 100
+			usersList.width = 60
 			usersList.height = height-50;
 			usersList.itemRendererClass = UserRenderer
 			addChild(usersList)
@@ -107,6 +107,16 @@ package com.xiaomu.view
 			trace("roomsData",JSON.stringify(roomsData));
 		}
 		
+		override protected function drawSkin():void
+		{
+			super.drawSkin();
+			
+			graphics.clear();
+			graphics.beginFill(0x336699);
+			graphics.drawRect(0,0,width,height);
+			graphics.endFill();
+		}
+		
 		protected function roomsList_changeHandler(event:UIEvent):void
 		{
 			const roominfo:Object = roomsList.selectedItem
@@ -116,8 +126,8 @@ package com.xiaomu.view
 		
 		override protected function updateDisplayList():void {
 			super.updateDisplayList()
-			bg.width = width;
-			bg.height = height;
+//			bg.width = width;
+//			bg.height = height;
 			
 			usersList.x = width-usersList.width;
 			usersList.y = 50;
