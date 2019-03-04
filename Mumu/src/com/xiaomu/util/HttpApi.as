@@ -36,9 +36,22 @@ package com.xiaomu.util
 			urlLoader.load(urlrequest)
 		}
 		
-		public function listRooms(groupid:int, 
-								  resultHandler:Function = null, 
-								  faultHandler:Function = null):void
+		public function getGroupUsers(groupid:int, 
+									  resultHandler:Function = null, 
+									  faultHandler:Function = null):void
+		{
+			var params:Object = {group_ids: {$like: '%' + groupid + '%'}}
+			var urlrequest:URLRequest = new URLRequest(WEB_URL + 'find_user');
+			urlrequest.method = URLRequestMethod.POST
+			urlrequest.contentType = 'application/json'
+			urlrequest.data = JSON.stringify(params)
+			var urlLoader:CocoURLLoader = new CocoURLLoader(resultHandler, faultHandler, true, 20000);
+			urlLoader.load(urlrequest)
+		}
+		
+		public function getGroupRooms(groupid:int, 
+									  resultHandler:Function = null, 
+									  faultHandler:Function = null):void
 		{
 			var params:Object = {group_id: groupid}
 			var urlrequest:URLRequest = new URLRequest(WEB_URL + 'find_room');
@@ -48,6 +61,7 @@ package com.xiaomu.util
 			var urlLoader:CocoURLLoader = new CocoURLLoader(resultHandler, faultHandler, true, 20000);
 			urlLoader.load(urlrequest)
 		}
+		
 		
 	}
 }

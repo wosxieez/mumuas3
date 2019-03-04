@@ -4,6 +4,8 @@ package com.xiaomu.util
 	{
 		public static const onJoinRoom:int = 1    // 新玩家加入通知
 		public static const onLevelRoom:int = 101 // 玩家离开通知
+		public static const onJoinGroup:int = 301    // 新玩家加入通知
+		public static const onLevelGroup:int = 401 // 玩家离开通知
 		public static const onNewRound:int = 2	   // 开局通知
 		public static const onDisCard:int = 3     //等待玩家出牌
 		public static const onCard:int = 4    	  // 玩家出的牌

@@ -1,9 +1,7 @@
 package com.xiaomu.view
 {
-	import com.xiaomu.util.Api;
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.Assets;
-	import com.xiaomu.util.Audio;
 	import com.xiaomu.view.registered.RegisterView;
 	import com.xiaomu.view.user.UserInfo;
 	
@@ -92,8 +90,7 @@ package com.xiaomu.view
 		{
 			var groupid:int = int(groupsList.selectedItem)
 			setTimeout(function ():void { groupsList.selectedIndex = -1 }, 200)
-			Api.getInstane().joinGroup('wosxieez' + i++, 2)
-			//			GroupView(MainView.getInstane().pushView(GroupView)).init(groupid)
+			GroupView(MainView.getInstane().pushView(GroupView)).init(groupid)
 		}
 		
 		public function init():void {

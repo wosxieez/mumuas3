@@ -42,7 +42,7 @@ package com.xiaomu.view.registered
 			addChild(labPsw);
 			
 			phoneNumInput =  new TextInput();
-			phoneNumInput.text = '2'
+			phoneNumInput.text = '3'
 			phoneNumInput.maxChars = 11;
 			phoneNumInput.width = 100;
 			phoneNumInput.height = 20;
@@ -51,7 +51,7 @@ package com.xiaomu.view.registered
 			
 			
 			passwordInput = new TextInput();
-			passwordInput.text = '2'
+			passwordInput.text = '3'
 			passwordInput.maxChars = 12;
 			passwordInput.width = 100;
 			passwordInput.height = 20;

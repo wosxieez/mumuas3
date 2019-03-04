@@ -11,6 +11,9 @@ package com.xiaomu.util
 	import org.idream.pomelo.PomeloEvent;
 	
 	[Event(name="notification", type="com.xiaomu.event.ApiEvent")]
+	[Event(name="joinGroup", type="com.xiaomu.event.ApiEvent")]
+	[Event(name="leaveGroup", type="com.xiaomu.event.ApiEvent")]
+	[Event(name="onGroup", type="com.xiaomu.event.ApiEvent")]
 	
 	public class Api extends EventDispatcher
 	{
@@ -42,13 +45,14 @@ package com.xiaomu.util
 			this.username = username
 			this.groupid = groupid
 			pomelo = new Pomelo()
-			pomelo.init("127.0.0.1", 3014)
+			pomelo.init("192.168.0.4", 3014)
 			//			pomelo.init("106.14.148.139", 3014)
 			pomelo.addEventListener(PomeloEvent.HANDSHAKE, onConnectHandler);
 			pomelo.addEventListener(PomeloEvent.ERROR, pomeloErrorHandler);
 		}
 		
 		private function onConnectHandler(event:Event):void {
+			if (!pomelo) return
 			pomelo.request("gate.gateHandler.queryEntry", {username: this.username}, function(response:Object):void {
 				pomelo.disconnect()
 				pomelo.removeEventListener('handshake', onConnectHandler)
@@ -71,14 +75,23 @@ package com.xiaomu.util
 		}
 		
 		private function onQueryHandler(event:Event):void {
+			if (!pomelo) return
 			pomelo.request('connector.entryHandler.joinGroup', {username: this.username, groupid: this.groupid},
 				function(response:Object):void {
-					Alert.show(JSON.stringify(response))
 					if (response.code == 0) {
 						// 登录成功
+						const je:ApiEvent = new ApiEvent(ApiEvent.JOIN_GROUP)
+						je.data = response.data
+						dispatchEvent(je)
+						
 						pomelo.on('onNotification', function (e: PomeloEvent): void {
 							var apiEvent: ApiEvent = new ApiEvent(ApiEvent.Notification)
-							apiEvent.notification = e.message
+							apiEvent.data = e.message
+							dispatchEvent(apiEvent)
+						})
+						pomelo.on('onGroup', function (e: PomeloEvent): void {
+							var apiEvent: ApiEvent = new ApiEvent(ApiEvent.ON_GROUP)
+							apiEvent.data = e.message
 							dispatchEvent(apiEvent)
 						})
 					} else {
@@ -87,11 +100,13 @@ package com.xiaomu.util
 		}
 		
 		public function leaveGroup():void {
+			if (!pomelo) return
 			pomelo.disconnect()
 			pomelo = null
 		}
 		
 		public function joinRoom(roominfo:Object):void {
+			if (!pomelo) return
 			pomelo.request('connector.entryHandler.joinRoom', roominfo,
 				function(response:Object):void {
 					Alert.show(JSON.stringify(response))
@@ -107,7 +122,19 @@ package com.xiaomu.util
 		 * @param action
 		 */		
 		public function sendAction(action):void  {
+			if (!pomelo) return
 			pomelo.request('chat.roomHandler.sendAction', action)
+		}
+		
+		public function getRoomsUsers(roomnames:Array, cb:Function):void  {
+			if (!pomelo) return
+			pomelo.request('chat.roomHandler.getRoomsUsers', {roomnames: roomnames}, function(response:Object):void {
+				if (response.code == 0) {
+					cb(response.data)
+				} else {
+					cb([])
+				}
+			})
 		}
 		
 	}

@@ -696,7 +696,7 @@ package com.xiaomu.view
 			isCheckNewCard = isHu = false
 			newCardTip.visible = cancelButton.visible = canChiButton.visible = canPengButton.visible = canHuButton.visible = false
 			
-			const notification: Object = event.notification
+			const notification: Object = event.data
 			switch(notification.name)
 			{
 				case Notifications.onNewRound:
