@@ -2,6 +2,7 @@ package com.xiaomu.view
 {
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.Assets;
+	import com.xiaomu.view.home.HomeView;
 	import com.xiaomu.view.registered.RegisterView;
 	import com.xiaomu.view.user.UserInfo;
 	
@@ -11,6 +12,7 @@ package com.xiaomu.view
 	import coco.component.Button;
 	import coco.component.HorizontalAlign;
 	import coco.component.Image;
+	import coco.component.Label;
 	import coco.component.List;
 	import coco.component.VerticalAlign;
 	import coco.core.UIComponent;
@@ -33,6 +35,9 @@ package com.xiaomu.view
 		private var userInfo : UserInfo;
 		private var groupsList:List
 		private var _groupsData:Array
+		private var groupLab:Image;
+		private var goBack:Button;
+		private var titlelab:Label;
 		
 		public function get groupsData():Array
 		{
@@ -49,17 +54,30 @@ package com.xiaomu.view
 			super.createChildren()
 			
 			bg = new Image()
-			bg.source = Assets.getInstane().getAssets('hall_bg.png')
+			bg.source = 'assets/hall/hall_bg.png';
 			addChild(bg)
 			
 			userInfo = new UserInfo();
 			addChild(userInfo);
 			
+			goBack = new Button();
+			goBack.label = '返回';
+			goBack.width = 40;
+			goBack.height = 20;
+			goBack.addEventListener(MouseEvent.CLICK,goBackHandler);
+			addChild(goBack);
+			
+			titlelab = new Label();
+			titlelab.text = '我的亲友圈';
+			titlelab.color = 0xffffff;
+			addChild(titlelab);
+			
 			groupsList = new List()
-			groupsList.itemRendererRowCount = 1
-			groupsList.padding = 50
-			groupsList.verticalAlign = VerticalAlign.JUSTIFY
-			groupsList.horizontalAlign = HorizontalAlign.JUSTIFY
+			groupsList.itemRendererColumnCount = 3;
+			groupsList.itemRendererHeight = 30;
+			groupsList.gap = 5;
+			groupsList.width = 200
+			groupsList.height = 200
 			groupsList.addEventListener(UIEvent.CHANGE, groupsList_changeHandler)
 			addChild(groupsList)
 		}
@@ -69,19 +87,25 @@ package com.xiaomu.view
 			groupsList.dataProvider = groupsData
 		}
 		
-		protected function goBackHandler(event:MouseEvent):void
-		{
-			MainView.getInstane().pushView(RegisterView);
-		}
-		
 		override protected function updateDisplayList():void{
 			super.updateDisplayList();
 			
 			bg.width = width;
 			bg.height = height;
 			
-			groupsList.width = width
-			groupsList.height = height
+			goBack.x = width-40;
+			goBack.y = 0;
+			
+			
+			groupsList.x = (width-groupsList.width)/2;
+			groupsList.y = 80
+			titlelab.x = groupsList.x;
+			titlelab.y = groupsList.y-30;
+		}
+		
+		protected function goBackHandler(event:MouseEvent):void
+		{
+			MainView.getInstane().pushView(HomeView);
 		}
 		
 		private var i:int = 1
