@@ -5,6 +5,7 @@ package com.xiaomu.view
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.Assets;
 	import com.xiaomu.util.Audio;
+	import com.xiaomu.view.login.LoginView;
 	
 	import flash.events.MouseEvent;
 	import flash.utils.setTimeout;
@@ -117,7 +118,7 @@ package com.xiaomu.view
 		protected function signoutBtn_clickHandler(event:MouseEvent):void
 		{
 			dispose()
-			MainView.getInstane().popView()
+			MainView.getInstane().popView(LoginView)
 		}
 		
 		override protected function commitProperties():void {

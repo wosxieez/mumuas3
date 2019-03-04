@@ -929,7 +929,7 @@ package com.xiaomu.view
 		protected function back_clickHandler(event:MouseEvent):void
 		{
 			Api.getInstane().leaveRoom()
-			MainView.getInstane().popView()
+			MainView.getInstane().popView(GroupView)
 		}
 		
 	}

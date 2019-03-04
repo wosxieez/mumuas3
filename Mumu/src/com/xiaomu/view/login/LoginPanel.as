@@ -8,8 +8,8 @@ package com.xiaomu.view.login
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
+	import coco.component.Alert;
 	import coco.component.Button;
-	import coco.component.Image;
 	import coco.component.Label;
 	import coco.component.TextInput;
 	import coco.core.UIComponent;
@@ -25,7 +25,6 @@ package com.xiaomu.view.login
 		}
 		
 		private var title : Label ;
-		private var closeBtn : Image;
 		private var labNum : Label;
 		private var labPsw : Label;
 		private var phoneNumInput : TextInput;
@@ -41,12 +40,6 @@ package com.xiaomu.view.login
 			title.fontSize = 10;
 			addChild(title);
 			
-			closeBtn = new Image();
-			closeBtn.source = 'assets/login/close.png';
-			closeBtn.width = closeBtn.height = 20;
-			closeBtn.addEventListener(MouseEvent.CLICK,closePanel);
-			addChild(closeBtn);
-			
 			labNum = new Label();
 			labNum.color = 0x55555;
 			labNum.text = '账号:';
@@ -58,7 +51,6 @@ package com.xiaomu.view.login
 			addChild(labPsw);
 			
 			phoneNumInput =  new TextInput();
-			phoneNumInput.text = '3'
 			phoneNumInput.maxChars = 11;
 			phoneNumInput.width = 100;
 			phoneNumInput.height = 20;
@@ -67,7 +59,6 @@ package com.xiaomu.view.login
 			
 			
 			passwordInput = new TextInput();
-			passwordInput.text = '3'
 			passwordInput.maxChars = 12;
 			passwordInput.width = 100;
 			passwordInput.height = 20;
@@ -83,15 +74,26 @@ package com.xiaomu.view.login
 			addChild(loginBtn);
 		}
 		
+		override protected function commitProperties():void 
+		{
+			super.commitProperties()
+			
+			const username:String = AppData.getInstane().username
+			if (username) {
+				phoneNumInput.text = username
+			}
+			const password:String = AppData.getInstane().password
+			if (password) {
+				passwordInput.text = password
+			}
+		}
+		
 		override protected function updateDisplayList():void
 		{
 			super.updateDisplayList();
 			
 			title.x = 75;
 			title.y = 3;
-			
-			closeBtn.x = width-closeBtn.width-2;
-			closeBtn.y = 0;
 			
 			labNum.x = 10;
 			labNum.y = 40;
@@ -119,11 +121,6 @@ package com.xiaomu.view.login
 			graphics.endFill();
 		}
 		
-		protected function closePanel(event:MouseEvent):void
-		{
-			PopUpManager.removePopUp(this);
-		}
-		
 		protected function loginHandler(event:MouseEvent):void
 		{
 			PopUpManager.removePopUp(this);
@@ -131,11 +128,14 @@ package com.xiaomu.view.login
 				try
 				{
 					const response:Object = JSON.parse(ee.currentTarget.data)
-					trace(JSON.stringify(response))
 					if (response.result == 0 && response.message.length > 0) {
 						AppData.getInstane().user = response.message[0]
+						AppData.getInstane().username = phoneNumInput.text
+						AppData.getInstane().password = passwordInput.text
 						HallView(MainView.getInstane().pushView(HallView)).init()
-					} 
+					}  else {
+						Alert.show('登录失败 用户名密码错误')
+					}
 				} 
 				catch(error:Error) 
 				{

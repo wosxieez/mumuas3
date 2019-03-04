@@ -223,7 +223,7 @@ package com.xiaomu.view
 		
 		protected function joinGroupFaultHandler(event:ApiEvent):void {
 			Alert.show(JSON.stringify(event.data))
-			MainView.getInstane().popView()
+			MainView.getInstane().popView(HallView)
 		}
 		
 		protected function onGroupHandler(event:ApiEvent):void
