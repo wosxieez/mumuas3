@@ -37,7 +37,6 @@ package com.xiaomu.renderer
 			roomName.height = 8;
 			roomName.color = 0xffffff;
 			roomName.fontSize = 8;
-//			roomName.text = '测试阿大阿大';
 			addChild(roomName);
 			
 			tableImg = new Image();
@@ -68,10 +67,10 @@ package com.xiaomu.renderer
 		{
 			super.updateDisplayList();
 			
-			joiner1.x = 0;
+			joiner1.x = -5;
 			joiner1.y = 39;
 			
-			joiner2.x = width-joiner2.width;
+			joiner2.x = width-joiner2.width+5;
 			joiner2.y = 39;
 			
 			joiner3.x = (width-joiner3.width)/2;

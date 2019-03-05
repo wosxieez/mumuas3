@@ -1,5 +1,6 @@
 package com.xiaomu.view
 {
+	import com.xiaomu.component.UserStatusList;
 	import com.xiaomu.event.ApiEvent;
 	import com.xiaomu.renderer.RoomRenderer;
 	import com.xiaomu.renderer.UserRenderer;
@@ -36,7 +37,7 @@ package com.xiaomu.view
 			Api.getInstane().addEventListener(ApiEvent.ON_GROUP, onGroupHandler)
 		}
 		
-//		private var bg : Image;
+		private var bg : Image;
 		private var roomsList:List
 		private var usersList:List
 		private var goback:Button;
@@ -69,27 +70,28 @@ package com.xiaomu.view
 		override protected function createChildren():void {
 			super.createChildren()
 			
-//			bg = new Image();
-//			bg.source = 'assets/room/club_bg.png';
-//			addChild(bg);
+			bg = new Image();
+			bg.source = 'assets/room/table_bg.png';
+			addChild(bg);
 			
 			roomsList = new List()
 			roomsList.itemRendererClass = RoomRenderer
 			roomsList.itemRendererColumnCount = 3
 			roomsList.itemRendererHeight = 80;
-			roomsList.itemRendererWidth = 140;
+			roomsList.itemRendererWidth = 120;
 			roomsList.gap = 10
 			roomsList.addEventListener(UIEvent.CHANGE, roomsList_changeHandler)
 			addChild(roomsList)
 			
-			usersList = new List()
-			usersList.width = 60
+			usersList = new UserStatusList()
+			usersList.width = 80
 			usersList.height = height-50;
+			usersList.gap = 1;
 			usersList.itemRendererClass = UserRenderer
 			addChild(usersList)
 			
 			goback= new Button()
-			goback.label = '返回️'
+			goback.label = '返回️';
 			goback.width = 40;
 			goback.height = 20;
 			goback.addEventListener(MouseEvent.CLICK, function(e:MouseEvent):void {
@@ -99,22 +101,53 @@ package com.xiaomu.view
 			addChild(goback)
 		}
 		
+		override protected function updateDisplayList():void {
+			super.updateDisplayList()
+			bg.width = width;
+			bg.height = height;
+			
+			usersList.x = width-usersList.width-10;
+			usersList.y = 50;
+			
+			roomsList.height = usersList.height = height
+			roomsList.width = width-usersList.width-10
+			roomsList.x = 10;
+			roomsList.y = 50;
+			var itemWidth:Number= roomsList.itemRendererWidth;
+			var itemCount:Number = roomsList.itemRendererColumnCount;
+			var itemGap:Number = roomsList.gap;
+			if(width-usersList.width-(itemWidth*(itemCount+1)+(itemCount)*itemGap)>0){
+				roomsList.itemRendererColumnCount = itemCount+1
+			}
+			goback.x = width-goback.width;
+			goback.y = 0;
+		}
+		
 		override protected function commitProperties():void {
 			super.commitProperties()
 			
 			usersList.dataProvider = usersData
 			roomsList.dataProvider = roomsData
-			trace("roomsData",JSON.stringify(roomsData));
+			var tempArr : Array = [];
+			for each (var i:Object in usersData) 
+			{
+				if(i.online){
+					tempArr.unshift(i)
+				}else{
+					tempArr.push(i);
+				}
+			}
+			usersList.dataProvider = tempArr
 		}
 		
 		override protected function drawSkin():void
 		{
 			super.drawSkin();
 			
-			graphics.clear();
-			graphics.beginFill(0x336699);
-			graphics.drawRect(0,0,width,height);
-			graphics.endFill();
+//			graphics.clear();
+//			graphics.beginFill(0x9F7D50);
+//			graphics.drawRect(0,0,width,height);
+//			graphics.endFill();
 		}
 		
 		protected function roomsList_changeHandler(event:UIEvent):void
@@ -124,22 +157,7 @@ package com.xiaomu.view
 			RoomView(MainView.getInstane().pushView(RoomView)).init(roominfo)
 		}
 		
-		override protected function updateDisplayList():void {
-			super.updateDisplayList()
-//			bg.width = width;
-//			bg.height = height;
-			
-			usersList.x = width-usersList.width;
-			usersList.y = 50;
-			
-			roomsList.height = usersList.height = height
-			roomsList.width = width-usersList.width-10
-			roomsList.x = 10;
-			roomsList.y = 50;
-			
-			goback.x = width-goback.width;
-			goback.y = 0;
-		}
+		
 		
 		public function init(groupid:int): void {
 			HttpApi.getInstane().getGroupUsers(groupid, 
