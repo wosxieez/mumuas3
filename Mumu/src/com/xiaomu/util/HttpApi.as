@@ -40,7 +40,8 @@ package com.xiaomu.util
 									  resultHandler:Function = null, 
 									  faultHandler:Function = null):void
 		{
-			var params:Object = {group_info: {$like: '%' + groupid + '%'}}
+//			var params:Object = {group_info: {$like: '%' + groupid + '%'}}
+			var params:Object = {group_info: {$like: '%"group_id":' + groupid + '%'}}
 			var urlrequest:URLRequest = new URLRequest(WEB_URL + 'find_user');
 			urlrequest.method = URLRequestMethod.POST
 			urlrequest.contentType = 'application/json'
@@ -62,6 +63,33 @@ package com.xiaomu.util
 			urlLoader.load(urlrequest)
 		}
 		
+		public function getUserInfo(username:String, 
+									resultHandler:Function = null, 
+									faultHandler:Function = null):void
+		{
+			var params:Object = {username: username}
+			var urlrequest:URLRequest = new URLRequest(WEB_URL + 'find_user');
+			urlrequest.method = URLRequestMethod.POST
+			urlrequest.contentType = 'application/json'
+			urlrequest.data = JSON.stringify(params)
+			var urlLoader:CocoURLLoader = new CocoURLLoader(resultHandler, faultHandler, true, 20000);
+			urlLoader.load(urlrequest)
+		}
+		
+		public function updateUserGroupInfo(username:String, 
+											group_info:Array,
+											resultHandler:Function = null, 
+											faultHandler:Function = null):void
+		{
+			var params: Object = {update:{group_info: 
+				JSON.stringify(group_info)}, query:{username:username}};
+			var urlrequest:URLRequest = new URLRequest(WEB_URL + 'update_user');
+			urlrequest.method = URLRequestMethod.POST
+			urlrequest.contentType = 'application/json'
+			urlrequest.data = JSON.stringify(params)
+			var urlLoader:CocoURLLoader = new CocoURLLoader(resultHandler, faultHandler, true, 20000);
+			urlLoader.load(urlrequest)
+		}
 		
 	}
 }

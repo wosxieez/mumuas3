@@ -5,8 +5,11 @@ package com.xiaomu.view
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.Assets;
 	import com.xiaomu.util.Audio;
+	import com.xiaomu.util.HttpApi;
 	import com.xiaomu.view.login.LoginView;
+	import com.xiaomu.view.userBarView.UserInfoVIew;
 	
+	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.utils.setTimeout;
 	
@@ -30,11 +33,12 @@ package com.xiaomu.view
 		
 		private var topbg:Image
 		private var bottombg:Image
-		private var userIcon:Image
-		private var userLabel:Label
+//		private var userIcon:Image
+//		private var userLabel:Label
 		private var btnsList:List
 		private var groupsList:List
 		private var signoutBtn:Image
+		private var userInfoView : UserInfoVIew
 		
 		private var _groupsData:Array
 		
@@ -62,23 +66,29 @@ package com.xiaomu.view
 			bottombg.height = 30
 			addChild(bottombg)
 			
-			userIcon = new Image
-			userIcon.source = 'assets/hall/usericon.png'
-			userIcon.width = userIcon.height = 26
-			userIcon.x = userIcon.y = 2
-			addChild(userIcon)
+//			userIcon = new Image
+//			userIcon.source = 'assets/hall/usericon.png'
+//			userIcon.width = userIcon.height = 26
+//			userIcon.x = userIcon.y = 2
+//			addChild(userIcon)
+//			
+//			userLabel = new Label()
+//			userLabel.x = 30
+//			userLabel.height = 30
+//			userLabel.color = 0xFFFFFF
+//			addChild(userLabel)
 			
-			userLabel = new Label()
-			userLabel.x = 30
-			userLabel.height = 30
-			userLabel.color = 0xFFFFFF
-			addChild(userLabel)
+			userInfoView = new UserInfoVIew();
+			userInfoView.width = 300;
+			userInfoView.height = 40;
+			userInfoView.inRoomFlag = false;
+			addChild(userInfoView);
 			
 			groupsList = new List()
 			groupsList.y = 30
 			groupsList.padding = 30
 			groupsList.gap = 10
-			groupsList.labelField = 'name'
+			groupsList.labelField = 'group_id'
 			groupsList.horizontalScrollEnabled = true
 			groupsList.verticalScrollEnabled = false
 			groupsList.itemRendererClass = GroupRenderer
@@ -119,13 +129,16 @@ package com.xiaomu.view
 		{
 			dispose()
 			MainView.getInstane().popView(LoginView)
+//			trace("测试");
+//			HttpApi.getInstane().updateUserGroupInfo(AppData.getInstane().username,
+//				[{group_id:1,gold:100},{group_id:2,gold:200},{group_id:4,gold:300}],function(e:Event):void{},null);
 		}
 		
 		override protected function commitProperties():void {
 			super.commitProperties()
 			groupsList.dataProvider = groupsData
 			
-			userLabel.text = AppData.getInstane().user.username
+//			userLabel.text = AppData.getInstane().user.username
 		}
 		
 		override protected function updateDisplayList():void{
@@ -149,15 +162,20 @@ package com.xiaomu.view
 		
 		protected function groupsList_changeHandler(event:UIEvent):void
 		{
-			var groupid:int = int(groupsList.selectedItem)
+			var groupid:int = int(groupsList.selectedItem.group_id)
 			setTimeout(function ():void { groupsList.selectedIndex = -1 }, 200)
 			GroupView(MainView.getInstane().pushView(GroupView)).init(groupid)
 		}
 		
 		public function init():void {
-			groupsData = AppData.getInstane().user.group_info.split(',')
+			groupsData = JSON.parse(AppData.getInstane().user.group_info) as Array;
 			Audio.getInstane().playBGM('assets/bgm.mp3')
 			Assets.getInstane().loadAssets('assets/mumu.png', 'assets/mumu.json')
+			HttpApi.getInstane().getUserInfo(AppData.getInstane().username,function(e:Event):void{
+//				trace('大厅界面：金币',JSON.parse(e.currentTarget.data).message[0].group_info);
+//				trace('大厅界面：房卡',JSON.parse(e.currentTarget.data).message[0].room_card);
+				userInfoView.userInfoData = {"roomCard":JSON.parse(e.currentTarget.data).message[0].room_card+'','userName':AppData.getInstane().username}
+			},null);
 		}
 		
 		public function dispose():void {

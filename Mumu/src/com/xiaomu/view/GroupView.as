@@ -8,6 +8,7 @@ package com.xiaomu.view
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.HttpApi;
 	import com.xiaomu.util.Notifications;
+	import com.xiaomu.view.userBarView.UserInfoVIew;
 	
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -38,6 +39,7 @@ package com.xiaomu.view
 			Api.getInstane().addEventListener(ApiEvent.ON_GROUP, onGroupHandler)
 		}
 		
+		private var userInfoView : UserInfoVIew
 		private var userIcon:Image
 		private var userLabel:Label
 		private var bg : Image;
@@ -46,6 +48,18 @@ package com.xiaomu.view
 		private var goback:Image;
 		private var lab : Label;
 		private var _roomsData:Array
+		private var _userData : Object;
+		
+		public function get userData():Object
+		{
+			return _userData;
+		}
+		
+		public function set userData(value:Object):void
+		{
+			_userData = value;
+			invalidateProperties();
+		}
 		
 		public function get roomsData():Array
 		{
@@ -78,17 +92,11 @@ package com.xiaomu.view
 			bg.source = 'assets/room/table_bg.png';
 			addChild(bg);
 			
-			userIcon = new Image
-			userIcon.source = 'assets/hall/usericon.png'
-			userIcon.width = userIcon.height = 26
-			userIcon.x = userIcon.y = 2
-			addChild(userIcon)
-			
-			userLabel = new Label()
-			userLabel.x = 30
-			userLabel.height = 30
-			userLabel.color = 0xFFFFFF
-			addChild(userLabel)
+			userInfoView = new UserInfoVIew();
+			userInfoView.width = 300;
+			userInfoView.height = 40;
+			userInfoView.inRoomFlag = true;
+			addChild(userInfoView);
 			
 			roomsList = new List()
 			roomsList.itemRendererClass = RoomRenderer
@@ -150,7 +158,6 @@ package com.xiaomu.view
 		
 		override protected function commitProperties():void {
 			super.commitProperties()
-			userLabel.text = AppData.getInstane().user.username
 			usersList.dataProvider = usersData
 			roomsList.dataProvider = roomsData
 			var tempArr : Array = [];
@@ -163,16 +170,17 @@ package com.xiaomu.view
 				}
 			}
 			usersList.dataProvider = tempArr
+			userInfoView.userInfoData = userData
 		}
 		
 		override protected function drawSkin():void
 		{
 			super.drawSkin();
 			
-//			graphics.clear();
-//			graphics.beginFill(0x9F7D50);
-//			graphics.drawRect(0,0,width,height);
-//			graphics.endFill();
+			//			graphics.clear();
+			//			graphics.beginFill(0x9F7D50);
+			//			graphics.drawRect(0,0,width,height);
+			//			graphics.endFill();
 		}
 		
 		protected function roomsList_changeHandler(event:UIEvent):void
@@ -185,12 +193,28 @@ package com.xiaomu.view
 		
 		
 		public function init(groupid:int): void {
+			HttpApi.getInstane().getUserInfo(AppData.getInstane().username,function(e:Event):void{
+				//				trace('房间界面：',JSON.stringify(JSON.parse(e.currentTarget.data).message[0]));
+//				trace('房间界面：金币',JSON.parse(e.currentTarget.data).message[0].group_info);
+//				trace('房间界面：房卡',JSON.parse(e.currentTarget.data).message[0].room_card);
+				var roomCard:String = JSON.parse(e.currentTarget.data).message[0].room_card+'';
+				var tempArr : Array = JSON.parse(JSON.parse(e.currentTarget.data).message[0].group_info) as Array;
+				for each (var i:Object in tempArr) 
+				{
+					if(i.group_id+''==groupid+''){
+						userData = {'gold':i.gold,'userName':AppData.getInstane().username,'roomCard':roomCard}
+//						trace("userData:",JSON.stringify(userData));
+					}
+				}
+			},null);
+			
 			HttpApi.getInstane().getGroupUsers(groupid, 
 				function (e:Event):void {
 					// get group users ok
 					const usersResponse:Object = JSON.parse(e.currentTarget.data)
 					if (usersResponse.result == 0 && usersResponse.message) {
 						usersData = usersResponse.message
+//						trace("结果：",JSON.stringify(usersResponse.message));
 					} 
 					
 					// 加载群的房间信息
