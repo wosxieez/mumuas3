@@ -130,6 +130,7 @@ package com.xiaomu.view.login
 					const response:Object = JSON.parse(ee.currentTarget.data)
 					if (response.result == 0 && response.message.length > 0) {
 						AppData.getInstane().user = response.message[0]
+						trace(JSON.stringify(response.message[0]))
 						AppData.getInstane().username = phoneNumInput.text
 						AppData.getInstane().password = passwordInput.text
 						HallView(MainView.getInstane().pushView(HallView)).init()

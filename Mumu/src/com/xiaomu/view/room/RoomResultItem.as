@@ -1,48 +1,51 @@
-package com.xiaomu.view
+package com.xiaomu.view.room
 {
 	import com.xiaomu.component.CardUI;
+	import com.xiaomu.util.CardUtil;
 	
-	import coco.component.Panel;
+	import coco.core.UIComponent;
 	
-	public class WinPanel extends Panel
+	public class RoomResultItem extends UIComponent
 	{
-		public function WinPanel()
+		public function RoomResultItem()
 		{
 			super();
 			
 			width = 200
-			height = 150
-		}
-		
-		
-		private static var instance:WinPanel
-		
-		public static function getInstane(): WinPanel {
-			if (!instance) {
-				instance = new WinPanel()
-			}
-			
-			return instance
+			height = 60
 		}
 		
 		
 		private var myGroupCardUIs:Array = []
 		
-		private var _winGroupCards:Array
+		private var _data:Object
 		
-		public function get winGroupCards():Array
+		public function get data():Object
 		{
-			return _winGroupCards;
+			return _data;
 		}
 		
-		public function set winGroupCards(value:Array):void
+		public function set data(value:Object):void
 		{
-			_winGroupCards = value;
+			_data = value;
 			invalidateProperties()
 		}
 		
 		override protected function commitProperties():void {
 			super.commitProperties()
+				
+			if (!data) return
+				
+			const groups:Array = data.groupCards
+			const riffles:Array = CardUtil.getInstane().riffle(data.handCards)
+				
+			var resultGroups:Array = []
+			for each(var group:Object in groups) {
+				resultGroups.push(group.cards)
+			}
+			for each(var riffle:Array in riffles) {
+				resultGroups.push(riffle)
+			}
 			
 			var oldMyGroupCardUIs:Array = []
 			for each(var cardUI: CardUI in myGroupCardUIs) {
@@ -56,9 +59,8 @@ package com.xiaomu.view
 			const verticalGap:Number = 14
 			var newCardUI:CardUI
 			var startX:Number = 10
-			for (var i:int = 0; i < winGroupCards.length; i++) {
-				var group:Object = winGroupCards[i]
-				var groupCards:Array = group.cards
+			for (var i:int = 0; i < resultGroups.length; i++) {
+				var groupCards:Array = resultGroups[i]
 				var cardsLength:int = groupCards.length
 				for (var j:int = 0; j < cardsLength; j++) {
 					newCardUI = oldMyGroupCardUIs.pop()
@@ -67,13 +69,11 @@ package com.xiaomu.view
 						addChild(newCardUI)
 					}
 					newCardUI.isReverse = false
-					if (group.name == 'ti' || group.name == 'wei') newCardUI.isReverse = true
-					if (j == (cardsLength - 1)) newCardUI.isReverse = false
 					newCardUI.visible = true
 					newCardUI.width = cardWidth
 					newCardUI.height = cardHeight
 					newCardUI.x = startX + i * (newCardUI.width + horizontalGap)
-					newCardUI.y = height - newCardUI.height - j * verticalGap - 45
+					newCardUI.y = height - newCardUI.height - j * verticalGap
 					newCardUI.card = groupCards[j]
 					newCardUI.type = CardUI.TYPE_SMALL_CARD
 					setChildIndex(newCardUI, 0)

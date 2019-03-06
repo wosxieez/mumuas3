@@ -8,6 +8,7 @@ package com.xiaomu.view
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.HttpApi;
 	import com.xiaomu.util.Notifications;
+	import com.xiaomu.view.room.RoomView;
 	import com.xiaomu.view.userBarView.UserInfoVIew;
 	
 	import flash.events.Event;
@@ -15,7 +16,6 @@ package com.xiaomu.view
 	import flash.utils.setTimeout;
 	
 	import coco.component.Alert;
-	import coco.component.Button;
 	import coco.component.Image;
 	import coco.component.Label;
 	import coco.component.List;
@@ -189,7 +189,6 @@ package com.xiaomu.view
 			setTimeout(function ():void { roomsList.selectedIndex = -1 }, 200)
 			RoomView(MainView.getInstane().pushView(RoomView)).init(roominfo)
 		}
-		
 		
 		
 		public function init(groupid:int): void {

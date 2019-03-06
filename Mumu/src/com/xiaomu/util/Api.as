@@ -45,8 +45,8 @@ package com.xiaomu.util
 			this.username = username
 			this.groupid = groupid
 			pomelo = new Pomelo()
-			//			pomelo.init("192.168.0.4", 3014)
-			pomelo.init("106.14.148.139", 3014)
+			pomelo.init("192.168.0.102", 3014)
+			//			pomelo.init("106.14.148.139", 3014)
 			pomelo.addEventListener(PomeloEvent.HANDSHAKE, onConnectHandler);
 			pomelo.addEventListener(PomeloEvent.ERROR, pomeloErrorHandler);
 		}
@@ -137,7 +137,11 @@ package com.xiaomu.util
 		 */		
 		public function sendAction(action):void  {
 			if (!pomelo) return
-			pomelo.request('chat.roomHandler.sendAction', action)
+			pomelo.request('chat.roomHandler.sendAction', action, function(response:Object):void {
+				if (response.code == 0) {
+				} else {
+				}
+			})
 		}
 		
 		public function getRoomsUsers(roomnames:Array, cb:Function):void  {

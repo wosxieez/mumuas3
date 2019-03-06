@@ -11,5 +11,6 @@ package com.xiaomu.util
 		public static const Chi:String = "chi"       // 吃牌
 		public static const Cancel:String = "cancel" // 取消 
 		public static const Idle:String = "idle"      // 无操作
+		public static const Ready:String = 'ready'   // 准备
 	}
 }

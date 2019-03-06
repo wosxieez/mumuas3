@@ -1,4 +1,4 @@
-package com.xiaomu.view
+package com.xiaomu.view.room
 {
 	import com.xiaomu.component.CardUI;
 	import com.xiaomu.event.ApiEvent;
@@ -9,13 +9,17 @@ package com.xiaomu.view
 	import com.xiaomu.util.Audio;
 	import com.xiaomu.util.CardUtil;
 	import com.xiaomu.util.Notifications;
+	import com.xiaomu.view.GroupView;
+	import com.xiaomu.view.MainView;
 	
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	
+	import coco.component.Button;
 	import coco.component.Image;
 	import coco.component.Label;
 	import coco.core.UIComponent;
+	import coco.event.UIEvent;
 	import coco.manager.PopUpManager;
 	
 	public class RoomView extends UIComponent
@@ -46,6 +50,8 @@ package com.xiaomu.view
 		private var nextUserNameLabel:Label
 		
 		private var cardLayer: UIComponent
+		private var cardsCarrUI:Image
+		private var cardsLabel:Label
 		private var dealCardUI: CardUI
 		private var iconLayer:UIComponent
 		private var myUser:Object
@@ -65,6 +71,7 @@ package com.xiaomu.view
 		private var thisCanChiCards:Array
 		private var thisCanHuDatas:Array
 		
+		private var zhunbeiButton:Button
 		private var canHuButton:Image
 		private var canPengButton:Image
 		private var canChiButton:Image
@@ -74,7 +81,8 @@ package com.xiaomu.view
 		private var checkUsername: String
 		private var isCheckNewCard:Boolean = false // 是否在等待出牌
 		private var isHu:Boolean = false
-			
+		private var isThree:Boolean = false
+		
 		private var backBtn:Image
 		
 		override protected function createChildren():void {
@@ -92,6 +100,21 @@ package com.xiaomu.view
 			// 卡牌层
 			cardLayer = new UIComponent()
 			addChild(cardLayer)
+			
+			cardsCarrUI = new Image()
+			cardsCarrUI.width = 30
+			cardsCarrUI.height = 80
+			cardsCarrUI.rotation = 90
+			cardsCarrUI.source = Assets.getInstane().getAssets('fight_full_card.png')
+			cardsCarrUI.visible = false
+			addChild(cardsCarrUI)
+			
+			cardsLabel = new Label()
+			cardsLabel.width = 80
+			cardsLabel.height = 30
+			cardsLabel.color = 0xFFFFFF
+			cardsLabel.visible = false
+			addChild(cardsLabel)
 			
 			dealCardUI = new CardUI()
 			dealCardUI.border = 2
@@ -205,7 +228,12 @@ package com.xiaomu.view
 			checkWaitTip.visible = false
 			checkWaitTip.source = Assets.getInstane().getAssets('wait.png')
 			iconLayer.addChild(checkWaitTip)
-				
+			
+			zhunbeiButton = new Button()
+			zhunbeiButton.label = '准备'
+			zhunbeiButton.addEventListener(MouseEvent.CLICK, zhunbeiButton_clickHandler)
+			iconLayer.addChild(zhunbeiButton)
+			
 			backBtn = new Image()
 			backBtn.source = 'assets/backbtn.png'
 			backBtn.addEventListener(MouseEvent.CLICK, back_clickHandler)
@@ -278,6 +306,11 @@ package com.xiaomu.view
 			nextUserIcon.y = nextUserBG.y + 5
 			nextUserNameLabel.y = nextUserLine.y 
 			nextUserNameLabel.x = nextUserBG.x + 30
+				
+			cardsCarrUI.x = (width + cardsCarrUI.height)  / 2
+			cardsCarrUI.y = 20
+			cardsLabel.x = (width - cardsLabel.width)  / 2
+			cardsLabel.y = 20
 			
 			canPengButton.x = width - canPengButton.width - 20
 			canPengButton.y = (height - canChiButton.height) / 2 - 10
@@ -293,7 +326,7 @@ package com.xiaomu.view
 			
 			newCardTip.x = (width - newCardTip.width) / 2
 			newCardTip.y = (height - newCardTip.height) / 2
-				
+			
 			backBtn.x = width - backBtn.width - 2
 			backBtn.y = height - backBtn.height - 20
 		}
@@ -328,8 +361,11 @@ package com.xiaomu.view
 				if (nextUser) {
 					nextUserNameLabel.text = nextUser.username
 				} 
+				
+				cardsLabel.text = '剩余' + roominfo.cards.length + '张牌'
 			}
 		}
+		
 		private function updateNewCard():void {
 			if (roominfo) {
 				dealCardUI.visible = true
@@ -592,6 +628,8 @@ package com.xiaomu.view
 		 *  更新上家的组合牌视图
 		 */		
 		private function updateNextGroupCardUIs():void {
+			if (!isThree) return 
+			
 			if (nextUser) {
 				const riffleCards:Array = this.nextUser.groupCards
 				var oldNextGroupCardUIs:Array = []
@@ -638,6 +676,8 @@ package com.xiaomu.view
 		 *  更新上家的弃牌视图
 		 */		
 		private function updateNextPassCardUIs():void {
+			if (!isThree) return 
+			
 			if (nextUser) {
 				const riffleCards:Array = this.nextUser.passCards
 				var oldNextPassCardUIs:Array = []
@@ -706,12 +746,22 @@ package com.xiaomu.view
 		{
 			isCheckNewCard = isHu = false
 			newCardTip.visible = cancelButton.visible = canChiButton.visible = canPengButton.visible = canHuButton.visible = false
+			thisCanChiCards = thisCanHuDatas = thisCanPengCards = null
+				
+			if (RoomChiTipList.getInstane().isPopUp) {
+				PopUpManager.removePopUp(RoomChiTipList.getInstane())
+			}
 			
 			const notification: Object = event.data
 			switch(notification.name)
 			{
 				case Notifications.onNewRound:
 				{
+					cardsCarrUI.visible = cardsLabel.visible = true
+					
+					RoomResultView.getInstane().data = notification.data
+					PopUpManager.centerPopUp(PopUpManager.addPopUp(RoomResultView.getInstane(), null, false, true))
+						
 					updateRoomInfo(notification.data)
 					// 如果自己是庄家不显示翻开的牌
 					if (roominfo.banker_username == AppData.getInstane().user.username) {
@@ -798,19 +848,12 @@ package com.xiaomu.view
 				}
 				case Notifications.checkPeng: {
 					// 检查碰
-					trace('检查碰', notification.data)
+					trace('检查吃', JSON.stringify(notification.data))
 					checkUsername = notification.data.username
 					updateWaitTip()
 					if (checkUsername == AppData.getInstane().user.username) {
-						const canPengCards:Array = CardUtil.getInstane().canPeng(this.myUser.handCards, notification.data.card)
-						if (canPengCards) {
-							thisCanPengCards = canPengCards
-							canPengButton.visible = cancelButton.visible = true
-						} else {
-							trace('不能碰 直接取消')
-							const action:Object = { name: Actions.Cancel, data: '' }
-							Api.getInstane().sendAction(action)
-						}
+						thisCanPengCards = notification.data.group
+						canPengButton.visible = cancelButton.visible = true
 					}
 					break
 				}
@@ -832,20 +875,13 @@ package com.xiaomu.view
 				}
 				case Notifications.checkEat: {
 					// 检查吃
-					trace('检查吃')
+					trace('检查吃', JSON.stringify(notification.data))
 					newCardTip.visible = cancelButton.visible = canChiButton.visible = canPengButton.visible = false
 					checkUsername = notification.data.username
 					updateWaitTip()
 					if (notification.data.username == AppData.getInstane().user.username) {
-						const canChiCards:Array = CardUtil.getInstane().canChi(this.myUser.handCards, notification.data.card)
-						if (canChiCards) {
-							thisCanChiCards = canChiCards
-							canChiButton.visible = cancelButton.visible = true
-						} else {
-							trace('不能吃 直接取消')
-							const action2:Object = { name: Actions.Cancel, data: '' }
-							Api.getInstane().sendAction(action2)
-						}
+						thisCanChiCards = notification.data.groups
+						canChiButton.visible = cancelButton.visible = true
 					}
 					break
 				}
@@ -874,17 +910,16 @@ package com.xiaomu.view
 					break
 				}
 				case Notifications.onWin: {
-					trace(notification.data)
-					var room:Object = notification.data
 					Audio.getInstane().playHandle('hu')
-					for each(var user:Object in room.users) {
-						if (user.username == room.win_username) {
-							WinPanel.getInstane().title = user.username + '胡牌'
-							WinPanel.getInstane().winGroupCards = user.groupCards
-							PopUpManager.centerPopUp(PopUpManager.addPopUp(WinPanel.getInstane()))
-							break
-						}
-					}
+					RoomResultView.getInstane().data = notification.data
+					PopUpManager.centerPopUp(PopUpManager.addPopUp(RoomResultView.getInstane(), null, false, true))
+					break
+				}
+				case Notifications.onRoundEnd: {
+					cardsCarrUI.visible = cardsLabel.visible = false
+					RoomResultView.getInstane().data = notification.data
+					PopUpManager.centerPopUp(PopUpManager.addPopUp(RoomResultView.getInstane(), null, false, true))
+					zhunbeiButton.visible = true
 					break
 				}
 				default:
@@ -903,9 +938,9 @@ package com.xiaomu.view
 		
 		protected function canChiButton_clickHandler(event:MouseEvent):void
 		{
-			isHu = canHuButton.visible = canPengButton.visible = canChiButton.visible = cancelButton.visible = false
-			const action:Object = { name: Actions.Chi, data: thisCanChiCards }
-			Api.getInstane().sendAction(action)
+			RoomChiTipList.getInstane().dataProvider = thisCanChiCards
+			RoomChiTipList.getInstane().addEventListener(UIEvent.CHANGE, roomChiPengList_changeHandler)
+			PopUpManager.centerPopUp(PopUpManager.addPopUp(RoomChiTipList.getInstane()))
 		}
 		
 		protected function cancelButton_clickHandler(event:MouseEvent):void
@@ -924,12 +959,32 @@ package com.xiaomu.view
 		
 		public function init(roominfo:Object): void {
 			Api.getInstane().joinRoom(roominfo)
+			isThree = roominfo.count == 3 
+			nextUserBG.visible = nextUserIcon.visible = nextUserLine.visible = nextUserNameLabel.visible = isThree
+			zhunbeiButton.visible = true
 		}
 		
 		protected function back_clickHandler(event:MouseEvent):void
 		{
 			Api.getInstane().leaveRoom()
 			MainView.getInstane().popView(GroupView)
+		}
+		
+		protected function zhunbeiButton_clickHandler(event:MouseEvent):void
+		{
+			const action:Object = { name: Actions.Ready, data: true }
+			Api.getInstane().sendAction(action)
+			zhunbeiButton.visible = false
+		}
+		
+		protected function roomChiPengList_changeHandler(event:UIEvent):void
+		{
+			isHu = canHuButton.visible = canPengButton.visible = canChiButton.visible = cancelButton.visible = false
+			const action:Object = { name: Actions.Chi, data:  RoomChiTipList.getInstane().selectedItem}
+			Api.getInstane().sendAction(action)
+				
+			RoomChiTipList.getInstane().removeEventListener(UIEvent.CHANGE, roomChiPengList_changeHandler)
+			PopUpManager.removePopUp(RoomChiTipList.getInstane())
 		}
 		
 	}
