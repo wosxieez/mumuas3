@@ -16,6 +16,7 @@ package com.xiaomu.view
 	import coco.component.Alert;
 	import coco.component.Button;
 	import coco.component.Image;
+	import coco.component.Label;
 	import coco.component.List;
 	import coco.core.UIComponent;
 	import coco.event.UIEvent;
@@ -37,10 +38,13 @@ package com.xiaomu.view
 			Api.getInstane().addEventListener(ApiEvent.ON_GROUP, onGroupHandler)
 		}
 		
+		private var userIcon:Image
+		private var userLabel:Label
 		private var bg : Image;
 		private var roomsList:List
 		private var usersList:List
-		private var goback:Button;
+		private var goback:Image;
+		private var lab : Label;
 		private var _roomsData:Array
 		
 		public function get roomsData():Array
@@ -74,6 +78,18 @@ package com.xiaomu.view
 			bg.source = 'assets/room/table_bg.png';
 			addChild(bg);
 			
+			userIcon = new Image
+			userIcon.source = 'assets/hall/usericon.png'
+			userIcon.width = userIcon.height = 26
+			userIcon.x = userIcon.y = 2
+			addChild(userIcon)
+			
+			userLabel = new Label()
+			userLabel.x = 30
+			userLabel.height = 30
+			userLabel.color = 0xFFFFFF
+			addChild(userLabel)
+			
 			roomsList = new List()
 			roomsList.itemRendererClass = RoomRenderer
 			roomsList.itemRendererColumnCount = 3
@@ -83,16 +99,23 @@ package com.xiaomu.view
 			roomsList.addEventListener(UIEvent.CHANGE, roomsList_changeHandler)
 			addChild(roomsList)
 			
+			lab = new Label();
+			lab.text = '圈内好友';
+			lab.fontSize = 10;
+			lab.color = 0xffffff;
+			addChild(lab);
+			
 			usersList = new UserStatusList()
-			usersList.width = 80
+			usersList.width = 120
 			usersList.height = height-50;
 			usersList.gap = 1;
 			usersList.itemRendererClass = UserRenderer
+			usersList.itemRendererHeight = 25;
 			addChild(usersList)
 			
-			goback= new Button()
-			goback.label = '返回️';
-			goback.width = 40;
+			goback= new Image()
+			goback.source = 'assets/backbtn.png';
+			goback.width = 22;
 			goback.height = 20;
 			goback.addEventListener(MouseEvent.CLICK, function(e:MouseEvent):void {
 				Api.getInstane().leaveGroup()			
@@ -108,6 +131,8 @@ package com.xiaomu.view
 			
 			usersList.x = width-usersList.width-10;
 			usersList.y = 50;
+			lab.x = usersList.x;
+			lab.y = usersList.y-15;
 			
 			roomsList.height = usersList.height = height
 			roomsList.width = width-usersList.width-10
@@ -125,7 +150,7 @@ package com.xiaomu.view
 		
 		override protected function commitProperties():void {
 			super.commitProperties()
-			
+			userLabel.text = AppData.getInstane().user.username
 			usersList.dataProvider = usersData
 			roomsList.dataProvider = roomsData
 			var tempArr : Array = [];

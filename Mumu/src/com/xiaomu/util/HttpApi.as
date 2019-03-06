@@ -40,7 +40,7 @@ package com.xiaomu.util
 									  resultHandler:Function = null, 
 									  faultHandler:Function = null):void
 		{
-			var params:Object = {group_ids: {$like: '%' + groupid + '%'}}
+			var params:Object = {group_info: {$like: '%' + groupid + '%'}}
 			var urlrequest:URLRequest = new URLRequest(WEB_URL + 'find_user');
 			urlrequest.method = URLRequestMethod.POST
 			urlrequest.contentType = 'application/json'

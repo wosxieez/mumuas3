@@ -155,7 +155,7 @@ package com.xiaomu.view
 		}
 		
 		public function init():void {
-			groupsData = AppData.getInstane().user.group_ids.split(',')
+			groupsData = AppData.getInstane().user.group_info.split(',')
 			Audio.getInstane().playBGM('assets/bgm.mp3')
 			Assets.getInstane().loadAssets('assets/mumu.png', 'assets/mumu.json')
 		}
