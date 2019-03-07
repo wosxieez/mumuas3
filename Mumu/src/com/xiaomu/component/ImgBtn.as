@@ -14,7 +14,7 @@ package com.xiaomu.component
 		}
 		
 		private var bgImg:Image;
-		private var lab:TextInput;
+		private var lab:Label;
 		private var _labText:String;
 
 		public function get labText():String
@@ -76,10 +76,7 @@ package com.xiaomu.component
 			bgImg = new Image();
 			addChild(bgImg);
 			
-			lab = new TextInput();
-			lab.editable = false;
-			lab.backgroundAlpha = 0;
-			lab.borderAlpha = 0;
+			lab = new Label();
 			lab.textAlign = TextAlign.CENTER;
 			addChild(lab);
 			

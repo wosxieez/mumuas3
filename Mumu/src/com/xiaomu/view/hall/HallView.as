@@ -18,7 +18,6 @@ package com.xiaomu.view.hall
 	
 	import coco.component.HorizontalAlign;
 	import coco.component.Image;
-	import coco.component.Label;
 	import coco.component.List;
 	import coco.component.VerticalAlign;
 	import coco.core.UIComponent;
@@ -107,6 +106,7 @@ package com.xiaomu.view.hall
 			btnsList.horizontalAlign = HorizontalAlign.CENTER
 			btnsList.verticalAlign = VerticalAlign.MIDDLE
 			addChild(btnsList)
+			btnsList.visible = false;
 			
 			signoutBtn = new Image()
 			signoutBtn.width = 55
@@ -118,10 +118,10 @@ package com.xiaomu.view.hall
 			
 			joinGroupBtn = new ImgBtn();
 			joinGroupBtn.imgSource = 'assets/hall/join_group.png';
-			joinGroupBtn.width = 100;
-			joinGroupBtn.height = 30;
+			joinGroupBtn.width = 70;
+			joinGroupBtn.height = 20;
 			joinGroupBtn.labText = '加入亲友圈';
-			joinGroupBtn.labFontSize = 14;
+			joinGroupBtn.labFontSize = 10;
 			joinGroupBtn.labColor = 0xffffff;
 			joinGroupBtn.addEventListener(MouseEvent.CLICK,joinGroupHandler);
 			addChild(joinGroupBtn);
@@ -129,10 +129,10 @@ package com.xiaomu.view.hall
 			
 			createGroupBtn = new ImgBtn();
 			createGroupBtn.imgSource = 'assets/hall/create_group.png';
-			createGroupBtn.width = 100;
-			createGroupBtn.height = 30;
+			createGroupBtn.width = 70;
+			createGroupBtn.height = 20;
 			createGroupBtn.labText = '创建亲友圈';
-			createGroupBtn.labFontSize = 14;
+			createGroupBtn.labFontSize = 10;
 			createGroupBtn.labColor = 0xffffff;
 			createGroupBtn.addEventListener(MouseEvent.CLICK,createGroupHandler);
 			addChild(createGroupBtn);
@@ -142,9 +142,9 @@ package com.xiaomu.view.hall
 		{
 			dispose()
 			MainView.getInstane().popView(LoginView)
-//			trace("测试");
-//			HttpApi.getInstane().updateUserGroupInfo(AppData.getInstane().username,
-//				[{group_id:1,gold:100},{group_id:2,gold:200},{group_id:4,gold:300}],function(e:Event):void{},null);
+			//			trace("测试");
+			//			HttpApi.getInstane().updateUserGroupInfo(AppData.getInstane().username,
+			//				[{group_id:1,gold:100},{group_id:2,gold:200},{group_id:4,gold:300}],function(e:Event):void{},null);
 		}
 		
 		override protected function commitProperties():void {
@@ -167,9 +167,9 @@ package com.xiaomu.view.hall
 			btnsList.y = bottombg.y
 			
 			signoutBtn.x = width - signoutBtn.width - 5
-				
-			joinGroupBtn.x = width - joinGroupBtn.width-10;
-			joinGroupBtn.y = btnsList.y-joinGroupBtn.height-10;
+			
+			joinGroupBtn.x = width - joinGroupBtn.width-40;
+			joinGroupBtn.y = height-joinGroupBtn.height-5;
 			
 			createGroupBtn.x = joinGroupBtn.x-10-createGroupBtn.width;
 			createGroupBtn.y = joinGroupBtn.y;
@@ -189,8 +189,10 @@ package com.xiaomu.view.hall
 			Audio.getInstane().playBGM('assets/bgm.mp3')
 			Assets.getInstane().loadAssets('assets/mumu.png', 'assets/mumu.json')
 			HttpApi.getInstane().getUserInfo(AppData.getInstane().username,function(e:Event):void{
-//				trace('大厅界面：金币',JSON.parse(e.currentTarget.data).message[0].group_info);
-//				trace('大厅界面：房卡',JSON.parse(e.currentTarget.data).message[0].room_card);
+				//				trace('大厅界面：金币',JSON.parse(e.currentTarget.data).message[0].group_info);
+				//				trace('大厅界面：房卡',JSON.parse(e.currentTarget.data).message[0].room_card);
+				//				trace('大厅界面：用户id',JSON.parse(e.currentTarget.data).message[0].id);
+				AppData.getInstane().user.userId = JSON.parse(e.currentTarget.data).message[0].id+'';
 				userInfoView.userInfoData = {"roomCard":JSON.parse(e.currentTarget.data).message[0].room_card+'','userName':AppData.getInstane().username}
 			},null);
 		}
@@ -204,7 +206,6 @@ package com.xiaomu.view.hall
 		 */
 		protected function createGroupHandler(event:MouseEvent):void
 		{
-			trace("创建亲友圈");
 			var createCroupPanel : CreateGroupPanel;
 			if(!createCroupPanel){
 				createCroupPanel = new CreateGroupPanel();
@@ -218,7 +219,7 @@ package com.xiaomu.view.hall
 		 */
 		protected function joinGroupHandler(event:MouseEvent):void
 		{
-			trace("加入亲友圈");
+//			trace("加入亲友圈");
 		}		
 		
 		

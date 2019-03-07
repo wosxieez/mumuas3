@@ -41,6 +41,16 @@ package com.xiaomu.util
 			setShareObjectValue("password", value);
 		}
 		
+//		public function get userid():String
+//		{
+//			return getShareObjectValue("userid");
+//		}
+//		
+//		public function set userid(value:String):void
+//		{
+//			setShareObjectValue("userid", value);
+//		}
+		
 		//--------------------------------------------------------------------------
 		//
 		//  SharedObject Value

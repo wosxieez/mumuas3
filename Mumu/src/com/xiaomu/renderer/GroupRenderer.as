@@ -13,7 +13,6 @@ package com.xiaomu.renderer
 		}
 		
 		private var icon:Image
-		
 		override protected function createChildren():void {
 			icon = new Image()
 			icon.source = 'assets/hall/home_club_bg.png'
@@ -21,6 +20,7 @@ package com.xiaomu.renderer
 			
 			super.createChildren()
 			labelDisplay.color = 0xFFFFFF
+				
 		}
 		
 		override protected function updateDisplayList():void {
