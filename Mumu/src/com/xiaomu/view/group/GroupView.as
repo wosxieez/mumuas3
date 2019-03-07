@@ -1,4 +1,4 @@
-package com.xiaomu.view
+package com.xiaomu.view.group
 {
 	import com.xiaomu.component.UserStatusList;
 	import com.xiaomu.event.ApiEvent;
@@ -23,6 +23,8 @@ package com.xiaomu.view
 	import coco.component.List;
 	import coco.core.UIComponent;
 	import coco.event.UIEvent;
+	import com.xiaomu.view.hall.HallView;
+	import com.xiaomu.view.MainView;
 	
 	
 	/**

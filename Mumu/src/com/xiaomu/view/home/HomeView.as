@@ -1,6 +1,6 @@
 package com.xiaomu.view.home
 {
-	import com.xiaomu.view.HallView;
+	import com.xiaomu.view.hall.HallView;
 	import com.xiaomu.view.MainView;
 	
 	import flash.events.MouseEvent;

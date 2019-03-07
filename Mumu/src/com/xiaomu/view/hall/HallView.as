@@ -1,11 +1,14 @@
-package com.xiaomu.view
+package com.xiaomu.view.hall
 {
+	import com.xiaomu.component.ImgBtn;
 	import com.xiaomu.renderer.ButtonRenderer;
 	import com.xiaomu.renderer.GroupRenderer;
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.Assets;
 	import com.xiaomu.util.Audio;
 	import com.xiaomu.util.HttpApi;
+	import com.xiaomu.view.MainView;
+	import com.xiaomu.view.group.GroupView;
 	import com.xiaomu.view.login.LoginView;
 	import com.xiaomu.view.userBarView.UserInfoVIew;
 	
@@ -20,6 +23,7 @@ package com.xiaomu.view
 	import coco.component.VerticalAlign;
 	import coco.core.UIComponent;
 	import coco.event.UIEvent;
+	import coco.manager.PopUpManager;
 	
 	/**
 	 * 大厅界面
@@ -33,12 +37,12 @@ package com.xiaomu.view
 		
 		private var topbg:Image
 		private var bottombg:Image
-//		private var userIcon:Image
-//		private var userLabel:Label
 		private var btnsList:List
 		private var groupsList:List
 		private var signoutBtn:Image
 		private var userInfoView : UserInfoVIew
+		private var joinGroupBtn : ImgBtn;
+		private var createGroupBtn : ImgBtn;
 		
 		private var _groupsData:Array
 		
@@ -65,18 +69,6 @@ package com.xiaomu.view
 			bottombg.source = 'assets/hall/img_home_btnsBg.png'
 			bottombg.height = 30
 			addChild(bottombg)
-			
-//			userIcon = new Image
-//			userIcon.source = 'assets/hall/usericon.png'
-//			userIcon.width = userIcon.height = 26
-//			userIcon.x = userIcon.y = 2
-//			addChild(userIcon)
-//			
-//			userLabel = new Label()
-//			userLabel.x = 30
-//			userLabel.height = 30
-//			userLabel.color = 0xFFFFFF
-//			addChild(userLabel)
 			
 			userInfoView = new UserInfoVIew();
 			userInfoView.width = 300;
@@ -123,6 +115,27 @@ package com.xiaomu.view
 			signoutBtn.addEventListener(MouseEvent.CLICK, signoutBtn_clickHandler)
 			signoutBtn.source = 'assets/hall/setting_out_press.png'
 			addChild(signoutBtn)
+			
+			joinGroupBtn = new ImgBtn();
+			joinGroupBtn.imgSource = 'assets/hall/join_group.png';
+			joinGroupBtn.width = 100;
+			joinGroupBtn.height = 30;
+			joinGroupBtn.labText = '加入亲友圈';
+			joinGroupBtn.labFontSize = 14;
+			joinGroupBtn.labColor = 0xffffff;
+			joinGroupBtn.addEventListener(MouseEvent.CLICK,joinGroupHandler);
+			addChild(joinGroupBtn);
+			
+			
+			createGroupBtn = new ImgBtn();
+			createGroupBtn.imgSource = 'assets/hall/create_group.png';
+			createGroupBtn.width = 100;
+			createGroupBtn.height = 30;
+			createGroupBtn.labText = '创建亲友圈';
+			createGroupBtn.labFontSize = 14;
+			createGroupBtn.labColor = 0xffffff;
+			createGroupBtn.addEventListener(MouseEvent.CLICK,createGroupHandler);
+			addChild(createGroupBtn);
 		}
 		
 		protected function signoutBtn_clickHandler(event:MouseEvent):void
@@ -137,8 +150,6 @@ package com.xiaomu.view
 		override protected function commitProperties():void {
 			super.commitProperties()
 			groupsList.dataProvider = groupsData
-			
-//			userLabel.text = AppData.getInstane().user.username
 		}
 		
 		override protected function updateDisplayList():void{
@@ -156,6 +167,12 @@ package com.xiaomu.view
 			btnsList.y = bottombg.y
 			
 			signoutBtn.x = width - signoutBtn.width - 5
+				
+			joinGroupBtn.x = width - joinGroupBtn.width-10;
+			joinGroupBtn.y = btnsList.y-joinGroupBtn.height-10;
+			
+			createGroupBtn.x = joinGroupBtn.x-10-createGroupBtn.width;
+			createGroupBtn.y = joinGroupBtn.y;
 		}
 		
 		private var i:int = 1
@@ -181,6 +198,29 @@ package com.xiaomu.view
 		public function dispose():void {
 			Audio.getInstane().stopBGM()
 		}
+		
+		/**
+		 * 创建亲友圈
+		 */
+		protected function createGroupHandler(event:MouseEvent):void
+		{
+			trace("创建亲友圈");
+			var createCroupPanel : CreateGroupPanel;
+			if(!createCroupPanel){
+				createCroupPanel = new CreateGroupPanel();
+			}
+			PopUpManager.addPopUp(createCroupPanel,null,false,true);
+			PopUpManager.centerPopUp(createCroupPanel);
+		}
+		
+		/**
+		 * 加入亲友圈
+		 */
+		protected function joinGroupHandler(event:MouseEvent):void
+		{
+			trace("加入亲友圈");
+		}		
+		
 		
 	}
 }

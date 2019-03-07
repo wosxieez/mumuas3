@@ -2,7 +2,7 @@ package com.xiaomu.view.login
 {
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.HttpApi;
-	import com.xiaomu.view.HallView;
+	import com.xiaomu.view.hall.HallView;
 	import com.xiaomu.view.MainView;
 	
 	import flash.events.Event;

@@ -9,7 +9,7 @@ package com.xiaomu.view.room
 	import com.xiaomu.util.Audio;
 	import com.xiaomu.util.CardUtil;
 	import com.xiaomu.util.Notifications;
-	import com.xiaomu.view.GroupView;
+	import com.xiaomu.view.group.GroupView;
 	import com.xiaomu.view.MainView;
 	
 	import flash.events.MouseEvent;
