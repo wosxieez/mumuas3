@@ -1,6 +1,5 @@
 package com.xiaomu.view.group
 {
-	import com.xiaomu.component.UserStatusList;
 	import com.xiaomu.event.ApiEvent;
 	import com.xiaomu.renderer.RoomRenderer;
 	import com.xiaomu.renderer.UserRenderer;
@@ -8,6 +7,8 @@ package com.xiaomu.view.group
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.HttpApi;
 	import com.xiaomu.util.Notifications;
+	import com.xiaomu.view.MainView;
+	import com.xiaomu.view.hall.HallView;
 	import com.xiaomu.view.room.RoomView;
 	import com.xiaomu.view.userBarView.UserInfoVIew;
 	
@@ -23,8 +24,6 @@ package com.xiaomu.view.group
 	import coco.component.List;
 	import coco.core.UIComponent;
 	import coco.event.UIEvent;
-	import com.xiaomu.view.hall.HallView;
-	import com.xiaomu.view.MainView;
 	
 	
 	/**
@@ -46,11 +45,9 @@ package com.xiaomu.view.group
 		private var userInfoView : UserInfoVIew
 		private var userIcon:Image
 		private var userLabel:Label
-		private var bg : Image;
 		private var roomsList:List
 		private var usersList:List
 		private var goback:Image;
-		private var lab : Label;
 		private var _roomsData:Array
 		private var _userData : Object;
 		
@@ -89,15 +86,12 @@ package com.xiaomu.view.group
 			invalidateProperties()
 		}
 		
+		private var addMemberButton:Button
+		
 		override protected function createChildren():void {
 			super.createChildren()
 			
-			bg = new Image();
-			bg.source = 'assets/room/table_bg.png';
-			addChild(bg);
-			
 			userInfoView = new UserInfoVIew();
-			userInfoView.width = 300;
 			userInfoView.height = 40;
 			userInfoView.inRoomFlag = true;
 			addChild(userInfoView);
@@ -106,20 +100,19 @@ package com.xiaomu.view.group
 			roomsList.itemRendererClass = RoomRenderer
 			roomsList.itemRendererColumnCount = 2
 			roomsList.horizontalAlign = HorizontalAlign.JUSTIFY;
-			roomsList.gap = 10
+			roomsList.gap = roomsList.padding = 10
+			roomsList.y = 40
 			roomsList.addEventListener(UIEvent.CHANGE, roomsList_changeHandler)
 			addChild(roomsList)
 			
-			lab = new Label();
-			lab.text = '圈内好友';
-			lab.fontSize = 10;
-			lab.color = 0xffffff;
-			addChild(lab);
-			
-			usersList = new UserStatusList()
-			usersList.width = 120
-			usersList.height = height-50;
-			usersList.gap = 1;
+			usersList = new List()
+			usersList.radius = 10
+			usersList.padding = 10
+			usersList.paddingLeft = 0
+			usersList.y = 40
+			usersList.gap = 5
+			usersList.backgroundColor = 0xFFFFFF
+			usersList.backgroundAlpha = 0
 			usersList.itemRendererClass = UserRenderer
 			usersList.itemRendererHeight = 25;
 			addChild(usersList)
@@ -133,29 +126,37 @@ package com.xiaomu.view.group
 				MainView.getInstane().pushView(HallView)
 			})
 			addChild(goback)
+			
+			addMemberButton = new Button()
+			addMemberButton.backgroundColor = 0xFFFFFF
+			addMemberButton.backgroundAlpha = 0.1
+			addMemberButton.borderAlpha = 0
+			addMemberButton.radius = 5
+			addMemberButton.fontSize = 9
+			addMemberButton.color = 0xFFFFFF
+			addMemberButton.label = '添加成员'
+			addMemberButton.addEventListener(MouseEvent.CLICK, addMemberButton_clickHandler)
+			addChild(addMemberButton)
 		}
 		
 		override protected function updateDisplayList():void {
 			super.updateDisplayList()
-			bg.width = width;
-			bg.height = height;
+				
+			userInfoView.width = width
 			
-			usersList.x = width-usersList.width-10;
-			usersList.y = 50;
-			lab.x = usersList.x;
-			lab.y = usersList.y-15;
+			usersList.width = width / 3
+			usersList.height = height - usersList.y
+			usersList.x = width - usersList.width
+				
+			addMemberButton.x = usersList.x
+			addMemberButton.width = usersList.width - usersList.padding
+			addMemberButton.height = 25
+			addMemberButton.y = height - addMemberButton.height - usersList.padding
+				
+			roomsList.height = height - roomsList.y
+			roomsList.width = width * 2 / 3
+			roomsList.itemRendererHeight = (roomsList.width- roomsList.padding * 2 - roomsList.gap) / 2
 			
-			roomsList.height = usersList.height = height
-			roomsList.width = width-usersList.width-30
-			roomsList.itemRendererHeight = (roomsList.width-roomsList.gap*1)/4
-			roomsList.x = 10;
-			roomsList.y = 50;
-			var itemWidth:Number= roomsList.itemRendererWidth;
-			var itemCount:Number = roomsList.itemRendererColumnCount;
-			var itemGap:Number = roomsList.gap;
-			if(width-usersList.width-(itemWidth*(itemCount+1)+(itemCount)*itemGap)>0){
-				roomsList.itemRendererColumnCount = itemCount+1
-			}
 			goback.x = width-goback.width;
 			goback.y = 0;
 		}
@@ -181,12 +182,20 @@ package com.xiaomu.view.group
 		{
 			const roominfo:Object = roomsList.selectedItem
 			setTimeout(function ():void { roomsList.selectedIndex = -1 }, 200)
-			RoomView(MainView.getInstane().pushView(RoomView)).init(roominfo)
+			
+			Api.getInstane().joinRoom(roominfo, function (response):void {
+				if (response.code == 0) {
+					RoomView(MainView.getInstane().pushView(RoomView)).init(roominfo)
+				} else {
+					Alert.show(response.data)
+				}
+			})
 		}
 		
-		
+		private var thisGroupID:int
 		
 		public function init(groupid:int): void {
+			thisGroupID = groupid
 			HttpApi.getInstane().getUserInfo(AppData.getInstane().username,function(e:Event):void{
 				//				trace('房间界面：',JSON.stringify(JSON.parse(e.currentTarget.data).message[0]));
 				//				trace('房间界面：金币',JSON.parse(e.currentTarget.data).message[0].group_info);
@@ -338,6 +347,11 @@ package com.xiaomu.view.group
 					break;
 				}
 			}
+		}
+		
+		protected function addMemberButton_clickHandler(event:MouseEvent):void
+		{
+			AddMemberPanel.getInstane().open(thisGroupID)
 		}
 		
 	}

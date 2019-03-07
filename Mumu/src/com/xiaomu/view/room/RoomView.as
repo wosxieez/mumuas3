@@ -28,11 +28,10 @@ package com.xiaomu.view.room
 		{
 			super();
 			
+			this.addEventListener(MouseEvent.MOUSE_UP, this_mouseUpHandler)
+			this.addEventListener(MouseEvent.ROLL_OUT, this_rollOutHandler)
 			Api.getInstane().addEventListener(ApiEvent.Notification, onNotificationHandler)
 		}
-		
-		private var bg:Image
-		private var bgline:Image
 		
 		private var preUserLine:Image
 		private var preUserBG:Image
@@ -66,7 +65,6 @@ package com.xiaomu.view.room
 		private var nextPassCardUIs:Array = []
 		private var roominfo:Object
 		private var oldPoint:Point
-		private var isDrag:Boolean = false
 		private var thisCanPengCards:Array
 		private var thisCanChiCards:Array
 		private var thisCanHuDatas:Array
@@ -88,15 +86,6 @@ package com.xiaomu.view.room
 		override protected function createChildren():void {
 			super.createChildren()
 			
-			// 背景层
-			bg = new Image()
-			bg.source = 'assets/room_bg.png'
-			addChild(bg)
-			
-			bgline = new Image()
-			bgline.height = 60
-			bgline.source = Assets.getInstane().getAssets('fight_down_bg.png')
-			addChild(bgline)
 			// 卡牌层
 			cardLayer = new UIComponent()
 			addChild(cardLayer)
@@ -231,6 +220,8 @@ package com.xiaomu.view.room
 			
 			zhunbeiButton = new Button()
 			zhunbeiButton.label = '准备'
+			zhunbeiButton.width = 50
+			zhunbeiButton.height = 20
 			zhunbeiButton.addEventListener(MouseEvent.CLICK, zhunbeiButton_clickHandler)
 			iconLayer.addChild(zhunbeiButton)
 			
@@ -273,12 +264,6 @@ package com.xiaomu.view.room
 		
 		override protected function updateDisplayList():void {
 			super.updateDisplayList()
-			
-			bg.width = width
-			bg.height = height
-			
-			bgline.width = width
-			bgline.y = height - 60
 			
 			preUserLine.x = 20
 			preUserLine.y = 10
@@ -329,6 +314,9 @@ package com.xiaomu.view.room
 			
 			backBtn.x = width - backBtn.width - 2
 			backBtn.y = height - backBtn.height - 20
+				
+			zhunbeiButton.x = (width - zhunbeiButton.width) / 2
+			zhunbeiButton.y = (height - zhunbeiButton.height) / 2
 		}
 		
 		override protected function drawSkin():void {
@@ -362,7 +350,14 @@ package com.xiaomu.view.room
 					nextUserNameLabel.text = nextUser.username
 				} 
 				
-				cardsLabel.text = '剩余' + roominfo.cards.length + '张牌'
+				if (roominfo.cards)
+					cardsLabel.text = '剩余' + roominfo.cards.length + '张牌'
+					
+				for each(var user:Object in roominfo.users) {
+					if (user.username == AppData.getInstane().user.username) {
+						zhunbeiButton.label = user.isReady ? '取消准备' : '准备'
+					}
+				}
 			}
 		}
 		
@@ -438,7 +433,6 @@ package com.xiaomu.view.room
 						if (!newCardUI) {
 							newCardUI = new CardUI()
 							newCardUI.addEventListener(MouseEvent.MOUSE_DOWN, cardUI_mouseDownHandler)
-							newCardUI.addEventListener(MouseEvent.MOUSE_UP, cardUI_mouseUpHandler)
 							cardLayer.addChild(newCardUI)
 						}
 						newCardUI.visible = true
@@ -711,34 +705,46 @@ package com.xiaomu.view.room
 			}
 		}
 		
+		private var draggingCardUI:CardUI
+		
 		protected function cardUI_mouseDownHandler(event:MouseEvent):void
 		{
 			const cardUI:CardUI = event.currentTarget as CardUI
 			if (cardUI && cardUI.canDeal && this.isCheckNewCard) {
-				oldPoint = cardLayer.localToGlobal(new Point(cardUI.x, cardUI.y))
-				cardUI.startDrag()
-				isDrag = true
+				draggingCardUI = cardUI
+				oldPoint = cardLayer.localToGlobal(new Point(draggingCardUI.x, draggingCardUI.y))
+				draggingCardUI.startDrag()
 			}
 		}
 		
-		protected function cardUI_mouseUpHandler(event:MouseEvent):void
-		{
-			const cardUI:CardUI = event.currentTarget as CardUI
-			if (cardUI) {
-				if (isDrag) {
-					stopDrag()
-					const thisPoint:Point = cardLayer.globalToLocal(oldPoint)
-					event.currentTarget.x = thisPoint.x
-					event.currentTarget.y = thisPoint.y
-					isDrag = false
-				}
+		protected function this_mouseUpHandler(event:MouseEvent):void {
+			if (draggingCardUI) {
+				draggingCardUI.stopDrag()
+				if (mouseY <= height / 2) {
+					if (isCheckNewCard) {
+						const action:Object = { name: Actions.NewCard, data: draggingCardUI.card }
+						Api.getInstane().sendAction(action)
+						newCardTip.visible = false
+						isCheckNewCard = false
+					}
+				}	
 				
-				if (isCheckNewCard) {
-					const action:Object = { name: Actions.NewCard, data: cardUI.card }
-					Api.getInstane().sendAction(action)
-					newCardTip.visible = false
-					isCheckNewCard = false
-				}
+				// 恢复开始点
+				const thisPoint:Point = cardLayer.globalToLocal(oldPoint)
+				draggingCardUI.x = thisPoint.x
+				draggingCardUI.y = thisPoint.y
+				draggingCardUI = null
+			}
+		}
+		
+		protected function this_rollOutHandler(event:MouseEvent):void
+		{
+			if (draggingCardUI) {
+				// 恢复开始点
+				const thisPoint:Point = cardLayer.globalToLocal(oldPoint)
+				draggingCardUI.x = thisPoint.x
+				draggingCardUI.y = thisPoint.y
+				draggingCardUI = null
 			}
 		}
 		
@@ -755,8 +761,14 @@ package com.xiaomu.view.room
 			const notification: Object = event.data
 			switch(notification.name)
 			{
+				case Notifications.onReady:
+				{
+					updateRoomInfo(notification.data)
+					break
+				}
 				case Notifications.onNewRound:
 				{
+					zhunbeiButton.visible = true
 					cardsCarrUI.visible = cardsLabel.visible = true
 					
 					RoomResultView.getInstane().data = notification.data
@@ -911,8 +923,10 @@ package com.xiaomu.view.room
 				}
 				case Notifications.onWin: {
 					Audio.getInstane().playHandle('hu')
+					cardsCarrUI.visible = cardsLabel.visible = false
 					RoomResultView.getInstane().data = notification.data
 					PopUpManager.centerPopUp(PopUpManager.addPopUp(RoomResultView.getInstane(), null, false, true))
+					zhunbeiButton.visible = true
 					break
 				}
 				case Notifications.onRoundEnd: {
@@ -958,9 +972,9 @@ package com.xiaomu.view.room
 		}
 		
 		public function init(roominfo:Object): void {
-			Api.getInstane().joinRoom(roominfo)
 			isThree = roominfo.count == 3 
 			nextUserBG.visible = nextUserIcon.visible = nextUserLine.visible = nextUserNameLabel.visible = isThree
+			zhunbeiButton.label = '准备'
 			zhunbeiButton.visible = true
 		}
 		
@@ -972,9 +986,8 @@ package com.xiaomu.view.room
 		
 		protected function zhunbeiButton_clickHandler(event:MouseEvent):void
 		{
-			const action:Object = { name: Actions.Ready, data: true }
+			const action:Object = { name: Actions.Ready, data: zhunbeiButton.label == '准备' ? true : false }
 			Api.getInstane().sendAction(action)
-			zhunbeiButton.visible = false
 		}
 		
 		protected function roomChiPengList_changeHandler(event:UIEvent):void

@@ -28,6 +28,8 @@ package com.xiaomu.renderer
 			offlineIcon.width = offlineIcon.height = 20;
 			addChild(offlineIcon);
 			offlineIcon.visible = false;
+			
+			labelDisplay.color = 0xFFFFFF
 		}
 		
 		override protected function updateDisplayList():void
@@ -65,8 +67,8 @@ package com.xiaomu.renderer
 			super.drawSkin();
 			
 			graphics.clear();
-			graphics.beginFill(selected?0xeeeeee:0xffffff);
-			graphics.drawRect(0,0,width,height);
+			graphics.beginFill(0xffffff,0.1);
+			graphics.drawRoundRect(0,0,width,height,10,10);
 			graphics.endFill();
 		}
 		

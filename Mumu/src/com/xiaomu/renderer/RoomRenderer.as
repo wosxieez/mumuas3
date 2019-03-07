@@ -56,8 +56,6 @@ package com.xiaomu.renderer
 		{
 			super.updateDisplayList();
 			
-//			trace('item渲染宽高：',width,height);
-			
 			roomName.width = width/3;
 			roomName.height = height/10;
 			roomName.fontSize = height/10;
@@ -66,8 +64,8 @@ package com.xiaomu.renderer
 			joiner1.width = joiner2.width = joiner3.width=
 			joiner1.height = joiner2.height = joiner3.height = height*2/5;
 			
-			joiner1.x = width/15;
-			joiner1.y = height/2;
+			joiner1.x = width/15
+			joiner1.y = height/2
 			
 			joiner2.x = width-joiner2.width-width/15;
 			joiner2.y = height/2;
@@ -77,7 +75,7 @@ package com.xiaomu.renderer
 			joiner1.visible = joiner2.visible = joiner3.visible = false;
 			
 			tableImg.x = (width-tableImg.width)/2;
-			tableImg.y = height/2;
+			tableImg.y = height/2 - 10
 			
 			roomName.width = width;
 			roomName.x = 0;

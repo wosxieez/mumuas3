@@ -45,7 +45,7 @@ package com.xiaomu.util
 			this.username = username
 			this.groupid = groupid
 			pomelo = new Pomelo()
-			pomelo.init("192.168.0.102", 3014)
+			pomelo.init("192.168.0.5", 3014)
 			//			pomelo.init("106.14.148.139", 3014)
 			pomelo.addEventListener(PomeloEvent.HANDSHAKE, onConnectHandler);
 			pomelo.addEventListener(PomeloEvent.ERROR, pomeloErrorHandler);
@@ -108,15 +108,11 @@ package com.xiaomu.util
 			pomelo = null
 		}
 		
-		public function joinRoom(roominfo:Object):void {
+		public function joinRoom(roominfo:Object, cb:Function = null):void {
 			if (!pomelo) return
 			pomelo.request('connector.entryHandler.joinRoom', roominfo,
 				function(response:Object):void {
-					Alert.show(JSON.stringify(response))
-					if (response.code == 0) {
-						
-					} else {
-					}
+					if (cb) { cb(response) }
 				})
 		}
 		

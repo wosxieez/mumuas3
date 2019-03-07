@@ -21,5 +21,6 @@ package com.xiaomu.util
 		public static const checkNewCard:int = 14       // 检查出牌
 		public static const checkHu:int = 15       // 检查胡
 		public static const onRoundEnd:int = 999   // 一局结束
+		public static const onReady:int = 501     // 有玩家准备
 	}
 }
