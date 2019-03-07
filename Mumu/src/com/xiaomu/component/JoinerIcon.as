@@ -32,7 +32,7 @@ package com.xiaomu.component
 			super.createChildren();
 			
 			joinPic = new Image();
-			joinPic.width = joinPic.height = 20;
+			
 			joinPic.source = 'assets/role/joiner_'+(int(Math.random()*3)+1)+'.png';
 			addChild(joinPic);
 			
@@ -41,7 +41,6 @@ package com.xiaomu.component
 			joinName.textAlign = TextAlign.CENTER;
 			joinName.backgroundAlpha = 0;
 			joinName.borderAlpha = 0;
-			joinName.fontSize = 6;
 			joinName.color = 0xffffff;
 			addChild(joinName);
 		}
@@ -50,7 +49,6 @@ package com.xiaomu.component
 		{
 			super.commitProperties();
 			
-//			trace('收到数据：',data);
 			if(data){
 				joinName.text = data.name;
 			}
@@ -60,13 +58,16 @@ package com.xiaomu.component
 		{
 			super.updateDisplayList();
 			
+			joinPic.width = joinPic.height = width;
+			
 			joinPic.x = (width-joinPic.width)/2;
 			joinPic.y = 0;
 			
-			joinName.height = 8;
-			joinName.width = width;
-			joinName.x = 0;
+			joinName.height = height/4;
+			joinName.width = width*1.6;
+			joinName.x = -width*0.3;
 			joinName.y = joinPic.y+joinPic.height+2;
+			joinName.fontSize = height/4;
 		}
 		
 		override protected function drawSkin():void

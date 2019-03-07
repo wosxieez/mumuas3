@@ -16,6 +16,8 @@ package com.xiaomu.view
 	import flash.utils.setTimeout;
 	
 	import coco.component.Alert;
+	import coco.component.Button;
+	import coco.component.HorizontalAlign;
 	import coco.component.Image;
 	import coco.component.Label;
 	import coco.component.List;
@@ -100,9 +102,8 @@ package com.xiaomu.view
 			
 			roomsList = new List()
 			roomsList.itemRendererClass = RoomRenderer
-			roomsList.itemRendererColumnCount = 3
-			roomsList.itemRendererHeight = 80;
-			roomsList.itemRendererWidth = 120;
+			roomsList.itemRendererColumnCount = 2
+			roomsList.horizontalAlign = HorizontalAlign.JUSTIFY;
 			roomsList.gap = 10
 			roomsList.addEventListener(UIEvent.CHANGE, roomsList_changeHandler)
 			addChild(roomsList)
@@ -143,7 +144,8 @@ package com.xiaomu.view
 			lab.y = usersList.y-15;
 			
 			roomsList.height = usersList.height = height
-			roomsList.width = width-usersList.width-10
+			roomsList.width = width-usersList.width-30
+			roomsList.itemRendererHeight = (roomsList.width-roomsList.gap*1)/4
 			roomsList.x = 10;
 			roomsList.y = 50;
 			var itemWidth:Number= roomsList.itemRendererWidth;
@@ -173,16 +175,6 @@ package com.xiaomu.view
 			userInfoView.userInfoData = userData
 		}
 		
-		override protected function drawSkin():void
-		{
-			super.drawSkin();
-			
-			//			graphics.clear();
-			//			graphics.beginFill(0x9F7D50);
-			//			graphics.drawRect(0,0,width,height);
-			//			graphics.endFill();
-		}
-		
 		protected function roomsList_changeHandler(event:UIEvent):void
 		{
 			const roominfo:Object = roomsList.selectedItem
@@ -191,18 +183,19 @@ package com.xiaomu.view
 		}
 		
 		
+		
 		public function init(groupid:int): void {
 			HttpApi.getInstane().getUserInfo(AppData.getInstane().username,function(e:Event):void{
 				//				trace('房间界面：',JSON.stringify(JSON.parse(e.currentTarget.data).message[0]));
-//				trace('房间界面：金币',JSON.parse(e.currentTarget.data).message[0].group_info);
-//				trace('房间界面：房卡',JSON.parse(e.currentTarget.data).message[0].room_card);
+				//				trace('房间界面：金币',JSON.parse(e.currentTarget.data).message[0].group_info);
+				//				trace('房间界面：房卡',JSON.parse(e.currentTarget.data).message[0].room_card);
 				var roomCard:String = JSON.parse(e.currentTarget.data).message[0].room_card+'';
 				var tempArr : Array = JSON.parse(JSON.parse(e.currentTarget.data).message[0].group_info) as Array;
 				for each (var i:Object in tempArr) 
 				{
 					if(i.group_id+''==groupid+''){
 						userData = {'gold':i.gold,'userName':AppData.getInstane().username,'roomCard':roomCard}
-//						trace("userData:",JSON.stringify(userData));
+						//						trace("userData:",JSON.stringify(userData));
 					}
 				}
 			},null);
@@ -213,7 +206,7 @@ package com.xiaomu.view
 					const usersResponse:Object = JSON.parse(e.currentTarget.data)
 					if (usersResponse.result == 0 && usersResponse.message) {
 						usersData = usersResponse.message
-//						trace("结果：",JSON.stringify(usersResponse.message));
+						//						trace("结果：",JSON.stringify(usersResponse.message));
 					} 
 					
 					// 加载群的房间信息
