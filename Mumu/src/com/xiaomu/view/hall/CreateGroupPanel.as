@@ -8,11 +8,9 @@ package com.xiaomu.view.hall
 	
 	import coco.component.Alert;
 	import coco.component.Button;
-	import coco.component.Label;
 	import coco.component.Panel;
 	import coco.component.TextAlign;
 	import coco.component.TextInput;
-	import coco.core.UIComponent;
 	import coco.manager.PopUpManager;
 	
 	/**
@@ -29,7 +27,7 @@ package com.xiaomu.view.hall
 			backgroundColor = 0x000000
 			backgroundAlpha = .8
 			borderAlpha = 0
-			title = '请输入群名称'
+			title = '创建群-请输入群名称'
 		}
 		
 		private var nameInput:TextInput;
@@ -65,12 +63,12 @@ package com.xiaomu.view.hall
 			nameInput.x = okBtn.x = cancelBtn.x = width/5;
 			nameInput.y = 10;
 			nameInput.width = width*3/5;
-			nameInput.height = nameInput.width/6;
+			nameInput.height = nameInput.width/5;
 			
 			okBtn.width = cancelBtn.width = nameInput.width;
 			okBtn.height = cancelBtn.height = nameInput.height;
-			okBtn.y = nameInput.y+nameInput.height+10;
-			cancelBtn.y = okBtn.y+okBtn.height+10
+			okBtn.y = nameInput.y+nameInput.height+5;
+			cancelBtn.y = okBtn.y+okBtn.height+5
 		}
 		
 		override protected function drawSkin():void

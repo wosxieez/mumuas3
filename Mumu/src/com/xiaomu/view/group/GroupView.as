@@ -14,6 +14,7 @@ package com.xiaomu.view.group
 	
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.utils.clearTimeout;
 	import flash.utils.setTimeout;
 	
 	import coco.component.Alert;
@@ -141,18 +142,18 @@ package com.xiaomu.view.group
 		
 		override protected function updateDisplayList():void {
 			super.updateDisplayList()
-				
+			
 			userInfoView.width = width
 			
 			usersList.width = width / 3
 			usersList.height = height - usersList.y
 			usersList.x = width - usersList.width
-				
+			
 			addMemberButton.x = usersList.x
 			addMemberButton.width = usersList.width - usersList.padding
 			addMemberButton.height = 25
 			addMemberButton.y = height - addMemberButton.height - usersList.padding
-				
+			
 			roomsList.height = height - roomsList.y
 			roomsList.width = width * 2 / 3
 			roomsList.itemRendererHeight = (roomsList.width- roomsList.padding * 2 - roomsList.gap) / 2
@@ -179,18 +180,24 @@ package com.xiaomu.view.group
 			userInfoView.userInfoData = userData
 		}
 		
+		private var timeout1 : uint;
+		private var roomInfo:Object;
 		protected function roomsList_changeHandler(event:UIEvent):void
 		{
-			const roominfo:Object = roomsList.selectedItem
-			setTimeout(function ():void { roomsList.selectedIndex = -1 }, 200)
-			
-			Api.getInstane().joinRoom(roominfo, function (response):void {
-				if (response.code == 0) {
-					RoomView(MainView.getInstane().pushView(RoomView)).init(roominfo)
-				} else {
-					Alert.show(response.data)
-				}
-			})
+			if(roomsList.selectedItem!=null){
+				roomInfo = roomsList.selectedItem
+			}
+			if(timeout1){clearTimeout(timeout1)}
+			timeout1 = setTimeout(function():void{
+				setTimeout(function ():void { roomsList.selectedIndex = -1 }, 200)
+				Api.getInstane().joinRoom(roomInfo, function (response):void {
+					if (response.code == 0) {
+						RoomView(MainView.getInstane().pushView(RoomView)).init(roomInfo)
+					} else {
+						Alert.show("response.data：",response.data)
+					}
+				})
+			},300);
 		}
 		
 		private var thisGroupID:int
@@ -235,6 +242,8 @@ package com.xiaomu.view.group
 									room.roomname = 'room' + room.id
 								}
 								roomsData = rooms
+//								trace('roomsData:',roomsData);
+//								trace('roomsData:',JSON.stringify(roomsData));
 								// 加入群
 								Api.getInstane().joinGroup(AppData.getInstane().user.username, groupid)
 							} 
@@ -242,8 +251,6 @@ package com.xiaomu.view.group
 						function (e:Event):void {
 							// get group rooms error
 						})
-					
-					
 				}, 
 				function (e:Event):void {
 					// get group users error
@@ -304,6 +311,7 @@ package com.xiaomu.view.group
 		protected function onGroupHandler(event:ApiEvent):void
 		{
 			const notification:Object = event.data
+//			trace('notification:',JSON.stringify(notification));
 			switch(notification.name)
 			{
 				case Notifications.onJoinGroup:
