@@ -1,8 +1,8 @@
 package com.xiaomu.component
 {
 	import coco.component.Image;
+	import coco.component.Label;
 	import coco.component.TextAlign;
-	import coco.component.TextInput;
 	import coco.core.UIComponent;
 	
 	public class JoinerIcon extends UIComponent
@@ -26,7 +26,7 @@ package com.xiaomu.component
 		}
 
 		private var joinPic : Image;
-		private var joinName:TextInput;
+		private var joinName:Label;
 		override protected function createChildren():void
 		{
 			super.createChildren();
@@ -36,11 +36,8 @@ package com.xiaomu.component
 			joinPic.source = 'assets/role/joiner_'+(int(Math.random()*3)+1)+'.png';
 			addChild(joinPic);
 			
-			joinName = new TextInput();
-			joinName.editable = false;
+			joinName = new Label();
 			joinName.textAlign = TextAlign.CENTER;
-			joinName.backgroundAlpha = 0;
-			joinName.borderAlpha = 0;
 			joinName.color = 0xffffff;
 			addChild(joinName);
 		}
@@ -63,11 +60,11 @@ package com.xiaomu.component
 			joinPic.x = (width-joinPic.width)/2;
 			joinPic.y = 0;
 			
-			joinName.height = height/4;
+			joinName.height = height/3+5;
 			joinName.width = width*1.6;
 			joinName.x = -width*0.3;
-			joinName.y = joinPic.y+joinPic.height+2;
-			joinName.fontSize = height/4;
+			joinName.y = joinPic.y+joinPic.height;
+			joinName.fontSize = height/3;
 		}
 		
 		override protected function drawSkin():void

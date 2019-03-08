@@ -16,6 +16,20 @@ package com.xiaomu.renderer
 			autoDrawSkin = false;
 		}
 		
+		private var _data:Object;
+		
+		override public function get data():Object
+		{
+			return _data;
+		}
+		
+		override public function set data(value:Object):void
+		{
+			_data = value;
+			invalidateDisplayList();
+			invalidateProperties();
+		}
+		
 		
 		private var tableImg : Image;
 		private var user:Label;
@@ -23,6 +37,7 @@ package com.xiaomu.renderer
 		private var joiner2 : JoinerIcon
 		private var joiner3 : JoinerIcon
 		private var roomName : TextInput;
+		private var counter:Label;
 		override protected function createChildren():void
 		{
 			super.createChildren();
@@ -49,6 +64,10 @@ package com.xiaomu.renderer
 			joiner3 = new JoinerIcon();
 			addChild(joiner3);
 			
+			counter = new Label();
+			counter.color = 0xffffff;
+			addChild(counter);
+			
 			labelDisplay.visible = false;
 		}
 		
@@ -56,30 +75,39 @@ package com.xiaomu.renderer
 		{
 			super.updateDisplayList();
 			
-			roomName.width = width/3;
-			roomName.height = height/10;
-			roomName.fontSize = height/10;
-			tableImg.width = width/3;
-			tableImg.height = height/2;
-			joiner1.width = joiner2.width = joiner3.width=
-			joiner1.height = joiner2.height = joiner3.height = height*2/5;
-			
-			joiner1.x = width/15
-			joiner1.y = height/2
-			
-			joiner2.x = width-joiner2.width-width/15;
-			joiner2.y = height/2;
-			
-			joiner3.x = (width-joiner3.width)/2;
-			joiner3.y = 0;
 			joiner1.visible = joiner2.visible = joiner3.visible = false;
+			roomName.width = width/4;
+			roomName.height = height/12;
+			roomName.fontSize = height/12;
+			tableImg.width = width/3;
+			tableImg.height = height/3;
+			joiner1.width = joiner2.width = joiner3.width=
+				joiner1.height = joiner2.height = joiner3.height = height*2/11;
 			
-			tableImg.x = (width-tableImg.width)/2;
-			tableImg.y = height/2 - 10
+			if(data){
+				counter.text = data.count+'人桌';
+				//				trace(JSON.stringify(data))
+				tableImg.x = (width-tableImg.width)/2;
+				tableImg.y = (height-tableImg.height)/2
+				
+				joiner1.x = width/15
+				joiner1.y = (height-joiner1.height)/2
+				
+				joiner2.x = width-joiner2.width-width/15;
+				joiner2.y = (height-joiner2.height)/2
+				
+				joiner3.x = (width-joiner3.width)/2;
+				joiner3.y = height/15;
+			}
+			
+			counter.width = width;
+			counter.height = 14;
+			counter.fontSize = 10;
+			counter.y = tableImg.y+(tableImg.height-counter.height)/2
 			
 			roomName.width = width;
 			roomName.x = 0;
-			roomName.y = tableImg.y+(tableImg.height-roomName.height)/2;
+			roomName.y = height-height/15-roomName.height;
 			roomName.text = data.name
 		}
 		
@@ -90,7 +118,7 @@ package com.xiaomu.renderer
 			if (data)
 			{
 				if(data.users){
-					
+//					trace('data.users::',data.users);
 					for (var k:int = 0; k < [joiner1,joiner2,joiner3].length; k++) 
 					{
 						var dataObj : Object =  {'name':data.users[k]}
@@ -114,7 +142,6 @@ package com.xiaomu.renderer
 						joiner3.visible = false;
 					}
 				}
-				
 			}
 		}
 		

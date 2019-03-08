@@ -165,6 +165,7 @@ package com.xiaomu.view.group
 			super.commitProperties()
 			usersList.dataProvider = usersData
 			roomsList.dataProvider = roomsData
+//			trace('房间数据：',JSON.stringify(roomsData));
 			var tempArr : Array = [];
 			for each (var i:Object in usersData) 
 			{
