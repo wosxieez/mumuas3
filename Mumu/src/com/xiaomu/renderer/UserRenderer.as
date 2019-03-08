@@ -1,5 +1,10 @@
 package com.xiaomu.renderer
 {
+	import com.xiaomu.view.group.SettingMemberPanel;
+	
+	import flash.events.MouseEvent;
+	
+	import coco.component.Button;
 	import coco.component.DefaultItemRenderer;
 	import coco.component.Image;
 	import coco.component.TextAlign;
@@ -9,10 +14,12 @@ package com.xiaomu.renderer
 		public function UserRenderer()
 		{
 			super();
+			mouseChildren = true
 		}
 		
 		private var onlineIcon : Image;
 		private var offlineIcon : Image;
+		private var settingButton:Button
 		override protected function createChildren():void
 		{
 			super.createChildren();
@@ -30,6 +37,12 @@ package com.xiaomu.renderer
 			offlineIcon.visible = false;
 			
 			labelDisplay.color = 0xFFFFFF
+				
+			settingButton = new Button()
+			settingButton.label = 'Setting'
+			settingButton.width = settingButton.height = 20
+			settingButton.addEventListener(MouseEvent.CLICK, settingButton_clickHandler)
+			addChild(settingButton)
 		}
 		
 		override protected function updateDisplayList():void
@@ -38,6 +51,8 @@ package com.xiaomu.renderer
 			
 			onlineIcon.x = offlineIcon.x = 5;
 			onlineIcon.y = offlineIcon.y = (height-onlineIcon.height)/2;
+			
+			settingButton.x = width - settingButton.width
 		}
 		
 		override protected function commitProperties():void
@@ -70,6 +85,11 @@ package com.xiaomu.renderer
 			graphics.beginFill(0xffffff,0.1);
 			graphics.drawRoundRect(0,0,width,height,10,10);
 			graphics.endFill();
+		}
+		
+		protected function settingButton_clickHandler(event:MouseEvent):void
+		{
+			SettingMemberPanel.getInstane().open(data)
 		}
 		
 	}

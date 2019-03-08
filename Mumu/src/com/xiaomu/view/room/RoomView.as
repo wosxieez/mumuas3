@@ -234,32 +234,37 @@ package com.xiaomu.view.room
 		
 		override protected function commitProperties():void {
 			super.commitProperties()
-			this.preUser = {username: 'wosxieez0', 
-				handCards: [1, 3, 5, 4, 4, 3, 11, 15, 18, 19, 11, 10, 9, 9, 8, 16, 17, 18, 9, 10, 8],
-				groupCards: [{name: 'ti', cards: [1, 1, 1, 1]}],
-				passCards:[2, 4, 9]}
-			this.nextUser = {username: 'wosxieez2', 
-				handCards: [1, 3, 5, 4, 4, 3, 11, 15, 18, 19, 11, 10, 9, 9, 8, 16, 17, 18, 9, 10, 8],
-				groupCards: [{name: 'ti', cards: [1, 1, 1, 1]}],
-				passCards:[2, 4, 9]}
-			this.myUser = {username: 'wosxieez1', 
-				handCards: [1, 3, 5, 4, 4, 4, 4, 3, 11, 15, 18, 19, 11, 10, 9, 9, 8, 16, 17, 18, 9, 10, 8],
-				groupCards: [{name: 'ti', cards: [1, 1, 1, 1]}],
-				passCards:[2, 4, 9]}
+//			this.preUser = {username: 'wosxieez0', 
+//				handCards: [1, 3, 5, 4, 4, 3, 11, 15, 18, 19, 11, 10, 9, 9, 8, 16, 17, 18, 9, 10, 8],
+//				groupCards: [{name: 'ti', cards: [1, 1, 1, 1]}],
+//				passCards:[2, 4, 9]}
+//			this.nextUser = {username: 'wosxieez2', 
+//				handCards: [1, 3, 5, 4, 4, 3, 11, 15, 18, 19, 11, 10, 9, 9, 8, 16, 17, 18, 9, 10, 8],
+//				groupCards: [{name: 'ti', cards: [1, 1, 1, 1]}],
+//				passCards:[2, 4, 9]}
+//			this.myUser = {username: 'wosxieez1', 
+//				handCards: [1, 3, 5, 4, 4, 4, 4, 3, 11, 15, 18, 19, 11, 10, 9, 9, 8, 16, 17, 18, 9, 10, 8],
+//				groupCards: [{name: 'ti', cards: [1, 1, 1, 1]}],
+//				passCards:[2, 4, 9]}
 			
-			preUserNameLabel.text = preUser.username
-			myUserNameLabel.text = myUser.username
-			nextUserNameLabel.text = nextUser.username
+			if (preUser) {
+				preUserNameLabel.text = preUser.username
+				updatePreGroupCardUIs()
+				updatePrePassCardUIs()
+			}
 			
-			updateMyHandCardUIs()
-			updateMyGroupCardUIs()
-			updateMyPassCardUIs()
+			if (myUser) {
+				myUserNameLabel.text = myUser.username
+				updateMyHandCardUIs()
+				updateMyGroupCardUIs()
+				updateMyPassCardUIs()
+			}
 			
-			updatePreGroupCardUIs()
-			updatePrePassCardUIs()
-			
-			updateNextGroupCardUIs()
-			updateNextPassCardUIs()
+			if (nextUser) {
+				nextUserNameLabel.text = nextUser.username
+				updateNextGroupCardUIs()
+				updateNextPassCardUIs()
+			}
 		}
 		
 		override protected function updateDisplayList():void {

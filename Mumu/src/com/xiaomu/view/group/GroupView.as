@@ -216,7 +216,11 @@ package com.xiaomu.view.group
 					// get group users ok
 					const usersResponse:Object = JSON.parse(e.currentTarget.data)
 					if (usersResponse.result == 0 && usersResponse.message) {
-						usersData = usersResponse.message
+						var users:Array = usersResponse.message
+						for each(var user:Object in users) {
+							user.group_id = thisGroupID
+						}
+						usersData = users
 						//						trace("结果：",JSON.stringify(usersResponse.message));
 					} 
 					
