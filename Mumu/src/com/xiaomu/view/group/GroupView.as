@@ -14,8 +14,6 @@ package com.xiaomu.view.group
 	
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-	import flash.utils.clearTimeout;
-	import flash.utils.setTimeout;
 	
 	import coco.component.Alert;
 	import coco.component.Button;
@@ -166,7 +164,7 @@ package com.xiaomu.view.group
 			super.commitProperties()
 			usersList.dataProvider = usersData
 			roomsList.dataProvider = roomsData
-//			trace('房间数据：',JSON.stringify(roomsData));
+			trace('房间数据：',JSON.stringify(roomsData));
 			var tempArr : Array = [];
 			for each (var i:Object in usersData) 
 			{
@@ -180,24 +178,19 @@ package com.xiaomu.view.group
 			userInfoView.userInfoData = userData
 		}
 		
-		private var timeout1 : uint;
-		private var roomInfo:Object;
 		protected function roomsList_changeHandler(event:UIEvent):void
 		{
 			if(roomsList.selectedItem!=null){
-				roomInfo = roomsList.selectedItem
-			}
-			if(timeout1){clearTimeout(timeout1)}
-			timeout1 = setTimeout(function():void{
-				setTimeout(function ():void { roomsList.selectedIndex = -1 }, 200)
-				Api.getInstane().joinRoom(roomInfo, function (response):void {
+				var room:Object = roomsList.selectedItem
+				Api.getInstane().joinRoom(room, function (response):void {
 					if (response.code == 0) {
-						RoomView(MainView.getInstane().pushView(RoomView)).init(roomInfo)
+						RoomView(MainView.getInstane().pushView(RoomView)).init(room)
 					} else {
 						Alert.show("response.data：",response.data)
 					}
 				})
-			},300);
+				roomsList.selectedIndex = -1
+			}
 		}
 		
 		private var thisGroupID:int
@@ -293,6 +286,7 @@ package com.xiaomu.view.group
 				roomnames.push(room.roomname)
 			}
 			Api.getInstane().getRoomsUsers(roomnames, function (data:Object):void {
+				trace('获取房间用户数据', JSON.stringify(data))
 				for (var roomname:String in data) {
 					var room:Object = getRoom(roomname)
 					if (room) { room.users = data[roomname] }
@@ -311,7 +305,7 @@ package com.xiaomu.view.group
 		protected function onGroupHandler(event:ApiEvent):void
 		{
 			const notification:Object = event.data
-//			trace('notification:',JSON.stringify(notification));
+			trace('notification:',JSON.stringify(notification));
 			switch(notification.name)
 			{
 				case Notifications.onJoinGroup:
@@ -360,6 +354,14 @@ package com.xiaomu.view.group
 					break;
 				}
 			}
+		}
+		
+		private function addRoomUser(room:Object, username:String):void {
+			
+		}
+		
+		private function removeRoomUser(room:Object, username:String):void {
+			
 		}
 		
 		protected function addMemberButton_clickHandler(event:MouseEvent):void

@@ -9,8 +9,8 @@ package com.xiaomu.view.room
 	import com.xiaomu.util.Audio;
 	import com.xiaomu.util.CardUtil;
 	import com.xiaomu.util.Notifications;
-	import com.xiaomu.view.group.GroupView;
 	import com.xiaomu.view.MainView;
+	import com.xiaomu.view.group.GroupView;
 	
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
@@ -28,8 +28,6 @@ package com.xiaomu.view.room
 		{
 			super();
 			
-			this.addEventListener(MouseEvent.MOUSE_UP, this_mouseUpHandler)
-			this.addEventListener(MouseEvent.ROLL_OUT, this_rollOutHandler)
 			Api.getInstane().addEventListener(ApiEvent.Notification, onNotificationHandler)
 		}
 		
@@ -714,15 +712,23 @@ package com.xiaomu.view.room
 		
 		protected function cardUI_mouseDownHandler(event:MouseEvent):void
 		{
+			trace('cards mouse down')
 			const cardUI:CardUI = event.currentTarget as CardUI
 			if (cardUI && cardUI.canDeal && this.isCheckNewCard) {
 				draggingCardUI = cardUI
 				oldPoint = cardLayer.localToGlobal(new Point(draggingCardUI.x, draggingCardUI.y))
 				draggingCardUI.startDrag()
+					
+				this.addEventListener(MouseEvent.MOUSE_UP, this_mouseUpHandler)
+				this.addEventListener(MouseEvent.ROLL_OUT, this_rollOutHandler)
 			}
 		}
 		
 		protected function this_mouseUpHandler(event:MouseEvent):void {
+			this.removeEventListener(MouseEvent.MOUSE_UP, this_mouseUpHandler)
+			this.removeEventListener(MouseEvent.ROLL_OUT, this_rollOutHandler)
+				
+			trace('cards mouse up')
 			if (draggingCardUI) {
 				draggingCardUI.stopDrag()
 				if (mouseY <= height / 2) {
@@ -744,7 +750,11 @@ package com.xiaomu.view.room
 		
 		protected function this_rollOutHandler(event:MouseEvent):void
 		{
+			this.removeEventListener(MouseEvent.MOUSE_UP, this_mouseUpHandler)
+			this.removeEventListener(MouseEvent.ROLL_OUT, this_rollOutHandler)
+				
 			if (draggingCardUI) {
+				draggingCardUI.stopDrag()
 				// 恢复开始点
 				const thisPoint:Point = cardLayer.globalToLocal(oldPoint)
 				draggingCardUI.x = thisPoint.x
@@ -773,11 +783,8 @@ package com.xiaomu.view.room
 				}
 				case Notifications.onNewRound:
 				{
-					zhunbeiButton.visible = true
+					zhunbeiButton.visible = false
 					cardsCarrUI.visible = cardsLabel.visible = true
-					
-					RoomResultView.getInstane().data = notification.data
-					PopUpManager.centerPopUp(PopUpManager.addPopUp(RoomResultView.getInstane(), null, false, true))
 						
 					updateRoomInfo(notification.data)
 					// 如果自己是庄家不显示翻开的牌
@@ -932,6 +939,7 @@ package com.xiaomu.view.room
 					RoomResultView.getInstane().data = notification.data
 					PopUpManager.centerPopUp(PopUpManager.addPopUp(RoomResultView.getInstane(), null, false, true))
 					zhunbeiButton.visible = true
+					zhunbeiButton.label = '准备'
 					break
 				}
 				case Notifications.onRoundEnd: {
@@ -939,6 +947,7 @@ package com.xiaomu.view.room
 					RoomResultView.getInstane().data = notification.data
 					PopUpManager.centerPopUp(PopUpManager.addPopUp(RoomResultView.getInstane(), null, false, true))
 					zhunbeiButton.visible = true
+					zhunbeiButton.label = '准备'
 					break
 				}
 				default:
