@@ -104,5 +104,19 @@ package com.xiaomu.util
 			var urlLoader:CocoURLLoader = new CocoURLLoader(resultHandler, faultHandler, true, 20000);
 			urlLoader.load(urlrequest)
 		}
+		
+		public function getAllGroupInfo( 
+			resultHandler:Function = null, 
+			faultHandler:Function = null):void
+		{
+			var params:Object = {}
+			var urlrequest:URLRequest = new URLRequest(WEB_URL + 'find_group');
+			urlrequest.method = URLRequestMethod.POST
+			urlrequest.contentType = 'application/json'
+			urlrequest.data = JSON.stringify(params)
+			var urlLoader:CocoURLLoader = new CocoURLLoader(resultHandler, faultHandler, true, 20000);
+			urlLoader.load(urlrequest)
+		}
+		
 	}
 }

@@ -149,7 +149,7 @@ package com.xiaomu.view.hall
 		
 		override protected function commitProperties():void {
 			super.commitProperties()
-			groupsList.dataProvider = groupsData
+//			groupsList.dataProvider = groupsData
 		}
 		
 		override protected function updateDisplayList():void{
@@ -194,6 +194,17 @@ package com.xiaomu.view.hall
 				//				trace('大厅界面：用户id',JSON.parse(e.currentTarget.data).message[0].id);
 				AppData.getInstane().user.userId = JSON.parse(e.currentTarget.data).message[0].id+'';
 				userInfoView.userInfoData = {"roomCard":JSON.parse(e.currentTarget.data).message[0].room_card+'','userName':AppData.getInstane().username}
+			},null);
+			HttpApi.getInstane().getAllGroupInfo(function(e:Event):void{
+			var groupArr : Array = JSON.parse(e.currentTarget.data).message as Array;
+			for each (var j:Object in groupArr) {
+				for each (var k:Object in groupsData) {
+					if(k.group_id==j.id){
+						k.name = j.name
+					}
+				}
+			}
+			groupsList.dataProvider = groupsData
 			},null);
 		}
 		
