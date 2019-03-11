@@ -32,6 +32,7 @@ package com.xiaomu.renderer
 		private var onlineIcon : Image;
 		private var offlineIcon : Image;
 		private var settingButton:Image
+		private var adminIcon:Image;
 		override protected function createChildren():void
 		{
 			super.createChildren();
@@ -52,9 +53,14 @@ package com.xiaomu.renderer
 				
 			settingButton = new Image()
 			settingButton.source = 'assets/room/gold_icon.png';
-			settingButton.width = settingButton.height = 16
+			settingButton.width = settingButton.height = 14
 			settingButton.addEventListener(MouseEvent.CLICK, settingButton_clickHandler)
 			addChild(settingButton)
+			
+			adminIcon = new Image();
+			adminIcon.source = 'assets/room/admin.png';
+			adminIcon.width = adminIcon.height = 14
+			addChild(adminIcon)
 		}
 		
 		override protected function updateDisplayList():void
@@ -64,8 +70,8 @@ package com.xiaomu.renderer
 			onlineIcon.x = offlineIcon.x = 5;
 			onlineIcon.y = offlineIcon.y = (height-onlineIcon.height)/2;
 			
-			settingButton.x = width - settingButton.width-4;
-			settingButton.y =(height-settingButton.height)/2;
+			adminIcon.x = settingButton.x = width - settingButton.width-4;
+			adminIcon.y = settingButton.y =(height-settingButton.height)/2;
 		}
 		
 		override protected function commitProperties():void
@@ -86,6 +92,7 @@ package com.xiaomu.renderer
 					offlineIcon.visible = true;
 				}
 				settingButton.visible = data.allowSetFlag
+				adminIcon.visible = data.allowSetFlag?false:data.isAdmin;
 			}
 			else
 				labelDisplay.text = "";

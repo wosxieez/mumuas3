@@ -186,7 +186,7 @@ package com.xiaomu.view.hall
 			trace('当前群主id是：',groupAdminId);
 			trace('用户自身id:',userId);
 			setTimeout(function ():void { groupsList.selectedIndex = -1 }, 200)
-			GroupView(MainView.getInstane().pushView(GroupView)).init(groupId,groupAdminId==userId)///进入房间界面，初始化，输入组id,同时传入需要该组的群主id
+			GroupView(MainView.getInstane().pushView(GroupView)).init(groupId,groupAdminId)///进入房间界面，初始化，输入组id,同时传入需要该组的群主id
 		}
 		
 		public function init():void {

@@ -212,10 +212,10 @@ package com.xiaomu.view.group
 		/**
 		 * 群界面初始化
 		 * @param groupid 群id
-		 * @param isGroupAdmin 自己是否为该群的群主
+		 * @param groupAdminId 该群的群主id
 		 */
-		public function init(groupid:int,isGroupAdmin:Boolean): void {
-			isNowGroupAdmin = isGroupAdmin
+		public function init(groupid:int,groupAdminId:int): void {
+			isNowGroupAdmin = groupAdminId==AppData.getInstane().user.id;
 			thisGroupID = groupid
 			HttpApi.getInstane().getUserInfo(AppData.getInstane().username,function(e:Event):void{
 				var roomCard:String = JSON.parse(e.currentTarget.data).message[0].room_card+'';
@@ -239,7 +239,8 @@ package com.xiaomu.view.group
 						//						usersData = users
 						var tempUsers : Array = JSON.parse(JSON.stringify(users)) as Array;
 						tempUsers.map(function(item:*,index:int,arr:Array):Object{
-							item.allowSetFlag = isGroupAdmin ///你只有是该群的群主 你才能给其他群成员设置金币
+							item.allowSetFlag = groupAdminId==AppData.getInstane().user.id; ///你只有是该群的群主 你才能给其他群成员设置金币
+							item.isAdmin = groupAdminId==item.id
 						},null);
 						usersData = tempUsers
 					} 
