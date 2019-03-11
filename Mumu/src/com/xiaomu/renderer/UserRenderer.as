@@ -31,7 +31,7 @@ package com.xiaomu.renderer
 
 		private var onlineIcon : Image;
 		private var offlineIcon : Image;
-		private var settingButton:Button
+		private var settingButton:Image
 		override protected function createChildren():void
 		{
 			super.createChildren();
@@ -50,9 +50,9 @@ package com.xiaomu.renderer
 			
 			labelDisplay.color = 0xFFFFFF
 				
-			settingButton = new Button()
-			settingButton.label = 'Setting'
-			settingButton.width = settingButton.height = 20
+			settingButton = new Image()
+			settingButton.source = 'assets/room/gold_icon.png';
+			settingButton.width = settingButton.height = 16
 			settingButton.addEventListener(MouseEvent.CLICK, settingButton_clickHandler)
 			addChild(settingButton)
 		}
@@ -64,7 +64,8 @@ package com.xiaomu.renderer
 			onlineIcon.x = offlineIcon.x = 5;
 			onlineIcon.y = offlineIcon.y = (height-onlineIcon.height)/2;
 			
-			settingButton.x = width - settingButton.width
+			settingButton.x = width - settingButton.width-4;
+			settingButton.y =(height-settingButton.height)/2;
 		}
 		
 		override protected function commitProperties():void
