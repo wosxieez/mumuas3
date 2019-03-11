@@ -16,7 +16,19 @@ package com.xiaomu.renderer
 			super();
 			mouseChildren = true
 		}
-		
+		private var _data : Object;
+
+		override public function get data():Object
+		{
+			return _data;
+		}
+
+		override public function set data(value:Object):void
+		{
+			_data = value;
+			invalidateProperties()
+		}
+
 		private var onlineIcon : Image;
 		private var offlineIcon : Image;
 		private var settingButton:Button
@@ -72,6 +84,7 @@ package com.xiaomu.renderer
 					onlineIcon.visible = false;
 					offlineIcon.visible = true;
 				}
+				settingButton.visible = data.allowSetFlag
 			}
 			else
 				labelDisplay.text = "";

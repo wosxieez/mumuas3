@@ -85,6 +85,19 @@ package com.xiaomu.view.group
 			invalidateProperties()
 		}
 		
+		private var _isNowGroupAdmin:Boolean;
+
+		public function get isNowGroupAdmin():Boolean
+		{
+			return _isNowGroupAdmin;
+		}
+
+		public function set isNowGroupAdmin(value:Boolean):void
+		{
+			_isNowGroupAdmin = value;
+			invalidateDisplayList();
+		}
+		
 		private var addMemberButton:Button
 		
 		override protected function createChildren():void {
@@ -151,6 +164,7 @@ package com.xiaomu.view.group
 			addMemberButton.width = usersList.width - usersList.padding
 			addMemberButton.height = 25
 			addMemberButton.y = height - addMemberButton.height - usersList.padding
+			addMemberButton.visible = isNowGroupAdmin;
 			
 			roomsList.height = height - roomsList.y
 			roomsList.width = width * 2 / 3
@@ -164,7 +178,6 @@ package com.xiaomu.view.group
 			super.commitProperties()
 			usersList.dataProvider = usersData
 			roomsList.dataProvider = roomsData
-			trace('房间数据：',JSON.stringify(roomsData));
 			var tempArr : Array = [];
 			for each (var i:Object in usersData) 
 			{
@@ -176,6 +189,7 @@ package com.xiaomu.view.group
 			}
 			usersList.dataProvider = tempArr
 			userInfoView.userInfoData = userData
+			
 		}
 		
 		protected function roomsList_changeHandler(event:UIEvent):void
@@ -195,19 +209,21 @@ package com.xiaomu.view.group
 		
 		private var thisGroupID:int
 		
-		public function init(groupid:int): void {
+		/**
+		 * 群界面初始化
+		 * @param groupid 群id
+		 * @param isGroupAdmin 自己是否是该群的群主
+		 */
+		public function init(groupid:int,isGroupAdmin:Boolean): void {
+			isNowGroupAdmin = isGroupAdmin
 			thisGroupID = groupid
 			HttpApi.getInstane().getUserInfo(AppData.getInstane().username,function(e:Event):void{
-				//				trace('房间界面：',JSON.stringify(JSON.parse(e.currentTarget.data).message[0]));
-				//				trace('房间界面：金币',JSON.parse(e.currentTarget.data).message[0].group_info);
-				//				trace('房间界面：房卡',JSON.parse(e.currentTarget.data).message[0].room_card);
 				var roomCard:String = JSON.parse(e.currentTarget.data).message[0].room_card+'';
 				var tempArr : Array = JSON.parse(JSON.parse(e.currentTarget.data).message[0].group_info) as Array;
 				for each (var i:Object in tempArr) 
 				{
 					if(i.group_id+''==groupid+''){
-						userData = {'gold':i.gold,'userName':AppData.getInstane().username,'roomCard':roomCard}
-						//						trace("userData:",JSON.stringify(userData));
+						userData = {'gold':i.gold,'userName':AppData.getInstane().username,'roomCard':roomCard}///用于顶部用户信息界面
 					}
 				}
 			},null);
@@ -221,8 +237,12 @@ package com.xiaomu.view.group
 						for each(var user:Object in users) {
 							user.group_id = thisGroupID
 						}
-						usersData = users
-						//						trace("结果：",JSON.stringify(usersResponse.message));
+//						usersData = users
+						var tempUsers : Array = JSON.parse(JSON.stringify(users)) as Array;
+						tempUsers.map(function(item:*,index:int,arr:Array):Object{
+							item.allowSetFlag = isGroupAdmin ///你只有是该群的群主 你才能给其他群成员设置金币
+						},null);
+						usersData = tempUsers
 					} 
 					
 					// 加载群的房间信息
@@ -235,8 +255,8 @@ package com.xiaomu.view.group
 									room.roomname = 'room' + room.id
 								}
 								roomsData = rooms
-//								trace('roomsData:',roomsData);
-//								trace('roomsData:',JSON.stringify(roomsData));
+								//								trace('roomsData:',roomsData);
+								//								trace('roomsData:',JSON.stringify(roomsData));
 								// 加入群
 								Api.getInstane().joinGroup(AppData.getInstane().user.username, groupid)
 							} 
@@ -286,7 +306,7 @@ package com.xiaomu.view.group
 				roomnames.push(room.roomname)
 			}
 			Api.getInstane().getRoomsUsers(roomnames, function (data:Object):void {
-				trace('获取房间用户数据', JSON.stringify(data))
+//				trace('获取房间用户数据', JSON.stringify(data))
 				for (var roomname:String in data) {
 					var room:Object = getRoom(roomname)
 					if (room) { room.users = data[roomname] }
@@ -305,7 +325,7 @@ package com.xiaomu.view.group
 		protected function onGroupHandler(event:ApiEvent):void
 		{
 			const notification:Object = event.data
-			trace('notification:',JSON.stringify(notification));
+//			trace('notification:',JSON.stringify(notification));
 			switch(notification.name)
 			{
 				case Notifications.onJoinGroup:

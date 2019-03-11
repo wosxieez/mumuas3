@@ -179,14 +179,19 @@ package com.xiaomu.view.hall
 		
 		protected function groupsList_changeHandler(event:UIEvent):void
 		{
-			var groupid:int = int(groupsList.selectedItem.group_id)
+			var groupId:int = int(groupsList.selectedItem.group_id)
+			var groupAdminId:int = groupsList.selectedItem.admin_id
+			var userId:int = AppData.getInstane().user.id
+			trace('选中：',JSON.stringify(groupsList.selectedItem));
+			trace('当前群主id是：',groupAdminId);
+			trace('用户自身id:',userId);
 			setTimeout(function ():void { groupsList.selectedIndex = -1 }, 200)
-			GroupView(MainView.getInstane().pushView(GroupView)).init(groupid)
+			GroupView(MainView.getInstane().pushView(GroupView)).init(groupId,groupAdminId==userId)///进入房间界面，初始化，输入组id,同时传入需要该组的群主id
 		}
 		
 		public function init():void {
 			groupsData = JSON.parse(AppData.getInstane().user.group_info) as Array;
-			Audio.getInstane().playBGM('assets/bgm.mp3')
+//			Audio.getInstane().playBGM('assets/bgm.mp3')
 			Assets.getInstane().loadAssets('assets/mumu.png', 'assets/mumu.json')
 			HttpApi.getInstane().getUserInfo(AppData.getInstane().username,function(e:Event):void{
 				//				trace('大厅界面：金币',JSON.parse(e.currentTarget.data).message[0].group_info);
@@ -196,15 +201,17 @@ package com.xiaomu.view.hall
 				userInfoView.userInfoData = {"roomCard":JSON.parse(e.currentTarget.data).message[0].room_card+'','userName':AppData.getInstane().username}
 			},null);
 			HttpApi.getInstane().getAllGroupInfo(function(e:Event):void{
-			var groupArr : Array = JSON.parse(e.currentTarget.data).message as Array;
+			var groupArr : Array = JSON.parse(e.currentTarget.data).message as Array;///所以组群信息
 			for each (var j:Object in groupArr) {
 				for each (var k:Object in groupsData) {
 					if(k.group_id==j.id){
 						k.name = j.name
+						k.admin_id = j.admin_id
 					}
 				}
 			}
 			groupsList.dataProvider = groupsData
+//			trace('groupArr::',JSON.stringify(groupArr));
 			},null);
 		}
 		

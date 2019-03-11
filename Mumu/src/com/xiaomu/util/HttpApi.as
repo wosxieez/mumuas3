@@ -36,6 +36,12 @@ package com.xiaomu.util
 			urlLoader.load(urlrequest)
 		}
 		
+		/**
+		 * 获取加入过该组的所有人员
+		 * @param groupid
+		 * @param resultHandler
+		 * @param faultHandler
+		 */
 		public function getGroupUsers(groupid:int, 
 									  resultHandler:Function = null, 
 									  faultHandler:Function = null):void
@@ -63,6 +69,12 @@ package com.xiaomu.util
 			urlLoader.load(urlrequest)
 		}
 		
+		/**
+		 * 获取用户信息
+		 * @param username
+		 * @param resultHandler
+		 * @param faultHandler
+		 */
 		public function getUserInfo(username:String, 
 									resultHandler:Function = null, 
 									faultHandler:Function = null):void
@@ -76,6 +88,13 @@ package com.xiaomu.util
 			urlLoader.load(urlrequest)
 		}
 		
+		/**
+		 * 修改用户的组信息---用户更新金币-更新加入组群等操作
+		 * @param username
+		 * @param group_info
+		 * @param resultHandler
+		 * @param faultHandler
+		 */
 		public function updateUserGroupInfo(username:String, 
 											group_info:Array,
 											resultHandler:Function = null, 
@@ -91,6 +110,13 @@ package com.xiaomu.util
 			urlLoader.load(urlrequest)
 		}
 		
+		/**
+		 * 创建组群
+		 * @param groupName
+		 * @param adminId
+		 * @param resultHandler
+		 * @param faultHandler
+		 */
 		public function insertGroupInfo(groupName:String,
 										adminId:int,
 										resultHandler:Function = null, 
@@ -105,6 +131,11 @@ package com.xiaomu.util
 			urlLoader.load(urlrequest)
 		}
 		
+		/**
+		 * 获取所有组群信息
+		 * @param resultHandler
+		 * @param faultHandler
+		 */
 		public function getAllGroupInfo( 
 			resultHandler:Function = null, 
 			faultHandler:Function = null):void

@@ -108,7 +108,7 @@ package com.xiaomu.renderer
 			roomName.width = width;
 			roomName.x = 0;
 			roomName.y = height-height/15-roomName.height;
-			roomName.text = data.name
+			roomName.text = data?data.name:'/'
 		}
 		
 		override protected function commitProperties():void
