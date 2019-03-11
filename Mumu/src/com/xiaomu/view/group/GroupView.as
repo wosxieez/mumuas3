@@ -41,6 +41,7 @@ package com.xiaomu.view.group
 			Api.getInstane().addEventListener(ApiEvent.ON_GROUP, onGroupHandler)
 		}
 		
+		private var groupInfoView:GroupInfoView
 		private var userInfoView : UserInfoVIew
 		private var userIcon:Image
 		private var userLabel:Label
@@ -108,12 +109,17 @@ package com.xiaomu.view.group
 			userInfoView.inRoomFlag = true;
 			addChild(userInfoView);
 			
+			groupInfoView = new GroupInfoView();
+			addChild(groupInfoView);
+			
 			roomsList = new List()
 			roomsList.itemRendererClass = RoomRenderer
 			roomsList.itemRendererColumnCount = 2
 			roomsList.horizontalAlign = HorizontalAlign.JUSTIFY;
-			roomsList.gap = roomsList.padding = 10
-			roomsList.y = 40
+			roomsList.gap = 10;
+			roomsList.padding = 10;
+			roomsList.paddingTop = 0;
+			roomsList.y = 40;
 			roomsList.addEventListener(UIEvent.CHANGE, roomsList_changeHandler)
 			addChild(roomsList)
 			
@@ -166,6 +172,12 @@ package com.xiaomu.view.group
 			addMemberButton.y = height - addMemberButton.height - usersList.padding
 			addMemberButton.visible = isNowGroupAdmin;
 			
+			groupInfoView.x = roomsList.padding;
+			groupInfoView.y = userInfoView.y+userInfoView.height+10;
+			groupInfoView.width = width-(usersList.width+roomsList.padding*2)
+			groupInfoView.height = 40;
+			
+			roomsList.y = groupInfoView.y+groupInfoView.height+roomsList.padding;
 			roomsList.height = height - roomsList.y
 			roomsList.width = width * 2 / 3
 			roomsList.itemRendererHeight = (roomsList.width- roomsList.padding * 2 - roomsList.gap) / 2
@@ -176,9 +188,8 @@ package com.xiaomu.view.group
 		
 		override protected function commitProperties():void {
 			super.commitProperties()
-			usersList.dataProvider = usersData
 			roomsList.dataProvider = roomsData
-			var tempArr : Array = [];
+			var tempArr:Array = [];
 			for each (var i:Object in usersData) 
 			{
 				if(i.online){
@@ -187,9 +198,17 @@ package com.xiaomu.view.group
 					tempArr.push(i);
 				}
 			}
-			usersList.dataProvider = tempArr
+			var finalArr:Array = [];
+			for each (var j:Object in tempArr) 
+			{
+				if(j.isAdmin){
+					finalArr.unshift(j);
+				}else{
+					finalArr.push(j);
+				}
+			}
+			usersList.dataProvider = finalArr
 			userInfoView.userInfoData = userData
-			
 		}
 		
 		protected function roomsList_changeHandler(event:UIEvent):void
@@ -213,11 +232,13 @@ package com.xiaomu.view.group
 		 * 群界面初始化
 		 * @param groupid 群id
 		 * @param groupAdminId 该群的群主id
+		 * @param groupInfoObj 该群的一些信息
 		 */
-		public function init(groupid:int,groupAdminId:int): void {
+		public function init(groupid:int,groupAdminId:int,groupInfoObj:Object): void {
+			groupInfoView.groupInfoData = groupInfoObj;
 			isNowGroupAdmin = groupAdminId==AppData.getInstane().user.id;
 			thisGroupID = groupid
-			HttpApi.getInstane().getUserInfo(AppData.getInstane().username,function(e:Event):void{
+			HttpApi.getInstane().getUserInfoByName(AppData.getInstane().username,function(e:Event):void{
 				var roomCard:String = JSON.parse(e.currentTarget.data).message[0].room_card+'';
 				var tempArr : Array = JSON.parse(JSON.parse(e.currentTarget.data).message[0].group_info) as Array;
 				for each (var i:Object in tempArr){

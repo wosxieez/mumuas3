@@ -70,16 +70,35 @@ package com.xiaomu.util
 		}
 		
 		/**
-		 * 获取用户信息
+		 * 获取用户信息 -- 根据用户名
 		 * @param username
 		 * @param resultHandler
 		 * @param faultHandler
 		 */
-		public function getUserInfo(username:String, 
-									resultHandler:Function = null, 
-									faultHandler:Function = null):void
+		public function getUserInfoByName(username:String, 
+										  resultHandler:Function = null, 
+										  faultHandler:Function = null):void
 		{
 			var params:Object = {username: username}
+			var urlrequest:URLRequest = new URLRequest(WEB_URL + 'find_user');
+			urlrequest.method = URLRequestMethod.POST
+			urlrequest.contentType = 'application/json'
+			urlrequest.data = JSON.stringify(params)
+			var urlLoader:CocoURLLoader = new CocoURLLoader(resultHandler, faultHandler, true, 20000);
+			urlLoader.load(urlrequest)
+		}
+		
+		/**
+		 * 获取用户信息 -- 根据用户id
+		 * @param userid
+		 * @param resultHandler
+		 * @param faultHandler
+		 */
+		public function getUserInfoById(userid:int, 
+										resultHandler:Function = null, 
+										faultHandler:Function = null):void
+		{
+			var params:Object = {id: userid}
 			var urlrequest:URLRequest = new URLRequest(WEB_URL + 'find_user');
 			urlrequest.method = URLRequestMethod.POST
 			urlrequest.contentType = 'application/json'

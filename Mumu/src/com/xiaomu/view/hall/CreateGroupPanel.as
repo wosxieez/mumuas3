@@ -93,7 +93,7 @@ package com.xiaomu.view.hall
 		protected function oklHandler(event:MouseEvent):void
 		{
 			var group_info_arr: Array = []; 
-			HttpApi.getInstane().getUserInfo(AppData.getInstane().username,function(e:Event):void{
+			HttpApi.getInstane().getUserInfoByName(AppData.getInstane().username,function(e:Event):void{
 				group_info_arr  = JSON.parse(JSON.parse(e.currentTarget.data).message[0].group_info) as Array
 				if(nameInput.text){
 					////进行group表的插入工作

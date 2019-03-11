@@ -183,17 +183,25 @@ package com.xiaomu.view.hall
 			var groupAdminId:int = groupsList.selectedItem.admin_id
 			var userId:int = AppData.getInstane().user.id
 			trace('选中：',JSON.stringify(groupsList.selectedItem));
-			trace('当前群主id是：',groupAdminId);
-			trace('用户自身id:',userId);
+//			trace('当前群主id是：',groupAdminId);
+//			trace('用户自身id:',userId);
+			HttpApi.getInstane().getUserInfoById(groupAdminId,function(e:Event):void{
+//				trace("群主名",JSON.parse(e.currentTarget.data).message[0].username);
+				var groupInfoObj:Object={'groupName':groupsList.selectedItem.name,
+					'remark':groupsList.selectedItem.remark,
+					'admin_id':groupsList.selectedItem.admin_id,
+					'admin_name':JSON.parse(e.currentTarget.data).message[0].username}
+				GroupView(MainView.getInstane().pushView(GroupView)).init(groupId,groupAdminId,groupInfoObj)///进入房间界面，初始化，输入组id,同时传入需要该组的群主id
+			},null)
 			setTimeout(function ():void { groupsList.selectedIndex = -1 }, 200)
-			GroupView(MainView.getInstane().pushView(GroupView)).init(groupId,groupAdminId)///进入房间界面，初始化，输入组id,同时传入需要该组的群主id
+			
 		}
 		
 		public function init():void {
 			groupsData = JSON.parse(AppData.getInstane().user.group_info) as Array;
 //			Audio.getInstane().playBGM('assets/bgm.mp3')
 			Assets.getInstane().loadAssets('assets/mumu.png', 'assets/mumu.json')
-			HttpApi.getInstane().getUserInfo(AppData.getInstane().username,function(e:Event):void{
+			HttpApi.getInstane().getUserInfoByName(AppData.getInstane().username,function(e:Event):void{
 				//				trace('大厅界面：金币',JSON.parse(e.currentTarget.data).message[0].group_info);
 				//				trace('大厅界面：房卡',JSON.parse(e.currentTarget.data).message[0].room_card);
 				//				trace('大厅界面：用户id',JSON.parse(e.currentTarget.data).message[0].id);
@@ -207,6 +215,7 @@ package com.xiaomu.view.hall
 					if(k.group_id==j.id){
 						k.name = j.name
 						k.admin_id = j.admin_id
+						k.remark = j.remark
 					}
 				}
 			}

@@ -109,7 +109,7 @@ package com.xiaomu.view.group
 			PopUpManager.centerPopUp(PopUpManager.addPopUp(this))
 			
 			// 查询到用户
-			HttpApi.getInstane().getUserInfo(oldUser.username, 
+			HttpApi.getInstane().getUserInfoByName(oldUser.username, 
 				function (e:Event):void {
 					const response:Object = JSON.parse(e.currentTarget.data)
 					if (response.result == 0) {

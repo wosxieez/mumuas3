@@ -91,7 +91,7 @@ package com.xiaomu.view.group
 		protected function submitButton_clickHandler(event:MouseEvent):void
 		{
 			// 查询到用户
-			HttpApi.getInstane().getUserInfo(memberUsernameInput.text, 
+			HttpApi.getInstane().getUserInfoByName(memberUsernameInput.text, 
 				function (e:Event):void {
 					const response:Object = JSON.parse(e.currentTarget.data)
 					if (response.result == 0) {

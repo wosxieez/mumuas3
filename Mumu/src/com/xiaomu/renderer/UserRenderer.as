@@ -4,7 +4,6 @@ package com.xiaomu.renderer
 	
 	import flash.events.MouseEvent;
 	
-	import coco.component.Button;
 	import coco.component.DefaultItemRenderer;
 	import coco.component.Image;
 	import coco.component.TextAlign;
