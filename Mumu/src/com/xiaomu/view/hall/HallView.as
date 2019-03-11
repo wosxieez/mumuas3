@@ -199,7 +199,7 @@ package com.xiaomu.view.hall
 		
 		public function init():void {
 			groupsData = JSON.parse(AppData.getInstane().user.group_info) as Array;
-//			Audio.getInstane().playBGM('assets/bgm.mp3')
+			Audio.getInstane().playBGM('assets/bgm.mp3')
 			Assets.getInstane().loadAssets('assets/mumu.png', 'assets/mumu.json')
 			HttpApi.getInstane().getUserInfoByName(AppData.getInstane().username,function(e:Event):void{
 				//				trace('大厅界面：金币',JSON.parse(e.currentTarget.data).message[0].group_info);
