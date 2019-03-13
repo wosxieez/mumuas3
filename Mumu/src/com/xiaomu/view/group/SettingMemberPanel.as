@@ -7,13 +7,10 @@ package com.xiaomu.view.group
 	
 	import coco.component.Alert;
 	import coco.component.Button;
-	import coco.component.HorizontalAlign;
 	import coco.component.Label;
 	import coco.component.Panel;
 	import coco.component.TextAlign;
 	import coco.component.TextInput;
-	import coco.component.VerticalAlign;
-	import coco.layout.VerticalLayout;
 	import coco.manager.PopUpManager;
 	
 	public class SettingMemberPanel extends Panel
@@ -29,12 +26,6 @@ package com.xiaomu.view.group
 			borderAlpha = 0
 			
 			title = '设置成员'
-			
-//			var vlayout:VerticalLayout = new VerticalLayout()
-//			vlayout.verticalAlign = VerticalAlign.MIDDLE
-//			vlayout.horizontalAlign = HorizontalAlign.CENTER
-//			vlayout.gap = 5
-//			layout = vlayout
 		}
 		
 		
@@ -95,12 +86,12 @@ package com.xiaomu.view.group
 			nameLab.text = '姓名:';
 			nameLab.textAlign = TextAlign.LEFT;
 			nameLab.color = 0xffffff;
-			nameLab.fontSize = 8;
+			nameLab.fontSize = 10;
 			addChild(nameLab);
 			
 			nameInput = new TextInput()
 			nameInput.editable = false
-			nameInput.fontSize = 8;
+			nameInput.fontSize = 10;
 			nameInput.width = 60
 			nameInput.height = 20
 			addChild(nameInput)
@@ -111,11 +102,11 @@ package com.xiaomu.view.group
 			subNameLab.text = '昵称:';
 			subNameLab.textAlign = TextAlign.LEFT;
 			subNameLab.color = 0xffffff;
-			subNameLab.fontSize = 8;
+			subNameLab.fontSize = 10;
 			addChild(subNameLab);
 			
 			subNameInput = new TextInput()
-			subNameInput.fontSize = 8;
+			subNameInput.fontSize = 10;
 			subNameInput.width = 60
 			subNameInput.height = 20
 			addChild(subNameInput)
@@ -126,11 +117,11 @@ package com.xiaomu.view.group
 			goldLab.text = '金币:';
 			goldLab.textAlign = TextAlign.LEFT;
 			goldLab.color = 0xffffff;
-			goldLab.fontSize = 8;
+			goldLab.fontSize = 10;
 			addChild(goldLab);
 			
 			goldInput = new TextInput()
-			goldInput.fontSize = 8
+			goldInput.fontSize = 10
 			goldInput.width = 60
 			goldInput.height = 20
 			addChild(goldInput)
@@ -139,7 +130,7 @@ package com.xiaomu.view.group
 			submitButton.width = 30
 			submitButton.height = 15
 			submitButton.label = "确定"
-			submitButton.fontSize = 8
+			submitButton.fontSize = 10
 			submitButton.addEventListener(MouseEvent.CLICK, submitButton_clickHandler)
 			addChild(submitButton)
 			
@@ -147,15 +138,15 @@ package com.xiaomu.view.group
 			cancelButton.width = 30
 			cancelButton.height = 15
 			cancelButton.label = "取消"
-			cancelButton.fontSize = 8
+			cancelButton.fontSize = 10
 			cancelButton.addEventListener(MouseEvent.CLICK, cancelButton_clickHandler)
 			addChild(cancelButton)
 			
 			removeButton = new Button()
-			removeButton.width = 40
+			removeButton.width = 50
 			removeButton.height = 15
 			removeButton.label = "移除成员"
-			removeButton.fontSize = 8
+			removeButton.fontSize = 10
 			removeButton.addEventListener(MouseEvent.CLICK, removeButton_clickHandler)
 			addChild(removeButton)
 		}
@@ -219,7 +210,7 @@ package com.xiaomu.view.group
 		public function open(user:Object):void {
 			oldUser = user
 			
-			PopUpManager.centerPopUp(PopUpManager.addPopUp(this,null,true,true))
+			PopUpManager.centerPopUp(PopUpManager.addPopUp(this,null,true,true,0xffffff,0.3))
 			
 			// 查询到用户
 			HttpApi.getInstane().getUserInfoByName(oldUser.username, 

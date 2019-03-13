@@ -72,7 +72,6 @@ package com.xiaomu.view.userBarView
 			addChild(number);
 			
 			typeIcon = new Image();
-//			typeIcon.width = typeIcon.height = height;
 			addChild(typeIcon);
 			
 			addIcon = new Image();

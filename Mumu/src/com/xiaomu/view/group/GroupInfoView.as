@@ -1,9 +1,13 @@
 package com.xiaomu.view.group
 {
+	import flash.events.MouseEvent;
+	
+	import coco.component.Image;
 	import coco.component.Label;
 	import coco.component.TextAlign;
 	import coco.component.TextArea;
 	import coco.core.UIComponent;
+	import coco.manager.PopUpManager;
 	
 	/**
 	 * 组群信息界面
@@ -33,6 +37,7 @@ package com.xiaomu.view.group
 		private var remarkLab:Label;
 		private var adminLab:Label;
 		private var remarkText:TextArea;
+		private var settingButton:Image;
 		override protected function createChildren():void
 		{
 			super.createChildren();
@@ -68,16 +73,22 @@ package com.xiaomu.view.group
 			remarkText.editable = false;
 			remarkText.fontSize = 10;
 			addChild(remarkText);
+			
+			settingButton = new Image()
+			settingButton.source = 'assets/room/user_setting.png';
+			settingButton.width = settingButton.height = 14
+			settingButton.addEventListener(MouseEvent.CLICK, settingButton_clickHandler)
+			addChild(settingButton)
 		}
 		
 		override protected function commitProperties():void
 		{
 			super.commitProperties();
 			
-//			trace('groupInfoData:',JSON.stringify(groupInfoData));
-			titleLab.text = groupInfoData?'群名: '+groupInfoData.groupName:'群名: /'
+			titleLab.text = groupInfoData?'群名: '+groupInfoData.group_name:'群名: /'
 			adminLab.text = groupInfoData?'群主: '+groupInfoData.admin_name:'群主: /'
 			remarkText.text = groupInfoData?groupInfoData.remark:'/'
+			settingButton.visible = groupInfoData.isNowGroupAdmin///只有群主才能看到设置界面
 		}
 		
 		override protected function updateDisplayList():void
@@ -89,10 +100,13 @@ package com.xiaomu.view.group
 			remarkLab.x = titleLab.x+titleLab.width;
 			adminLab.x = 0
 			adminLab.y = titleLab.y+titleLab.height;
-			remarkText.width = width-remarkLab.width-remarkLab.x-10;
+			remarkText.width = width-remarkLab.width-remarkLab.x-30;
 			remarkText.height = height*1.2;
 			remarkText.x = remarkLab.x+remarkLab.width;
 			remarkText.y = remarkLab.y-3;
+			
+			settingButton.x = width-settingButton.width-5;
+			settingButton.y = height-settingButton.height-5;
 		}
 		
 		override protected function drawSkin():void
@@ -103,6 +117,16 @@ package com.xiaomu.view.group
 			graphics.beginFill(0xffffff,0.1);
 			graphics.drawRoundRect(0,0,width,height,10,10);
 			graphics.endFill();
+		}
+		
+		protected function settingButton_clickHandler(event:MouseEvent):void
+		{
+			var settingGroupPanel:SettingGroupPanel;
+			if(!settingGroupPanel){
+				settingGroupPanel = new SettingGroupPanel();
+			}
+			settingGroupPanel.data = groupInfoData;
+			PopUpManager.centerPopUp(PopUpManager.addPopUp(settingGroupPanel,null,true,true,0xffffff,0.4));
 		}
 	}
 }

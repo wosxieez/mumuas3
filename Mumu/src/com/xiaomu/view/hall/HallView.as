@@ -10,7 +10,7 @@ package com.xiaomu.view.hall
 	import com.xiaomu.view.MainView;
 	import com.xiaomu.view.group.GroupView;
 	import com.xiaomu.view.login.LoginView;
-	import com.xiaomu.view.userBarView.UserInfoVIew;
+	import com.xiaomu.view.userBarView.UserInfoView;
 	
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -39,7 +39,7 @@ package com.xiaomu.view.hall
 		private var btnsList:List
 		private var groupsList:List
 		private var signoutBtn:Image
-		private var userInfoView : UserInfoVIew
+		private var userInfoView : UserInfoView
 		private var joinGroupBtn : ImgBtn;
 		private var createGroupBtn : ImgBtn;
 		
@@ -69,10 +69,7 @@ package com.xiaomu.view.hall
 			bottombg.height = 30
 			addChild(bottombg)
 			
-			userInfoView = new UserInfoVIew();
-			userInfoView.width = 300;
-			userInfoView.height = 40;
-			userInfoView.inRoomFlag = false;
+			userInfoView =new UserInfoView();
 			addChild(userInfoView);
 			
 			groupsList = new List()
@@ -155,6 +152,7 @@ package com.xiaomu.view.hall
 		override protected function updateDisplayList():void{
 			super.updateDisplayList();
 			
+			AppData.getInstane().inGroupView = false;
 			topbg.width = width
 			
 			bottombg.width = width
@@ -191,7 +189,9 @@ package com.xiaomu.view.hall
 			//			trace('用户自身id:',userId);
 			HttpApi.getInstane().getUserInfoById(groupAdminId,function(e:Event):void{
 				//				trace("群主名",JSON.parse(e.currentTarget.data).message[0].username);
-				var groupInfoObj:Object={'groupName':selectedItem.name,
+				var groupInfoObj:Object={
+					'group_id':selectedItem.group_id,
+					'group_name':selectedItem.name,
 					'remark':selectedItem.remark,
 					'admin_id':selectedItem.admin_id,
 					'admin_name':JSON.parse(e.currentTarget.data).message[0].username}

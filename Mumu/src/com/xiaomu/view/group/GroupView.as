@@ -10,7 +10,7 @@ package com.xiaomu.view.group
 	import com.xiaomu.view.MainView;
 	import com.xiaomu.view.hall.HallView;
 	import com.xiaomu.view.room.RoomView;
-	import com.xiaomu.view.userBarView.UserInfoVIew;
+	import com.xiaomu.view.userBarView.UserInfoView;
 	
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -28,7 +28,6 @@ package com.xiaomu.view.group
 	/**
 	 * 群视图 
 	 * @author coco
-	 * 
 	 */	
 	public class GroupView extends UIComponent
 	{
@@ -41,8 +40,9 @@ package com.xiaomu.view.group
 			Api.getInstane().addEventListener(ApiEvent.ON_GROUP, onGroupHandler)
 		}
 		
+		private var topbg:Image
 		private var groupInfoView:GroupInfoView
-		private var userInfoView : UserInfoVIew
+		private var userInfoView : UserInfoView
 		private var userIcon:Image
 		private var userLabel:Label
 		private var roomsList:List
@@ -103,10 +103,13 @@ package com.xiaomu.view.group
 		
 		override protected function createChildren():void {
 			super.createChildren()
+				
+			topbg = new Image()
+			topbg.source = 'assets/hall/home_top_headbg.png'
+			topbg.height = 30
+			addChild(topbg)
 			
-			userInfoView = new UserInfoVIew();
-			userInfoView.height = 40;
-			userInfoView.inRoomFlag = true;
+			userInfoView = new UserInfoView;
 			addChild(userInfoView);
 			
 			groupInfoView = new GroupInfoView();
@@ -138,6 +141,7 @@ package com.xiaomu.view.group
 			goback.width = 22;
 			goback.height = 20;
 			goback.addEventListener(MouseEvent.CLICK, function(e:MouseEvent):void {
+				userInfoView.reset();
 				Api.getInstane().leaveGroup()			
 				MainView.getInstane().pushView(HallView)
 			})
@@ -159,7 +163,7 @@ package com.xiaomu.view.group
 			super.updateDisplayList()
 			
 			userInfoView.x=userInfoView.y=0;
-			userInfoView.width = width
+//			userInfoView.width = width
 			
 			addMemberButton.x = width*2/3
 			addMemberButton.width = width / 3 - usersList.padding
@@ -188,6 +192,8 @@ package com.xiaomu.view.group
 		
 		override protected function commitProperties():void {
 			super.commitProperties()
+			
+			AppData.getInstane().inGroupView = true;
 			roomsList.dataProvider = roomsData
 			var tempArr:Array = [];
 			for each (var i:Object in usersData) 
@@ -207,7 +213,8 @@ package com.xiaomu.view.group
 					finalArr.push(j);
 				}
 			}
-			usersList.dataProvider = finalArr
+			//usersList.dataProvider = finalArr
+			usersList.dataProvider = finalArr.slice(1);///移除首位的群主
 			userInfoView.userInfoData = userData
 		}
 		
@@ -235,15 +242,18 @@ package com.xiaomu.view.group
 		 * @param groupInfoObj 该群的一些信息
 		 */
 		public function init(groupid:int,groupAdminId:int,groupInfoObj:Object): void {
-			groupInfoView.groupInfoData = groupInfoObj;
+			
 			isNowGroupAdmin = groupAdminId==AppData.getInstane().user.id;
+			groupInfoObj.isNowGroupAdmin = isNowGroupAdmin///当前该用户是不是这个群的群主
+			groupInfoView.groupInfoData = groupInfoObj;
+			AppData.getInstane().isNowGroupAdmin = isNowGroupAdmin
 			thisGroupID = groupid
 			HttpApi.getInstane().getUserInfoByName(AppData.getInstane().username,function(e:Event):void{
 				var roomCard:String = JSON.parse(e.currentTarget.data).message[0].room_card+'';
 				var tempArr : Array = JSON.parse(JSON.parse(e.currentTarget.data).message[0].group_info) as Array;
 				for each (var i:Object in tempArr){
 					if(i.group_id+''==groupid+''){
-						userData = {'gold':i.gold,'userName':AppData.getInstane().username,'roomCard':roomCard}///用于顶部用户信息界面
+						userData = {'gold':i.gold,'userName':AppData.getInstane().username,'roomCard':roomCard,'userId':AppData.getInstane().user.id,'groupId':groupid}///用于顶部用户信息界面
 					}
 				}
 			},null);

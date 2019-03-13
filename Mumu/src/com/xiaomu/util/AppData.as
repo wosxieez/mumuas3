@@ -20,6 +20,16 @@ package com.xiaomu.util
 		
 		public var user:Object
 		
+		/**
+		 *你是不是当前进入的群的群主 
+		 *默认 不是这个群的群主
+		 */
+		public var isNowGroupAdmin:Boolean=false;
+		
+		/**
+		 *用户当前有没有进入 groupView
+		 */
+		public var inGroupView:Boolean=false
 		
 		public function get username():String
 		{
@@ -40,16 +50,6 @@ package com.xiaomu.util
 		{
 			setShareObjectValue("password", value);
 		}
-		
-//		public function get userid():String
-//		{
-//			return getShareObjectValue("userid");
-//		}
-//		
-//		public function set userid(value:String):void
-//		{
-//			setShareObjectValue("userid", value);
-//		}
 		
 		//--------------------------------------------------------------------------
 		//

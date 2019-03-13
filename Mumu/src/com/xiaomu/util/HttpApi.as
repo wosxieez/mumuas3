@@ -189,5 +189,25 @@ package com.xiaomu.util
 			urlLoader.load(urlrequest)
 		}
 		
+		/**
+		 * 根据群id，修该群数据
+		 * @param group_id
+		 * @param newParam
+		 * @param resultHandler
+		 * @param faultHandler
+		 */
+		public function updateGroupByGroupId(group_id:int,
+											 newParam:Object,resultHandler:Function = null, 
+											 faultHandler:Function = null):void{
+			var params:Object = {update:{name: 
+				newParam.group_name,remark:newParam.remark}, query:{id:group_id}}
+			var urlrequest:URLRequest = new URLRequest(WEB_URL + 'update_group');
+			urlrequest.method = URLRequestMethod.POST
+			urlrequest.contentType = 'application/json'
+			urlrequest.data = JSON.stringify(params)
+			var urlLoader:CocoURLLoader = new CocoURLLoader(resultHandler, faultHandler, true, 20000);
+			urlLoader.load(urlrequest)
+		}
+		
 	}
 }

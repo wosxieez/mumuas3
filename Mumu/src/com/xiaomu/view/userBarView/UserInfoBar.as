@@ -56,10 +56,10 @@ package com.xiaomu.view.userBarView
 		{
 			super.drawSkin();
 			
-			graphics.clear();
+			/*graphics.clear();
 			graphics.beginFill(0xffffff,0.2);
 			graphics.drawRect(0,0,width,height);
-			graphics.endFill();
+			graphics.endFill();*/
 		}
 	}
 }
