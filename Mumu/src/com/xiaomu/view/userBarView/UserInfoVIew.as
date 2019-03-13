@@ -12,7 +12,7 @@ package com.xiaomu.view.userBarView
 		public function UserInfoView()
 		{
 			super();
-			height = 30;
+			height = 40;
 			width = 300
 		}
 		

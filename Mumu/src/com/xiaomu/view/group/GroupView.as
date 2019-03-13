@@ -106,7 +106,7 @@ package com.xiaomu.view.group
 				
 			topbg = new Image()
 			topbg.source = 'assets/hall/home_top_headbg.png'
-			topbg.height = 30
+			topbg.height = 40
 			addChild(topbg)
 			
 			userInfoView = new UserInfoView;

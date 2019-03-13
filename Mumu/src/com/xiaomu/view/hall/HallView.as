@@ -61,7 +61,7 @@ package com.xiaomu.view.hall
 			
 			topbg = new Image()
 			topbg.source = 'assets/hall/home_top_headbg.png'
-			topbg.height = 30
+			topbg.height = 40
 			addChild(topbg)
 			
 			bottombg = new Image()
@@ -207,7 +207,7 @@ package com.xiaomu.view.hall
 			}else{
 				groupsData = JSON.parse(AppData.getInstane().user.group_info) as Array;
 			}
-			//			Audio.getInstane().playBGM('assets/bgm.mp3')
+			Audio.getInstane().playBGM('assets/bgm.mp3')
 			Assets.getInstane().loadAssets('assets/mumu.png', 'assets/mumu.json')
 			HttpApi.getInstane().getUserInfoByName(AppData.getInstane().username,function(e:Event):void{
 				//				trace('大厅界面：金币',JSON.parse(e.currentTarget.data).message[0].group_info);
