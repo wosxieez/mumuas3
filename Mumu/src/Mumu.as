@@ -25,7 +25,7 @@ package
 			addChild(bg)
 			
 			addChild(MainView.getInstane())
-			MainView.getInstane().pushView(LoginView)
+			LoginView(MainView.getInstane().pushView(LoginView)).init()
 		}
 		
 		override protected function updateDisplayList():void {

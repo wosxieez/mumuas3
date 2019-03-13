@@ -51,7 +51,7 @@ package com.xiaomu.renderer
 			labelDisplay.color = 0xFFFFFF
 				
 			settingButton = new Image()
-			settingButton.source = 'assets/room/gold_icon.png';
+			settingButton.source = 'assets/room/user_setting.png';
 			settingButton.width = settingButton.height = 14
 			settingButton.addEventListener(MouseEvent.CLICK, settingButton_clickHandler)
 			addChild(settingButton)
@@ -79,7 +79,14 @@ package com.xiaomu.renderer
 			
 			if (data)
 			{
-				labelDisplay.text = data.username
+				var group_info_arr : Array = JSON.parse(data.group_info) as Array;
+				for each (var i:Object in group_info_arr) 
+				{
+					if(i.group_id==data.group_id){
+						data.subname = i.subname
+					}
+				}
+				labelDisplay.text = data.allowSetFlag?(data.subname?data.subname:data.username):data.username
 				labelDisplay.fontSize = 8;
 				labelDisplay.textAlign = TextAlign.LEFT;
 				labelDisplay.x = onlineIcon.x+onlineIcon.width+8;

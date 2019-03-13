@@ -108,6 +108,27 @@ package com.xiaomu.util
 		}
 		
 		/**
+		 * 添加用户---用于用户注册
+		 * @param username
+		 * @param password
+		 * @param resultHandler
+		 * @param faultHandler
+		 */
+		public function addUser(username:String,
+								password:String,
+								resultHandler:Function = null, 
+								faultHandler:Function = null):void
+		{
+			var params:Object = {'username': username,'password':password}
+			var urlrequest:URLRequest = new URLRequest(WEB_URL + 'insert_user');
+			urlrequest.method = URLRequestMethod.POST
+			urlrequest.contentType = 'application/json'
+			urlrequest.data = JSON.stringify(params)
+			var urlLoader:CocoURLLoader = new CocoURLLoader(resultHandler, faultHandler, true, 20000);
+			urlLoader.load(urlrequest)
+		}
+		
+		/**
 		 * 修改用户的组信息---用户更新金币-更新加入组群等操作
 		 * @param username
 		 * @param group_info

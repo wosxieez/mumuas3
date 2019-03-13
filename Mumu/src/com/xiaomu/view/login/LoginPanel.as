@@ -2,8 +2,8 @@ package com.xiaomu.view.login
 {
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.HttpApi;
-	import com.xiaomu.view.hall.HallView;
 	import com.xiaomu.view.MainView;
+	import com.xiaomu.view.hall.HallView;
 	
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -24,12 +24,26 @@ package com.xiaomu.view.login
 			height=130;
 		}
 		
+		private var _visible:Boolean;
+
+		override public function get visible():Boolean
+		{
+			return _visible;
+		}
+
+		override public function set visible(value:Boolean):void
+		{
+			_visible = value;
+			invalidateProperties();
+		}
+		
 		private var title : Label ;
 		private var labNum : Label;
 		private var labPsw : Label;
 		private var phoneNumInput : TextInput;
 		private var passwordInput : TextInput;
 		private var loginBtn : Button;
+		public var regsiterBtn:Button;
 		override protected function createChildren():void
 		{
 			super.createChildren();
@@ -57,7 +71,6 @@ package com.xiaomu.view.login
 			phoneNumInput.radius = 8;
 			addChild(phoneNumInput);
 			
-			
 			passwordInput = new TextInput();
 			passwordInput.maxChars = 12;
 			passwordInput.width = 100;
@@ -70,8 +83,16 @@ package com.xiaomu.view.login
 			loginBtn.width = 30;
 			loginBtn.height = 20;
 			loginBtn.label = '登录';
+			loginBtn.fontSize = 10;
 			loginBtn.addEventListener(MouseEvent.CLICK,loginHandler);
 			addChild(loginBtn);
+			
+			regsiterBtn = new Button();
+			regsiterBtn.width = 50;
+			regsiterBtn.height = 20;
+			regsiterBtn.label = '立即注册';
+			regsiterBtn.fontSize = 10;
+			addChild(regsiterBtn);
 		}
 		
 		override protected function commitProperties():void 
@@ -107,6 +128,9 @@ package com.xiaomu.view.login
 			
 			loginBtn.x = (width-loginBtn.width)/2;
 			loginBtn.y = passwordInput.y+passwordInput.height+10;
+			
+			regsiterBtn.x = loginBtn.x+loginBtn.width+10;
+			regsiterBtn.y = passwordInput.y+passwordInput.height+10;
 		}
 		
 		override protected function drawSkin():void
@@ -123,6 +147,11 @@ package com.xiaomu.view.login
 		
 		protected function loginHandler(event:MouseEvent):void
 		{
+			doLogin();
+		}	
+		
+		public function doLogin():void
+		{
 			PopUpManager.removePopUp(this);
 			HttpApi.getInstane().login(phoneNumInput.text, passwordInput.text, function (ee:Event):void {
 				try
@@ -130,7 +159,8 @@ package com.xiaomu.view.login
 					const response:Object = JSON.parse(ee.currentTarget.data)
 					if (response.result == 0 && response.message.length > 0) {
 						AppData.getInstane().user = response.message[0]
-						trace(JSON.stringify(response.message[0]))
+//						trace(JSON.stringify(response.message[0]))
+//						trace(phoneNumInput.text,passwordInput.text);
 						AppData.getInstane().username = phoneNumInput.text
 						AppData.getInstane().password = passwordInput.text
 						HallView(MainView.getInstane().pushView(HallView)).init()
@@ -143,6 +173,7 @@ package com.xiaomu.view.login
 				}
 			}, function (ee:Event):void {
 			})
-		}	
+			
+		}
 	}
 }

@@ -1,5 +1,10 @@
 package com.xiaomu.view.login
 {
+	import com.xiaomu.util.AppData;
+	
+	import flash.events.MouseEvent;
+	import flash.utils.setTimeout;
+	
 	import coco.component.Button;
 	import coco.component.TextAlign;
 	import coco.component.TextArea;
@@ -38,6 +43,12 @@ package com.xiaomu.view.login
 			
 			loginPanel = new LoginPanel()
 			addChild(loginPanel)
+			loginPanel.regsiterBtn.addEventListener(MouseEvent.CLICK,changeToRegsiterHandler);
+			
+			registerPanel = new RegisterPanel();
+			addChild(registerPanel);
+			registerPanel.cancelBtn.addEventListener(MouseEvent.CLICK,changeToLoginHandler);
+			registerPanel.visible = false
 			
 			bottomLab = new TextArea();
 			bottomLab.textAlign = TextAlign.CENTER;
@@ -59,11 +70,38 @@ package com.xiaomu.view.login
 			
 			loginPanel.x = (width - loginPanel.width) / 2
 			loginPanel.y = (height - loginPanel.height) / 2
+				
+			registerPanel.x = loginPanel.x
+			registerPanel.y = loginPanel.y;
 			
 			bottomLab.x = 10;
 			bottomLab.y = height-18;
 			bottomLab.width = width-20;
 			bottomLab.height = 0;
+		}
+		
+		protected function changeToLoginHandler(event:MouseEvent):void
+		{
+			loginPanel.visible = true;
+			registerPanel.visible = false;
+		}
+		
+		protected function changeToRegsiterHandler(event:MouseEvent):void
+		{
+			loginPanel.visible = false;
+			registerPanel.visible = true;
+		}
+		
+		public function init():void{
+			setTimeout(function():void{
+				if(AppData.getInstane().username&&AppData.getInstane().password){
+					if(loginPanel){
+						loginPanel.doLogin();
+					}else{
+						(new LoginPanel).doLogin();
+					}
+				}
+			},10);
 		}
 		
 	}

@@ -129,8 +129,6 @@ package com.xiaomu.view.group
 			usersList.paddingLeft = 0
 			usersList.y = 40
 			usersList.gap = 5
-			usersList.backgroundColor = 0xFFFFFF
-			usersList.backgroundAlpha = 0
 			usersList.itemRendererClass = UserRenderer
 			usersList.itemRendererHeight = 25;
 			addChild(usersList)
@@ -160,21 +158,18 @@ package com.xiaomu.view.group
 		override protected function updateDisplayList():void {
 			super.updateDisplayList()
 			
+			userInfoView.x=userInfoView.y=0;
 			userInfoView.width = width
 			
-			usersList.width = width / 3
-			usersList.height = height - usersList.y
-			usersList.x = width - usersList.width
-			
-			addMemberButton.x = usersList.x
-			addMemberButton.width = usersList.width - usersList.padding
+			addMemberButton.x = width*2/3
+			addMemberButton.width = width / 3 - usersList.padding
 			addMemberButton.height = 25
 			addMemberButton.y = height - addMemberButton.height - usersList.padding
 			addMemberButton.visible = isNowGroupAdmin;
 			
 			groupInfoView.x = roomsList.padding;
 			groupInfoView.y = userInfoView.y+userInfoView.height+10;
-			groupInfoView.width = width-(usersList.width+roomsList.padding*2)
+			groupInfoView.width = width-(width/3+roomsList.padding*2)
 			groupInfoView.height = 40;
 			
 			roomsList.y = groupInfoView.y+groupInfoView.height+roomsList.padding;
@@ -184,6 +179,11 @@ package com.xiaomu.view.group
 			
 			goback.x = width-goback.width;
 			goback.y = 0;
+			
+			usersList.width = width / 3
+			usersList.height = height - usersList.y
+			usersList.x = width - usersList.width
+			usersList.height = isNowGroupAdmin?(addMemberButton.y-userInfoView.height-userInfoView.y-usersList.padding):(height-userInfoView.height-userInfoView.y-usersList.padding)
 		}
 		
 		override protected function commitProperties():void {

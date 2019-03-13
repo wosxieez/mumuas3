@@ -149,7 +149,7 @@ package com.xiaomu.view.hall
 		
 		override protected function commitProperties():void {
 			super.commitProperties()
-//			groupsList.dataProvider = groupsData
+			//			groupsList.dataProvider = groupsData
 		}
 		
 		override protected function updateDisplayList():void{
@@ -179,48 +179,59 @@ package com.xiaomu.view.hall
 		
 		protected function groupsList_changeHandler(event:UIEvent):void
 		{
+			if(!groupsList.selectedItem){
+				return
+			}
+			var selectedItem:Object = groupsList.selectedItem;
 			var groupId:int = int(groupsList.selectedItem.group_id)
 			var groupAdminId:int = groupsList.selectedItem.admin_id
 			var userId:int = AppData.getInstane().user.id
-			trace('选中：',JSON.stringify(groupsList.selectedItem));
-//			trace('当前群主id是：',groupAdminId);
-//			trace('用户自身id:',userId);
+			//			trace('选中：',JSON.stringify(groupsList.selectedItem));
+			//			trace('当前群主id是：',groupAdminId);
+			//			trace('用户自身id:',userId);
 			HttpApi.getInstane().getUserInfoById(groupAdminId,function(e:Event):void{
-//				trace("群主名",JSON.parse(e.currentTarget.data).message[0].username);
-				var groupInfoObj:Object={'groupName':groupsList.selectedItem.name,
-					'remark':groupsList.selectedItem.remark,
-					'admin_id':groupsList.selectedItem.admin_id,
+				//				trace("群主名",JSON.parse(e.currentTarget.data).message[0].username);
+				var groupInfoObj:Object={'groupName':selectedItem.name,
+					'remark':selectedItem.remark,
+					'admin_id':selectedItem.admin_id,
 					'admin_name':JSON.parse(e.currentTarget.data).message[0].username}
 				GroupView(MainView.getInstane().pushView(GroupView)).init(groupId,groupAdminId,groupInfoObj)///进入房间界面，初始化，输入组id,同时传入需要该组的群主id
 			},null)
 			setTimeout(function ():void { groupsList.selectedIndex = -1 }, 200)
-			
 		}
 		
 		public function init():void {
-			groupsData = JSON.parse(AppData.getInstane().user.group_info) as Array;
-			Audio.getInstane().playBGM('assets/bgm.mp3')
+			if(AppData.getInstane().user.group_info==null){
+				AppData.getInstane().user.group_info=[]
+				groupsData = [];
+			}else{
+				groupsData = JSON.parse(AppData.getInstane().user.group_info) as Array;
+			}
+			//			Audio.getInstane().playBGM('assets/bgm.mp3')
 			Assets.getInstane().loadAssets('assets/mumu.png', 'assets/mumu.json')
 			HttpApi.getInstane().getUserInfoByName(AppData.getInstane().username,function(e:Event):void{
 				//				trace('大厅界面：金币',JSON.parse(e.currentTarget.data).message[0].group_info);
 				//				trace('大厅界面：房卡',JSON.parse(e.currentTarget.data).message[0].room_card);
 				//				trace('大厅界面：用户id',JSON.parse(e.currentTarget.data).message[0].id);
-				AppData.getInstane().user.userId = JSON.parse(e.currentTarget.data).message[0].id+'';
-				userInfoView.userInfoData = {"roomCard":JSON.parse(e.currentTarget.data).message[0].room_card+'','userName':AppData.getInstane().username}
+				var room_card:String = JSON.parse(e.currentTarget.data).message[0].room_card?JSON.parse(e.currentTarget.data).message[0].room_card+'':'0'
+				var user_id:String = JSON.parse(e.currentTarget.data).message[0].id+''
+				AppData.getInstane().user.userId = user_id;
+				userInfoView.userInfoData = {"roomCard":room_card,'userName':AppData.getInstane().username}
 			},null);
 			HttpApi.getInstane().getAllGroupInfo(function(e:Event):void{
-			var groupArr : Array = JSON.parse(e.currentTarget.data).message as Array;///所以组群信息
-			for each (var j:Object in groupArr) {
-				for each (var k:Object in groupsData) {
-					if(k.group_id==j.id){
-						k.name = j.name
-						k.admin_id = j.admin_id
-						k.remark = j.remark
+				var groupArr : Array = JSON.parse(e.currentTarget.data).message as Array;///所以组群信息
+				//			trace("groupArr:",JSON.stringify(groupArr));
+				for each (var j:Object in groupArr) {
+					for each (var k:Object in groupsData) {
+						if(k.group_id==j.id){
+							k.name = j.name
+							k.admin_id = j.admin_id
+							k.remark = j.remark
+						}
 					}
 				}
-			}
-			groupsList.dataProvider = groupsData
-//			trace('groupArr::',JSON.stringify(groupArr));
+				groupsList.dataProvider = groupsData
+				//			trace('groupArr::',JSON.stringify(groupArr));
 			},null);
 		}
 		
@@ -246,7 +257,7 @@ package com.xiaomu.view.hall
 		 */
 		protected function joinGroupHandler(event:MouseEvent):void
 		{
-//			trace("加入亲友圈");
+			//			trace("加入亲友圈");
 		}		
 		
 		
