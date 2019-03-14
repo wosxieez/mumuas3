@@ -1,6 +1,8 @@
 package com.xiaomu.view.group
 {
 	import com.xiaomu.event.ApiEvent;
+	import com.xiaomu.event.AppManagerEvent;
+	import com.xiaomu.manager.AppManager;
 	import com.xiaomu.renderer.RoomRenderer;
 	import com.xiaomu.renderer.UserRenderer;
 	import com.xiaomu.util.Api;
@@ -38,6 +40,10 @@ package com.xiaomu.view.group
 			Api.getInstane().addEventListener(ApiEvent.JOIN_GROUP_SUCCESS, joinGroupSuccessHandler)
 			Api.getInstane().addEventListener(ApiEvent.JOIN_GROUP_FAULT, joinGroupFaultHandler)
 			Api.getInstane().addEventListener(ApiEvent.ON_GROUP, onGroupHandler)
+			AppManager.getInstance().addEventListener(AppManagerEvent.UPDATE_GROUP_SUCCESS,updateGroupSuccessHandler);
+			AppManager.getInstance().addEventListener(AppManagerEvent.UPDATE_MEMBER_INFO_SUCCESS,updateMemberInfoSuccessHandler);
+			AppManager.getInstance().addEventListener(AppManagerEvent.UPDATE_ADMIN_GOLD_SUCCESS,updateAdminGoldSuccessHandler);
+			AppManager.getInstance().addEventListener(AppManagerEvent.CHANGE_MEMBER_SUCCESS,changeMemberSuccessHandler);
 		}
 		
 		private var topbg:Image
@@ -103,7 +109,7 @@ package com.xiaomu.view.group
 		
 		override protected function createChildren():void {
 			super.createChildren()
-				
+			
 			topbg = new Image()
 			topbg.source = 'assets/hall/home_top_headbg.png'
 			topbg.height = 40
@@ -163,7 +169,6 @@ package com.xiaomu.view.group
 			super.updateDisplayList()
 			
 			userInfoView.x=userInfoView.y=0;
-//			userInfoView.width = width
 			
 			addMemberButton.x = width*2/3
 			addMemberButton.width = width / 3 - usersList.padding
@@ -234,7 +239,10 @@ package com.xiaomu.view.group
 		}
 		
 		private var thisGroupID:int
-		
+		private var _groupInfoObj:Object
+		private var copyGroupInfoData:Object;
+		private var tempUsers : Array;
+		private var _groupAdminId:int;
 		/**
 		 * 群界面初始化
 		 * @param groupid 群id
@@ -242,21 +250,15 @@ package com.xiaomu.view.group
 		 * @param groupInfoObj 该群的一些信息
 		 */
 		public function init(groupid:int,groupAdminId:int,groupInfoObj:Object): void {
-			
-			isNowGroupAdmin = groupAdminId==AppData.getInstane().user.id;
+			_groupAdminId = groupAdminId;
+			_groupInfoObj = groupInfoObj;
+			isNowGroupAdmin = groupAdminId==AppData.getInstane().user.id;///当前该用户是不是这个群的群主
 			groupInfoObj.isNowGroupAdmin = isNowGroupAdmin///当前该用户是不是这个群的群主
 			groupInfoView.groupInfoData = groupInfoObj;
 			AppData.getInstane().isNowGroupAdmin = isNowGroupAdmin
 			thisGroupID = groupid
-			HttpApi.getInstane().getUserInfoByName(AppData.getInstane().username,function(e:Event):void{
-				var roomCard:String = JSON.parse(e.currentTarget.data).message[0].room_card+'';
-				var tempArr : Array = JSON.parse(JSON.parse(e.currentTarget.data).message[0].group_info) as Array;
-				for each (var i:Object in tempArr){
-					if(i.group_id+''==groupid+''){
-						userData = {'gold':i.gold,'userName':AppData.getInstane().username,'roomCard':roomCard,'userId':AppData.getInstane().user.id,'groupId':groupid}///用于顶部用户信息界面
-					}
-				}
-			},null);
+			
+			getUserInfoByName();
 			
 			HttpApi.getInstane().getGroupUsers(groupid, 
 				function (e:Event):void {
@@ -267,15 +269,13 @@ package com.xiaomu.view.group
 						for each(var user:Object in users) {
 							user.group_id = thisGroupID
 						}
-						//						usersData = users
-						var tempUsers : Array = JSON.parse(JSON.stringify(users)) as Array;
+						tempUsers = JSON.parse(JSON.stringify(users)) as Array;
 						tempUsers.map(function(item:*,index:int,arr:Array):Object{
 							item.allowSetFlag = groupAdminId==AppData.getInstane().user.id; ///你只有是该群的群主 你才能给其他群成员设置金币
 							item.isAdmin = groupAdminId==item.id
 						},null);
 						usersData = tempUsers
 					} 
-					
 					// 加载群的房间信息
 					HttpApi.getInstane().getGroupRooms(groupid, 
 						function (e:Event):void {
@@ -292,14 +292,22 @@ package com.xiaomu.view.group
 								Api.getInstane().joinGroup(AppData.getInstane().user.username, groupid)
 							} 
 						}, 
-						function (e:Event):void {
-							// get group rooms error
-						})
+						null)
 				}, 
-				function (e:Event):void {
-					// get group users error
-				})
-			
+				null)
+		}
+		
+		private function getUserInfoByName():void
+		{
+			HttpApi.getInstane().getUserInfoByName(AppData.getInstane().username,function(e:Event):void{
+				var roomCard:String = JSON.parse(e.currentTarget.data).message[0].room_card+'';
+				var tempArr : Array = JSON.parse(JSON.parse(e.currentTarget.data).message[0].group_info) as Array;
+				for each (var i:Object in tempArr){
+					if(i.group_id+''==thisGroupID+''){
+						userData = {'gold':i.gold,'userName':AppData.getInstane().username,'roomCard':roomCard,'userId':AppData.getInstane().user.id,'groupId':thisGroupID}///用于顶部用户信息界面
+					}
+				}
+			},null);
 		}
 		
 		private function getUser(username:String):Object {
@@ -418,6 +426,88 @@ package com.xiaomu.view.group
 		protected function addMemberButton_clickHandler(event:MouseEvent):void
 		{
 			AddMemberPanel.getInstane().open(thisGroupID)
+		}
+		
+		/**
+		 * 监听到群信息更新成功
+		 */
+		protected function updateGroupSuccessHandler(event:AppManagerEvent):void
+		{
+			//			trace('监听到群信息更新成功');
+			//			trace('groupInfoData:',JSON.stringify(groupInfoData));
+			HttpApi.getInstane().getGroupInfoByGroupId(thisGroupID,function(e:Event):void{
+				var respones:Object = JSON.parse(e.currentTarget.data).message[0]
+				if(respones){
+					copyGroupInfoData = JSON.parse(JSON.stringify(_groupInfoObj));
+					copyGroupInfoData.group_name = respones.name
+					copyGroupInfoData.remark = respones.remark
+					//					trace('最终数据：',JSON.stringify(copyGroupInfoData));
+					groupInfoView.groupInfoData = copyGroupInfoData;
+				}
+			},null);
+		}
+		
+		/**
+		 * 监听到人员信息更新成功
+		 */
+		protected function updateMemberInfoSuccessHandler(event:AppManagerEvent):void
+		{
+			getGroupUserHandler();
+		}
+		
+		private function getGroupUserHandler():void
+		{
+			HttpApi.getInstane().getGroupUsers(thisGroupID, 
+				function (e:Event):void {
+					// get group users ok
+					const usersResponse:Object = JSON.parse(e.currentTarget.data)
+					if (usersResponse.result == 0 && usersResponse.message) {
+						var users:Array = usersResponse.message
+						for each(var user:Object in users) {
+							user.group_id = thisGroupID
+						}
+						//usersData = users
+						tempUsers = JSON.parse(JSON.stringify(users)) as Array;
+						tempUsers.map(function(item:*,index:int,arr:Array):Object{
+							item.allowSetFlag = _groupAdminId==AppData.getInstane().user.id; ///你只有是该群的群主 你才能给其他群成员设置金币
+							item.isAdmin = _groupAdminId==item.id
+						},null);
+						usersData = tempUsers
+					} 
+				}, 
+				null)
+		}
+		
+		/**
+		 * 监听到群主自身的金币信息更新成功
+		 */
+		protected function updateAdminGoldSuccessHandler(event:AppManagerEvent):void
+		{
+			getUserInfoByName();
+		}
+		
+		/**
+		 * 添加或移除成员成功
+		 */
+		protected function changeMemberSuccessHandler(event:AppManagerEvent):void
+		{
+			HttpApi.getInstane().getGroupUsers(thisGroupID, 
+				function (e:Event):void {
+					// get group users ok
+					const usersResponse:Object = JSON.parse(e.currentTarget.data)
+					if (usersResponse.result == 0 && usersResponse.message) {
+						var users:Array = usersResponse.message
+						for each(var user:Object in users) {
+							user.group_id = thisGroupID
+						}
+						tempUsers = JSON.parse(JSON.stringify(users)) as Array;
+						tempUsers.map(function(item:*,index:int,arr:Array):Object{
+							item.allowSetFlag = _groupAdminId==AppData.getInstane().user.id; ///你只有是该群的群主 你才能给其他群成员设置金币
+							item.isAdmin = _groupAdminId==item.id
+						},null);
+						usersData = tempUsers
+					}
+				},null);
 		}
 		
 	}

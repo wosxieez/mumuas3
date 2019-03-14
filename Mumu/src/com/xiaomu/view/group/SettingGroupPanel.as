@@ -1,5 +1,7 @@
 package com.xiaomu.view.group
 {
+	import com.xiaomu.event.AppManagerEvent;
+	import com.xiaomu.manager.AppManager;
 	import com.xiaomu.util.HttpApi;
 	
 	import flash.events.Event;
@@ -159,6 +161,7 @@ package com.xiaomu.view.group
 			HttpApi.getInstane().updateGroupByGroupId(data.group_id,newData,function(e:Event):void{
 				if(JSON.parse(e.currentTarget.data).result==0){
 					Alert.show('群信息修改成功');
+					AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.UPDATE_GROUP_SUCCESS));
 				}
 			},null);
 		}

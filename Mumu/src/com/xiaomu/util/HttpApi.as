@@ -189,6 +189,26 @@ package com.xiaomu.util
 			urlLoader.load(urlrequest)
 		}
 		
+		
+		/**
+		 * 根据群id，获取群信息
+		 * @param group_id
+		 * @param resultHandler
+		 * @param faultHandler
+		 */
+		public function getGroupInfoByGroupId(group_id:int,
+											  resultHandler:Function = null, 
+											  faultHandler:Function = null):void
+		{
+			var params:Object = {'id':group_id}
+			var urlrequest:URLRequest = new URLRequest(WEB_URL + 'find_group');
+			urlrequest.method = URLRequestMethod.POST
+			urlrequest.contentType = 'application/json'
+			urlrequest.data = JSON.stringify(params)
+			var urlLoader:CocoURLLoader = new CocoURLLoader(resultHandler, faultHandler, true, 20000);
+			urlLoader.load(urlrequest)
+		}
+		
 		/**
 		 * 根据群id，修该群数据
 		 * @param group_id

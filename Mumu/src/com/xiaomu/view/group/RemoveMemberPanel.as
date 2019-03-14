@@ -1,5 +1,7 @@
 package com.xiaomu.view.group
 {
+	import com.xiaomu.event.AppManagerEvent;
+	import com.xiaomu.manager.AppManager;
 	import com.xiaomu.util.HttpApi;
 	
 	import flash.events.Event;
@@ -122,6 +124,7 @@ package com.xiaomu.view.group
 					var message:String = JSON.parse(e.currentTarget.data).message;
 					if(JSON.parse(e.currentTarget.data).result==0){
 						Alert.show('移除成员成功');
+						AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.CHANGE_MEMBER_SUCCESS));
 					}else{
 						Alert.show('移除成员失败')
 					}

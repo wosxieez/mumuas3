@@ -1,5 +1,7 @@
 package com.xiaomu.view.group
 {
+	import com.xiaomu.event.AppManagerEvent;
+	import com.xiaomu.manager.AppManager;
 	import com.xiaomu.util.HttpApi;
 	
 	import flash.events.Event;
@@ -251,6 +253,7 @@ package com.xiaomu.view.group
 					const response:Object = JSON.parse(e.currentTarget.data)
 					if (response.result == 0) {
 						Alert.show('设置成功')
+						AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.UPDATE_MEMBER_INFO_SUCCESS));
 						close()
 					} else {
 						Alert.show('设置失败')

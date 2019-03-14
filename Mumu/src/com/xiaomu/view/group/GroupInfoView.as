@@ -1,5 +1,10 @@
 package com.xiaomu.view.group
 {
+	import com.xiaomu.event.AppManagerEvent;
+	import com.xiaomu.manager.AppManager;
+	import com.xiaomu.util.HttpApi;
+	
+	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
 	import coco.component.Image;
@@ -17,8 +22,10 @@ package com.xiaomu.view.group
 		public function GroupInfoView()
 		{
 			super();
+//			AppManager.getInstance().addEventListener(AppManagerEvent.UPDATE_GROUP_SUCCESS,updateGroupSuccessHandler);
 		}
-
+		private var copyGroupInfoData:Object
+		
 		private var _groupInfoData:Object;
 
 		public function get groupInfoData():Object
@@ -32,7 +39,6 @@ package com.xiaomu.view.group
 			invalidateProperties();
 		}
 
-		
 		private var titleLab:Label;
 		private var remarkLab:Label;
 		private var adminLab:Label;
@@ -125,8 +131,36 @@ package com.xiaomu.view.group
 			if(!settingGroupPanel){
 				settingGroupPanel = new SettingGroupPanel();
 			}
-			settingGroupPanel.data = groupInfoData;
+			settingGroupPanel.data = copyGroupInfoData?copyGroupInfoData:groupInfoData;
 			PopUpManager.centerPopUp(PopUpManager.addPopUp(settingGroupPanel,null,true,true,0xffffff,0.4));
+		}
+		
+		/**
+		 * 监听到数据更新成功事件
+		 */
+		protected function updateGroupSuccessHandler(event:AppManagerEvent):void
+		{
+			//			trace('监听到群信息更新成功');
+			//			trace('groupInfoData:',JSON.stringify(groupInfoData));
+			HttpApi.getInstane().getGroupInfoByGroupId(groupInfoData.group_id,function(e:Event):void{
+				var respones:Object = JSON.parse(e.currentTarget.data).message[0]
+				if(respones){
+					//					trace('数据：',JSON.stringify(respones));
+					copyGroupInfoData = JSON.parse(JSON.stringify(groupInfoData));
+					copyGroupInfoData.group_name = respones.name
+					copyGroupInfoData.remark = respones.remark
+					forceUpdate(copyGroupInfoData);
+				}
+			},null);
+		}
+		
+		/**
+		 * 强制更新
+		 */
+		private function forceUpdate(copyGroupInfoData:Object):void
+		{
+			titleLab.text = copyGroupInfoData?'群名: '+copyGroupInfoData.group_name:'群名: /'
+			remarkText.text = copyGroupInfoData?copyGroupInfoData.remark:'/'
 		}
 	}
 }

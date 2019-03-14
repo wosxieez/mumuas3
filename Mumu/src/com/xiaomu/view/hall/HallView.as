@@ -1,6 +1,8 @@
 package com.xiaomu.view.hall
 {
 	import com.xiaomu.component.ImgBtn;
+	import com.xiaomu.event.AppManagerEvent;
+	import com.xiaomu.manager.AppManager;
 	import com.xiaomu.renderer.ButtonRenderer;
 	import com.xiaomu.renderer.GroupRenderer;
 	import com.xiaomu.util.AppData;
@@ -32,6 +34,8 @@ package com.xiaomu.view.hall
 		public function HallView()
 		{
 			super();
+			AppManager.getInstance().addEventListener(AppManagerEvent.UPDATE_GROUP_SUCCESS,updateGroupSuccessHandler);
+			AppManager.getInstance().addEventListener(AppManagerEvent.CREATE_GROUP_SUCCESS,createGroupSuccessHandler);
 		}
 		
 		private var topbg:Image
@@ -43,18 +47,8 @@ package com.xiaomu.view.hall
 		private var joinGroupBtn : ImgBtn;
 		private var createGroupBtn : ImgBtn;
 		
-		private var _groupsData:Array
+		private var groupsData:Array
 		
-		public function get groupsData():Array
-		{
-			return _groupsData;
-		}
-		
-		public function set groupsData(value:Array):void
-		{
-			_groupsData = value;
-			invalidateProperties()
-		}
 		
 		override protected function createChildren():void {
 			super.createChildren()
@@ -137,16 +131,9 @@ package com.xiaomu.view.hall
 		
 		protected function signoutBtn_clickHandler(event:MouseEvent):void
 		{
+			AppData.getInstane().inGroupView = false;
 			dispose()
 			MainView.getInstane().popView(LoginView)
-			//			trace("测试");
-			//			HttpApi.getInstane().updateUserGroupInfo(AppData.getInstane().username,
-			//				[{group_id:1,gold:100},{group_id:2,gold:200},{group_id:4,gold:300}],function(e:Event):void{},null);
-		}
-		
-		override protected function commitProperties():void {
-			super.commitProperties()
-			//			groupsList.dataProvider = groupsData
 		}
 		
 		override protected function updateDisplayList():void{
@@ -181,14 +168,11 @@ package com.xiaomu.view.hall
 				return
 			}
 			var selectedItem:Object = groupsList.selectedItem;
-			var groupId:int = int(groupsList.selectedItem.group_id)
-			var groupAdminId:int = groupsList.selectedItem.admin_id
-			var userId:int = AppData.getInstane().user.id
-			//			trace('选中：',JSON.stringify(groupsList.selectedItem));
-			//			trace('当前群主id是：',groupAdminId);
-			//			trace('用户自身id:',userId);
+			var groupId:int = int(groupsList.selectedItem.group_id)///群id
+			var groupAdminId:int = groupsList.selectedItem.admin_id///该群群主id
+			var userId:int = AppData.getInstane().user.id///用户自身id
 			HttpApi.getInstane().getUserInfoById(groupAdminId,function(e:Event):void{
-				//				trace("群主名",JSON.parse(e.currentTarget.data).message[0].username);
+				///群消息对象
 				var groupInfoObj:Object={
 					'group_id':selectedItem.group_id,
 					'group_name':selectedItem.name,
@@ -218,9 +202,15 @@ package com.xiaomu.view.hall
 				AppData.getInstane().user.userId = user_id;
 				userInfoView.userInfoData = {"roomCard":room_card,'userName':AppData.getInstane().username}
 			},null);
+			getAllGroupInfo();
+		}
+		
+		/**
+		 * 查询group表，获取所有群信息
+		 */
+		private function getAllGroupInfo():void{
 			HttpApi.getInstane().getAllGroupInfo(function(e:Event):void{
-				var groupArr : Array = JSON.parse(e.currentTarget.data).message as Array;///所以组群信息
-				//			trace("groupArr:",JSON.stringify(groupArr));
+				var groupArr : Array = JSON.parse(e.currentTarget.data).message as Array;///所有组群信息
 				for each (var j:Object in groupArr) {
 					for each (var k:Object in groupsData) {
 						if(k.group_id==j.id){
@@ -231,7 +221,6 @@ package com.xiaomu.view.hall
 					}
 				}
 				groupsList.dataProvider = groupsData
-				//			trace('groupArr::',JSON.stringify(groupArr));
 			},null);
 		}
 		
@@ -242,8 +231,7 @@ package com.xiaomu.view.hall
 		/**
 		 * 创建亲友圈
 		 */
-		protected function createGroupHandler(event:MouseEvent):void
-		{
+		protected function createGroupHandler(event:MouseEvent):void{
 			var createCroupPanel : CreateGroupPanel;
 			if(!createCroupPanel){
 				createCroupPanel = new CreateGroupPanel();
@@ -255,11 +243,28 @@ package com.xiaomu.view.hall
 		/**
 		 * 加入亲友圈
 		 */
-		protected function joinGroupHandler(event:MouseEvent):void
-		{
+		protected function joinGroupHandler(event:MouseEvent):void{
 			//			trace("加入亲友圈");
 		}		
 		
+		/**
+		 *监听到群信息更新成功 
+		 */
+		protected function updateGroupSuccessHandler(event:AppManagerEvent):void{
+			getAllGroupInfo();
+		}
+		
+		/**
+		 * 创建亲友圈群成功
+		 */
+		protected function createGroupSuccessHandler(event:Event):void
+		{
+			HttpApi.getInstane().getUserInfoById(AppData.getInstane().user.id,function(e:Event):void{
+				var group_info_arr:Array = JSON.parse(JSON.parse(e.currentTarget.data).message[0].group_info) as Array;
+				AppData.getInstane().user.group_info = JSON.stringify(group_info_arr);
+				init();
+			},null);
+		}
 		
 	}
 }

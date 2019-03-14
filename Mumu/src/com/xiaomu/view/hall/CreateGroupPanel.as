@@ -1,5 +1,7 @@
 package com.xiaomu.view.hall
 {
+	import com.xiaomu.event.AppManagerEvent;
+	import com.xiaomu.manager.AppManager;
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.HttpApi;
 	
@@ -92,6 +94,9 @@ package com.xiaomu.view.hall
 		
 		protected function oklHandler(event:MouseEvent):void
 		{
+			/*
+			* 创建群的操作，先insert group表，再更新user表中当前用户的group_info字段
+			*/
 			var group_info_arr: Array = []; 
 			HttpApi.getInstane().getUserInfoByName(AppData.getInstane().username,function(e:Event):void{
 				group_info_arr  = JSON.parse(JSON.parse(e.currentTarget.data).message[0].group_info) as Array
@@ -105,6 +110,7 @@ package com.xiaomu.view.hall
 								PopUpManager.removeAllPopUp();
 								///刷新界面
 								Alert.show('创建成功');
+								AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.CREATE_GROUP_SUCCESS));
 							}
 						},null)
 					},null)

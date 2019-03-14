@@ -16,7 +16,6 @@ package com.xiaomu.view.userBarView
 			width = 300
 		}
 		
-		
 		private var userinfoBar : UserInfoBar
 		private var goldBar : GoldOrCardShowBar;
 		private var roomCardBar : GoldOrCardShowBar;
@@ -68,8 +67,6 @@ package com.xiaomu.view.userBarView
 			if(AppData.getInstane().inGroupView){
 				if(AppData.getInstane().isNowGroupAdmin){
 					goldBar.visible = roomCardBar.visible = true;
-					//					goldBar.x = userinfoBar.x+userinfoBar.width+20
-					//					roomCardBar.x = goldBar.x+goldBar.width+20
 					roomCardBar.x = userinfoBar.x+userinfoBar.width+20
 					goldBar.x = roomCardBar.x+roomCardBar.width+20
 				}else{
@@ -116,8 +113,21 @@ package com.xiaomu.view.userBarView
 			}
 		}
 		
+		/**
+		 *重置房卡和金币的显示 
+		 */
 		public function reset():void{
 			roomCardBar.visible=goldBar.visible=false
 		}
+		
+		//		public function updateShowWhich(number:int):void{
+		//			if(number==1){
+		//				goldBar.visible = true;
+		//				roomCardBar.visible = false;
+		//				goldBar.x = userinfoBar.x+userinfoBar.width+20
+		//			}else if(number==2){
+		//				
+		//			}
+		//		}
 	}
 }

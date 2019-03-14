@@ -1,5 +1,7 @@
 package com.xiaomu.view.userBarView
 {
+	import com.xiaomu.event.AppManagerEvent;
+	import com.xiaomu.manager.AppManager;
 	import com.xiaomu.util.HttpApi;
 	
 	import flash.events.Event;
@@ -146,6 +148,7 @@ package com.xiaomu.view.userBarView
 					HttpApi.getInstane().updateUserGroupInfo(data.userName,group_info,function(e:Event):void{
 						if(JSON.parse(e.currentTarget.data).result==0){
 							Alert.show('金币更新成功');
+							AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.UPDATE_ADMIN_GOLD_SUCCESS));
 						}
 					},null);
 					
