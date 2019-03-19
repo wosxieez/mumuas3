@@ -139,12 +139,12 @@ package com.xiaomu.component
 			
 			sliderBarImage = new Image();
 			sliderBarImage.height = height;
-			sliderBarImage.radius = 5;
+			sliderBarImage.width = width;
 			addChild(sliderBarImage);
 			
 			coverImage = new Image();
 			coverImage.height = height;
-			coverImage.radius = 5;
+			coverImage.width = width;
 			addChild(coverImage);
 			
 			thumbImage = new Image();

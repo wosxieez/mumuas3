@@ -1,5 +1,7 @@
 package com.xiaomu.view.home
 {
+	import com.xiaomu.component.ImageBtnWithUpAndDown;
+	import com.xiaomu.itemRender.HomeBottomBarRender;
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.view.MainView;
 	import com.xiaomu.view.hall.HallView;
@@ -26,14 +28,15 @@ package com.xiaomu.view.home
 		}
 		
 		private var bg : Image;
+//		private var myGroup:ImageBtnWithUpAndDown;
 		private var myGroup:Image;
 		private var userInfoView:UserInfoView
+		private var shoppingBtn:ImageBtnWithUpAndDown;
 		private var btnGroup:ButtonGroup;
-		private var proxyBtn:Button;
-		private	var checkInBtn:Button;
-		private var waiterBtn:Button;
-		private var realNameBtn:Button;
-		private var joinRoom:Image;
+		private var proxyBtn:ImageBtnWithUpAndDown;
+		private	var checkInBtn:ImageBtnWithUpAndDown;
+		private var waiterBtn:ImageBtnWithUpAndDown;
+		private var joinRoom:ImageBtnWithUpAndDown;
 		private var rankList:List;
 		override protected function createChildren():void
 		{
@@ -42,54 +45,70 @@ package com.xiaomu.view.home
 			userInfoView = new UserInfoView();
 			addChild(userInfoView);
 			
+			/*myGroup = new ImageBtnWithUpAndDown();
+			myGroup.width = 270*0.3;
+			myGroup.height = 407*0.3;
+			myGroup.upImageSource = 'assets/home/guild_up.png';
+			myGroup.downImageSource = 'assets/home/guild_down.png';
+			myGroup.addEventListener(MouseEvent.CLICK,clickHandler);
+			addChild(myGroup);*/
+			
 			myGroup = new Image();
-			myGroup.source = 'assets/home/guild_up.png';
+			myGroup.width = 130;
+			myGroup.height = 150;
+			myGroup.source = 'assets/home/myGroup.png';
 			myGroup.addEventListener(MouseEvent.CLICK,clickHandler);
 			addChild(myGroup);
 			
+			shoppingBtn = new ImageBtnWithUpAndDown();
+			shoppingBtn.width = 117*0.32;
+			shoppingBtn.height = 92*0.32;
+			shoppingBtn.upImageSource = 'assets/home/bottomBar/shangcheng_up.png';
+			shoppingBtn.downImageSource = 'assets/home/bottomBar/shangcheng_down.png';
+			addChild(shoppingBtn);
+			
 			btnGroup =  new ButtonGroup();
-			btnGroup.dataProvider = [{'name':'商场','image':'shangcheng_up'},{'name':'邮件','image':'youjian_up'},{'name':'分享','image':'fenxiang_up'},{'name':'公告','image':'gonggao_up'},{'name':'战绩','image':'shezhi_up'},{'name':'设置','image':'shezhi_up'}];
-			btnGroup.itemRendererWidth = 60;
+			btnGroup.dataProvider = [{'name':'邮件','image':'youjian'},{'name':'分享','image':'fenxiang'},{'name':'公告','image':'gonggao'},{'name':'战绩','image':'zhanji'},{'name':'设置','image':'shezhi'}];
+			btnGroup.itemRendererWidth = 63*0.95;
+			btnGroup.itemRendererHeight = 30*0.95;
 			btnGroup.labelField = 'name';
+			btnGroup.itemRendererClass = HomeBottomBarRender;
 			btnGroup.addEventListener(UIEvent.CHANGE,changeHandler);
 			addChild(btnGroup);
 			
-			joinRoom = new Image();
-			joinRoom.source = 'assets/home/newjoin_up.png';
+			joinRoom = new ImageBtnWithUpAndDown();
+			joinRoom.upImageSource = 'assets/home/newjoin_up.png';
+			joinRoom.downImageSource = 'assets/home/newjoin_down.png';
+			joinRoom.width = 354*0.4;
+			joinRoom.height = 108*0.4;
+			joinRoom.addEventListener(MouseEvent.CLICK,joinRoomClickHandler);
 			addChild(joinRoom);
 			
-			proxyBtn = new Button();
-			proxyBtn.label = '代理';
+			proxyBtn = new ImageBtnWithUpAndDown();
+			proxyBtn.upImageSource = 'assets/home/cwdl_up.png';
+			proxyBtn.downImageSource = 'assets/home/cwdl_down.png';
+			proxyBtn.width = 30;
+			proxyBtn.height = 30;
 			addChild(proxyBtn);
 			
-			checkInBtn = new Button();
-			checkInBtn.label = '签到';
+			checkInBtn = new ImageBtnWithUpAndDown();
+			checkInBtn.upImageSource = 'assets/home/qiandao_up.png';
+			checkInBtn.downImageSource = 'assets/home/qiandao_down.png';
+			checkInBtn.width = 30;
+			checkInBtn.height = 30;
 			addChild(checkInBtn);
 			
-			waiterBtn = new Button();
-			waiterBtn.label = '客服';
+			waiterBtn = new ImageBtnWithUpAndDown();
+			waiterBtn.upImageSource = 'assets/home/btn_kf_normal.png';
+			waiterBtn.downImageSource = 'assets/home/btn_kf_press.png';
+			waiterBtn.width = 30;
+			waiterBtn.height = 30;
 			addChild(waiterBtn);
-			
-			realNameBtn = new Button();
-			realNameBtn.label = '实名认证';
-			addChild(realNameBtn);
 			
 			rankList = new List();
 			rankList.dataProvider = [{'name':'aa'},{'name':'bb'},{'name':'cc'},{'name':'dd'},{'name':'ee'}]
 			rankList.labelField = 'name';
 			addChild(rankList);
-		}
-		
-		protected function changeHandler(event:UIEvent):void
-		{
-			if(btnGroup.selectedItem.name=='设置'){
-				var setPanelView:SettingPanelView
-				if(!setPanelView){
-					setPanelView = new SettingPanelView();
-				}
-				PopUpManager.centerPopUp(PopUpManager.addPopUp(setPanelView,null,true,false,0x000000,0.8));
-			}
-			setTimeout(function():void{btnGroup.selectedIndex = -1},200);
 		}
 		
 		override protected function updateDisplayList():void{
@@ -100,12 +119,14 @@ package com.xiaomu.view.home
 			myGroup.x = width-myGroup.width-50;
 			myGroup.y = (height-myGroup.height)/2;
 			
+			shoppingBtn.x = 5;
+			shoppingBtn.y = height-shoppingBtn.height-2;
+			
 			btnGroup.width = btnGroup.dataProvider.length*btnGroup.itemRendererWidth;
 			btnGroup.height = 25;
-			btnGroup.x = 0;
-			btnGroup.y = height-btnGroup.height;
-			joinRoom.height =  35;
-			joinRoom.width = width-btnGroup.width
+			btnGroup.x = shoppingBtn.x+shoppingBtn.width+5;
+			btnGroup.y = height-btnGroup.itemRendererHeight;
+			
 			joinRoom.x = width-joinRoom.width;
 			joinRoom.y = height-joinRoom.height;
 			
@@ -121,24 +142,40 @@ package com.xiaomu.view.home
 			waiterBtn.x = checkInBtn.x;
 			waiterBtn.y = checkInBtn.y+checkInBtn.height+10;
 			
-			realNameBtn.width = realNameBtn.height = 25;
-			realNameBtn.x = checkInBtn.x;
-			realNameBtn.y = waiterBtn.y+waiterBtn.height+10;
-			
-			rankList.x = realNameBtn.x+realNameBtn.width+20;
+			rankList.x = waiterBtn.x+waiterBtn.width+20;
 			rankList.y = myGroup.y;
 			rankList.width = myGroup.width;
 			rankList.height = myGroup.height;
 		}
 		
 		public function init():void{
-			trace('homeView');
+//			trace('homeView');
 		}
 		
 		protected function clickHandler(event:MouseEvent):void{
-			trace('选中我的组群---进入hallView');
+//			trace('选中我的组群---进入hallView');
 			AppData.getInstane().inGroupView = false;
 			HallView(MainView.getInstane().pushView(HallView)).init()
+		}
+		
+		protected function changeHandler(event:UIEvent):void
+		{
+			if(!btnGroup.selectedItem){
+				return;
+			}
+			if(btnGroup.selectedItem.name=='设置'){
+				var setPanelView:SettingPanelView
+				if(!setPanelView){
+					setPanelView = new SettingPanelView();
+				}
+				PopUpManager.centerPopUp(PopUpManager.addPopUp(setPanelView,null,true,false,0x000000,0.8));
+			}
+			setTimeout(function():void{btnGroup.selectedIndex = -1},10);
+		}
+		
+		protected function joinRoomClickHandler(event:MouseEvent):void
+		{
+			trace('点击joinRoom');
 		}
 	}
 }
