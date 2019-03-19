@@ -4,6 +4,7 @@ package com.xiaomu.view.login
 	import com.xiaomu.util.HttpApi;
 	import com.xiaomu.view.MainView;
 	import com.xiaomu.view.hall.HallView;
+	import com.xiaomu.view.home.HomeView;
 	
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -163,7 +164,7 @@ package com.xiaomu.view.login
 //						trace(phoneNumInput.text,passwordInput.text);
 						AppData.getInstane().username = phoneNumInput.text
 						AppData.getInstane().password = passwordInput.text
-						HallView(MainView.getInstane().pushView(HallView)).init()
+						HomeView(MainView.getInstane().pushView(HomeView)).init()
 					}  else {
 						Alert.show('登录失败 用户名密码错误')
 					}

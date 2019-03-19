@@ -30,6 +30,26 @@ package com.xiaomu.util
 		 *用户当前有没有进入 groupView
 		 */
 		public var inGroupView:Boolean=false
+			
+		public function get gameMusicValue():String
+		{
+			return getShareObjectValue("gameMusicValue");
+		}
+		
+		public function set gameMusicValue(value:String):void
+		{
+			setShareObjectValue("gameMusicValue", value);
+		}
+		
+		public function get bgmValue():String
+		{
+			return getShareObjectValue("bgmValue");
+		}
+		
+		public function set bgmValue(value:String):void
+		{
+			setShareObjectValue("bgmValue", value);
+		}
 		
 		public function get username():String
 		{

@@ -96,5 +96,13 @@ package com.xiaomu.util
 			handleChannel = handleSound.play()
 		}
 		
+		public function changeBgmGain(gainValue:int):void{
+			trace('bgm增益：',gainValue);
+		}
+		
+		public function changeGameGain(gainValue:int):void{
+			trace('game增益：',gainValue);
+		}
+		
 	}
 }
