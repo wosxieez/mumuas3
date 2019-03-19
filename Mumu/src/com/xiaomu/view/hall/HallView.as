@@ -13,10 +13,8 @@ package com.xiaomu.view.hall
 	import com.xiaomu.view.group.GroupView;
 	import com.xiaomu.view.hall.popUpPanel.CreateGroupPanel;
 	import com.xiaomu.view.home.HomeView;
-	import com.xiaomu.view.login.LoginView;
 	import com.xiaomu.view.userBarView.UserInfoView;
 	
-	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.utils.setTimeout;
@@ -26,7 +24,6 @@ package com.xiaomu.view.hall
 	import coco.component.Image;
 	import coco.component.List;
 	import coco.component.VerticalAlign;
-	import coco.core.Application;
 	import coco.core.UIComponent;
 	import coco.event.UIEvent;
 	import coco.manager.PopUpManager;
@@ -210,7 +207,7 @@ package com.xiaomu.view.hall
 				groupsData = JSON.parse(AppData.getInstane().user.group_info) as Array;
 			}
 //			Audio.getInstane().playBGM('assets/bgm.mp3')
-			Assets.getInstane().loadAssets('assets/mumu.png', 'assets/mumu.json')
+			Assets.getInstane().loadAssets('assets/niu.png', 'assets/niu.json')
 			HttpApi.getInstane().getUserInfoByName(AppData.getInstane().username,function(e:Event):void{
 				//				trace('大厅界面：金币',JSON.parse(e.currentTarget.data).message[0].group_info);
 				//				trace('大厅界面：房卡',JSON.parse(e.currentTarget.data).message[0].room_card);

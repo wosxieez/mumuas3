@@ -115,7 +115,7 @@ package com.xiaomu.view.group
 			topbg.height = 40
 			addChild(topbg)
 			
-			userInfoView = new UserInfoView;
+			userInfoView = new UserInfoView();
 			addChild(userInfoView);
 			
 			groupInfoView = new GroupInfoView();
@@ -376,7 +376,7 @@ package com.xiaomu.view.group
 					}
 					break;
 				}
-				case Notifications.onLevelGroup:
+				case Notifications.onLeaveGroup:
 				{
 					const user2:Object = getUser(notification.data.username)
 					if (user2) { 
@@ -394,7 +394,7 @@ package com.xiaomu.view.group
 					}
 					break;
 				}
-				case Notifications.onLevelRoom:
+				case Notifications.onLeaveRoom:
 				{
 					const room2:Object = getRoom(notification.data.roomname)
 					if (room2) {

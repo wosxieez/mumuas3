@@ -50,6 +50,7 @@ package com.xiaomu.view.room
 		private var cardsCarrUI:Image
 		private var cardsLabel:Label
 		private var dealCardUI: CardUI
+		private var dealCardUI2: CardUI
 		private var iconLayer:UIComponent
 		private var myUser:Object
 		private var preUser:Object
@@ -61,7 +62,7 @@ package com.xiaomu.view.room
 		private var prePassCardUIs:Array = []
 		private var nextGroupCardUIs:Array = []
 		private var nextPassCardUIs:Array = []
-		private var roominfo:Object
+		private var roominfo:Object = {}
 		private var oldPoint:Point
 		private var thisCanPengCards:Array
 		private var thisCanChiCards:Array
@@ -77,7 +78,6 @@ package com.xiaomu.view.room
 		private var checkUsername: String
 		private var isCheckNewCard:Boolean = false // 是否在等待出牌
 		private var isHu:Boolean = false
-		private var isThree:Boolean = false
 		
 		private var backBtn:Image
 		
@@ -110,6 +110,14 @@ package com.xiaomu.view.room
 			dealCardUI.height = 70
 			dealCardUI.card = 10
 			cardLayer.addChild(dealCardUI)
+				
+			dealCardUI2 = new CardUI()
+			dealCardUI2.border = 2
+			dealCardUI2.visible = false
+			dealCardUI2.width = 30
+			dealCardUI2.height = 70
+			dealCardUI2.card = 10
+			cardLayer.addChild(dealCardUI2)
 			
 			// 图标层
 			iconLayer = new UIComponent()
@@ -232,18 +240,18 @@ package com.xiaomu.view.room
 		
 		override protected function commitProperties():void {
 			super.commitProperties()
-//			this.preUser = {username: 'wosxieez0', 
-//				handCards: [1, 3, 5, 4, 4, 3, 11, 15, 18, 19, 11, 10, 9, 9, 8, 16, 17, 18, 9, 10, 8],
-//				groupCards: [{name: 'ti', cards: [1, 1, 1, 1]}],
-//				passCards:[2, 4, 9]}
-//			this.nextUser = {username: 'wosxieez2', 
-//				handCards: [1, 3, 5, 4, 4, 3, 11, 15, 18, 19, 11, 10, 9, 9, 8, 16, 17, 18, 9, 10, 8],
-//				groupCards: [{name: 'ti', cards: [1, 1, 1, 1]}],
-//				passCards:[2, 4, 9]}
-//			this.myUser = {username: 'wosxieez1', 
-//				handCards: [1, 3, 5, 4, 4, 4, 4, 3, 11, 15, 18, 19, 11, 10, 9, 9, 8, 16, 17, 18, 9, 10, 8],
-//				groupCards: [{name: 'ti', cards: [1, 1, 1, 1]}],
-//				passCards:[2, 4, 9]}
+			//			this.preUser = {username: 'wosxieez0', 
+			//				handCards: [1, 3, 5, 4, 4, 3, 11, 15, 18, 19, 11, 10, 9, 9, 8, 16, 17, 18, 9, 10, 8],
+			//				groupCards: [{name: 'ti', cards: [1, 1, 1, 1]}],
+			//				passCards:[2, 4, 9]}
+			//			this.nextUser = {username: 'wosxieez2', 
+			//				handCards: [1, 3, 5, 4, 4, 3, 11, 15, 18, 19, 11, 10, 9, 9, 8, 16, 17, 18, 9, 10, 8],
+			//				groupCards: [{name: 'ti', cards: [1, 1, 1, 1]}],
+			//				passCards:[2, 4, 9]}
+			//			this.myUser = {username: 'wosxieez1', 
+			//				handCards: [1, 3, 5, 4, 4, 4, 4, 3, 11, 15, 18, 19, 11, 10, 9, 9, 8, 16, 17, 18, 9, 10, 8],
+			//				groupCards: [{name: 'ti', cards: [1, 1, 1, 1]}],
+			//				passCards:[2, 4, 9]}
 			
 			if (preUser) {
 				preUserNameLabel.text = preUser.username
@@ -294,7 +302,7 @@ package com.xiaomu.view.room
 			nextUserIcon.y = nextUserBG.y + 5
 			nextUserNameLabel.y = nextUserLine.y 
 			nextUserNameLabel.x = nextUserBG.x + 30
-				
+			
 			cardsCarrUI.x = (width + cardsCarrUI.height)  / 2
 			cardsCarrUI.y = 20
 			cardsLabel.x = (width - cardsLabel.width)  / 2
@@ -317,7 +325,7 @@ package com.xiaomu.view.room
 			
 			backBtn.x = width - backBtn.width - 2
 			backBtn.y = height - backBtn.height - 20
-				
+			
 			zhunbeiButton.x = (width - zhunbeiButton.width) / 2
 			zhunbeiButton.y = (height - zhunbeiButton.height) / 2
 		}
@@ -328,15 +336,26 @@ package com.xiaomu.view.room
 		
 		private function updateRoomInfo(room:Object):void {
 			if (room) {
-				this.roominfo = room
+				this.roominfo.users = room.users
+				this.roominfo.zc = room.zc ? room.zc : 0
+				this.roominfo.zn = room.zn ? room.zn : ''
+				this.roominfo.pc = room.pc ? room.pc : 0
+				this.roominfo.pn = room.pn ? room.pn : ''
+				this.roominfo.cc = room.cc ? room.cc : 0
+				
+				this.myUser = this.preUser = this.nextUser = null
 				for (var i:int = 0; i < roominfo.users.length; i++) {
 					if (roominfo.users[i].username == AppData.getInstane().user.username) {
 						var endUsers:Array = roominfo.users.slice(i)
 						var startUsers:Array = roominfo.users.slice(0, i)
 						var orderUsers:Array = endUsers.concat(startUsers)
-						this.myUser = orderUsers[0]
-						this.nextUser = orderUsers[1]
-						this.preUser = orderUsers.pop()
+						this.myUser = orderUsers.shift()
+						if (orderUsers.length > 0) {
+							this.nextUser = orderUsers.shift()
+						}
+						if (orderUsers.length > 0) {
+							this.preUser = orderUsers.pop()
+						}
 						break
 					}
 				}
@@ -353,9 +372,9 @@ package com.xiaomu.view.room
 					nextUserNameLabel.text = nextUser.username
 				} 
 				
-				if (roominfo.cards)
-					cardsLabel.text = '剩余' + roominfo.cards.length + '张牌'
-					
+				if (roominfo.cc)
+					cardsLabel.text = '剩余' + roominfo.cc + '张牌'
+				
 				for each(var user:Object in roominfo.users) {
 					if (user.username == AppData.getInstane().user.username) {
 						zhunbeiButton.label = user.isReady ? '取消准备' : '准备'
@@ -364,14 +383,24 @@ package com.xiaomu.view.room
 			}
 		}
 		
+		private function updateZhuangCard():void {
+			if (roominfo) {
+				dealCardUI2.visible = true
+				dealCardUI2.card = roominfo.zc
+				dealCardUI2.x = (width - dealCardUI2.width) / 2
+				dealCardUI2.y = (height - dealCardUI2.height) / 2 - 50
+			} else {
+				dealCardUI2.visible = false
+			}
+		}
 		private function updateNewCard():void {
 			if (roominfo) {
 				dealCardUI.visible = true
-				dealCardUI.card = roominfo.deal_card
-				if (roominfo.deal_username == this.preUser.username) {
+				dealCardUI.card = roominfo.pc
+				if (this.preUser && roominfo.pn == this.preUser.username) {
 					dealCardUI.y = 50
 					dealCardUI.x = 120
-				} else if (roominfo.deal_username == this.nextUser.username) {
+				} else if (this.nextUser && roominfo.pn == this.nextUser.username) {
 					dealCardUI.y = 50
 					dealCardUI.x = width - 150
 				} else {
@@ -384,11 +413,11 @@ package com.xiaomu.view.room
 			}
 		}
 		private function updateWaitTip():void {
-			if (checkUsername == preUser.username) {
+			if (preUser && checkUsername == preUser.username) {
 				checkWaitTip.visible = true
 				checkWaitTip.x = preUserIcon.x + 15
 				checkWaitTip.y = preUserIcon.y - 15
-			} else if (checkUsername == nextUser.username) {
+			} else if (nextUser && checkUsername == nextUser.username) {
 				checkWaitTip.visible = true
 				checkWaitTip.x = nextUserIcon.x + 15
 				checkWaitTip.y = nextUserIcon.y - 15
@@ -409,8 +438,8 @@ package com.xiaomu.view.room
 				}
 				myHandCardUIs = []
 				const cardWidth:Number = 30
-				const cardHeight:Number = 45
-				const horizontalGap:Number = 2
+				const cardHeight:Number = 34
+				const horizontalGap:Number = 0
 				const verticalGap:Number = 30
 				var newCardUI:CardUI
 				var startX:Number = (width - riffleCards.length * (cardWidth + horizontalGap)) / 2
@@ -625,8 +654,6 @@ package com.xiaomu.view.room
 		 *  更新上家的组合牌视图
 		 */		
 		private function updateNextGroupCardUIs():void {
-			if (!isThree) return 
-			
 			if (nextUser) {
 				const riffleCards:Array = this.nextUser.groupCards
 				var oldNextGroupCardUIs:Array = []
@@ -673,8 +700,6 @@ package com.xiaomu.view.room
 		 *  更新上家的弃牌视图
 		 */		
 		private function updateNextPassCardUIs():void {
-			if (!isThree) return 
-			
 			if (nextUser) {
 				const riffleCards:Array = this.nextUser.passCards
 				var oldNextPassCardUIs:Array = []
@@ -718,7 +743,7 @@ package com.xiaomu.view.room
 				draggingCardUI = cardUI
 				oldPoint = cardLayer.localToGlobal(new Point(draggingCardUI.x, draggingCardUI.y))
 				draggingCardUI.startDrag()
-					
+				
 				this.addEventListener(MouseEvent.MOUSE_UP, this_mouseUpHandler)
 				this.addEventListener(MouseEvent.ROLL_OUT, this_rollOutHandler)
 			}
@@ -727,7 +752,7 @@ package com.xiaomu.view.room
 		protected function this_mouseUpHandler(event:MouseEvent):void {
 			this.removeEventListener(MouseEvent.MOUSE_UP, this_mouseUpHandler)
 			this.removeEventListener(MouseEvent.ROLL_OUT, this_rollOutHandler)
-				
+			
 			trace('cards mouse up')
 			if (draggingCardUI) {
 				draggingCardUI.stopDrag()
@@ -752,7 +777,7 @@ package com.xiaomu.view.room
 		{
 			this.removeEventListener(MouseEvent.MOUSE_UP, this_mouseUpHandler)
 			this.removeEventListener(MouseEvent.ROLL_OUT, this_rollOutHandler)
-				
+			
 			if (draggingCardUI) {
 				draggingCardUI.stopDrag()
 				// 恢复开始点
@@ -768,7 +793,7 @@ package com.xiaomu.view.room
 			isCheckNewCard = isHu = false
 			newCardTip.visible = cancelButton.visible = canChiButton.visible = canPengButton.visible = canHuButton.visible = false
 			thisCanChiCards = thisCanHuDatas = thisCanPengCards = null
-				
+			
 			if (RoomChiTipList.getInstane().isPopUp) {
 				PopUpManager.removePopUp(RoomChiTipList.getInstane())
 			}
@@ -785,14 +810,22 @@ package com.xiaomu.view.room
 				{
 					zhunbeiButton.visible = false
 					cardsCarrUI.visible = cardsLabel.visible = true
-						
+					
 					updateRoomInfo(notification.data)
-					// 如果自己是庄家不显示翻开的牌
-					if (roominfo.banker_username == AppData.getInstane().user.username) {
-						dealCardUI.visible = false
-					} else {
-						updateNewCard()
-					}
+					updateZhuangCard()
+					updateMyHandCardUIs()
+					updateMyGroupCardUIs()
+					updateMyPassCardUIs()
+					updatePreGroupCardUIs()
+					updatePrePassCardUIs()
+					updateNextGroupCardUIs()
+					updateNextPassCardUIs()
+					break;
+				}
+				case Notifications.onGameStart:
+				{
+					dealCardUI2.visible = false
+					updateRoomInfo(notification.data)
 					updateMyHandCardUIs()
 					updateMyGroupCardUIs()
 					updateMyPassCardUIs()
@@ -904,7 +937,7 @@ package com.xiaomu.view.room
 					checkUsername = notification.data.username
 					updateWaitTip()
 					if (notification.data.username == AppData.getInstane().user.username) {
-						thisCanChiCards = notification.data.groups
+						thisCanChiCards = notification.data.data
 						canChiButton.visible = cancelButton.visible = true
 					}
 					break
@@ -986,8 +1019,6 @@ package com.xiaomu.view.room
 		}
 		
 		public function init(roominfo:Object): void {
-			isThree = roominfo.count == 3 
-			nextUserBG.visible = nextUserIcon.visible = nextUserLine.visible = nextUserNameLabel.visible = isThree
 			zhunbeiButton.label = '准备'
 			zhunbeiButton.visible = true
 		}
@@ -1009,7 +1040,7 @@ package com.xiaomu.view.room
 			isHu = canHuButton.visible = canPengButton.visible = canChiButton.visible = cancelButton.visible = false
 			const action:Object = { name: Actions.Chi, data:  RoomChiTipList.getInstane().selectedItem}
 			Api.getInstane().sendAction(action)
-				
+			
 			RoomChiTipList.getInstane().removeEventListener(UIEvent.CHANGE, roomChiPengList_changeHandler)
 			PopUpManager.removePopUp(RoomChiTipList.getInstane())
 		}
