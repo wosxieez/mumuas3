@@ -2,6 +2,7 @@ package com.xiaomu.view.room
 {
 	import com.xiaomu.component.CardUI;
 	import com.xiaomu.event.ApiEvent;
+	import com.xiaomu.event.SelectEvent;
 	import com.xiaomu.util.Actions;
 	import com.xiaomu.util.Api;
 	import com.xiaomu.util.AppData;
@@ -110,7 +111,7 @@ package com.xiaomu.view.room
 			dealCardUI.height = 70
 			dealCardUI.card = 10
 			cardLayer.addChild(dealCardUI)
-				
+			
 			dealCardUI2 = new CardUI()
 			dealCardUI2.border = 2
 			dealCardUI2.visible = false
@@ -794,8 +795,8 @@ package com.xiaomu.view.room
 			newCardTip.visible = cancelButton.visible = canChiButton.visible = canPengButton.visible = canHuButton.visible = false
 			thisCanChiCards = thisCanHuDatas = thisCanPengCards = null
 			
-			if (RoomChiTipList.getInstane().isPopUp) {
-				PopUpManager.removePopUp(RoomChiTipList.getInstane())
+			if (ChiSelectView.getInstane().isPopUp) {
+				PopUpManager.removePopUp(ChiSelectView.getInstane())
 			}
 			
 			const notification: Object = event.data
@@ -999,9 +1000,8 @@ package com.xiaomu.view.room
 		
 		protected function canChiButton_clickHandler(event:MouseEvent):void
 		{
-			RoomChiTipList.getInstane().dataProvider = thisCanChiCards
-			RoomChiTipList.getInstane().addEventListener(UIEvent.CHANGE, roomChiPengList_changeHandler)
-			PopUpManager.centerPopUp(PopUpManager.addPopUp(RoomChiTipList.getInstane()))
+			ChiSelectView.getInstane().addEventListener(SelectEvent.SELECTED, chi_selectHandler)
+			ChiSelectView.getInstane().open(thisCanChiCards)
 		}
 		
 		protected function cancelButton_clickHandler(event:MouseEvent):void
@@ -1035,14 +1035,14 @@ package com.xiaomu.view.room
 			Api.getInstane().sendAction(action)
 		}
 		
-		protected function roomChiPengList_changeHandler(event:UIEvent):void
+		protected function chi_selectHandler(event:SelectEvent):void
 		{
+			trace(JSON.stringify(event.data))
+			ChiSelectView.getInstane().close()
 			isHu = canHuButton.visible = canPengButton.visible = canChiButton.visible = cancelButton.visible = false
-			const action:Object = { name: Actions.Chi, data:  RoomChiTipList.getInstane().selectedItem}
+			const action:Object = { name: Actions.Chi, data:  event.data}
 			Api.getInstane().sendAction(action)
 			
-			RoomChiTipList.getInstane().removeEventListener(UIEvent.CHANGE, roomChiPengList_changeHandler)
-			PopUpManager.removePopUp(RoomChiTipList.getInstane())
 		}
 		
 	}

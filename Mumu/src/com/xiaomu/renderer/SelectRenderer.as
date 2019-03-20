@@ -4,9 +4,9 @@ package com.xiaomu.renderer
 	
 	import coco.component.ItemRenderer;
 	
-	public class RoomChiTipRenderer extends ItemRenderer
+	public class SelectRenderer extends ItemRenderer
 	{
-		public function RoomChiTipRenderer()
+		public function SelectRenderer()
 		{
 			super();
 			
@@ -39,7 +39,7 @@ package com.xiaomu.renderer
 			const verticalGap:Number = 21
 			var newCardUI:CardUI
 			var startX:Number = 0
-			for (var j:int = 0; j < data.length; j++) {
+			for (var j:int = 0; j < data.cards.length; j++) {
 				newCardUI = oldMyGroupCardUIs.pop()
 				if (!newCardUI) {
 					newCardUI = new CardUI()
@@ -51,7 +51,7 @@ package com.xiaomu.renderer
 				newCardUI.height = cardHeight
 				newCardUI.x = startX
 				newCardUI.y = height - newCardUI.height - j * verticalGap
-				newCardUI.card = data[j]
+				newCardUI.card = data.cards[j]
 				newCardUI.type = CardUI.TYPE_BIG_CARD
 				setChildIndex(newCardUI, 0)
 				myGroupCardUIs.push(newCardUI)
