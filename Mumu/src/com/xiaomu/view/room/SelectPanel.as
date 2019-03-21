@@ -16,10 +16,12 @@ package com.xiaomu.view.room
 		public function SelectPanel()
 		{
 			super();
-			
+			borderColor = 0x000000
+			backgroundColor = 0x000000
+			backgroundAlpha = 0.6
 			titleHeight = 20
 			width = 0
-			height = 81
+			height = 100
 		}
 		
 		private var _dataProvider:Array
@@ -43,7 +45,7 @@ package com.xiaomu.view.room
 			selectList = new List()
 			selectList.addEventListener(UIEvent.CHANGE, selectList_changeHandler)
 			selectList.itemRendererWidth = 24
-			selectList.itemRendererHeight = 51
+			selectList.itemRendererHeight = 72
 			selectList.itemRendererRowCount = 1
 			selectList.itemRendererClass = SelectRenderer
 			selectList.horizontalAlign = HorizontalAlign.CENTER
@@ -63,6 +65,7 @@ package com.xiaomu.view.room
 		override protected function commitProperties():void {
 			super.commitProperties()
 			
+			titleDisplay.color = 0xFFFFFF
 			selectList.dataProvider = dataProvider
 		}
 		

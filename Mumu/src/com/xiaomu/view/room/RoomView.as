@@ -20,7 +20,6 @@ package com.xiaomu.view.room
 	import coco.component.Image;
 	import coco.component.Label;
 	import coco.core.UIComponent;
-	import coco.event.UIEvent;
 	import coco.manager.PopUpManager;
 	
 	public class RoomView extends UIComponent
@@ -32,6 +31,7 @@ package com.xiaomu.view.room
 			Api.getInstane().addEventListener(ApiEvent.Notification, onNotificationHandler)
 		}
 		
+		private var bgLayer: UIComponent
 		private var preUserLine:Image
 		private var preUserBG:Image
 		private var preUserIcon:Image
@@ -84,10 +84,9 @@ package com.xiaomu.view.room
 		
 		override protected function createChildren():void {
 			super.createChildren()
-			
-			// 卡牌层
-			cardLayer = new UIComponent()
-			addChild(cardLayer)
+				
+			bgLayer = new UIComponent()
+			addChild(bgLayer)
 			
 			cardsCarrUI = new Image()
 			cardsCarrUI.width = 30
@@ -95,14 +94,92 @@ package com.xiaomu.view.room
 			cardsCarrUI.rotation = 90
 			cardsCarrUI.source = Assets.getInstane().getAssets('fight_full_card.png')
 			cardsCarrUI.visible = false
-			addChild(cardsCarrUI)
+			bgLayer.addChild(cardsCarrUI)
 			
 			cardsLabel = new Label()
 			cardsLabel.width = 80
 			cardsLabel.height = 30
 			cardsLabel.color = 0xFFFFFF
 			cardsLabel.visible = false
-			addChild(cardsLabel)
+			bgLayer.addChild(cardsLabel)
+				
+				
+			// 增加三个图像
+			preUserLine = new Image()
+			preUserLine.width = 80
+			preUserLine.height = 30
+			preUserLine.source = Assets.getInstane().getAssets('fight_userinfo_bg2.png')
+			bgLayer.addChild(preUserLine)
+			preUserBG = new Image()
+			preUserBG.width = preUserBG.height = 30
+			preUserBG.source = Assets.getInstane().getAssets('fight_userinfo_circle_bg.png')
+			bgLayer.addChild(preUserBG)
+			preUserIcon = new Image()
+			preUserIcon.width = preUserIcon.height = 20
+			preUserIcon.source = Assets.getInstane().getAssets('avatar1.png')
+			bgLayer.addChild(preUserIcon)
+			preUserNameLabel = new Label()
+			preUserNameLabel.color = 0xFFFFFF
+			preUserNameLabel.height = 30
+			preUserNameLabel.height = 30
+			bgLayer.addChild(preUserNameLabel)
+			
+			myUserLine = new Image()
+			myUserLine.width = 80
+			myUserLine.height = 30
+			myUserLine.source = Assets.getInstane().getAssets('fight_userinfo_bg2.png')
+			bgLayer.addChild(myUserLine)
+			myUserBG = new Image()
+			myUserBG.width = myUserBG.height = 30
+			myUserBG.source = Assets.getInstane().getAssets('fight_userinfo_circle_bg.png')
+			bgLayer.addChild(myUserBG)
+			myUserIcon = new Image()
+			myUserIcon.width = myUserIcon.height = 20
+			myUserIcon.source = Assets.getInstane().getAssets('avatar2.png')
+			bgLayer.addChild(myUserIcon)
+			myUserNameLabel = new Label()
+			myUserNameLabel.color = 0xFFFFFF
+			myUserNameLabel.height = 30
+			myUserNameLabel.height = 30
+			bgLayer.addChild(myUserNameLabel)
+			
+			nextUserLine = new Image()
+			nextUserLine.width = 80
+			nextUserLine.height = 30
+			nextUserLine.source = Assets.getInstane().getAssets('fight_userinfo_bg2.png')
+			bgLayer.addChild(nextUserLine)
+			nextUserBG = new Image()
+			nextUserBG.width = nextUserBG.height = 30
+			nextUserBG.source = Assets.getInstane().getAssets('fight_userinfo_circle_bg.png')
+			bgLayer.addChild(nextUserBG)
+			nextUserIcon = new Image()
+			nextUserIcon.width = nextUserIcon.height = 20
+			nextUserIcon.source = Assets.getInstane().getAssets('avatar3.png')
+			bgLayer.addChild(nextUserIcon)
+			nextUserNameLabel = new Label()
+			nextUserNameLabel.color = 0xFFFFFF
+			nextUserNameLabel.height = 30
+			nextUserNameLabel.height = 30
+			nextUserNameLabel.height = 30
+			bgLayer.addChild(nextUserNameLabel)
+				
+			checkWaitTip = new Image()
+			checkWaitTip.width = 16
+			checkWaitTip.height = 16
+			checkWaitTip.visible = false
+			checkWaitTip.source = Assets.getInstane().getAssets('wait.png')
+			bgLayer.addChild(checkWaitTip)
+				
+			newCardTip = new Image()
+			newCardTip.width = 100
+			newCardTip.height = 16
+			newCardTip.visible = false
+			newCardTip.source = Assets.getInstane().getAssets('fight_txt_finger_tips.png')
+			bgLayer.addChild(newCardTip)
+			
+			// 卡牌层
+			cardLayer = new UIComponent()
+			addChild(cardLayer)
 			
 			dealCardUI = new CardUI()
 			dealCardUI.border = 2
@@ -123,65 +200,6 @@ package com.xiaomu.view.room
 			// 图标层
 			iconLayer = new UIComponent()
 			addChild(iconLayer)
-			
-			// 增加三个图像
-			preUserLine = new Image()
-			preUserLine.width = 80
-			preUserLine.height = 30
-			preUserLine.source = Assets.getInstane().getAssets('fight_userinfo_bg2.png')
-			iconLayer.addChild(preUserLine)
-			preUserBG = new Image()
-			preUserBG.width = preUserBG.height = 30
-			preUserBG.source = Assets.getInstane().getAssets('fight_userinfo_circle_bg.png')
-			iconLayer.addChild(preUserBG)
-			preUserIcon = new Image()
-			preUserIcon.width = preUserIcon.height = 20
-			preUserIcon.source = Assets.getInstane().getAssets('avatar1.png')
-			iconLayer.addChild(preUserIcon)
-			preUserNameLabel = new Label()
-			preUserNameLabel.color = 0xFFFFFF
-			preUserNameLabel.height = 30
-			preUserNameLabel.height = 30
-			iconLayer.addChild(preUserNameLabel)
-			
-			myUserLine = new Image()
-			myUserLine.width = 80
-			myUserLine.height = 30
-			myUserLine.source = Assets.getInstane().getAssets('fight_userinfo_bg2.png')
-			iconLayer.addChild(myUserLine)
-			myUserBG = new Image()
-			myUserBG.width = myUserBG.height = 30
-			myUserBG.source = Assets.getInstane().getAssets('fight_userinfo_circle_bg.png')
-			iconLayer.addChild(myUserBG)
-			myUserIcon = new Image()
-			myUserIcon.width = myUserIcon.height = 20
-			myUserIcon.source = Assets.getInstane().getAssets('avatar2.png')
-			iconLayer.addChild(myUserIcon)
-			myUserNameLabel = new Label()
-			myUserNameLabel.color = 0xFFFFFF
-			myUserNameLabel.height = 30
-			myUserNameLabel.height = 30
-			iconLayer.addChild(myUserNameLabel)
-			
-			nextUserLine = new Image()
-			nextUserLine.width = 80
-			nextUserLine.height = 30
-			nextUserLine.source = Assets.getInstane().getAssets('fight_userinfo_bg2.png')
-			iconLayer.addChild(nextUserLine)
-			nextUserBG = new Image()
-			nextUserBG.width = nextUserBG.height = 30
-			nextUserBG.source = Assets.getInstane().getAssets('fight_userinfo_circle_bg.png')
-			iconLayer.addChild(nextUserBG)
-			nextUserIcon = new Image()
-			nextUserIcon.width = nextUserIcon.height = 20
-			nextUserIcon.source = Assets.getInstane().getAssets('avatar3.png')
-			iconLayer.addChild(nextUserIcon)
-			nextUserNameLabel = new Label()
-			nextUserNameLabel.color = 0xFFFFFF
-			nextUserNameLabel.height = 30
-			nextUserNameLabel.height = 30
-			nextUserNameLabel.height = 30
-			addChild(nextUserNameLabel)
 			
 			canPengButton = new Image()
 			canPengButton.source = Assets.getInstane().getAssets('oprate_peng0.png')
@@ -210,20 +228,6 @@ package com.xiaomu.view.room
 			canHuButton.visible = false
 			canHuButton.addEventListener(MouseEvent.CLICK,canHuButton_clickHandler)
 			iconLayer.addChild(canHuButton)
-			
-			newCardTip = new Image()
-			newCardTip.width = 100
-			newCardTip.height = 16
-			newCardTip.visible = false
-			newCardTip.source = Assets.getInstane().getAssets('fight_txt_finger_tips.png')
-			iconLayer.addChild(newCardTip)
-			
-			checkWaitTip = new Image()
-			checkWaitTip.width = 16
-			checkWaitTip.height = 16
-			checkWaitTip.visible = false
-			checkWaitTip.source = Assets.getInstane().getAssets('wait.png')
-			iconLayer.addChild(checkWaitTip)
 			
 			zhunbeiButton = new Button()
 			zhunbeiButton.label = '准备'
@@ -473,7 +477,7 @@ package com.xiaomu.view.room
 						newCardUI.width = cardWidth
 						newCardUI.height = cardHeight
 						newCardUI.x = startX + i * (newCardUI.width + horizontalGap)
-						newCardUI.y = height - newCardUI.height - j * verticalGap - 25
+						newCardUI.y = height - newCardUI.height - j * verticalGap - 5
 						newCardUI.card = riffleCards[i][j]
 						newCardUI.type = CardUI.TYPE_BIG_CARD
 						cardLayer.setChildIndex(newCardUI, 0)
@@ -501,7 +505,7 @@ package com.xiaomu.view.room
 				const horizontalGap:Number = 1
 				const verticalGap:Number = 14
 				var newCardUI:CardUI
-				var startX:Number = 10
+				var startX:Number = 5
 				for (var i:int = 0; i < riffleCards.length; i++) {
 					var group:Object = riffleCards[i]
 					var groupCards:Array = group.cards
@@ -519,7 +523,7 @@ package com.xiaomu.view.room
 						newCardUI.width = cardWidth
 						newCardUI.height = cardHeight
 						newCardUI.x = startX + i * (newCardUI.width + horizontalGap)
-						newCardUI.y = height - newCardUI.height - j * verticalGap - 45
+						newCardUI.y = height - newCardUI.height - j * verticalGap - 30
 						newCardUI.card = groupCards[j]
 						newCardUI.type = CardUI.TYPE_SMALL_CARD
 						cardLayer.setChildIndex(newCardUI, 0)
@@ -545,7 +549,7 @@ package com.xiaomu.view.room
 				const cardHeight:Number = 20
 				const horizontalGap:Number = 1
 				var newCardUI:CardUI
-				var startX:Number = 10
+				var startX:Number = 5
 				for (var i:int = 0; i < riffleCards.length; i++) {
 					newCardUI = oldMyPassCardUIs.pop()
 					if (!newCardUI) {
@@ -556,7 +560,7 @@ package com.xiaomu.view.room
 					newCardUI.width = cardWidth
 					newCardUI.height = cardHeight
 					newCardUI.x = startX + i * (newCardUI.width + horizontalGap)
-					newCardUI.y = height - newCardUI.height - 20
+					newCardUI.y = height - newCardUI.height - 5
 					newCardUI.card = riffleCards[i]
 					newCardUI.type = CardUI.TYPE_SMALL_CARD
 					cardLayer.setChildIndex(newCardUI, 0)
@@ -746,13 +750,11 @@ package com.xiaomu.view.room
 				draggingCardUI.startDrag()
 				
 				this.addEventListener(MouseEvent.MOUSE_UP, this_mouseUpHandler)
-				this.addEventListener(MouseEvent.ROLL_OUT, this_rollOutHandler)
 			}
 		}
 		
 		protected function this_mouseUpHandler(event:MouseEvent):void {
 			this.removeEventListener(MouseEvent.MOUSE_UP, this_mouseUpHandler)
-			this.removeEventListener(MouseEvent.ROLL_OUT, this_rollOutHandler)
 			
 			trace('cards mouse up')
 			if (draggingCardUI) {
@@ -766,21 +768,6 @@ package com.xiaomu.view.room
 					}
 				}	
 				
-				// 恢复开始点
-				const thisPoint:Point = cardLayer.globalToLocal(oldPoint)
-				draggingCardUI.x = thisPoint.x
-				draggingCardUI.y = thisPoint.y
-				draggingCardUI = null
-			}
-		}
-		
-		protected function this_rollOutHandler(event:MouseEvent):void
-		{
-			this.removeEventListener(MouseEvent.MOUSE_UP, this_mouseUpHandler)
-			this.removeEventListener(MouseEvent.ROLL_OUT, this_rollOutHandler)
-			
-			if (draggingCardUI) {
-				draggingCardUI.stopDrag()
 				// 恢复开始点
 				const thisPoint:Point = cardLayer.globalToLocal(oldPoint)
 				draggingCardUI.x = thisPoint.x

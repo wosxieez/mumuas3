@@ -59,6 +59,7 @@ package com.xiaomu.component
 		{
 			_canDeal = value;
 			invalidateProperties()
+			invalidateSkin()
 		}
 		
 		private var _isReverse:Boolean = false
@@ -75,12 +76,17 @@ package com.xiaomu.component
 		}
 
 		private var imageDisplay:Image
+		private var mask:UIComponent
 		
 		override protected function createChildren():void {
 			super.createChildren()
 			
 			imageDisplay = new Image()
 			addChild(imageDisplay)
+			
+			mask = new UIComponent()
+			mask.visible = false
+			addChild(mask)
 		}
 		
 		override protected function commitProperties():void {
@@ -92,7 +98,7 @@ package com.xiaomu.component
 				imageDisplay.source = Assets.getInstane().getAssets('fight_big_card.png')
 			}
 			
-			imageDisplay.alpha = canDeal ? 1 : .6
+			mask.visible = !canDeal
 		}
 		
 		override protected function measure():void {
@@ -110,10 +116,20 @@ package com.xiaomu.component
 				imageDisplay.width = width
 				imageDisplay.height = height
 			}
+			
+			mask.width = imageDisplay.width
+			mask.height = imageDisplay.height
+			mask.x = imageDisplay.x
+			mask.y = imageDisplay.y
 		}
 		
 		override protected function drawSkin():void {
 			super.drawSkin()
+				
+			mask.graphics.clear()
+			mask.graphics.beginFill(0x000000, 0.4)
+			mask.graphics.drawRoundRect(0, 0, mask.width, mask.height, 2)
+			mask.graphics.endFill()
 			
 			if (border > 0) {
 				graphics.clear()
