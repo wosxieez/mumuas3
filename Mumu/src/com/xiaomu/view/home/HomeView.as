@@ -72,35 +72,35 @@ package com.xiaomu.view.home
 			daTongZiImg.width = 260*0.35;
 			daTongZiImg.height = 190*0.35;
 			daTongZiImg.upImageSource = 'assets/home/other/fen_up.png';
-			daTongZiImg.downImageSource = 'assets/home/other/fen_up.png';
+			daTongZiImg.downImageSource = 'assets/home/other/fen_down.png';
 			addChild(daTongZiImg);
 			
 			ziPaiImg = new ImageBtnWithUpAndDown();
 			ziPaiImg.width = 260*0.35;
 			ziPaiImg.height = 190*0.35;
 			ziPaiImg.upImageSource = 'assets/home/other/creatRoom_up.png';
-			ziPaiImg.downImageSource = 'assets/home/other/creatRoom_up.png';
+			ziPaiImg.downImageSource = 'assets/home/other/creatRoom_down.png';
 			addChild(ziPaiImg);
 			
 			xiuXianImg = new ImageBtnWithUpAndDown();
 			xiuXianImg.width = 260*0.35;
 			xiuXianImg.height = 190*0.35;
 			xiuXianImg.upImageSource = 'assets/home/other/coinRoom_up.png';
-			xiuXianImg.downImageSource = 'assets/home/other/coinRoom_up.png';
+			xiuXianImg.downImageSource = 'assets/home/other/coinRoom_down.png';
 			addChild(xiuXianImg);
 			
 			paoDeKuaiImg = new ImageBtnWithUpAndDown();
 			paoDeKuaiImg.width = 260*0.35;
 			paoDeKuaiImg.height = 190*0.35;
 			paoDeKuaiImg.upImageSource = 'assets/home/other/zi_up.png';
-			paoDeKuaiImg.downImageSource = 'assets/home/other/zi_up.png';
+			paoDeKuaiImg.downImageSource = 'assets/home/other/zi_down.png';
 			addChild(paoDeKuaiImg);
 			
 			shoppingBtn = new ImageBtnWithUpAndDown();
 			shoppingBtn.width = 117*0.32;
 			shoppingBtn.height = 92*0.32;
 			shoppingBtn.upImageSource = 'assets/home/bottomBar/shangcheng_up.png';
-			shoppingBtn.downImageSource = 'assets/home/bottomBar/shangcheng_up.png';
+			shoppingBtn.downImageSource = 'assets/home/bottomBar/shangcheng_down.png';
 			addChild(shoppingBtn);
 			
 			btnGroup =  new ButtonGroup();
@@ -114,7 +114,7 @@ package com.xiaomu.view.home
 			
 			joinRoom = new ImageBtnWithUpAndDown();
 			joinRoom.upImageSource = 'assets/home/newjoin_up.png';
-			joinRoom.downImageSource = 'assets/home/newjoin_up.png';
+			joinRoom.downImageSource = 'assets/home/newjoin_down.png';
 			joinRoom.width = 354*0.4;
 			joinRoom.height = 108*0.4;
 			joinRoom.addEventListener(MouseEvent.CLICK,joinRoomClickHandler);
@@ -122,21 +122,21 @@ package com.xiaomu.view.home
 			
 			proxyBtn = new ImageBtnWithUpAndDown();
 			proxyBtn.upImageSource = 'assets/home/cwdl_up.png';
-			proxyBtn.downImageSource = 'assets/home/cwdl_up.png';
+			proxyBtn.downImageSource = 'assets/home/cwdl_down.png';
 			proxyBtn.width = 30;
 			proxyBtn.height = 30;
 			addChild(proxyBtn);
 			
 			checkInBtn = new ImageBtnWithUpAndDown();
 			checkInBtn.upImageSource = 'assets/home/qiandao_up.png';
-			checkInBtn.downImageSource = 'assets/home/qiandao_up.png';
+			checkInBtn.downImageSource = 'assets/home/qiandao_down.png';
 			checkInBtn.width = 30;
 			checkInBtn.height = 30;
 			addChild(checkInBtn);
 			
 			waiterBtn = new ImageBtnWithUpAndDown();
 			waiterBtn.upImageSource = 'assets/home/btn_kf_normal.png';
-			waiterBtn.downImageSource = 'assets/home/btn_kf_normal.png';
+			waiterBtn.downImageSource = 'assets/home/btn_kf_press.png';
 			waiterBtn.width = 30;
 			waiterBtn.height = 30;
 			addChild(waiterBtn);

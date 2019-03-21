@@ -10,9 +10,12 @@ package com.xiaomu.component
 		public function ImageBtnWithUpAndDown()
 		{
 			super();
+			this.mouseChildren = false
 			addEventListener(MouseEvent.MOUSE_DOWN,mouseDownHandler);
 			addEventListener(MouseEvent.MOUSE_UP,mouseUpHandler);
+			addEventListener(MouseEvent.MOUSE_OUT, mouseOutHandler)
 		}
+		
 		
 		protected function mouseUpHandler(event:MouseEvent):void
 		{
@@ -22,6 +25,11 @@ package com.xiaomu.component
 		protected function mouseDownHandler(event:MouseEvent):void
 		{
 			mouseDown = true;
+		}
+		
+		protected function mouseOutHandler(event:MouseEvent):void
+		{
+			mouseDown = false
 		}
 		
 		private var _mouseDown:Boolean;

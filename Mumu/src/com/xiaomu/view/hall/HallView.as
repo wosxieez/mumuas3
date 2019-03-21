@@ -3,7 +3,6 @@ package com.xiaomu.view.hall
 	import com.xiaomu.component.ImgBtn;
 	import com.xiaomu.event.AppManagerEvent;
 	import com.xiaomu.manager.AppManager;
-	import com.xiaomu.renderer.ButtonRenderer;
 	import com.xiaomu.renderer.GroupRenderer;
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.Assets;
@@ -13,14 +12,12 @@ package com.xiaomu.view.hall
 	import com.xiaomu.view.group.GroupView;
 	import com.xiaomu.view.hall.popUpPanel.CreateGroupPanel;
 	import com.xiaomu.view.home.HomeView;
-	import com.xiaomu.view.newGroup.NewGroupView;
 	import com.xiaomu.view.userBarView.UserInfoView;
 	
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.utils.setTimeout;
 	
-	import coco.component.Button;
 	import coco.component.HorizontalAlign;
 	import coco.component.Image;
 	import coco.component.List;
