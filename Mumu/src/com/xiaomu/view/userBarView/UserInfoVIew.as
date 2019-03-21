@@ -37,7 +37,7 @@ package com.xiaomu.view.userBarView
 		{
 			super.createChildren();
 			
-			userinfoBar = new UserInfoBar;
+			userinfoBar = new UserInfoBar();
 			userinfoBar.width = 70;
 			userinfoBar.height = 30;
 			addChild(userinfoBar);
@@ -45,16 +45,16 @@ package com.xiaomu.view.userBarView
 			goldBar = new GoldOrCardShowBar();
 			goldBar.width = 65;
 			goldBar.height = 20;
-			goldBar.iconWidthHeight = [20,20];
-			goldBar.typeSource = 'assets/user/gold_coin.png';
+			goldBar.iconWidthHeight = [22,22];
+			goldBar.typeSource = 'assets/user/icon_jinbi_01.png';
 			goldBar.addEventListener(MouseEvent.CLICK,addGoldHandler);
 			addChild(goldBar);
 			
 			roomCardBar = new GoldOrCardShowBar();
 			roomCardBar.width = 80;
 			roomCardBar.height = 20;
-			roomCardBar.iconWidthHeight = [32,20];
-			roomCardBar.typeSource = 'assets/user/room_card.png';
+			roomCardBar.iconWidthHeight = [22,22];
+			roomCardBar.typeSource = 'assets/user/icon_yuanbao_01.png';
 			addChild(roomCardBar);
 		}
 		
@@ -87,8 +87,8 @@ package com.xiaomu.view.userBarView
 			super.commitProperties();
 			
 			goldBar.count = userInfoData?userInfoData.gold:"0"
-			roomCardBar.count = userInfoData?userInfoData.roomCard:"0"
-			userinfoBar.userName = userInfoData?userInfoData.userName:"test"
+			roomCardBar.count = userInfoData?(userInfoData.roomCard?userInfoData.roomCard:"0"):"0"
+			userinfoBar.userName = userInfoData?userInfoData.userName:"默认"
 		}
 		
 		override protected function drawSkin():void
@@ -119,15 +119,5 @@ package com.xiaomu.view.userBarView
 		public function reset():void{
 			roomCardBar.visible=goldBar.visible=false
 		}
-		
-		//		public function updateShowWhich(number:int):void{
-		//			if(number==1){
-		//				goldBar.visible = true;
-		//				roomCardBar.visible = false;
-		//				goldBar.x = userinfoBar.x+userinfoBar.width+20
-		//			}else if(number==2){
-		//				
-		//			}
-		//		}
 	}
 }

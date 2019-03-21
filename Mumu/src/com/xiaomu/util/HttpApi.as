@@ -229,5 +229,23 @@ package com.xiaomu.util
 			urlLoader.load(urlrequest)
 		}
 		
+		/**
+		 * 添加房间
+		 * @param roomName
+		 * @param groupId
+		 * @param count
+		 * @param resultHandler
+		 * @param faultHandler
+		 */
+		public function addRoom(roomName:String,groupId:int,count:int,resultHandler:Function=null,faultHandler:Function=null):void{
+			var params: Object = {'name':roomName,'group_id':groupId,'count':count};
+			var urlrequest:URLRequest = new URLRequest(WEB_URL + 'insert_room');
+			urlrequest.method = URLRequestMethod.POST
+			urlrequest.contentType = 'application/json'
+			urlrequest.data = JSON.stringify(params)
+			var urlLoader:CocoURLLoader = new CocoURLLoader(resultHandler, faultHandler, true, 20000);
+			urlLoader.load(urlrequest)
+		}
+		
 	}
 }

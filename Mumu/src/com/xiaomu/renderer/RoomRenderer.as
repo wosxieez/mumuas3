@@ -38,13 +38,19 @@ package com.xiaomu.renderer
 		private var joiner3 : JoinerIcon
 		private var roomName : TextInput;
 		private var counter:Label;
+		private var addRoomImg:Image;
 		override protected function createChildren():void
 		{
 			super.createChildren();
 			
 			tableImg = new Image();
-			tableImg.source = 'assets/room/table.png';
+			tableImg.source = 'assets/room/table1.png';
 			addChild(tableImg);
+			
+			addRoomImg = new Image();
+			addRoomImg.source = 'assets/addRoom.png';
+			addChild(addRoomImg);
+			addRoomImg.visible = false;
 			
 			roomName = new TextInput();
 			roomName.editable = false;
@@ -74,6 +80,10 @@ package com.xiaomu.renderer
 		override protected function updateDisplayList():void
 		{
 			super.updateDisplayList();
+			
+			addRoomImg.width = addRoomImg.height = width*0.5;
+			addRoomImg.x = (width-addRoomImg.width)/2;
+			addRoomImg.y = (height-addRoomImg.height)/2;
 			
 			joiner1.visible = joiner2.visible = joiner3.visible = false;
 			roomName.width = width/4;
@@ -115,10 +125,23 @@ package com.xiaomu.renderer
 		{
 			super.commitProperties();
 			
+			if(data.name=='+'){
+				counter.visible = false;
+				labelDisplay.visible = false;
+				roomName.visible = false;
+				addRoomImg.visible = true;
+				tableImg.visible = false;
+			}else{
+				counter.visible = true;
+				labelDisplay.visible = false;
+				roomName.visible = true;
+				addRoomImg.visible = false;
+				tableImg.visible = true;
+			}
+			
 			if (data)
 			{
 				if(data.users){
-//					trace('data.users::',data.users);
 					for (var k:int = 0; k < [joiner1,joiner2,joiner3].length; k++) 
 					{
 						var dataObj : Object =  {'name':data.users[k]}

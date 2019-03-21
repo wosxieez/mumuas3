@@ -237,9 +237,10 @@ package com.xiaomu.view.room
 			iconLayer.addChild(zhunbeiButton)
 			
 			backBtn = new Image()
-			backBtn.source = 'assets/backbtn.png'
+			backBtn.source = 'assets/club_btn_back.png';
+			backBtn.width = 71*0.35;
+			backBtn.height = 86*0.35;
 			backBtn.addEventListener(MouseEvent.CLICK, back_clickHandler)
-			backBtn.width = backBtn.height = 20
 			addChild(backBtn)
 		}
 		
@@ -328,8 +329,8 @@ package com.xiaomu.view.room
 			newCardTip.x = (width - newCardTip.width) / 2
 			newCardTip.y = (height - newCardTip.height) / 2
 			
-			backBtn.x = width - backBtn.width - 2
-			backBtn.y = height - backBtn.height - 20
+			backBtn.x = width - backBtn.width - 5
+			backBtn.y = height - backBtn.height - 5
 			
 			zhunbeiButton.x = (width - zhunbeiButton.width) / 2
 			zhunbeiButton.y = (height - zhunbeiButton.height) / 2

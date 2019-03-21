@@ -12,11 +12,11 @@ package com.xiaomu.view.hall.popUpPanel
 	import coco.component.Alert;
 	import coco.component.Button;
 	import coco.component.ButtonGroup;
+	import coco.component.Image;
 	import coco.component.Label;
 	import coco.component.TextAlign;
 	import coco.component.TextInput;
 	import coco.core.UIComponent;
-	import coco.event.UIEvent;
 	import coco.manager.PopUpManager;
 	
 	/**
@@ -27,20 +27,13 @@ package com.xiaomu.view.hall.popUpPanel
 		public function CreateGroupPanel()
 		{
 			super();
+			width = 200;
+			height = 100;
 		}
 		
-		
+		private var titleLab:Label;
 		private var groupNameLab:Label;
 		private var groupNameInput:TextInput;
-		private var playerNumLab:Label;
-		private var playerNumberBtnGroup:ButtonGroup;
-		private var topValueLab:Label;
-		private var topValueBtnGroup:ButtonGroup;
-		private var playMethodLab:Label;
-		private var playMethodBtnGroup:ButtonGroup;
-		
-		private var mainPanelView:MainPanelView;
-		
 		private var okBtn : Button;
 		private var cancelBtn : Button;
 		
@@ -60,76 +53,13 @@ package com.xiaomu.view.hall.popUpPanel
 			groupNameInput.height = 20;
 			addChild(groupNameInput);
 			
-			/*mainPanelView = new MainPanelView();
-			addChild(mainPanelView);*/
-			
-			playerNumLab = new Label();
-			playerNumLab.text = '人数:';
-			playerNumLab.width = 40;
-			playerNumLab.height = 20;
-			addChild(playerNumLab);
-			
-			playerNumberBtnGroup = new ButtonGroup();
-			playerNumberBtnGroup.width = 300;
-			playerNumberBtnGroup.height = 100;
-			playerNumberBtnGroup.x = 40;
-			playerNumberBtnGroup.y = 100;
-			playerNumberBtnGroup.dataProvider = [{'name':'两人'},{'name':'三人'}];
-			playerNumberBtnGroup.gap = 20;
-			playerNumberBtnGroup.labelField = 'name'
-			playerNumberBtnGroup.selectedIndex = 0;
-			playerNumberBtnGroup.itemRendererWidth = 60;
-			playerNumberBtnGroup.itemRendererHeight = 20;
-			playerNumberBtnGroup.itemRendererClass = CircleItemRender;
-			addChild(playerNumberBtnGroup);
-			
-			topValueLab = new Label();
-			topValueLab.text = '封顶:';
-			topValueLab.width = 40;
-			topValueLab.height = 20;
-			addChild(topValueLab);
-			
-			topValueBtnGroup = new ButtonGroup();
-			topValueBtnGroup.width = 300;
-			topValueBtnGroup.height = 100;
-			topValueBtnGroup.x = 40;
-			topValueBtnGroup.y = 100;
-			topValueBtnGroup.dataProvider = [{'name':'200息'},{'name':'400息'}];
-			topValueBtnGroup.gap = 20;
-			topValueBtnGroup.labelField = 'name'
-			topValueBtnGroup.selectedIndex = 0;
-			topValueBtnGroup.itemRendererWidth = 60;
-			topValueBtnGroup.itemRendererHeight = 20;
-			topValueBtnGroup.itemRendererClass = CircleItemRender;
-			addChild(topValueBtnGroup);
-			
-			playMethodLab = new Label();
-			playMethodLab.text = '玩法:';
-			playMethodLab.width = 40;
-			playMethodLab.height = 20;
-			addChild(playMethodLab);
-			
-			playMethodBtnGroup = new ButtonGroup();
-			playMethodBtnGroup.width = 300;
-			playMethodBtnGroup.height = 100;
-			playMethodBtnGroup.x = 40;
-			playMethodBtnGroup.y = 100;
-			playMethodBtnGroup.dataProvider = [{'name':'快速吃牌'},{'name':'首局随机庄家'}];
-			playMethodBtnGroup.gap = 20;
-			playMethodBtnGroup.labelField = 'name'
-			playMethodBtnGroup.selectedIndex = 0;
-			playMethodBtnGroup.itemRendererWidth = 60;
-			playMethodBtnGroup.itemRendererHeight = 20;
-			playMethodBtnGroup.itemRendererClass = CircleItemRender;
-			addChild(playMethodBtnGroup);
-			
 			okBtn = new Button();
 			okBtn.label = '确定';
 			okBtn.addEventListener(MouseEvent.CLICK,oklHandler);
 			addChild(okBtn);
 			
 			cancelBtn = new Button();
-			cancelBtn.label = 'back'
+			cancelBtn.label = '取消'
 			cancelBtn.addEventListener(MouseEvent.CLICK,cancelHandler);
 			addChild(cancelBtn);
 		}
@@ -138,37 +68,18 @@ package com.xiaomu.view.hall.popUpPanel
 		{
 			super.updateDisplayList();
 			
-//			mainPanelView.width = width;
-//			mainPanelView.height = height;
-			
 			groupNameLab.x = 10;
 			groupNameLab.y = 20;
 			groupNameInput.x = groupNameLab.x+groupNameLab.width;
 			groupNameInput.y = groupNameLab.y;
 			
-			playerNumLab.x = groupNameLab.x;
-			playerNumLab.y = groupNameLab.y+groupNameLab.height+10;
-			playerNumberBtnGroup.x = playerNumLab.x+playerNumLab.width;
-			playerNumberBtnGroup.y = playerNumLab.y;
-			
-			topValueLab.x = playerNumLab.x;
-			topValueLab.y = playerNumLab.y+playerNumLab.height+10;
-			topValueBtnGroup.x = topValueLab.x+topValueLab.width;
-			topValueBtnGroup.y = topValueLab.y
-				
-			playMethodLab.x = topValueLab.x;
-			playMethodLab.y = topValueLab.y+topValueLab.height+10;
-			playMethodBtnGroup.x = playMethodLab.x+playMethodLab.width;
-			playMethodBtnGroup.y = playMethodLab.y
-			
 			okBtn.width = cancelBtn.width = 40;
 			okBtn.height = cancelBtn.height = 20;
 			
-			okBtn.y  = height-okBtn.height-25;
-			okBtn.x = width-okBtn.width-20;
-			
-			cancelBtn.x = width-cancelBtn.width-5;
-			cancelBtn.y = 5;
+			okBtn.x = width/2-okBtn.width-5;
+			okBtn.y = height-okBtn.height-5;
+			cancelBtn.x = width/2+5;
+			cancelBtn.y = okBtn.y;
 		}
 		
 		override protected function drawSkin():void
@@ -191,15 +102,28 @@ package com.xiaomu.view.hall.popUpPanel
 		{
 			/*
 			* 创建群的操作，先insert group表，再更新user表中当前用户的group_info字段
+			创建insert rooms表，添加x张桌子
 			*/
 			var group_info_arr: Array = []; 
 			HttpApi.getInstane().getUserInfoByName(AppData.getInstane().username,function(e:Event):void{
-				group_info_arr  = JSON.parse(JSON.parse(e.currentTarget.data).message[0].group_info) as Array
+				var group_info:String = "[]";
+				if(JSON.parse(e.currentTarget.data).message[0].group_info){
+					group_info = JSON.parse(e.currentTarget.data).message[0].group_info;
+				}
+				group_info_arr  = JSON.parse(group_info) as Array
 				if(groupNameInput.text){
 					////进行group表的插入工作
 					HttpApi.getInstane().insertGroupInfo(groupNameInput.text,parseInt(AppData.getInstane().user.userId),function(e:Event):void{
 						var newGroupInfoObj:Object = {'gold':0,'group_id':parseInt(JSON.parse(e.currentTarget.data).message.id)};
+						var group_id:int = parseInt(JSON.parse(e.currentTarget.data).message.id);
 						group_info_arr.push(newGroupInfoObj);
+						///添加桌子，insert room表
+						
+						for (var i:int = 1; i <= 5; i++) 
+						{
+							HttpApi.getInstane().addRoom(i+'号房间',group_id,3,null,null);
+						}
+						///对群主自身的groupInfo字段进行更新
 						HttpApi.getInstane().updateUserGroupInfo(AppData.getInstane().username,group_info_arr,function(e:Event):void{
 							if(JSON.parse(e.currentTarget.data).result==0){
 								PopUpManager.removeAllPopUp();

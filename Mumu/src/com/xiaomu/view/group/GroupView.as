@@ -143,9 +143,9 @@ package com.xiaomu.view.group
 			addChild(usersList)
 			
 			goback= new Image()
-			goback.source = 'assets/backbtn.png';
-			goback.width = 22;
-			goback.height = 20;
+			goback.source = 'assets/club_btn_back.png';
+			goback.width = 71*0.35;
+			goback.height = 86*0.35;
 			goback.addEventListener(MouseEvent.CLICK, function(e:MouseEvent):void {
 				userInfoView.reset();
 				Api.getInstane().leaveGroup()			
@@ -186,8 +186,8 @@ package com.xiaomu.view.group
 			roomsList.width = width * 2 / 3
 			roomsList.itemRendererHeight = (roomsList.width- roomsList.padding * 2 - roomsList.gap) / 2
 			
-			goback.x = width-goback.width;
-			goback.y = 0;
+			goback.x = width-goback.width-5;
+			goback.y = 5;
 			
 			usersList.width = width / 3
 			usersList.height = height - usersList.y
@@ -226,6 +226,15 @@ package com.xiaomu.view.group
 		protected function roomsList_changeHandler(event:UIEvent):void
 		{
 			if(roomsList.selectedItem!=null){
+				if(roomsList.selectedItem.name=='+'){
+					HttpApi.getInstane().addRoom(roomsData.length+"号房间",thisGroupID,3,function(e:Event):void{
+						if(JSON.parse(e.currentTarget.data).result==0){
+							getGroupRoomHandler(false);
+						}
+					},null);
+					roomsList.selectedIndex = -1
+					return;
+				}
 				var room:Object = roomsList.selectedItem
 				Api.getInstane().joinRoom(room, function (response):void {
 					if (response.code == 0) {
@@ -234,8 +243,8 @@ package com.xiaomu.view.group
 						Alert.show("response.data：",response.data)
 					}
 				})
-				roomsList.selectedIndex = -1
 			}
+			roomsList.selectedIndex = -1
 		}
 		
 		private var thisGroupID:int
@@ -276,23 +285,33 @@ package com.xiaomu.view.group
 						},null);
 						usersData = tempUsers
 					} 
-					// 加载群的房间信息
-					HttpApi.getInstane().getGroupRooms(groupid, 
-						function (e:Event):void {
-							const roomsResponse:Object = JSON.parse(e.currentTarget.data)
-							if (roomsResponse.result == 0 && roomsResponse.message) {
-								var rooms:Array = roomsResponse.message
-								for each(var room:Object in rooms) {
-									room.roomname = 'room' + room.id
-								}
-								roomsData = rooms
-								//								trace('roomsData:',roomsData);
-								//								trace('roomsData:',JSON.stringify(roomsData));
-								// 加入群
-								Api.getInstane().joinGroup(AppData.getInstane().user.username, groupid)
-							} 
-						}, 
-						null)
+					
+					getGroupRoomHandler(true);
+				}, 
+				null)
+		}
+		
+		private function getGroupRoomHandler(initFlag:Boolean):void
+		{
+			// 加载群的房间信息
+			HttpApi.getInstane().getGroupRooms(thisGroupID, 
+				function (e:Event):void {
+					const roomsResponse:Object = JSON.parse(e.currentTarget.data)
+					if (roomsResponse.result == 0 && roomsResponse.message) {
+						var rooms:Array = roomsResponse.message
+						/*for each(var room:Object in rooms) {
+						room.roomname = 'room' + room.id
+						}*/
+						///如果是该群的群主,才支持添加房间
+						if(_groupAdminId==AppData.getInstane().user.id){
+							rooms.push({"name":"+"})
+						}
+						roomsData = rooms
+						// 初始化加入群，后期调用时，用于刷新界面，不是再次加入该群
+						if(initFlag){
+							Api.getInstane().joinGroup(AppData.getInstane().user.username, thisGroupID)
+						}
+					} 
 				}, 
 				null)
 		}

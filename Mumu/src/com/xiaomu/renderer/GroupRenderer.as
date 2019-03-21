@@ -35,6 +35,7 @@ package com.xiaomu.renderer
 			
 			super.createChildren()
 			labelDisplay.color = 0xFFFFFF
+			labelDisplay.visible = false;
 			
 			nameLab = new Label();
 			nameLab.color = 0xFFFFFF;
@@ -49,8 +50,8 @@ package com.xiaomu.renderer
 		
 		override protected function updateDisplayList():void {
 			super.updateDisplayList()
-			icon.width = width
-			icon.height = height
+			icon.width = width*0.9
+			icon.height = height*0.9
 				
 			labelDisplay.width = width
 			labelDisplay.height = 30

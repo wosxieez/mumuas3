@@ -3,14 +3,13 @@ package com.xiaomu.view.login
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.HttpApi;
 	import com.xiaomu.view.MainView;
-	import com.xiaomu.view.hall.HallView;
 	import com.xiaomu.view.home.HomeView;
 	
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
 	import coco.component.Alert;
-	import coco.component.Button;
+	import coco.component.Image;
 	import coco.component.Label;
 	import coco.component.TextInput;
 	import coco.core.UIComponent;
@@ -21,7 +20,7 @@ package com.xiaomu.view.login
 		public function LoginPanel()
 		{
 			super();
-			width=200;
+			width=220;
 			height=130;
 		}
 		
@@ -43,8 +42,8 @@ package com.xiaomu.view.login
 		private var labPsw : Label;
 		private var phoneNumInput : TextInput;
 		private var passwordInput : TextInput;
-		private var loginBtn : Button;
-		public var regsiterBtn:Button;
+		private var loginBtn : Image;
+		public var regsiterBtn:Image;
 		override protected function createChildren():void
 		{
 			super.createChildren();
@@ -53,6 +52,7 @@ package com.xiaomu.view.login
 			title.text = '手机登录';
 			title.color = 0xffffff;
 			title.fontSize = 10;
+			title.width = width;
 			addChild(title);
 			
 			labNum = new Label();
@@ -67,32 +67,30 @@ package com.xiaomu.view.login
 			
 			phoneNumInput =  new TextInput();
 			phoneNumInput.maxChars = 11;
-			phoneNumInput.width = 100;
+			phoneNumInput.width = 120;
 			phoneNumInput.height = 20;
 			phoneNumInput.radius = 8;
 			addChild(phoneNumInput);
 			
 			passwordInput = new TextInput();
 			passwordInput.maxChars = 12;
-			passwordInput.width = 100;
+			passwordInput.width = 120;
 			passwordInput.height = 20;
 			passwordInput.radius = 8;
 			passwordInput.displayAsPassword = true;
 			addChild(passwordInput);
 			
-			loginBtn = new Button();
-			loginBtn.width = 30;
-			loginBtn.height = 20;
-			loginBtn.label = '登录';
-			loginBtn.fontSize = 10;
+			loginBtn = new Image();
+			loginBtn.width = 216*0.4;
+			loginBtn.height = 49*0.4;
+			loginBtn.source = 'assets/login/phonedenglu_up.png';
 			loginBtn.addEventListener(MouseEvent.CLICK,loginHandler);
 			addChild(loginBtn);
 			
-			regsiterBtn = new Button();
-			regsiterBtn.width = 50;
-			regsiterBtn.height = 20;
-			regsiterBtn.label = '立即注册';
-			regsiterBtn.fontSize = 10;
+			regsiterBtn = new Image();
+			regsiterBtn.width = 118*0.4;
+			regsiterBtn.height = 38*0.4;
+			regsiterBtn.source = 'assets/login/kuaisuzhuce_up.png';
 			addChild(regsiterBtn);
 		}
 		
@@ -114,7 +112,6 @@ package com.xiaomu.view.login
 		{
 			super.updateDisplayList();
 			
-			title.x = 75;
 			title.y = 3;
 			
 			labNum.x = 10;
@@ -131,7 +128,7 @@ package com.xiaomu.view.login
 			loginBtn.y = passwordInput.y+passwordInput.height+10;
 			
 			regsiterBtn.x = loginBtn.x+loginBtn.width+10;
-			regsiterBtn.y = passwordInput.y+passwordInput.height+10;
+			regsiterBtn.y = loginBtn.y+(loginBtn.height-regsiterBtn.height)/2;
 		}
 		
 		override protected function drawSkin():void

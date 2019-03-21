@@ -13,6 +13,7 @@ package com.xiaomu.view.hall
 	import com.xiaomu.view.group.GroupView;
 	import com.xiaomu.view.hall.popUpPanel.CreateGroupPanel;
 	import com.xiaomu.view.home.HomeView;
+	import com.xiaomu.view.newGroup.NewGroupView;
 	import com.xiaomu.view.userBarView.UserInfoView;
 	
 	import flash.events.Event;
@@ -42,10 +43,9 @@ package com.xiaomu.view.hall
 		
 		private var topbg:Image
 		private var bottombg:Image
-		private var btnsList:List
 		private var groupsList:List
 		private var signoutBtn:Image
-		private var goback:Button;
+		private var goback:Image;
 		private var userInfoView : UserInfoView
 		private var joinGroupBtn : ImgBtn;
 		private var createGroupBtn : ImgBtn;
@@ -85,34 +85,10 @@ package com.xiaomu.view.hall
 			groupsList.addEventListener(UIEvent.CHANGE, groupsList_changeHandler)
 			addChild(groupsList)
 			
-			btnsList = new List()
-			btnsList.gap = 15
-			btnsList.padding = 5
-			btnsList.height = 30
-			btnsList.labelField = 'name'
-			btnsList.horizontalScrollEnabled = false
-			btnsList.verticalScrollEnabled = false
-			btnsList.itemRendererClass = ButtonRenderer
-			btnsList.itemRendererRowCount = 1
-			btnsList.itemRendererHeight = 20
-			btnsList.itemRendererWidth = 50
-			btnsList.dataProvider = ['1', '2', '3', '4', '5', '6']
-			btnsList.horizontalAlign = HorizontalAlign.CENTER
-			btnsList.verticalAlign = VerticalAlign.MIDDLE
-			addChild(btnsList)
-			btnsList.visible = false;
-			
-//			signoutBtn = new Image()
-//			signoutBtn.width = 55
-//			signoutBtn.height = 20
-//			signoutBtn.y = 5
-//			signoutBtn.addEventListener(MouseEvent.CLICK, signoutBtn_clickHandler)
-//			signoutBtn.source = 'assets/hall/setting_out_press.png'
-//			addChild(signoutBtn)
-			
-			goback = new Button();
-			goback.label = '返回'
-			goback.width = goback.height = 20;
+			goback = new Image();
+			goback.source = 'assets/club_btn_back.png';
+			goback.width = 71*0.35;
+			goback.height = 86*0.35;
 			goback.addEventListener(MouseEvent.CLICK,gobackHandler);
 			addChild(goback);
 			
@@ -126,7 +102,6 @@ package com.xiaomu.view.hall
 			joinGroupBtn.addEventListener(MouseEvent.CLICK,joinGroupHandler);
 			addChild(joinGroupBtn);
 			
-			
 			createGroupBtn = new ImgBtn();
 			createGroupBtn.imgSource = 'assets/hall/create_group.png';
 			createGroupBtn.width = 70;
@@ -136,6 +111,7 @@ package com.xiaomu.view.hall
 			createGroupBtn.labColor = 0xffffff;
 			createGroupBtn.addEventListener(MouseEvent.CLICK,createGroupHandler);
 			addChild(createGroupBtn);
+//			createGroupBtn.visible = false;
 		}
 		
 		protected function gobackHandler(event:MouseEvent):void
@@ -143,15 +119,10 @@ package com.xiaomu.view.hall
 			MainView.getInstane().pushView(HomeView);
 		}
 		
-		/*protected function signoutBtn_clickHandler(event:MouseEvent):void
-		{
-			AppData.getInstane().inGroupView = false;
-			dispose()
-			MainView.getInstane().popView(LoginView)
-		}*/
-		
 		override protected function updateDisplayList():void{
 			super.updateDisplayList();
+			
+//			createGroupBtn.visible = AppData.getInstane().user.is_admin=='T'
 			
 			AppData.getInstane().inGroupView = false;
 			topbg.width = width
@@ -162,11 +133,8 @@ package com.xiaomu.view.hall
 			groupsList.width = width
 			groupsList.height = bottombg.y - groupsList.y
 			
-			btnsList.width = width
-			btnsList.y = bottombg.y
-			
-//			signoutBtn.x = width - signoutBtn.width - 5
 			goback.x = width - goback.width - 5
+			goback.y = 5;
 			
 			joinGroupBtn.x = width - joinGroupBtn.width-40;
 			joinGroupBtn.y = height-joinGroupBtn.height-5;
@@ -195,13 +163,14 @@ package com.xiaomu.view.hall
 					'admin_id':selectedItem.admin_id,
 					'admin_name':JSON.parse(e.currentTarget.data).message[0].username}
 				GroupView(MainView.getInstane().pushView(GroupView)).init(groupId,groupAdminId,groupInfoObj)///进入房间界面，初始化，输入组id,同时传入需要该组的群主id
+//				NewGroupView(MainView.getInstane().pushView(NewGroupView)).init(groupInfoObj)///进入房间界面，初始化，输入组id,同时传入需要该组的群主id
 			},null)
-			setTimeout(function ():void { groupsList.selectedIndex = -1 }, 200)
+			setTimeout(function ():void { groupsList.selectedIndex = -1 }, 100)
 		}
 		
 		public function init():void {
 			if(AppData.getInstane().user.group_info==null){
-				AppData.getInstane().user.group_info=[]
+				AppData.getInstane().user.group_info="[]"
 				groupsData = [];
 			}else{
 				groupsData = JSON.parse(AppData.getInstane().user.group_info) as Array;
@@ -209,7 +178,7 @@ package com.xiaomu.view.hall
 //			Audio.getInstane().playBGM('assets/bgm.mp3')
 			Assets.getInstane().loadAssets('assets/niu.png', 'assets/niu.json')
 			HttpApi.getInstane().getUserInfoByName(AppData.getInstane().username,function(e:Event):void{
-				//				trace('大厅界面：金币',JSON.parse(e.currentTarget.data).message[0].group_info);
+//								trace('大厅界面：金币',JSON.parse(e.currentTarget.data).message[0].group_info);
 				//				trace('大厅界面：房卡',JSON.parse(e.currentTarget.data).message[0].room_card);
 				//				trace('大厅界面：用户id',JSON.parse(e.currentTarget.data).message[0].id);
 				var room_card:String = JSON.parse(e.currentTarget.data).message[0].room_card?JSON.parse(e.currentTarget.data).message[0].room_card+'':'0'
@@ -218,6 +187,7 @@ package com.xiaomu.view.hall
 				userInfoView.userInfoData = {"roomCard":room_card,'userName':AppData.getInstane().username}
 			},null);
 			getAllGroupInfo();
+			invalidateDisplayList();
 		}
 		
 		/**
@@ -251,8 +221,6 @@ package com.xiaomu.view.hall
 			if(!createCroupPanel){
 				createCroupPanel = new CreateGroupPanel();
 			}
-			createCroupPanel.width = width*0.8;
-			createCroupPanel.height = height*0.8;
 			PopUpManager.centerPopUp(PopUpManager.addPopUp(createCroupPanel,null,true,false,0xffffff,0.5));
 		}
 		

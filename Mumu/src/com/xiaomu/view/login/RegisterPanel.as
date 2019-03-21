@@ -8,6 +8,7 @@ package com.xiaomu.view.login
 	
 	import coco.component.Alert;
 	import coco.component.Button;
+	import coco.component.Image;
 	import coco.component.Label;
 	import coco.component.TextInput;
 	import coco.core.UIComponent;
@@ -17,7 +18,7 @@ package com.xiaomu.view.login
 		public function RegisterPanel()
 		{
 			super();
-			width=200;
+			width=220;
 			height=130;
 		}
 		
@@ -26,8 +27,8 @@ package com.xiaomu.view.login
 		private var labPsw : Label;
 		private var phoneNumInput : TextInput;
 		private var passwordInput : TextInput;
-		private var registerBtn : Button;
-		public var cancelBtn:Button;
+		private var registerBtn : Image;
+		public var cancelBtn:Image;
 		override protected function createChildren():void
 		{
 			super.createChildren();
@@ -36,6 +37,7 @@ package com.xiaomu.view.login
 			title.text = '手机注册';
 			title.color = 0xffffff;
 			title.fontSize = 10;
+			title.width = width;
 			addChild(title);
 			
 			labNum = new Label();
@@ -50,32 +52,30 @@ package com.xiaomu.view.login
 			
 			phoneNumInput =  new TextInput();
 			phoneNumInput.maxChars = 11;
-			phoneNumInput.width = 100;
+			phoneNumInput.width = 120;
 			phoneNumInput.height = 20;
 			phoneNumInput.radius = 8;
 			addChild(phoneNumInput);
 			
 			passwordInput = new TextInput();
 			passwordInput.maxChars = 12;
-			passwordInput.width = 100;
+			passwordInput.width = 120;
 			passwordInput.height = 20;
 			passwordInput.radius = 8;
 			passwordInput.displayAsPassword = true;
 			addChild(passwordInput);
 			
-			registerBtn = new Button();
-			registerBtn.width = 30;
-			registerBtn.height = 20;
-			registerBtn.label = '注册';
-			registerBtn.fontSize = 10;
+			registerBtn = new Image();
+			registerBtn.source = 'assets/login/queding_up.png';
+			registerBtn.width = 216*0.4;
+			registerBtn.height = 49*0.4;
 			registerBtn.addEventListener(MouseEvent.CLICK,registerHandler);
 			addChild(registerBtn);
 			
-			cancelBtn = new Button();
-			cancelBtn.width = 50;
-			cancelBtn.height = 20;
-			cancelBtn.label = '返回登录';
-			cancelBtn.fontSize = 10;
+			cancelBtn = new Image();
+			cancelBtn.source = 'assets/login/fanhuidenglu_up.png';
+			cancelBtn.width = 118*0.4;
+			cancelBtn.height = 38*0.4;
 			addChild(cancelBtn);
 		}
 		
@@ -88,7 +88,6 @@ package com.xiaomu.view.login
 		{
 			super.updateDisplayList();
 			
-			title.x = 75;
 			title.y = 3;
 			
 			labNum.x = 10;
@@ -105,7 +104,7 @@ package com.xiaomu.view.login
 			registerBtn.y = passwordInput.y+passwordInput.height+10;
 			
 			cancelBtn.x = registerBtn.x+registerBtn.width+10;
-			cancelBtn.y = passwordInput.y+passwordInput.height+10;
+			cancelBtn.y = registerBtn.y+(registerBtn.height-cancelBtn.height)/2;
 		}
 		
 		override protected function drawSkin():void
