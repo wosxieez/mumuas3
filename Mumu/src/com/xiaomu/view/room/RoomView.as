@@ -1,5 +1,6 @@
 package com.xiaomu.view.room
 {
+	import com.xiaomu.component.BigCardUI;
 	import com.xiaomu.component.CardUI;
 	import com.xiaomu.event.ApiEvent;
 	import com.xiaomu.event.SelectEvent;
@@ -31,6 +32,8 @@ package com.xiaomu.view.room
 			Api.getInstane().addEventListener(ApiEvent.Notification, onNotificationHandler)
 		}
 		
+//		private var bg:Image
+		
 		private var bgLayer: UIComponent
 		private var preUserLine:Image
 		private var preUserBG:Image
@@ -50,8 +53,14 @@ package com.xiaomu.view.room
 		private var cardLayer: UIComponent
 		private var cardsCarrUI:Image
 		private var cardsLabel:Label
-		private var dealCardUI: CardUI
-		private var dealCardUI2: CardUI
+		/**
+		 * 当前的桌牌 
+		 */		
+		private var dealCardUI: BigCardUI
+		/**
+		 * 庄家牌显示 
+		 */		
+		private var dealCardUI2: BigCardUI
 		private var iconLayer:UIComponent
 		private var myUser:Object
 		private var preUser:Object
@@ -84,7 +93,11 @@ package com.xiaomu.view.room
 		
 		override protected function createChildren():void {
 			super.createChildren()
-				
+			
+//			bg = new Image()
+//			bg.source = 'assets/room/room_bg.png'
+//			addChild(bg)
+			
 			bgLayer = new UIComponent()
 			addChild(bgLayer)
 			
@@ -102,8 +115,8 @@ package com.xiaomu.view.room
 			cardsLabel.color = 0xFFFFFF
 			cardsLabel.visible = false
 			bgLayer.addChild(cardsLabel)
-				
-				
+			
+			
 			// 增加三个图像
 			preUserLine = new Image()
 			preUserLine.width = 80
@@ -162,14 +175,14 @@ package com.xiaomu.view.room
 			nextUserNameLabel.height = 30
 			nextUserNameLabel.height = 30
 			bgLayer.addChild(nextUserNameLabel)
-				
+			
 			checkWaitTip = new Image()
 			checkWaitTip.width = 16
 			checkWaitTip.height = 16
 			checkWaitTip.visible = false
 			checkWaitTip.source = Assets.getInstane().getAssets('wait.png')
 			bgLayer.addChild(checkWaitTip)
-				
+			
 			newCardTip = new Image()
 			newCardTip.width = 100
 			newCardTip.height = 16
@@ -181,19 +194,14 @@ package com.xiaomu.view.room
 			cardLayer = new UIComponent()
 			addChild(cardLayer)
 			
-			dealCardUI = new CardUI()
-			dealCardUI.border = 2
+			dealCardUI = new BigCardUI()
 			dealCardUI.visible = false
-			dealCardUI.width = 30
-			dealCardUI.height = 70
 			dealCardUI.card = 10
 			cardLayer.addChild(dealCardUI)
 			
-			dealCardUI2 = new CardUI()
-			dealCardUI2.border = 2
+			dealCardUI2 = new BigCardUI()
+			dealCardUI2.isOut = false
 			dealCardUI2.visible = false
-			dealCardUI2.width = 30
-			dealCardUI2.height = 70
 			dealCardUI2.card = 10
 			cardLayer.addChild(dealCardUI2)
 			
@@ -282,6 +290,9 @@ package com.xiaomu.view.room
 		override protected function updateDisplayList():void {
 			super.updateDisplayList()
 			
+//			bg.width = width
+//			bg.height = height
+			
 			preUserLine.x = 20
 			preUserLine.y = 10
 			preUserBG.x = preUserLine.x - 15
@@ -343,11 +354,12 @@ package com.xiaomu.view.room
 		private function updateRoomInfo(room:Object):void {
 			if (room) {
 				this.roominfo.users = room.users
-				this.roominfo.zc = room.zc ? room.zc : 0
-				this.roominfo.zn = room.zn ? room.zn : ''
-				this.roominfo.pc = room.pc ? room.pc : 0
-				this.roominfo.pn = room.pn ? room.pn : ''
-				this.roominfo.cc = room.cc ? room.cc : 0
+				if (room.zc) { this.roominfo.zc = room.zc }
+				if (room.zn) { this.roominfo.zn = room.zn }
+				if (room.pc) { this.roominfo.pc = room.pc }
+				if (room.pn) { this.roominfo.pn = room.pn }
+				if (room.cc) { this.roominfo.cc = room.cc }
+				if (room.io) { this.roominfo.io = room.io } else { this.roominfo.io = false }
 				
 				this.myUser = this.preUser = this.nextUser = null
 				for (var i:int = 0; i < roominfo.users.length; i++) {
@@ -403,6 +415,7 @@ package com.xiaomu.view.room
 			if (roominfo) {
 				dealCardUI.visible = true
 				dealCardUI.card = roominfo.pc
+				dealCardUI.isOut = roominfo.io
 				if (this.preUser && roominfo.pn == this.preUser.username) {
 					dealCardUI.y = 50
 					dealCardUI.x = 120
@@ -411,7 +424,7 @@ package com.xiaomu.view.room
 					dealCardUI.x = width - 150
 				} else {
 					dealCardUI.x = (width - dealCardUI.width) / 2
-					dealCardUI.y = (height - dealCardUI.height) / 2 - 20
+					dealCardUI.y = (height - dealCardUI.height) / 2 - 50
 				}
 				Audio.getInstane().playCard(dealCardUI.card)
 			} else {
@@ -760,7 +773,7 @@ package com.xiaomu.view.room
 			trace('cards mouse up')
 			if (draggingCardUI) {
 				draggingCardUI.stopDrag()
-				if (mouseY <= height / 2) {
+				if (mouseY <= height * 2 / 3) {
 					if (isCheckNewCard) {
 						const action:Object = { name: Actions.NewCard, data: draggingCardUI.card }
 						Api.getInstane().sendAction(action)
@@ -799,7 +812,7 @@ package com.xiaomu.view.room
 				{
 					zhunbeiButton.visible = false
 					cardsCarrUI.visible = cardsLabel.visible = true
-					
+					dealCardUI.visible = false
 					updateRoomInfo(notification.data)
 					updateZhuangCard()
 					updateMyHandCardUIs()
@@ -813,7 +826,7 @@ package com.xiaomu.view.room
 				}
 				case Notifications.onGameStart:
 				{
-					dealCardUI2.visible = false
+					dealCardUI2.visible = false // zhuangka
 					updateRoomInfo(notification.data)
 					updateMyHandCardUIs()
 					updateMyGroupCardUIs()
@@ -878,7 +891,7 @@ package com.xiaomu.view.room
 					break
 				}
 				case Notifications.onNewCard: {
-					trace('有玩家发新牌')
+					trace('有玩家发新牌', JSON.stringify(notification.data))
 					checkUsername = null
 					updateRoomInfo(notification.data)
 					updateNewCard()
@@ -935,6 +948,22 @@ package com.xiaomu.view.room
 					trace('有人吃')
 					dealCardUI.visible = false
 					Audio.getInstane().playHandle('chi')
+					checkUsername = null
+					updateWaitTip()
+					updateRoomInfo(notification.data)
+					updateMyHandCardUIs()
+					updateMyGroupCardUIs()
+					updateMyPassCardUIs()
+					updatePreGroupCardUIs()
+					updatePrePassCardUIs()
+					updateNextGroupCardUIs()
+					updateNextPassCardUIs()
+					break
+				}
+				case Notifications.onBi: {
+					trace('有人比')
+					dealCardUI.visible = false
+					Audio.getInstane().playHandle('bi')
 					checkUsername = null
 					updateWaitTip()
 					updateRoomInfo(notification.data)

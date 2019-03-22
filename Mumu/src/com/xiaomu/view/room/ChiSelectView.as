@@ -82,7 +82,7 @@ package com.xiaomu.view.room
 			chiData = biData = bi2Data = null
 			chiPanel.dataProvider = dataProvider
 			if (dataProvider) {
-				chiPanel.width = Math.max(dataProvider.length * 24, 50)
+				chiPanel.width = Math.max(dataProvider.length * 24 + 6, 54)
 			}
 		}
 		
@@ -105,7 +105,7 @@ package com.xiaomu.view.room
 				chiData = {name: event.data.name, cards: event.data.cards}
 				if (event.data.bi) {
 					// 有比牌数据
-					biPanel.width = Math.max(event.data.bi.length * 24, 50)
+					biPanel.width = Math.max(event.data.bi.length * 24 + 6, 54)
 					biPanel.dataProvider = event.data.bi
 					biPanel.visible = true
 				} else {
@@ -124,7 +124,7 @@ package com.xiaomu.view.room
 				biData = {name: event.data.name, cards: event.data.cards}
 				if (event.data.bi) {
 					// 有比牌数据
-					bi2Panel.width = Math.max(event.data.bi.length * 24, 50)
+					bi2Panel.width = Math.max(event.data.bi.length * 24 + 6, 54)
 					bi2Panel.dataProvider = event.data.bi
 					bi2Panel.visible = true
 				} else {

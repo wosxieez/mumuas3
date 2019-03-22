@@ -23,5 +23,6 @@ package com.xiaomu.util
 		public static const checkNewCard:int = 19   // 一局结束
 		public static const checkHu:int = 20     // 有玩家准备
 		public static const onRoundEnd:int = 21     // 有玩家准备
+		public static const onBi:int = 22
 	}
 }

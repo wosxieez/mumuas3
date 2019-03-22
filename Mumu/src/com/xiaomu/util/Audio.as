@@ -92,7 +92,7 @@ package com.xiaomu.util
 				}
 			}
 			
-			handleSound = new Sound(new URLRequest('sound/handle/v_' + name + '.mp3'))
+			handleSound = new Sound(new URLRequest('sound/handle/' + name + '.mp3'))
 			handleChannel = handleSound.play()
 		}
 		
