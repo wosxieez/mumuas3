@@ -15,7 +15,7 @@ package com.xiaomu.itemRender
 			height = 30;
 			
 			autoDrawSkin = false;
-			mouseChildren = true;
+			this.mouseChildren = false;
 			this.addEventListener(MouseEvent.MOUSE_DOWN,mouseDownHandler)
 			this.addEventListener(MouseEvent.MOUSE_UP,mouseUpHandler)
 			this.addEventListener(MouseEvent.MOUSE_OUT,mouseUpHandler)

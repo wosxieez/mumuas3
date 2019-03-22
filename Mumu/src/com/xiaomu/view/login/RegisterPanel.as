@@ -1,5 +1,6 @@
 package com.xiaomu.view.login
 {
+	import com.xiaomu.component.ImageBtnWithUpAndDown;
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.HttpApi;
 	
@@ -27,8 +28,8 @@ package com.xiaomu.view.login
 		private var labPsw : Label;
 		private var phoneNumInput : TextInput;
 		private var passwordInput : TextInput;
-		private var registerBtn : Image;
-		public var cancelBtn:Image;
+		private var registerBtn : ImageBtnWithUpAndDown;
+		public var cancelBtn:ImageBtnWithUpAndDown;
 		override protected function createChildren():void
 		{
 			super.createChildren();
@@ -65,15 +66,17 @@ package com.xiaomu.view.login
 			passwordInput.displayAsPassword = true;
 			addChild(passwordInput);
 			
-			registerBtn = new Image();
-			registerBtn.source = 'assets/login/queding_up.png';
+			registerBtn = new ImageBtnWithUpAndDown();
+			registerBtn.upImageSource = 'assets/login/queding_up.png';
+			registerBtn.downImageSource = 'assets/login/queding_down.png';
 			registerBtn.width = 216*0.4;
 			registerBtn.height = 49*0.4;
 			registerBtn.addEventListener(MouseEvent.CLICK,registerHandler);
 			addChild(registerBtn);
 			
-			cancelBtn = new Image();
-			cancelBtn.source = 'assets/login/fanhuidenglu_up.png';
+			cancelBtn = new ImageBtnWithUpAndDown();
+			cancelBtn.upImageSource = 'assets/login/fanhuidenglu_up.png';
+			cancelBtn.downImageSource = 'assets/login/fanhuidenglu_down.png';
 			cancelBtn.width = 118*0.4;
 			cancelBtn.height = 38*0.4;
 			addChild(cancelBtn);

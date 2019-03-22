@@ -15,7 +15,6 @@ package com.xiaomu.view.home
 	
 	import coco.component.ButtonGroup;
 	import coco.component.Image;
-	import coco.component.List;
 	import coco.core.UIComponent;
 	import coco.event.UIEvent;
 	import coco.manager.PopUpManager;
@@ -57,7 +56,7 @@ package com.xiaomu.view.home
 			myGroup.width = 270*0.36;
 			myGroup.height = 407*0.36;
 			myGroup.upImageSource = 'assets/home/guild_up.png';
-			myGroup.downImageSource = 'assets/home/guild_up.png';
+			myGroup.downImageSource = 'assets/home/guild_down.png';
 			myGroup.addEventListener(MouseEvent.CLICK,clickHandler);
 			addChild(myGroup);
 			
@@ -217,7 +216,8 @@ package com.xiaomu.view.home
 				}
 				PopUpManager.centerPopUp(PopUpManager.addPopUp(setPanelView,null,true,false,0x000000,0.8));
 			}
-			setTimeout(function():void{btnGroup.selectedIndex = -1},10);
+			
+			btnGroup.selectedIndex = -1
 		}
 		
 		protected function joinRoomClickHandler(event:MouseEvent):void

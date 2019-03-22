@@ -239,15 +239,18 @@ package com.xiaomu.view.group
 		
 		protected function submitButton_clickHandler(event:MouseEvent):void
 		{
+			if(!parseInt(goldInput.text)){
+				Alert.show('输入金币数有误');
+				return;
+			}
 			var groups:Array = JSON.parse(thisUser.group_info) as Array
 			for each(var group:Object in groups) {
 				if (group.group_id == oldUser.group_id) {
-					group.gold = goldInput.text
+					group.gold = parseInt(goldInput.text);
 					group.subname = subNameInput.text
 					break
 				}
 			}
-			
 			HttpApi.getInstane().updateUserGroupInfo(thisUser.username, groups, 
 				function (e:Event):void {
 					const response:Object = JSON.parse(e.currentTarget.data)
