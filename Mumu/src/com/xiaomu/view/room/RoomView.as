@@ -306,7 +306,7 @@ package com.xiaomu.view.room
 			preUserNameLabel.y = preUserLine.y
 			preUserNameLabel.x = preUserBG.x + 30
 			
-			myUserLine.x = width / 2 - 40
+			myUserLine.x = 20
 			myUserLine.y = height - 35
 			myUserBG.x = myUserLine.x - 5
 			myUserBG.y = myUserLine.y
@@ -521,7 +521,7 @@ package com.xiaomu.view.room
 				const horizontalGap:Number = 1
 				const verticalGap:Number = cardHeight * 3 / 4
 				var newCardUI:CardUI
-				var startX:Number = 10
+				var startX:Number = width - cardWidth - 10
 				for (var i:int = 0; i < riffleCards.length; i++) {
 					var group:Object = riffleCards[i]
 					var groupCards:Array = group.cards
@@ -538,7 +538,7 @@ package com.xiaomu.view.room
 						newCardUI.visible = true
 						newCardUI.width = cardWidth
 						newCardUI.height = cardHeight
-						newCardUI.x = startX + i * (newCardUI.width + horizontalGap)
+						newCardUI.x = startX - i * (newCardUI.width + horizontalGap)
 						newCardUI.y = height - newCardUI.height - j * verticalGap - 51
 						newCardUI.card = groupCards[j]
 						newCardUI.type = CardUI.TYPE_SMALL_CARD
@@ -565,7 +565,7 @@ package com.xiaomu.view.room
 				const cardHeight:Number = Size.SMALL_CARD_HEIGHT
 				const horizontalGap:Number = 1
 				var newCardUI:CardUI
-				var startX:Number = 10
+				var startX:Number = width - cardWidth - 10
 				for (var i:int = 0; i < riffleCards.length; i++) {
 					newCardUI = oldMyPassCardUIs.pop()
 					if (!newCardUI) {
@@ -575,7 +575,7 @@ package com.xiaomu.view.room
 					newCardUI.visible = true
 					newCardUI.width = cardWidth
 					newCardUI.height = cardHeight
-					newCardUI.x = startX + i * (newCardUI.width + horizontalGap)
+					newCardUI.x = startX - i * (newCardUI.width + horizontalGap)
 					newCardUI.y = height - newCardUI.height - 10
 					newCardUI.card = riffleCards[i]
 					newCardUI.type = CardUI.TYPE_SMALL_CARD
@@ -683,10 +683,10 @@ package com.xiaomu.view.room
 					oldNextGroupCardUIs.push(cardUI)
 				}
 				nextGroupCardUIs = []
-				const cardWidth:Number = 16
-				const cardHeight:Number = 20
+				const cardWidth:Number = Size.SMALL_CARD_WIDTH
+				const cardHeight:Number = Size.SMALL_CARD_HEIGHT
 				const horizontalGap:Number = 1
-				const verticalGap:Number = 14
+				const verticalGap:Number = Size.SMALL_CARD_HEIGHT * Size.GAP_RADIO
 				var newCardUI:CardUI
 				var startX:Number = width - cardWidth - 10
 				for (var i:int = 0; i < riffleCards.length; i++) {
