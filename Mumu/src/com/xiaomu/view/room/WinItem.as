@@ -5,9 +5,9 @@ package com.xiaomu.view.room
 	
 	import coco.core.UIComponent;
 	
-	public class RoomResultItem extends UIComponent
+	public class WinItem extends UIComponent
 	{
-		public function RoomResultItem()
+		public function WinItem()
 		{
 			super();
 			

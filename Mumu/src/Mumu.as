@@ -11,6 +11,9 @@ package
 		public function Mumu()
 		{
 			super();
+			
+			width = 1280
+			height = 720
 		}
 		
 		[Embed(source="assets/bg.png")]
@@ -28,14 +31,23 @@ package
 			LoginView(MainView.getInstane().pushView(LoginView)).init()
 		}
 		
+//		override protected function measure():void {
+//			if (stage) {
+//				measuredWidth = stage.stageWidth;
+//				measuredHeight = stage.stageHeight;
+//				trace(measuredWidth, measuredHeight)
+//			}
+//		}
+		
 		override protected function updateDisplayList():void {
 			super.updateDisplayList()
-				
+			
 			bg.width = width
 			bg.height = height
-			
+				
 			MainView.getInstane().width = width
 			MainView.getInstane().height = height
+			MainView.getInstane().scaleX = MainView.getInstane().scaleY = 0.5
 		}
 		
 	}

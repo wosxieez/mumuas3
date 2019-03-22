@@ -94,10 +94,6 @@ package com.xiaomu.view.room
 		override protected function createChildren():void {
 			super.createChildren()
 			
-//			bg = new Image()
-//			bg.source = 'assets/room/room_bg.png'
-//			addChild(bg)
-			
 			bgLayer = new UIComponent()
 			addChild(bgLayer)
 			
@@ -835,6 +831,9 @@ package com.xiaomu.view.room
 					updatePrePassCardUIs()
 					updateNextGroupCardUIs()
 					updateNextPassCardUIs()
+					
+					WinView.getInstane().data = notification.data
+					PopUpManager.centerPopUp(PopUpManager.addPopUp(WinView.getInstane(), null, false, true))
 					break;
 				}
 				case Notifications.onTi : {
@@ -987,16 +986,16 @@ package com.xiaomu.view.room
 				case Notifications.onWin: {
 					Audio.getInstane().playHandle('hu')
 					cardsCarrUI.visible = cardsLabel.visible = false
-					RoomResultView.getInstane().data = notification.data
-					PopUpManager.centerPopUp(PopUpManager.addPopUp(RoomResultView.getInstane(), null, false, true))
+					WinView.getInstane().data = notification.data
+					PopUpManager.centerPopUp(PopUpManager.addPopUp(WinView.getInstane(), null, false, true))
 					zhunbeiButton.visible = true
 					zhunbeiButton.label = '准备'
 					break
 				}
 				case Notifications.onRoundEnd: {
 					cardsCarrUI.visible = cardsLabel.visible = false
-					RoomResultView.getInstane().data = notification.data
-					PopUpManager.centerPopUp(PopUpManager.addPopUp(RoomResultView.getInstane(), null, false, true))
+					WinView.getInstane().data = notification.data
+					PopUpManager.centerPopUp(PopUpManager.addPopUp(WinView.getInstane(), null, false, true))
 					zhunbeiButton.visible = true
 					zhunbeiButton.label = '准备'
 					break
