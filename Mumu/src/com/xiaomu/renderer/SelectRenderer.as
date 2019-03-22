@@ -1,6 +1,7 @@
 package com.xiaomu.renderer
 {
 	import com.xiaomu.component.CardUI;
+	import com.xiaomu.util.Size;
 	
 	import coco.component.ItemRenderer;
 	
@@ -33,10 +34,10 @@ package com.xiaomu.renderer
 			}
 			myGroupCardUIs = []
 			
-			const cardWidth:Number = 24
-			const cardHeight:Number = 30
+			const cardWidth:Number = Size.MIDDLE_CARD_WIDTH / 2
+			const cardHeight:Number = Size.MIDDLE_CARD_HEIGHT / 2
 			const horizontalGap:Number = 1
-			const verticalGap:Number = 21
+			const verticalGap:Number = cardHeight * Size.GAP_RADIO
 			var newCardUI:CardUI
 			var startX:Number = 0
 			for (var j:int = 0; j < data.cards.length; j++) {

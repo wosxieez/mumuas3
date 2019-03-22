@@ -2,6 +2,7 @@ package com.xiaomu.view.room
 {
 	import com.xiaomu.event.SelectEvent;
 	import com.xiaomu.renderer.SelectRenderer;
+	import com.xiaomu.util.Size;
 	
 	import coco.component.HorizontalAlign;
 	import coco.component.List;
@@ -21,7 +22,7 @@ package com.xiaomu.view.room
 			backgroundAlpha = 0.6
 			titleHeight = 20
 			width = 0
-			height = 100
+			height = Size.MIDDLE_CARD_HEIGHT / 2 * 3  - Size.MIDDLE_CARD_HEIGHT * (1 - Size.GAP_RADIO) + titleHeight + 20
 		}
 		
 		private var _dataProvider:Array
@@ -44,8 +45,8 @@ package com.xiaomu.view.room
 			
 			selectList = new List()
 			selectList.addEventListener(UIEvent.CHANGE, selectList_changeHandler)
-			selectList.itemRendererWidth = 24
-			selectList.itemRendererHeight = 72
+			selectList.itemRendererWidth = Size.MIDDLE_CARD_WIDTH / 2
+			selectList.itemRendererHeight = Size.MIDDLE_CARD_HEIGHT / 2 * 3  - Size.MIDDLE_CARD_HEIGHT * (1 - Size.GAP_RADIO)
 			selectList.itemRendererRowCount = 1
 			selectList.itemRendererClass = SelectRenderer
 			selectList.horizontalAlign = HorizontalAlign.CENTER

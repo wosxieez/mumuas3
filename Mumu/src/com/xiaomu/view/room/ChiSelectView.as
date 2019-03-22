@@ -1,6 +1,7 @@
 package com.xiaomu.view.room
 {
 	import com.xiaomu.event.SelectEvent;
+	import com.xiaomu.util.Size;
 	
 	import coco.component.HGroup;
 	import coco.component.HorizontalAlign;
@@ -20,8 +21,9 @@ package com.xiaomu.view.room
 		{
 			super();
 			
-			height = 100
-			width = 100
+			height = 800
+			width = 400
+			paddingRight = 30
 			horizontalAlign = HorizontalAlign.RIGHT
 		}
 		
@@ -82,15 +84,13 @@ package com.xiaomu.view.room
 			chiData = biData = bi2Data = null
 			chiPanel.dataProvider = dataProvider
 			if (dataProvider) {
-				chiPanel.width = Math.max(dataProvider.length * 24 + 6, 54)
+				chiPanel.width = Math.max(dataProvider.length * Size.MIDDLE_CARD_WIDTH / 2 + 20, 54)
 			}
 		}
 		
 		public function open(data):void {
 			dataProvider = data
 			PopUpManager.addPopUp(this)
-			width = Application.topApplication.width
-			this.y = 10
 		}
 		
 		public function close():void {
@@ -105,7 +105,7 @@ package com.xiaomu.view.room
 				chiData = {name: event.data.name, cards: event.data.cards}
 				if (event.data.bi) {
 					// 有比牌数据
-					biPanel.width = Math.max(event.data.bi.length * 24 + 6, 54)
+					biPanel.width = Math.max(event.data.bi.length * Size.MIDDLE_CARD_WIDTH / 2 + 20, 54)
 					biPanel.dataProvider = event.data.bi
 					biPanel.visible = true
 				} else {
@@ -124,7 +124,7 @@ package com.xiaomu.view.room
 				biData = {name: event.data.name, cards: event.data.cards}
 				if (event.data.bi) {
 					// 有比牌数据
-					bi2Panel.width = Math.max(event.data.bi.length * 24 + 6, 54)
+					bi2Panel.width = Math.max(event.data.bi.length * Size.MIDDLE_CARD_WIDTH / 2 + 20, 54)
 					bi2Panel.dataProvider = event.data.bi
 					bi2Panel.visible = true
 				} else {

@@ -11,6 +11,7 @@ package com.xiaomu.view.room
 	import com.xiaomu.util.Audio;
 	import com.xiaomu.util.CardUtil;
 	import com.xiaomu.util.Notifications;
+	import com.xiaomu.util.Size;
 	import com.xiaomu.view.MainView;
 	import com.xiaomu.view.group.GroupView;
 	
@@ -98,16 +99,19 @@ package com.xiaomu.view.room
 			addChild(bgLayer)
 			
 			cardsCarrUI = new Image()
-			cardsCarrUI.width = 30
-			cardsCarrUI.height = 80
+			cardsCarrUI.width = Size.BIG_CARD_WIDTH - 20
+			cardsCarrUI.height = Size.BIG_CARD_HEIGHT - 20
 			cardsCarrUI.rotation = 90
+			cardsCarrUI.y = 30
 			cardsCarrUI.source = Assets.getInstane().getAssets('fight_full_card.png')
 			cardsCarrUI.visible = false
 			bgLayer.addChild(cardsCarrUI)
 			
 			cardsLabel = new Label()
-			cardsLabel.width = 80
-			cardsLabel.height = 30
+			cardsLabel.y = 30
+			cardsLabel.fontSize = 25
+			cardsLabel.width = Size.BIG_CARD_HEIGHT - 20
+			cardsLabel.height = Size.BIG_CARD_WIDTH - 20
 			cardsLabel.color = 0xFFFFFF
 			cardsLabel.visible = false
 			bgLayer.addChild(cardsLabel)
@@ -180,8 +184,8 @@ package com.xiaomu.view.room
 			bgLayer.addChild(checkWaitTip)
 			
 			newCardTip = new Image()
-			newCardTip.width = 100
-			newCardTip.height = 16
+			newCardTip.width = 245
+			newCardTip.height = 40
 			newCardTip.visible = false
 			newCardTip.source = Assets.getInstane().getAssets('fight_txt_finger_tips.png')
 			bgLayer.addChild(newCardTip)
@@ -207,28 +211,32 @@ package com.xiaomu.view.room
 			
 			canPengButton = new Image()
 			canPengButton.source = Assets.getInstane().getAssets('oprate_peng0.png')
-			canPengButton.width = canPengButton.height = 30
+			canPengButton.width = 154
+			canPengButton.height = 159
 			canPengButton.visible = false
 			canPengButton.addEventListener(MouseEvent.CLICK, canPengButton_clickHandler)
 			iconLayer.addChild(canPengButton)
 			
 			canChiButton = new Image()
 			canChiButton.source = Assets.getInstane().getAssets('oprate_chi0.png')
-			canChiButton.width = canChiButton.height = 30
+			canChiButton.width = 154
+			canChiButton.height = 159
 			canChiButton.visible = false
 			canChiButton.addEventListener(MouseEvent.CLICK, canChiButton_clickHandler)
 			iconLayer.addChild(canChiButton)
 			
 			cancelButton = new Image()
 			cancelButton.source = Assets.getInstane().getAssets('oprate_close0.png')
-			cancelButton.width = cancelButton.height = 30
+			cancelButton.width = 100
+			cancelButton.height = 103
 			cancelButton.visible = false
 			cancelButton.addEventListener(MouseEvent.CLICK, cancelButton_clickHandler)
 			iconLayer.addChild(cancelButton)
 			
 			canHuButton = new Image()
 			canHuButton.source = Assets.getInstane().getAssets('oprate_hu0.png')
-			canHuButton.width = canHuButton.height = 30
+			canHuButton.width = 154
+			canHuButton.height = 159
 			canHuButton.visible = false
 			canHuButton.addEventListener(MouseEvent.CLICK,canHuButton_clickHandler)
 			iconLayer.addChild(canHuButton)
@@ -317,21 +325,19 @@ package com.xiaomu.view.room
 			nextUserNameLabel.x = nextUserBG.x + 30
 			
 			cardsCarrUI.x = (width + cardsCarrUI.height)  / 2
-			cardsCarrUI.y = 20
 			cardsLabel.x = (width - cardsLabel.width)  / 2
-			cardsLabel.y = 20
+				
+			cancelButton.x = width - cancelButton.width - 30
+			cancelButton.y = (height - cancelButton.height) / 2
 			
-			canPengButton.x = width - canPengButton.width - 20
-			canPengButton.y = (height - canChiButton.height) / 2 - 10
+			canPengButton.x = cancelButton.x - canPengButton.width - 10
+			canPengButton.y = (height - canChiButton.height) / 2
 			
 			canHuButton.x = canPengButton.x
 			canHuButton.y = canPengButton.y
 			
-			canChiButton.x = width - canChiButton.width - 20
-			canChiButton.y = (height - canChiButton.height) / 2 - 10
-			
-			cancelButton.x = width - cancelButton.width - 20
-			cancelButton.y = (height - cancelButton.height) / 2 + 30
+			canChiButton.x = canHuButton.x
+			canChiButton.y = canHuButton.y
 			
 			newCardTip.x = (width - newCardTip.width) / 2
 			newCardTip.y = (height - newCardTip.height) / 2
@@ -402,7 +408,7 @@ package com.xiaomu.view.room
 				dealCardUI2.visible = true
 				dealCardUI2.card = roominfo.zc
 				dealCardUI2.x = (width - dealCardUI2.width) / 2
-				dealCardUI2.y = (height - dealCardUI2.height) / 2 - 50
+				dealCardUI2.y =  130
 			} else {
 				dealCardUI2.visible = false
 			}
@@ -420,7 +426,7 @@ package com.xiaomu.view.room
 					dealCardUI.x = width - 150
 				} else {
 					dealCardUI.x = (width - dealCardUI.width) / 2
-					dealCardUI.y = (height - dealCardUI.height) / 2 - 50
+					dealCardUI.y = 130
 				}
 				Audio.getInstane().playCard(dealCardUI.card)
 			} else {
@@ -452,10 +458,10 @@ package com.xiaomu.view.room
 					oldMyHandCardUIs.push(cardUI)
 				}
 				myHandCardUIs = []
-				const cardWidth:Number = 30
-				const cardHeight:Number = 34
-				const horizontalGap:Number = 0
-				const verticalGap:Number = 30
+				const cardWidth:Number = Size.MIDDLE_CARD_WIDTH
+				const cardHeight:Number = Size.MIDDLE_CARD_HEIGHT
+				const horizontalGap:Number = 1
+				const verticalGap:Number = cardHeight * 3 / 4
 				var newCardUI:CardUI
 				var startX:Number = (width - riffleCards.length * (cardWidth + horizontalGap)) / 2
 				for (var i:int = 0; i < riffleCards.length; i++) {
@@ -510,12 +516,12 @@ package com.xiaomu.view.room
 					oldMyGroupCardUIs.push(cardUI)
 				}
 				myGroupCardUIs = []
-				const cardWidth:Number = 16
-				const cardHeight:Number = 20
+				const cardWidth:Number = Size.SMALL_CARD_WIDTH
+				const cardHeight:Number = Size.SMALL_CARD_HEIGHT
 				const horizontalGap:Number = 1
-				const verticalGap:Number = 14
+				const verticalGap:Number = cardHeight * 3 / 4
 				var newCardUI:CardUI
-				var startX:Number = 5
+				var startX:Number = 10
 				for (var i:int = 0; i < riffleCards.length; i++) {
 					var group:Object = riffleCards[i]
 					var groupCards:Array = group.cards
@@ -533,7 +539,7 @@ package com.xiaomu.view.room
 						newCardUI.width = cardWidth
 						newCardUI.height = cardHeight
 						newCardUI.x = startX + i * (newCardUI.width + horizontalGap)
-						newCardUI.y = height - newCardUI.height - j * verticalGap - 30
+						newCardUI.y = height - newCardUI.height - j * verticalGap - 51
 						newCardUI.card = groupCards[j]
 						newCardUI.type = CardUI.TYPE_SMALL_CARD
 						cardLayer.setChildIndex(newCardUI, 0)
@@ -555,11 +561,11 @@ package com.xiaomu.view.room
 					oldMyPassCardUIs.push(cardUI)
 				}
 				myPassCardUIs = []
-				const cardWidth:Number = 16
-				const cardHeight:Number = 20
+				const cardWidth:Number = Size.SMALL_CARD_WIDTH
+				const cardHeight:Number = Size.SMALL_CARD_HEIGHT
 				const horizontalGap:Number = 1
 				var newCardUI:CardUI
-				var startX:Number = 5
+				var startX:Number = 10
 				for (var i:int = 0; i < riffleCards.length; i++) {
 					newCardUI = oldMyPassCardUIs.pop()
 					if (!newCardUI) {
@@ -570,7 +576,7 @@ package com.xiaomu.view.room
 					newCardUI.width = cardWidth
 					newCardUI.height = cardHeight
 					newCardUI.x = startX + i * (newCardUI.width + horizontalGap)
-					newCardUI.y = height - newCardUI.height - 5
+					newCardUI.y = height - newCardUI.height - 10
 					newCardUI.card = riffleCards[i]
 					newCardUI.type = CardUI.TYPE_SMALL_CARD
 					cardLayer.setChildIndex(newCardUI, 0)
@@ -832,8 +838,8 @@ package com.xiaomu.view.room
 					updateNextGroupCardUIs()
 					updateNextPassCardUIs()
 					
-					WinView.getInstane().data = notification.data
-					PopUpManager.centerPopUp(PopUpManager.addPopUp(WinView.getInstane(), null, false, true))
+//					WinView.getInstane().data = notification.data
+//					PopUpManager.centerPopUp(PopUpManager.addPopUp(WinView.getInstane(), null, false, true))
 					break;
 				}
 				case Notifications.onTi : {
@@ -906,7 +912,7 @@ package com.xiaomu.view.room
 				}
 				case Notifications.checkPeng: {
 					// 检查碰
-					trace('检查吃', JSON.stringify(notification.data))
+					trace('检查碰', JSON.stringify(notification.data))
 					checkUsername = notification.data.username
 					updateWaitTip()
 					if (checkUsername == AppData.getInstane().user.username) {
@@ -1017,6 +1023,8 @@ package com.xiaomu.view.room
 		protected function canChiButton_clickHandler(event:MouseEvent):void
 		{
 			ChiSelectView.getInstane().addEventListener(SelectEvent.SELECTED, chi_selectHandler)
+			ChiSelectView.getInstane().y = 30
+			ChiSelectView.getInstane().width = width
 			ChiSelectView.getInstane().open(thisCanChiCards)
 		}
 		

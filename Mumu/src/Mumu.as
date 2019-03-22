@@ -5,15 +5,13 @@ package
 	
 	import coco.component.Image;
 	import coco.core.Application;
+	import coco.core.coco;
 	
 	public class Mumu extends Application
 	{
 		public function Mumu()
 		{
 			super();
-			
-			width = 1280
-			height = 720
 		}
 		
 		[Embed(source="assets/bg.png")]
@@ -31,23 +29,29 @@ package
 			LoginView(MainView.getInstane().pushView(LoginView)).init()
 		}
 		
-//		override protected function measure():void {
-//			if (stage) {
-//				measuredWidth = stage.stageWidth;
-//				measuredHeight = stage.stageHeight;
-//				trace(measuredWidth, measuredHeight)
-//			}
-//		}
+		override protected function measure():void {
+			if (stage) {
+				measuredWidth = stage.stageWidth;
+				measuredHeight = stage.stageHeight;
+			}
+		}
 		
 		override protected function updateDisplayList():void {
-			super.updateDisplayList()
+//			super.updateDisplayList()
 			
-			bg.width = width
-			bg.height = height
+			this.coco::applicationPopUp.width = 1280
+			this.coco::applicationPopUp.height = 720
+			this.coco::applicationPopUp.scaleX = width / this.coco::applicationPopUp.width
+			this.coco::applicationPopUp.scaleY = height / this.coco::applicationPopUp.height
+			trace(this.coco::applicationPopUp.width, this.coco::applicationPopUp.height, this.coco::applicationPopUp.scaleX,
+				this.coco::applicationPopUp.scaleY)
+			this.coco::applicationContent.width = this.coco::applicationPopUp.width
+			this.coco::applicationContent.height = this.coco::applicationPopUp.height
+			this.coco::applicationContent.scaleX = this.coco::applicationPopUp.scaleX
+			this.coco::applicationContent.scaleY = this.coco::applicationPopUp.scaleY
 				
-			MainView.getInstane().width = width
-			MainView.getInstane().height = height
-			MainView.getInstane().scaleX = MainView.getInstane().scaleY = 0.5
+			MainView.getInstane().width = this.coco::applicationPopUp.width
+			MainView.getInstane().height = this.coco::applicationPopUp.height
 		}
 		
 	}

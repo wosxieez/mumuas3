@@ -1,6 +1,7 @@
 package com.xiaomu.component
 {
 	import com.xiaomu.util.Assets;
+	import com.xiaomu.util.Size;
 	
 	import coco.component.Image;
 	import coco.core.UIComponent;
@@ -11,12 +12,12 @@ package com.xiaomu.component
 		{
 			super();
 			
-			width = 46
-			height = 86
+			width = Size.BIG_CARD_WIDTH + border * 2
+			height = Size.BIG_CARD_HEIGHT + border * 2
 			mouseChildren = false
 		}
 		
-		private var border:Number = 8
+		private var border:Number = 20
 		
 		public static const TYPE_FULL_CARD:String = 'full_card'
 		public static const TYPE_BIG_CARD:String = 'big_card'
@@ -36,12 +37,12 @@ package com.xiaomu.component
 		}
 		
 		private var _isOut:Boolean 
-
+		
 		public function get isOut():Boolean
 		{
 			return _isOut;
 		}
-
+		
 		public function set isOut(value:Boolean):void
 		{
 			_isOut = value;
@@ -62,12 +63,12 @@ package com.xiaomu.component
 		}
 		
 		private var _canDeal:Boolean = true 
-			
+		
 		public function get canDeal():Boolean
 		{
 			return _canDeal;
 		}
-
+		
 		public function set canDeal(value:Boolean):void
 		{
 			_canDeal = value;
@@ -76,25 +77,25 @@ package com.xiaomu.component
 		}
 		
 		private var _isReverse:Boolean = false
-
+		
 		public function get isReverse():Boolean
 		{
 			return _isReverse;
 		}
-
+		
 		public function set isReverse(value:Boolean):void
 		{
 			_isReverse = value;
 			invalidateProperties()
 		}
-
+		
 		private var background:Image
 		private var imageDisplay:Image
 		private var mask:UIComponent
 		
 		override protected function createChildren():void {
 			super.createChildren()
-				
+			
 			background = new Image()
 			background.source = "assets/room/light_gold.png"
 			addChild(background)
@@ -125,7 +126,7 @@ package com.xiaomu.component
 		
 		override protected function updateDisplayList():void {
 			super.updateDisplayList()
-				
+			
 			background.width = width
 			background.height = height
 			
@@ -147,7 +148,7 @@ package com.xiaomu.component
 		
 		override protected function drawSkin():void {
 			super.drawSkin()
-				
+			
 			mask.graphics.clear()
 			mask.graphics.beginFill(0x000000, 0.4)
 			mask.graphics.drawRoundRect(0, 0, mask.width, mask.height, 2)
