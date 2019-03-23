@@ -11,6 +11,7 @@ package com.xiaomu.view.home
 	
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.utils.setTimeout;
 	
 	import coco.component.ButtonGroup;
 	import coco.component.Image;
@@ -40,6 +41,8 @@ package com.xiaomu.view.home
 		private var ziPaiImg:ImageBtnWithUpAndDown;
 		private var xiuXianImg:ImageBtnWithUpAndDown;
 		private var paoDeKuaiImg:ImageBtnWithUpAndDown;
+		private var otherImg:ImageBtnWithUpAndDown;
+		private var gonggaoImg:Image;
 		override protected function createChildren():void
 		{
 			super.createChildren();
@@ -93,6 +96,19 @@ package com.xiaomu.view.home
 			paoDeKuaiImg.upImageSource = 'assets/home/other/zi_up.png';
 			paoDeKuaiImg.downImageSource = 'assets/home/other/zi_down.png';
 			addChild(paoDeKuaiImg);
+			
+			otherImg = new ImageBtnWithUpAndDown();
+			otherImg.width = 259;
+			otherImg.height = 291;
+			otherImg.upImageSource = 'assets/home/yl_tuibj.png';
+			otherImg.downImageSource = 'assets/home/yl_tuibjd.png';
+			addChild(otherImg);
+			
+			gonggaoImg = new Image();
+			gonggaoImg.width = 259;
+			gonggaoImg.height = 131;
+			gonggaoImg.source = 'assets/home/gonggao.png';
+			addChild(gonggaoImg);
 			
 			shoppingBtn = new ImageBtnWithUpAndDown();
 			shoppingBtn.width = 117;
@@ -182,6 +198,12 @@ package com.xiaomu.view.home
 			
 			myGroup.x = ziPaiImg.x+ziPaiImg.width+10;
 			myGroup.y = (height-myGroup.height)/2;
+			
+			otherImg.x = daTongZiImg.x-otherImg.width-10;
+			otherImg.y = myGroup.y;
+			
+			gonggaoImg.x = otherImg.x;
+			gonggaoImg.y = otherImg.y+otherImg.height-10;
 		}
 		
 		public function init():void{
@@ -198,8 +220,10 @@ package com.xiaomu.view.home
 		
 		protected function clickHandler(event:MouseEvent):void{
 			//			trace('选中我的组群---进入hallView');
-			AppData.getInstane().inGroupView = false;
-			HallView(MainView.getInstane().pushView(HallView)).init()
+			setTimeout(function():void{
+				AppData.getInstane().inGroupView = false;
+				HallView(MainView.getInstane().pushView(HallView)).init()
+			},100);
 		}
 		
 		protected function changeHandler(event:UIEvent):void

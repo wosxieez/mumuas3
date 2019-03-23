@@ -9,32 +9,19 @@ package com.xiaomu.view.group
 	
 	import coco.component.Alert;
 	import coco.component.Button;
-	import coco.component.HorizontalAlign;
-	import coco.component.Panel;
+	import coco.component.Label;
 	import coco.component.TextInput;
-	import coco.component.VerticalAlign;
-	import coco.layout.VerticalLayout;
+	import coco.core.UIComponent;
 	import coco.manager.PopUpManager;
 	
-	public class AddMemberPanel extends Panel
+	public class AddMemberPanel extends UIComponent
 	{
 		public function AddMemberPanel()
 		{
 			super();
 			
-			width = 300
-			height = 240
-			backgroundColor = 0x000000
-			backgroundAlpha = .8
-			borderAlpha = 0
-			
-			title = '添加成员'
-			
-			var vlayout:VerticalLayout = new VerticalLayout()
-			vlayout.verticalAlign = VerticalAlign.MIDDLE
-			vlayout.horizontalAlign = HorizontalAlign.CENTER
-			vlayout.gap = 5
-			layout = vlayout
+			width = 350
+			height = 150
 		}
 		
 		
@@ -48,7 +35,9 @@ package com.xiaomu.view.group
 			return instance
 		}
 		
-		
+		private var titleLab:Label;
+		private var titleHight:int=50;
+		private var nameLab:Label;
 		private var memberUsernameInput:TextInput
 		private var submitButton:Button
 		private var cancelButton:Button
@@ -56,8 +45,22 @@ package com.xiaomu.view.group
 		override protected function createChildren():void {
 			super.createChildren()
 				
-			titleDisplay.color = 0xFFFFFF
+			titleLab = new Label();
+			titleLab.text = '添加成员';
+			titleLab.fontSize = 24;
+			titleLab.width = width;
+			titleLab.height = 40;
+			titleLab.color = 0xffffff;
+			addChild(titleLab);
 			
+			nameLab = new Label();
+			nameLab.text = '账号:';
+			nameLab.fontSize = 20;
+			nameLab.width = 80;
+			nameLab.height = 40;
+			nameLab.color = 0xffffff;
+			addChild(nameLab);
+				
 			memberUsernameInput = new TextInput()
 			memberUsernameInput.width = 200
 			memberUsernameInput.height = 40
@@ -65,27 +68,57 @@ package com.xiaomu.view.group
 			addChild(memberUsernameInput)
 			
 			submitButton = new Button()
-			submitButton.width = 200
-			submitButton.height = 40
+			submitButton.width = 60
+			submitButton.height = 30
 			submitButton.label = "确定"
-			submitButton.fontSize = 26
+			submitButton.fontSize = 20
 			submitButton.addEventListener(MouseEvent.CLICK, submitButton_clickHandler)
 			addChild(submitButton)
 			
 			cancelButton = new Button()
-			cancelButton.width = 200
-			cancelButton.height = 40
+			cancelButton.width = 60
+			cancelButton.height = 30
 			cancelButton.label = "取消"
-			cancelButton.fontSize = 26
+			cancelButton.fontSize = 20
 			cancelButton.addEventListener(MouseEvent.CLICK, cancelButton_clickHandler)
 			addChild(cancelButton)
+		}
+		
+		override protected function updateDisplayList():void {
+			super.updateDisplayList();
+			
+			titleLab.y = 3;
+			
+			nameLab.x = 10;
+			nameLab.y = titleHight+20;
+			
+			memberUsernameInput.x = nameLab.x+nameLab.width+10;
+			memberUsernameInput.y = titleHight+20;
+			
+			cancelButton.x = width/2+10;
+			cancelButton.y = height+titleHight-cancelButton.height-10;
+			submitButton.x = width/2-submitButton.width-10;
+			submitButton.y = cancelButton.y;
+			
+		}
+		
+		override protected function drawSkin():void {
+			super.drawSkin();
+			
+			graphics.clear()
+			graphics.beginFill(0x000000, 0.7)
+			graphics.drawRoundRect(0, 0, width, height+titleHight, 5, 5)
+			graphics.endFill()
+			graphics.beginFill(0x000000)
+			graphics.drawRoundRect(0, 0, width, titleHight, 5, 5)
+			graphics.endFill()
 		}
 		
 		private var thisGroupID:int
 		
 		public function open(groupid:int):void {
 			thisGroupID = groupid
-			PopUpManager.centerPopUp(PopUpManager.addPopUp(this))
+			PopUpManager.centerPopUp(PopUpManager.addPopUp(this,null,true,false,0,0.2))
 		}
 		
 		public function close():void {
@@ -149,15 +182,7 @@ package com.xiaomu.view.group
 			close()
 		}
 		
-		override protected function drawSkin():void {
-			graphics.clear()
-			graphics.beginFill(0x000000, 0.7)
-			graphics.drawRoundRect(0, 0, width, height, 5, 5)
-			graphics.endFill()
-			graphics.beginFill(0x000000)
-			graphics.drawRoundRect(0, 0, width, titleHeight, 5, 5)
-			graphics.endFill()
-		}
+		
 		
 		
 	}

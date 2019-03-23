@@ -1,5 +1,6 @@
 package com.xiaomu.view.hall
 {
+	import com.xiaomu.component.ImageBtnWithUpAndDown;
 	import com.xiaomu.component.ImgBtn;
 	import com.xiaomu.event.AppManagerEvent;
 	import com.xiaomu.manager.AppManager;
@@ -38,8 +39,6 @@ package com.xiaomu.view.hall
 			AppManager.getInstance().addEventListener(AppManagerEvent.CREATE_GROUP_SUCCESS,createGroupSuccessHandler);
 		}
 		
-		private var topbg:Image
-		private var bottombg:Image
 		private var groupsList:List
 		private var signoutBtn:Image
 		private var goback:Image;
@@ -49,27 +48,50 @@ package com.xiaomu.view.hall
 		
 		private var groupsData:Array
 		
+		private var bgImg:Image;
+		private var titleImg:Image;
+		private var gonggaoImg:Image;
+		private var meiziImg:Image;
+		private var createGroupImg:ImageBtnWithUpAndDown;
+		private var joinGroupImg:ImageBtnWithUpAndDown;
 		
 		override protected function createChildren():void {
 			super.createChildren()
 			
-			topbg = new Image()
-			topbg.source = 'assets/hall/home_top_headbg.png'
-			topbg.height = 80
-			addChild(topbg)
-			topbg.visible = false;
+			bgImg = new Image();
+			bgImg.width = 1280;
+			bgImg.height = 720;
+			bgImg.source = 'assets/hall/guild_hall_bg.png';
+			addChild(bgImg);
+			bgImg.visible = false;
 			
-			bottombg = new Image()
-			bottombg.source = 'assets/hall/img_home_btnsBg.png'
-			bottombg.height = 80
-			addChild(bottombg)
+			titleImg = new Image();
+			titleImg.width = 400;
+			titleImg.height = 92;
+			titleImg.source = 'assets/hall/guild_hall_logo.png';
+			addChild(titleImg);
+			titleImg.visible = false;
+			
+			gonggaoImg = new Image();
+			gonggaoImg.width = 360;
+			gonggaoImg.height = 480;
+			gonggaoImg.source = 'assets/hall/guild_hall_info.png';
+			addChild(gonggaoImg);
+			gonggaoImg.visible = false;
+			
+			meiziImg = new Image();
+			meiziImg.width = 239;
+			meiziImg.height = 393;
+			meiziImg.source = 'assets/hall/guild_hall_npc.png';
+			addChild(meiziImg);
+			meiziImg.visible = false;
 			
 			userInfoView =new UserInfoView2();
 			addChild(userInfoView);
+			userInfoView.visible = false;
 			
 			groupsList = new List()
-			groupsList.y = 30
-			groupsList.padding = 30
+			groupsList.padding = 20
 			groupsList.gap = 10
 			groupsList.labelField = 'group_id'
 			groupsList.horizontalScrollEnabled = true
@@ -82,6 +104,7 @@ package com.xiaomu.view.hall
 			groupsList.verticalAlign = VerticalAlign.MIDDLE
 			groupsList.addEventListener(UIEvent.CHANGE, groupsList_changeHandler)
 			addChild(groupsList)
+			groupsList.visible = false;
 			
 			goback = new Image();
 			goback.source = 'assets/club_btn_back.png';
@@ -121,15 +144,22 @@ package com.xiaomu.view.hall
 			super.updateDisplayList();
 			
 //			createGroupBtn.visible = AppData.getInstane().user.is_admin=='T'
-			
 			AppData.getInstane().inGroupView = false;
-			topbg.width = width
 			
-			bottombg.width = width
-			bottombg.y = height - bottombg.height
+			bgImg.x = bgImg.y = 0;
+			titleImg.x = (width-titleImg.width)/2;
+			titleImg.y = 0;
+			
+			gonggaoImg.x = width/2-gonggaoImg.width-20;
+			gonggaoImg.y = height-gonggaoImg.height-30;
+			
+			meiziImg.y = gonggaoImg.y;
+			meiziImg.x = gonggaoImg.x+gonggaoImg.width+30;
+				
 			
 			groupsList.width = width
-			groupsList.height = bottombg.y - groupsList.y
+			groupsList.height = groupsList.itemRendererHeight*1.1
+			groupsList.y = (height-groupsList.height)/2
 			
 			goback.x = width - goback.width - 20
 			goback.y = 20;
@@ -204,7 +234,20 @@ package com.xiaomu.view.hall
 					}
 				}
 				groupsList.dataProvider = groupsData
+//				groupsList.dataProvider = []
+				refreshView();
 			},null);
+		}
+		
+		private function refreshView():void
+		{
+			if(groupsList.dataProvider.length>0){
+				bgImg.visible = gonggaoImg.visible = meiziImg.visible = titleImg.visible = false;
+				userInfoView.visible = groupsList.visible = true;
+			}else{
+				bgImg.visible = gonggaoImg.visible = meiziImg.visible = titleImg.visible = true;
+				userInfoView.visible = groupsList.visible = false;
+			}
 		}
 		
 		public function dispose():void {
