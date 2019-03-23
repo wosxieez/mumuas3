@@ -87,19 +87,18 @@ package com.xiaomu.view.room
 			
 			cardsCarrUI = new Image()
 			cardsCarrUI.width = Size.BIG_CARD_WIDTH - 20
-			cardsCarrUI.height = Size.BIG_CARD_HEIGHT - 10
+			cardsCarrUI.height = Size.BIG_CARD_HEIGHT - 50
 			cardsCarrUI.rotation = 90
-			cardsCarrUI.y = 40
+			cardsCarrUI.y = 60
 			cardsCarrUI.source = Assets.getInstane().getAssets('fight_full_card.png')
 			cardsCarrUI.visible = false
 			bgLayer.addChild(cardsCarrUI)
 			
 			cardsLabel = new Label()
 			cardsLabel.y = cardsCarrUI.y
-			cardsLabel.fontSize = 30
-			cardsLabel.width = Size.BIG_CARD_HEIGHT - 10
+			cardsLabel.fontSize = 25
+			cardsLabel.width = Size.BIG_CARD_HEIGHT - 50
 			cardsLabel.height = Size.BIG_CARD_WIDTH - 20
-			cardsLabel.color = 0xFFFFFF
 			cardsLabel.bold = true
 			cardsLabel.visible = false
 			bgLayer.addChild(cardsLabel)
@@ -331,7 +330,7 @@ package com.xiaomu.view.room
 				dealCardUI2.visible = true
 				dealCardUI2.card = roominfo.zc
 				dealCardUI2.x = (width - dealCardUI2.width) / 2
-				dealCardUI2.y =  130
+				dealCardUI2.y =  110
 			} else {
 				dealCardUI2.visible = false
 			}
@@ -349,7 +348,7 @@ package com.xiaomu.view.room
 					dealCardUI.x = width - 150
 				} else {
 					dealCardUI.x = (width - dealCardUI.width) / 2
-					dealCardUI.y = 130
+					dealCardUI.y = 110
 				}
 				Audio.getInstane().playCard(dealCardUI.card)
 			} else {
@@ -444,7 +443,7 @@ package com.xiaomu.view.room
 				const horizontalGap:Number = 1
 				const verticalGap:Number = cardHeight * 3 / 4
 				var newCardUI:CardUI
-				var startX:Number = width - cardWidth - 10
+				var startX:Number = width / 2 - cardWidth * 4
 				for (var i:int = 0; i < riffleCards.length; i++) {
 					var group:Object = riffleCards[i]
 					var groupCards:Array = group.cards
@@ -461,8 +460,8 @@ package com.xiaomu.view.room
 						newCardUI.visible = true
 						newCardUI.width = cardWidth
 						newCardUI.height = cardHeight
-						newCardUI.x = startX - i * (newCardUI.width + horizontalGap)
-						newCardUI.y = height - newCardUI.height - j * verticalGap - 51
+						newCardUI.x = startX + i * (newCardUI.width + horizontalGap)
+						newCardUI.y = height / 2 - newCardUI.height - j * verticalGap - 70
 						newCardUI.card = groupCards[j]
 						newCardUI.type = CardUI.TYPE_SMALL_CARD
 						cardLayer.setChildIndex(newCardUI, 0)
@@ -760,9 +759,6 @@ package com.xiaomu.view.room
 					updatePrePassCardUIs()
 					updateNextGroupCardUIs()
 					updateNextPassCardUIs()
-					
-					//					WinView.getInstane().data = notification.data
-					//					PopUpManager.centerPopUp(PopUpManager.addPopUp(WinView.getInstane(), null, false, true))
 					break;
 				}
 				case Notifications.onTi : {
@@ -913,6 +909,7 @@ package com.xiaomu.view.room
 					break
 				}
 				case Notifications.onWin: {
+					trace('胡牌', JSON.stringify(notification.data))
 					Audio.getInstane().playHandle('hu')
 					cardsCarrUI.visible = cardsLabel.visible = false
 					WinView.getInstane().data = notification.data
@@ -984,7 +981,6 @@ package com.xiaomu.view.room
 		
 		protected function chi_selectHandler(event:SelectEvent):void
 		{
-			trace(JSON.stringify(event.data))
 			ChiSelectView.getInstane().close()
 			isHu = canHuButton.visible = canPengButton.visible = canChiButton.visible = cancelButton.visible = false
 			const action:Object = { name: Actions.Chi, data:  event.data}

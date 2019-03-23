@@ -6,12 +6,15 @@ package
 	import coco.component.Image;
 	import coco.core.Application;
 	import coco.core.coco;
+	import coco.util.CocoUI;
 	
 	public class Mumu extends Application
 	{
 		public function Mumu()
 		{
 			super();
+			
+			CocoUI.useDebug = true
 		}
 		
 		[Embed(source="assets/bg.png")]
@@ -43,12 +46,10 @@ package
 			this.coco::applicationPopUp.height = 720
 			this.coco::applicationPopUp.scaleX = width / this.coco::applicationPopUp.width
 			this.coco::applicationPopUp.scaleY = height / this.coco::applicationPopUp.height
-			trace(this.coco::applicationPopUp.width, this.coco::applicationPopUp.height, this.coco::applicationPopUp.scaleX,
-				this.coco::applicationPopUp.scaleY)
 			this.coco::applicationContent.width = this.coco::applicationPopUp.width
 			this.coco::applicationContent.height = this.coco::applicationPopUp.height
 			this.coco::applicationContent.scaleX = this.coco::applicationPopUp.scaleX
-			this.coco::applicationContent.scaleY = this.coco::applicationPopUp.scaleX
+			this.coco::applicationContent.scaleY = this.coco::applicationPopUp.scaleY
 				
 			MainView.getInstane().width = this.coco::applicationPopUp.width
 			MainView.getInstane().height = this.coco::applicationPopUp.height

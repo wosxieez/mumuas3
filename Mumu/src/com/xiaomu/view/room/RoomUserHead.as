@@ -16,7 +16,7 @@ package com.xiaomu.view.room
 			height = 160
 			radius = 10
 			backgroundColor = 0x000000
-			backgroundAlpha = 0.3
+			backgroundAlpha = 0.5
 			borderAlpha = 0
 		}
 		
