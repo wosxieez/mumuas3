@@ -15,6 +15,7 @@ package
 			super();
 			
 			CocoUI.useDebug = true
+			CocoUI.fontSize = 15
 		}
 		
 		[Embed(source="assets/bg.png")]

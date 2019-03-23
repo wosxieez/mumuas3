@@ -96,6 +96,25 @@ package com.xiaomu.util
 			handleChannel = handleSound.play()
 		}
 		
+		private var chatChannel:SoundChannel
+		private var chatSound:Sound
+		
+		public function playChat(name:String):void {
+			if (chatChannel) {
+				try
+				{
+					chatChannel.stop()
+				} 
+				catch(error:Error) 
+				{
+					
+				}
+			}
+			
+			chatSound = new Sound(new URLRequest('sound/msg/' + name + '.mp3'))
+			chatChannel = chatSound.play()
+		}
+		
 		public function changeBgmGain(gainValue:int):void{
 			trace('bgm增益：',gainValue);
 		}

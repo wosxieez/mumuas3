@@ -14,6 +14,7 @@ package com.xiaomu.util
 	[Event(name="joinGroup", type="com.xiaomu.event.ApiEvent")]
 	[Event(name="leaveGroup", type="com.xiaomu.event.ApiEvent")]
 	[Event(name="onGroup", type="com.xiaomu.event.ApiEvent")]
+	[Event(name="onRoom", type="com.xiaomu.event.ApiEvent")]
 	
 	public class Api extends EventDispatcher
 	{
@@ -45,8 +46,8 @@ package com.xiaomu.util
 			this.username = username
 			this.groupid = groupid
 			pomelo = new Pomelo()
-			pomelo.init("127.0.0.1", 3014)
-//			pomelo.init("106.14.148.139", 3014)
+//			pomelo.init("127.0.0.1", 3014)
+						pomelo.init("106.14.148.139", 3014)
 			pomelo.addEventListener(PomeloEvent.HANDSHAKE, onConnectHandler);
 			pomelo.addEventListener(PomeloEvent.ERROR, pomeloErrorHandler);
 		}
@@ -91,6 +92,11 @@ package com.xiaomu.util
 						})
 						pomelo.on('onGroup', function (e: PomeloEvent): void {
 							var apiEvent: ApiEvent = new ApiEvent(ApiEvent.ON_GROUP)
+							apiEvent.data = e.message
+							dispatchEvent(apiEvent)
+						})
+						pomelo.on('onRoom', function (e: PomeloEvent): void {
+							var apiEvent: ApiEvent = new ApiEvent(ApiEvent.ON_ROOM)
 							apiEvent.data = e.message
 							dispatchEvent(apiEvent)
 						})
@@ -143,6 +149,17 @@ package com.xiaomu.util
 		public function getRoomsUsers(roomnames:Array, cb:Function):void  {
 			if (!pomelo) return
 			pomelo.request('chat.roomHandler.getRoomsUsers', {roomnames: roomnames}, function(response:Object):void {
+				if (response.code == 0) {
+					cb(response.data)
+				} else {
+					cb([])
+				}
+			})
+		}
+		
+		public function sendRoomMessage(message, cb:Function):void  {
+			if (!pomelo) return
+			pomelo.request('chat.roomHandler.pushMessage', {message: message}, function(response:Object):void {
 				if (response.code == 0) {
 					cb(response.data)
 				} else {

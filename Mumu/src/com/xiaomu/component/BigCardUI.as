@@ -11,7 +11,7 @@ package com.xiaomu.component
 		{
 			super();
 			
-			width = 157
+			width = 177
 			height = 317
 			mouseChildren = false
 		}

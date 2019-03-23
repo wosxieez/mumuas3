@@ -9,6 +9,7 @@ package com.xiaomu.event
 		public static const JOIN_GROUP_SUCCESS:String = 'joinGroupSuccess'
 		public static const JOIN_GROUP_FAULT:String = 'joinGroupFault'
 		public static const ON_GROUP:String = 'onGroup'
+		public static const ON_ROOM:String = 'onRoom'
 			
 		public var data: Object
 		

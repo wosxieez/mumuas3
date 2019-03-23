@@ -76,6 +76,7 @@ package com.xiaomu.view.room
 		private var checkUsername: String
 		private var isCheckNewCard:Boolean = false // 是否在等待出牌
 		private var isHu:Boolean = false
+		private var chatButton:Image
 		
 		private var backBtn:Image
 		
@@ -89,7 +90,7 @@ package com.xiaomu.view.room
 			cardsCarrUI.width = Size.BIG_CARD_WIDTH - 20
 			cardsCarrUI.height = Size.BIG_CARD_HEIGHT - 50
 			cardsCarrUI.rotation = 90
-			cardsCarrUI.y = 60
+			cardsCarrUI.y = 50
 			cardsCarrUI.source = Assets.getInstane().getAssets('fight_full_card.png')
 			cardsCarrUI.visible = false
 			bgLayer.addChild(cardsCarrUI)
@@ -186,6 +187,13 @@ package com.xiaomu.view.room
 			zhunbeiButton.addEventListener(MouseEvent.CLICK, zhunbeiButton_clickHandler)
 			iconLayer.addChild(zhunbeiButton)
 			
+			chatButton = new Image()
+			chatButton.width = 84
+			chatButton.height = 81
+			chatButton.source = 'assets/room/btn_chat.png'
+			chatButton.addEventListener(MouseEvent.CLICK, chatButton_clickHandler)
+			iconLayer.addChild(chatButton)
+			
 			backBtn = new Image()
 			backBtn.source = 'assets/club_btn_back.png';
 			backBtn.width = 71;
@@ -241,7 +249,10 @@ package com.xiaomu.view.room
 			cardsCarrUI.x = (width + cardsCarrUI.height)  / 2
 			cardsLabel.x = (width - cardsLabel.width)  / 2
 			
-			cancelButton.x = width - cancelButton.width - 30
+			chatButton.x = width - 10 - chatButton.width
+			chatButton.y = (height - chatButton.height) / 2
+			
+			cancelButton.x = chatButton.x - cancelButton.width - 30
 			cancelButton.y = (height - cancelButton.height) / 2
 			
 			canPengButton.x = cancelButton.x - canPengButton.width - 10
@@ -252,6 +263,7 @@ package com.xiaomu.view.room
 			
 			canChiButton.x = canHuButton.x
 			canChiButton.y = canHuButton.y
+			
 			
 			newCardTip.x = (width - newCardTip.width) / 2
 			newCardTip.y = (height - newCardTip.height) / 2
@@ -341,11 +353,11 @@ package com.xiaomu.view.room
 				dealCardUI.card = roominfo.pc
 				dealCardUI.isOut = roominfo.io
 				if (this.preUser && roominfo.pn == this.preUser.username) {
-					dealCardUI.y = 50
-					dealCardUI.x = 120
+					dealCardUI.y = 30
+					dealCardUI.x = 270
 				} else if (this.nextUser && roominfo.pn == this.nextUser.username) {
-					dealCardUI.y = 50
-					dealCardUI.x = width - 150
+					dealCardUI.y = 30
+					dealCardUI.x = width - 270 - dealCardUI.width
 				} else {
 					dealCardUI.x = (width - dealCardUI.width) / 2
 					dealCardUI.y = 110
@@ -358,12 +370,12 @@ package com.xiaomu.view.room
 		private function updateWaitTip():void {
 			if (preUser && checkUsername == preUser.username) {
 				checkWaitTip.visible = true
-				//				checkWaitTip.x = preUserIcon.x + 15
-				//				checkWaitTip.y = preUserIcon.y - 15
+				checkWaitTip.x = preUserHead.x + 15
+				checkWaitTip.y = preUserHead.y - 15
 			} else if (nextUser && checkUsername == nextUser.username) {
 				checkWaitTip.visible = true
-				//				checkWaitTip.x = nextUserIcon.x + 15
-				//				checkWaitTip.y = nextUserIcon.y - 15
+				checkWaitTip.x = nextUserHead.x + 15
+				checkWaitTip.y = nextUserHead.y - 15
 			} else {
 				checkWaitTip.visible = false
 			}
@@ -521,12 +533,12 @@ package com.xiaomu.view.room
 					oldPreGroupCardUIs.push(cardUI)
 				}
 				preGroupCardUIs = []
-				const cardWidth:Number = 16
-				const cardHeight:Number = 20
+				const cardWidth:Number = Size.SMALL_CARD_WIDTH
+				const cardHeight:Number = Size.SMALL_CARD_HEIGHT
 				const horizontalGap:Number = 1
-				const verticalGap:Number = 14
+				const verticalGap:Number = Size.SMALL_CARD_HEIGHT * Size.GAP_RADIO
 				var newCardUI:CardUI
-				var startX:Number = 10
+				var startX:Number = 120
 				for (var i:int = 0; i < riffleCards.length; i++) {
 					var group:Object = riffleCards[i]
 					var groupCards:Array = group.cards
@@ -544,7 +556,7 @@ package com.xiaomu.view.room
 						newCardUI.width = cardWidth
 						newCardUI.height = cardHeight
 						newCardUI.x = startX + i * (newCardUI.width + horizontalGap)
-						newCardUI.y = newCardUI.height - j * verticalGap + 60
+						newCardUI.y = 185 - cardHeight - newCardUI.height - j * verticalGap
 						newCardUI.card = groupCards[j]
 						newCardUI.type = CardUI.TYPE_SMALL_CARD
 						cardLayer.setChildIndex(newCardUI, 0)
@@ -567,11 +579,11 @@ package com.xiaomu.view.room
 					oldPrePassCardUIs.push(cardUI)
 				}
 				prePassCardUIs = []
-				const cardWidth:Number = 16
-				const cardHeight:Number = 20
+				const cardWidth:Number = Size.SMALL_CARD_WIDTH
+				const cardHeight:Number = Size.SMALL_CARD_HEIGHT
 				const horizontalGap:Number = 1
 				var newCardUI:CardUI
-				var startX:Number = 10
+				var startX:Number = 120
 				for (var i:int = 0; i < riffleCards.length; i++) {
 					newCardUI = oldPrePassCardUIs.pop()
 					if (!newCardUI) {
@@ -582,7 +594,7 @@ package com.xiaomu.view.room
 					newCardUI.width = cardWidth
 					newCardUI.height = cardHeight
 					newCardUI.x = startX + i * (newCardUI.width + horizontalGap)
-					newCardUI.y = newCardUI.height + 85
+					newCardUI.y = 190 - cardHeight
 					newCardUI.card = riffleCards[i]
 					newCardUI.type = CardUI.TYPE_SMALL_CARD
 					cardLayer.setChildIndex(newCardUI, 0)
@@ -610,7 +622,7 @@ package com.xiaomu.view.room
 				const horizontalGap:Number = 1
 				const verticalGap:Number = Size.SMALL_CARD_HEIGHT * Size.GAP_RADIO
 				var newCardUI:CardUI
-				var startX:Number = width - cardWidth - 10
+				var startX:Number = width - cardWidth - 120
 				for (var i:int = 0; i < riffleCards.length; i++) {
 					var group:Object = riffleCards[i]
 					var groupCards:Array = group.cards
@@ -628,7 +640,7 @@ package com.xiaomu.view.room
 						newCardUI.width = cardWidth
 						newCardUI.height = cardHeight
 						newCardUI.x = startX - i * (newCardUI.width + horizontalGap)
-						newCardUI.y = newCardUI.height - j * verticalGap + 60
+						newCardUI.y = 185 - cardHeight - newCardUI.height - j * verticalGap
 						newCardUI.card = groupCards[j]
 						newCardUI.type = CardUI.TYPE_SMALL_CARD
 						cardLayer.setChildIndex(newCardUI, 0)
@@ -640,7 +652,7 @@ package com.xiaomu.view.room
 		}
 		
 		/**
-		 *  更新上家的弃牌视图
+		 *  更新下家的弃牌视图
 		 */		
 		private function updateNextPassCardUIs():void {
 			if (nextUser) {
@@ -651,11 +663,11 @@ package com.xiaomu.view.room
 					oldNextPassCardUIs.push(cardUI)
 				}
 				nextPassCardUIs = []
-				const cardWidth:Number = 16
-				const cardHeight:Number = 20
+				const cardWidth:Number = Size.SMALL_CARD_WIDTH
+				const cardHeight:Number = Size.SMALL_CARD_HEIGHT
 				const horizontalGap:Number = 1
 				var newCardUI:CardUI
-				var startX:Number = width - cardWidth - 10
+				var startX:Number = width - cardWidth - 120
 				for (var i:int = 0; i < riffleCards.length; i++) {
 					newCardUI = oldNextPassCardUIs.pop()
 					if (!newCardUI) {
@@ -666,7 +678,7 @@ package com.xiaomu.view.room
 					newCardUI.width = cardWidth
 					newCardUI.height = cardHeight
 					newCardUI.x = startX - i * (newCardUI.width + horizontalGap)
-					newCardUI.y = newCardUI.height + 85
+					newCardUI.y = 190 - cardHeight
 					newCardUI.card = riffleCards[i]
 					newCardUI.type = CardUI.TYPE_SMALL_CARD
 					cardLayer.setChildIndex(newCardUI, 0)
@@ -965,10 +977,12 @@ package com.xiaomu.view.room
 		public function init(roominfo:Object): void {
 			zhunbeiButton.label = '准备'
 			zhunbeiButton.visible = true
+			Api.getInstane().addEventListener(ApiEvent.ON_ROOM, onRoomMessageHandler)
 		}
 		
 		protected function back_clickHandler(event:MouseEvent):void
 		{
+			Api.getInstane().removeEventListener(ApiEvent.ON_ROOM, onRoomMessageHandler)
 			Api.getInstane().leaveRoom()
 			MainView.getInstane().popView(GroupView)
 		}
@@ -985,6 +999,19 @@ package com.xiaomu.view.room
 			isHu = canHuButton.visible = canPengButton.visible = canChiButton.visible = cancelButton.visible = false
 			const action:Object = { name: Actions.Chi, data:  event.data}
 			Api.getInstane().sendAction(action)
+		}
+		
+		protected function onRoomMessageHandler(event:ApiEvent):void
+		{
+			var message:Object = event.data.data.message
+			if (message.cmd == 1) {
+				Audio.getInstane().playChat(message.data)
+			}
+		}
+		
+		protected function chatButton_clickHandler(event:MouseEvent):void
+		{
+			RoomChatView.getInstane().open(chatButton.x - RoomChatView.getInstane().width, (height - RoomChatView.getInstane().height) / 2)
 		}
 		
 	}
