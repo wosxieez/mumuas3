@@ -25,11 +25,11 @@ package com.xiaomu.view.group
 		{
 			super();
 			
-			width = 250
-			height = 100
+			width = 500
+			height = 200
 		}
 		
-		private var titleHeigh:Number = 30;
+		private var titleHeigh:Number = 50;
 		private var titleLab:Label;
 		private var groupNameLab:Label;
 		private var groupNameTextInput:TextInput;
@@ -57,51 +57,51 @@ package com.xiaomu.view.group
 			titleLab = new Label();
 			titleLab.width = width;
 			titleLab.text = '群设置';
-			titleLab.fontSize = 12;
-			titleLab.height = 20;
+			titleLab.fontSize = 24;
+			titleLab.height = 40;
 			titleLab.color = 0xffffff;
 			addChild(titleLab);
 			
 			groupNameLab = new Label();
-			groupNameLab.width = 40;
-			groupNameLab.height = 20;
+			groupNameLab.width = 80;
+			groupNameLab.height = 40;
 			groupNameLab.textAlign = TextAlign.LEFT;
 			groupNameLab.text = '群名:';
-			groupNameLab.fontSize = 10;
+			groupNameLab.fontSize = 20;
 			groupNameLab.color = 0xffffff;
 			addChild(groupNameLab);
 			
 			groupNameTextInput = new TextInput();
-			groupNameTextInput.fontSize = 10;
-			groupNameTextInput.height = 20;
+			groupNameTextInput.fontSize = 20;
+			groupNameTextInput.height = 40;
 			addChild(groupNameTextInput)
 			
 			groupRemarkLab = new Label();
-			groupRemarkLab.width = 40;
-			groupRemarkLab.height = 20;
+			groupRemarkLab.width = 80;
+			groupRemarkLab.height = 40;
 			groupRemarkLab.textAlign = TextAlign.LEFT;
 			groupRemarkLab.text = '群介绍:';
-			groupRemarkLab.fontSize = 10;
+			groupRemarkLab.fontSize = 20;
 			groupRemarkLab.color = 0xffffff;
 			addChild(groupRemarkLab);
 			
 			groupRemarkTextArea = new TextArea();
-			groupRemarkTextArea.fontSize = 10;
+			groupRemarkTextArea.fontSize = 20;
 			addChild(groupRemarkTextArea)
 			
 			okBtn = new Button();
-			okBtn.width = 30
-			okBtn.height = 15
+			okBtn.width = 60
+			okBtn.height = 30
 			okBtn.label = "确定"
-			okBtn.fontSize = 10
+			okBtn.fontSize = 20
 			okBtn.addEventListener(MouseEvent.CLICK,okBtnHandler);
 			addChild(okBtn);
 			
 			cancelBtn = new Button();
-			cancelBtn.width = 30
-			cancelBtn.height = 15
+			cancelBtn.width = 60
+			cancelBtn.height = 30
 			cancelBtn.label = "取消"
-			cancelBtn.fontSize = 10
+			cancelBtn.fontSize = 20
 			cancelBtn.addEventListener(MouseEvent.CLICK,cancelBtnHandler);
 			addChild(cancelBtn);
 		}
@@ -120,23 +120,23 @@ package com.xiaomu.view.group
 			
 			titleLab.y = (titleHeigh-titleLab.height)/2
 			
-			groupNameLab.x = 5;
-			groupNameLab.y = 5+titleHeigh;
-			groupNameTextInput.x = groupNameLab.x+groupNameLab.width+5;
+			groupNameLab.x = 10;
+			groupNameLab.y = 10+titleHeigh;
+			groupNameTextInput.x = groupNameLab.x+groupNameLab.width+10;
 			groupNameTextInput.y = groupNameLab.y;
-			groupNameTextInput.width = width-groupNameTextInput.x-30
+			groupNameTextInput.width = width-groupNameTextInput.x-60
 			
-			groupRemarkLab.x = 5;
-			groupRemarkLab.y = groupNameLab.y+groupNameLab.height+5;
-			groupRemarkTextArea.x = groupRemarkLab.x+groupRemarkLab.width+5;
+			groupRemarkLab.x = 10;
+			groupRemarkLab.y = groupNameLab.y+groupNameLab.height+10;
+			groupRemarkTextArea.x = groupRemarkLab.x+groupRemarkLab.width+10;
 			groupRemarkTextArea.y = groupRemarkLab.y;
-			groupRemarkTextArea.width = width-groupRemarkTextArea.x-30
-			groupRemarkTextArea.height = 40;
+			groupRemarkTextArea.width = width-groupRemarkTextArea.x-60
+			groupRemarkTextArea.height = 80;
 			
-			okBtn.y = height+titleHeigh-okBtn.height-5;
-			okBtn.x = width/2-okBtn.width-5;
+			okBtn.y = height+titleHeigh-okBtn.height-10;
+			okBtn.x = width/2-okBtn.width-10;
 			cancelBtn.y = okBtn.y;
-			cancelBtn.x = width/2+5;
+			cancelBtn.x = width/2+10;
 		}
 		
 		override protected function drawSkin():void {

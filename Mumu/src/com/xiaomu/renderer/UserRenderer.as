@@ -38,13 +38,13 @@ package com.xiaomu.renderer
 			
 			onlineIcon = new Image();
 			onlineIcon.source = 'assets/room/online.png';
-			onlineIcon.width = onlineIcon.height = 20;
+			onlineIcon.width = onlineIcon.height = 40;
 			addChild(onlineIcon);
 			onlineIcon.visible = false;
 			
 			offlineIcon = new Image();
 			offlineIcon.source = 'assets/room/offline.png';
-			offlineIcon.width = offlineIcon.height = 20;
+			offlineIcon.width = offlineIcon.height = 40;
 			addChild(offlineIcon);
 			offlineIcon.visible = false;
 			
@@ -52,13 +52,13 @@ package com.xiaomu.renderer
 				
 			settingButton = new Image()
 			settingButton.source = 'assets/room/user_setting.png';
-			settingButton.width = settingButton.height = 14
+			settingButton.width = settingButton.height = 32
 			settingButton.addEventListener(MouseEvent.CLICK, settingButton_clickHandler)
 			addChild(settingButton)
 			
 			adminIcon = new Image();
 			adminIcon.source = 'assets/room/admin.png';
-			adminIcon.width = adminIcon.height = 14
+			adminIcon.width = adminIcon.height = 32
 			addChild(adminIcon)
 		}
 		
@@ -87,9 +87,11 @@ package com.xiaomu.renderer
 					}
 				}
 				labelDisplay.text = data.allowSetFlag?(data.subname?data.subname:data.username):data.username
-				labelDisplay.fontSize = 8;
+				labelDisplay.fontSize = 28;
+				labelDisplay.height = 30;
 				labelDisplay.textAlign = TextAlign.LEFT;
 				labelDisplay.x = onlineIcon.x+onlineIcon.width+8;
+				labelDisplay.y = (height-labelDisplay.height)/2
 				if(data.online){
 					onlineIcon.visible = true;
 					offlineIcon.visible = false;

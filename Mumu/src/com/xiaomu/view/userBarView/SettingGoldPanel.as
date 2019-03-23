@@ -16,18 +16,18 @@ package com.xiaomu.view.userBarView
 	import coco.manager.PopUpManager;
 	
 	/**
-	 * 设置用户的金币
+	 * 设置群主自身的金币
 	 */
 	public class SettingGoldPanel extends UIComponent
 	{
 		public function SettingGoldPanel()
 		{
 			super();
-			width = 160
-			height = 60
+			width = 320
+			height = 120
 		}
 		
-		private var titleHeigh:Number = 30;
+		private var titleHeigh:Number = 50;
 		private var titleLab:Label;
 		private var goldLab:Label;
 		private var goldNumberTextInput:TextInput;
@@ -53,38 +53,38 @@ package com.xiaomu.view.userBarView
 			titleLab = new Label();
 			titleLab.width = width;
 			titleLab.text = '群主金币设置';
-			titleLab.fontSize = 12;
-			titleLab.height = 20;
+			titleLab.fontSize = 24;
+			titleLab.height = 40;
 			titleLab.color = 0xffffff;
 			addChild(titleLab);
 			
 			goldLab = new Label();
-			goldLab.width = 40;
-			goldLab.height = 20;
+			goldLab.width = 80;
+			goldLab.height = 40;
 			goldLab.textAlign = TextAlign.LEFT;
 			goldLab.text = '金币数:';
-			goldLab.fontSize = 10;
+			goldLab.fontSize = 20;
 			goldLab.color = 0xffffff;
 			addChild(goldLab);
 			
 			goldNumberTextInput = new TextInput();
-			goldNumberTextInput.fontSize = 10;
-			goldNumberTextInput.height = 20;
+			goldNumberTextInput.fontSize = 20;
+			goldNumberTextInput.height = 40;
 			addChild(goldNumberTextInput)
 			
 			okBtn = new Button();
-			okBtn.width = 30
-			okBtn.height = 15
+			okBtn.width = 60
+			okBtn.height = 30
 			okBtn.label = "确定"
-			okBtn.fontSize = 10
+			okBtn.fontSize = 20
 			okBtn.addEventListener(MouseEvent.CLICK,okBtnHandler);
 			addChild(okBtn);
 			
 			cancelBtn = new Button();
-			cancelBtn.width = 30
-			cancelBtn.height = 15
+			cancelBtn.width = 60
+			cancelBtn.height = 30
 			cancelBtn.label = "取消"
-			cancelBtn.fontSize = 10
+			cancelBtn.fontSize = 20
 			cancelBtn.addEventListener(MouseEvent.CLICK,cancelBtnHandler);
 			addChild(cancelBtn);
 		}
@@ -103,16 +103,16 @@ package com.xiaomu.view.userBarView
 			
 			titleLab.y = (titleHeigh-titleLab.height)/2
 			
-			goldLab.x = 5;
-			goldLab.y = 5+titleHeigh;
+			goldLab.x = 10;
+			goldLab.y = 10+titleHeigh;
 			goldNumberTextInput.x = goldLab.x+goldLab.width+5;
 			goldNumberTextInput.y = goldLab.y;
-			goldNumberTextInput.width = width-goldNumberTextInput.x-30
+			goldNumberTextInput.width = width-goldNumberTextInput.x-60
 			
 			okBtn.y = height+titleHeigh-okBtn.height-5;
-			okBtn.x = width/2-okBtn.width-5;
+			okBtn.x = width/2-okBtn.width-10;
 			cancelBtn.y = okBtn.y;
-			cancelBtn.x = width/2+5;
+			cancelBtn.x = width/2+10;
 		}
 		
 		override protected function drawSkin():void {

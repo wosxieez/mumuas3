@@ -181,15 +181,16 @@ package com.xiaomu.view.room
 			
 			zhunbeiButton = new Button()
 			zhunbeiButton.label = '准备'
-			zhunbeiButton.width = 50
-			zhunbeiButton.height = 20
+			zhunbeiButton.width = 100
+			zhunbeiButton.height = 40
+			zhunbeiButton.fontSize = 30;
 			zhunbeiButton.addEventListener(MouseEvent.CLICK, zhunbeiButton_clickHandler)
 			iconLayer.addChild(zhunbeiButton)
 			
 			backBtn = new Image()
 			backBtn.source = 'assets/club_btn_back.png';
-			backBtn.width = 71*0.35;
-			backBtn.height = 86*0.35;
+			backBtn.width = 71;
+			backBtn.height = 86;
 			backBtn.addEventListener(MouseEvent.CLICK, back_clickHandler)
 			addChild(backBtn)
 		}
@@ -256,9 +257,8 @@ package com.xiaomu.view.room
 			newCardTip.x = (width - newCardTip.width) / 2
 			newCardTip.y = (height - newCardTip.height) / 2
 			
-			backBtn.x = width - backBtn.width - 5
-			backBtn.y = height - backBtn.height - 5
-			
+			backBtn.x = width - backBtn.width - 20
+			backBtn.y = height - backBtn.height - 20
 			zhunbeiButton.x = (width - zhunbeiButton.width) / 2
 			zhunbeiButton.y = (height - zhunbeiButton.height) / 2
 		}

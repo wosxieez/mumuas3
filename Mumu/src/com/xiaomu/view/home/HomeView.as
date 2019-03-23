@@ -7,11 +7,10 @@ package com.xiaomu.view.home
 	import com.xiaomu.view.MainView;
 	import com.xiaomu.view.hall.HallView;
 	import com.xiaomu.view.home.setting.SettingPanelView;
-	import com.xiaomu.view.userBarView.UserInfoView;
+	import com.xiaomu.view.userBarView.UserInfoView2;
 	
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-	import flash.utils.setTimeout;
 	
 	import coco.component.ButtonGroup;
 	import coco.component.Image;
@@ -29,7 +28,7 @@ package com.xiaomu.view.home
 		private var bg : Image;
 		//		private var myGroup:ImageBtnWithUpAndDown;
 		private var myGroup:ImageBtnWithUpAndDown;
-		private var userInfoView:UserInfoView
+		private var userInfoView:UserInfoView2
 		private var shoppingBtn:ImageBtnWithUpAndDown;
 		private var btnGroup:ButtonGroup;
 		private var proxyBtn:ImageBtnWithUpAndDown;
@@ -49,12 +48,12 @@ package com.xiaomu.view.home
 			bg.source = 'assets/bg.png';
 			addChild(bg);
 			
-			userInfoView = new UserInfoView();
+			userInfoView = new UserInfoView2();
 			addChild(userInfoView);
 			
 			myGroup = new ImageBtnWithUpAndDown();
-			myGroup.width = 270*0.36;
-			myGroup.height = 407*0.36;
+			myGroup.width = 270;
+			myGroup.height = 407;
 			myGroup.upImageSource = 'assets/home/guild_up.png';
 			myGroup.downImageSource = 'assets/home/guild_down.png';
 			myGroup.addEventListener(MouseEvent.CLICK,clickHandler);
@@ -68,45 +67,48 @@ package com.xiaomu.view.home
 			addChild(myGroup);*/
 			
 			daTongZiImg = new ImageBtnWithUpAndDown();
-			daTongZiImg.width = 260*0.35;
-			daTongZiImg.height = 190*0.35;
+			daTongZiImg.width = 260;
+			daTongZiImg.height = 190;
 			daTongZiImg.upImageSource = 'assets/home/other/fen_up.png';
 			daTongZiImg.downImageSource = 'assets/home/other/fen_down.png';
 			addChild(daTongZiImg);
 			
 			ziPaiImg = new ImageBtnWithUpAndDown();
-			ziPaiImg.width = 260*0.35;
-			ziPaiImg.height = 190*0.35;
+			ziPaiImg.width = 260;
+			ziPaiImg.height = 190;
 			ziPaiImg.upImageSource = 'assets/home/other/creatRoom_up.png';
 			ziPaiImg.downImageSource = 'assets/home/other/creatRoom_down.png';
 			addChild(ziPaiImg);
 			
 			xiuXianImg = new ImageBtnWithUpAndDown();
-			xiuXianImg.width = 260*0.35;
-			xiuXianImg.height = 190*0.35;
+			xiuXianImg.width = 260;
+			xiuXianImg.height = 190;
 			xiuXianImg.upImageSource = 'assets/home/other/coinRoom_up.png';
 			xiuXianImg.downImageSource = 'assets/home/other/coinRoom_down.png';
 			addChild(xiuXianImg);
 			
 			paoDeKuaiImg = new ImageBtnWithUpAndDown();
-			paoDeKuaiImg.width = 260*0.35;
-			paoDeKuaiImg.height = 190*0.35;
+			paoDeKuaiImg.width = 260;
+			paoDeKuaiImg.height = 190;
 			paoDeKuaiImg.upImageSource = 'assets/home/other/zi_up.png';
 			paoDeKuaiImg.downImageSource = 'assets/home/other/zi_down.png';
 			addChild(paoDeKuaiImg);
 			
 			shoppingBtn = new ImageBtnWithUpAndDown();
-			shoppingBtn.width = 117*0.32;
-			shoppingBtn.height = 92*0.32;
+			shoppingBtn.width = 117;
+			shoppingBtn.height = 92;
 			shoppingBtn.upImageSource = 'assets/home/bottomBar/shangcheng_up.png';
 			shoppingBtn.downImageSource = 'assets/home/bottomBar/shangcheng_down.png';
 			addChild(shoppingBtn);
 			
 			btnGroup =  new ButtonGroup();
 			btnGroup.dataProvider = [{'name':'邮件','image':'youjian'},{'name':'分享','image':'fenxiang'},{'name':'公告','image':'gonggao'},{'name':'战绩','image':'zhanji'},{'name':'设置','image':'shezhi'}];
-			btnGroup.itemRendererWidth = 63*0.95;
-			btnGroup.itemRendererHeight = 30*0.95;
+			btnGroup.itemRendererWidth = 126;
+			btnGroup.itemRendererHeight = 60;
+			btnGroup.gap = 36;
 			btnGroup.labelField = 'name';
+			btnGroup.width = (btnGroup.itemRendererWidth+btnGroup.gap)*btnGroup.dataProvider.length
+			btnGroup.height = btnGroup.itemRendererHeight;
 			btnGroup.itemRendererClass = HomeBottomBarRender;
 			btnGroup.addEventListener(UIEvent.CHANGE,changeHandler);
 			addChild(btnGroup);
@@ -114,30 +116,30 @@ package com.xiaomu.view.home
 			joinRoom = new ImageBtnWithUpAndDown();
 			joinRoom.upImageSource = 'assets/home/newjoin_up.png';
 			joinRoom.downImageSource = 'assets/home/newjoin_down.png';
-			joinRoom.width = 354*0.4;
-			joinRoom.height = 108*0.4;
+			joinRoom.width = 354;
+			joinRoom.height = 108;
 			joinRoom.addEventListener(MouseEvent.CLICK,joinRoomClickHandler);
 			addChild(joinRoom);
 			
 			proxyBtn = new ImageBtnWithUpAndDown();
 			proxyBtn.upImageSource = 'assets/home/cwdl_up.png';
 			proxyBtn.downImageSource = 'assets/home/cwdl_down.png';
-			proxyBtn.width = 30;
-			proxyBtn.height = 30;
+			proxyBtn.width = 109;
+			proxyBtn.height = 113;
 			addChild(proxyBtn);
 			
 			checkInBtn = new ImageBtnWithUpAndDown();
 			checkInBtn.upImageSource = 'assets/home/qiandao_up.png';
 			checkInBtn.downImageSource = 'assets/home/qiandao_down.png';
-			checkInBtn.width = 30;
-			checkInBtn.height = 30;
+			checkInBtn.width = 109*0.8;
+			checkInBtn.height = 111*0.8;
 			addChild(checkInBtn);
 			
 			waiterBtn = new ImageBtnWithUpAndDown();
 			waiterBtn.upImageSource = 'assets/home/btn_kf_normal.png';
 			waiterBtn.downImageSource = 'assets/home/btn_kf_press.png';
-			waiterBtn.width = 30;
-			waiterBtn.height = 30;
+			waiterBtn.width = 104*0.8;
+			waiterBtn.height = 106*0.8;
 			addChild(waiterBtn);
 		}
 		
@@ -146,27 +148,23 @@ package com.xiaomu.view.home
 			
 			bg.width = width;
 			bg.height = height;
+			trace(width,height);
 			
 			shoppingBtn.x = 5;
 			shoppingBtn.y = height-shoppingBtn.height-2;
 			
-			btnGroup.width = btnGroup.dataProvider.length*btnGroup.itemRendererWidth;
-			btnGroup.height = 25;
-			btnGroup.x = shoppingBtn.x+shoppingBtn.width+5;
-			btnGroup.y = height-btnGroup.itemRendererHeight;
+			btnGroup.x = shoppingBtn.x+shoppingBtn.width+35;
+			btnGroup.y = height-btnGroup.itemRendererHeight-10;
 			
 			joinRoom.x = width-joinRoom.width;
 			joinRoom.y = height-joinRoom.height;
 			
-			proxyBtn.width = proxyBtn.height = 25;
 			proxyBtn.x = width-proxyBtn.width-10;
 			proxyBtn.y = 10;
 			
-			checkInBtn.width = checkInBtn.height = 25;
 			checkInBtn.x = 10;
-			checkInBtn.y = 50;
+			checkInBtn.y = userInfoView.x+userInfoView.height+20;
 			
-			waiterBtn.width = waiterBtn.height = 25;
 			waiterBtn.x = checkInBtn.x;
 			waiterBtn.y = checkInBtn.y+checkInBtn.height+10;
 			

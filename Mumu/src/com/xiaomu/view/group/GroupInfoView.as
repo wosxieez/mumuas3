@@ -1,10 +1,5 @@
 package com.xiaomu.view.group
 {
-	import com.xiaomu.event.AppManagerEvent;
-	import com.xiaomu.manager.AppManager;
-	import com.xiaomu.util.HttpApi;
-	
-	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
 	import coco.component.Image;
@@ -22,23 +17,22 @@ package com.xiaomu.view.group
 		public function GroupInfoView()
 		{
 			super();
-//			AppManager.getInstance().addEventListener(AppManagerEvent.UPDATE_GROUP_SUCCESS,updateGroupSuccessHandler);
 		}
 		private var copyGroupInfoData:Object
 		
 		private var _groupInfoData:Object;
-
+		
 		public function get groupInfoData():Object
 		{
 			return _groupInfoData;
 		}
-
+		
 		public function set groupInfoData(value:Object):void
 		{
 			_groupInfoData = value;
 			invalidateProperties();
 		}
-
+		
 		private var titleLab:Label;
 		private var remarkLab:Label;
 		private var adminLab:Label;
@@ -49,25 +43,25 @@ package com.xiaomu.view.group
 			super.createChildren();
 			
 			titleLab = new Label();
-			titleLab.width = 80;
-			titleLab.height = 20;
+			titleLab.width = 200;
+			titleLab.height = 40;
 			titleLab.textAlign = TextAlign.LEFT;
-			titleLab.fontSize = 10;
+			titleLab.fontSize = 20;
 			titleLab.color = 0xffffff;
 			addChild(titleLab);
 			
 			adminLab = new Label();
-			adminLab.width = 80;
-			adminLab.height = 20;
+			adminLab.width = 160;
+			adminLab.height = 40;
 			adminLab.textAlign = TextAlign.LEFT;
-			adminLab.fontSize = 10;
+			adminLab.fontSize = 20;
 			adminLab.color = 0xffffff;
 			addChild(adminLab);
 			
 			remarkLab = new Label();
-			remarkLab.width = 40;
-			remarkLab.height = 20;
-			remarkLab.fontSize = 10;
+			remarkLab.width = 80;
+			remarkLab.height = 40;
+			remarkLab.fontSize = 20;
 			remarkLab.color = 0xffffff;
 			remarkLab.text = '群介绍: ';
 			addChild(remarkLab);
@@ -77,12 +71,12 @@ package com.xiaomu.view.group
 			remarkText.backgroundAlpha = 0;
 			remarkText.borderAlpha = 0;
 			remarkText.editable = false;
-			remarkText.fontSize = 10;
+			remarkText.fontSize = 20;
 			addChild(remarkText);
 			
 			settingButton = new Image()
 			settingButton.source = 'assets/room/user_setting.png';
-			settingButton.width = settingButton.height = 14
+			settingButton.width = settingButton.height = 32
 			settingButton.addEventListener(MouseEvent.CLICK, settingButton_clickHandler)
 			addChild(settingButton)
 		}
@@ -107,9 +101,9 @@ package com.xiaomu.view.group
 			adminLab.x = 0
 			adminLab.y = titleLab.y+titleLab.height;
 			remarkText.width = width-remarkLab.width-remarkLab.x-30;
-			remarkText.height = height*1.2;
+			remarkText.height = height*1;
 			remarkText.x = remarkLab.x+remarkLab.width;
-			remarkText.y = remarkLab.y-3;
+			remarkText.y = remarkLab.y+2;
 			
 			settingButton.x = width-settingButton.width-5;
 			settingButton.y = height-settingButton.height-5;
@@ -133,34 +127,6 @@ package com.xiaomu.view.group
 			}
 			settingGroupPanel.data = copyGroupInfoData?copyGroupInfoData:groupInfoData;
 			PopUpManager.centerPopUp(PopUpManager.addPopUp(settingGroupPanel,null,true,true,0xffffff,0.4));
-		}
-		
-		/**
-		 * 监听到数据更新成功事件
-		 */
-		protected function updateGroupSuccessHandler(event:AppManagerEvent):void
-		{
-			//			trace('监听到群信息更新成功');
-			//			trace('groupInfoData:',JSON.stringify(groupInfoData));
-			HttpApi.getInstane().getGroupInfoByGroupId(groupInfoData.group_id,function(e:Event):void{
-				var respones:Object = JSON.parse(e.currentTarget.data).message[0]
-				if(respones){
-					//					trace('数据：',JSON.stringify(respones));
-					copyGroupInfoData = JSON.parse(JSON.stringify(groupInfoData));
-					copyGroupInfoData.group_name = respones.name
-					copyGroupInfoData.remark = respones.remark
-					forceUpdate(copyGroupInfoData);
-				}
-			},null);
-		}
-		
-		/**
-		 * 强制更新
-		 */
-		private function forceUpdate(copyGroupInfoData:Object):void
-		{
-			titleLab.text = copyGroupInfoData?'群名: '+copyGroupInfoData.group_name:'群名: /'
-			remarkText.text = copyGroupInfoData?copyGroupInfoData.remark:'/'
 		}
 	}
 }

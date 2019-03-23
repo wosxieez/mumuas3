@@ -12,7 +12,7 @@ package com.xiaomu.view.group
 	import com.xiaomu.view.MainView;
 	import com.xiaomu.view.hall.HallView;
 	import com.xiaomu.view.room.RoomView;
-	import com.xiaomu.view.userBarView.UserInfoView;
+	import com.xiaomu.view.userBarView.UserInfoView2;
 	
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -48,7 +48,7 @@ package com.xiaomu.view.group
 		
 		private var topbg:Image
 		private var groupInfoView:GroupInfoView
-		private var userInfoView : UserInfoView
+		private var userInfoView : UserInfoView2
 		private var userIcon:Image
 		private var userLabel:Label
 		private var roomsList:List
@@ -114,8 +114,9 @@ package com.xiaomu.view.group
 			topbg.source = 'assets/hall/home_top_headbg.png'
 			topbg.height = 40
 			addChild(topbg)
+			topbg.visible = false;
 			
-			userInfoView = new UserInfoView();
+			userInfoView = new UserInfoView2();
 			addChild(userInfoView);
 			
 			groupInfoView = new GroupInfoView();
@@ -128,24 +129,23 @@ package com.xiaomu.view.group
 			roomsList.gap = 10;
 			roomsList.padding = 10;
 			roomsList.paddingTop = 0;
-			roomsList.y = 40;
 			roomsList.addEventListener(UIEvent.CHANGE, roomsList_changeHandler)
 			addChild(roomsList)
 			
 			usersList = new List()
 			usersList.radius = 10
 			usersList.padding = 10
+			usersList.paddingTop = 0;
 			usersList.paddingLeft = 0
-			usersList.y = 40
-			usersList.gap = 5
+			usersList.gap = 10,
 			usersList.itemRendererClass = UserRenderer
-			usersList.itemRendererHeight = 25;
+			usersList.itemRendererHeight = 55;
 			addChild(usersList)
 			
 			goback= new Image()
 			goback.source = 'assets/club_btn_back.png';
-			goback.width = 71*0.35;
-			goback.height = 86*0.35;
+			goback.width = 71;
+			goback.height = 86;
 			goback.addEventListener(MouseEvent.CLICK, function(e:MouseEvent):void {
 				userInfoView.reset();
 				Api.getInstane().leaveGroup()			
@@ -158,7 +158,7 @@ package com.xiaomu.view.group
 			addMemberButton.backgroundAlpha = 0.1
 			addMemberButton.borderAlpha = 0
 			addMemberButton.radius = 5
-			addMemberButton.fontSize = 9
+			addMemberButton.fontSize = 29
 			addMemberButton.color = 0xFFFFFF
 			addMemberButton.label = '添加成员'
 			addMemberButton.addEventListener(MouseEvent.CLICK, addMemberButton_clickHandler)
@@ -172,23 +172,24 @@ package com.xiaomu.view.group
 			
 			addMemberButton.x = width*2/3
 			addMemberButton.width = width / 3 - usersList.padding
-			addMemberButton.height = 25
+			addMemberButton.height = 55
 			addMemberButton.y = height - addMemberButton.height - usersList.padding
 			addMemberButton.visible = isNowGroupAdmin;
 			
 			groupInfoView.x = roomsList.padding;
-			groupInfoView.y = userInfoView.y+userInfoView.height+10;
+			groupInfoView.y = goback.y+goback.height+20;
 			groupInfoView.width = width-(width/3+roomsList.padding*2)
-			groupInfoView.height = 40;
+			groupInfoView.height = 100;
 			
 			roomsList.y = groupInfoView.y+groupInfoView.height+roomsList.padding;
 			roomsList.height = height - roomsList.y
 			roomsList.width = width * 2 / 3
 			roomsList.itemRendererHeight = (roomsList.width- roomsList.padding * 2 - roomsList.gap) / 2
 			
-			goback.x = width-goback.width-5;
-			goback.y = 5;
+			goback.x = width-goback.width-20;
+			goback.y = 20;
 			
+			usersList.y = groupInfoView.y;
 			usersList.width = width / 3
 			usersList.height = height - usersList.y
 			usersList.x = width - usersList.width

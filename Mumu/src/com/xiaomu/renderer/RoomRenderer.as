@@ -5,8 +5,6 @@ package com.xiaomu.renderer
 	import coco.component.DefaultItemRenderer;
 	import coco.component.Image;
 	import coco.component.Label;
-	import coco.component.TextAlign;
-	import coco.component.TextInput;
 	
 	public class RoomRenderer extends DefaultItemRenderer
 	{
@@ -36,7 +34,7 @@ package com.xiaomu.renderer
 		private var joiner1 : JoinerIcon
 		private var joiner2 : JoinerIcon
 		private var joiner3 : JoinerIcon
-		private var roomName : TextInput;
+		private var roomName : Label;
 		private var counter:Label;
 		private var addRoomImg:Image;
 		override protected function createChildren():void
@@ -52,13 +50,8 @@ package com.xiaomu.renderer
 			addChild(addRoomImg);
 			addRoomImg.visible = false;
 			
-			roomName = new TextInput();
-			roomName.editable = false;
-			roomName.backgroundAlpha = 0;
-			roomName.borderAlpha = 0;
-			roomName.textAlign = TextAlign.CENTER;
+			roomName = new Label();
 			roomName.color = 0xffffff;
-			
 			addChild(roomName);
 			
 			joiner1 = new JoinerIcon();
@@ -86,9 +79,9 @@ package com.xiaomu.renderer
 			addRoomImg.y = (height-addRoomImg.height)/2;
 			
 			joiner1.visible = joiner2.visible = joiner3.visible = false;
-			roomName.width = width/4;
-			roomName.height = height/12;
-			roomName.fontSize = height/12;
+			roomName.width = width;
+			roomName.height = height/10;
+			roomName.fontSize = height/10;
 			tableImg.width = width/3;
 			tableImg.height = height/3;
 			joiner1.width = joiner2.width = joiner3.width=
@@ -111,8 +104,8 @@ package com.xiaomu.renderer
 			}
 			
 			counter.width = width;
-			counter.height = 14;
-			counter.fontSize = 10;
+			counter.height = height/10;
+			counter.fontSize =  height/14;
 			counter.y = tableImg.y+(tableImg.height-counter.height)/2
 			
 			roomName.width = width;

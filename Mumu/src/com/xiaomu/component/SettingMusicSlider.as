@@ -148,7 +148,8 @@ package com.xiaomu.component
 			addChild(coverImage);
 			
 			thumbImage = new Image();
-			thumbImage.width = thumbImage.height = 20;
+			thumbImage.width = 58
+			thumbImage.height = 60;
 			thumbImage.addEventListener(MouseEvent.MOUSE_DOWN, thumbImage_mouseDownHandler);
 			addChild(thumbImage);
 		}

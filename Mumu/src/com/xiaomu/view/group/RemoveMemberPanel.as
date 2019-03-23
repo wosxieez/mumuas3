@@ -18,8 +18,8 @@ package com.xiaomu.view.group
 		public function RemoveMemberPanel()
 		{
 			super();
-			width = 100
-			height = 80
+			width = 200
+			height = 160
 		}
 		
 		private var titleLab:Label;
@@ -44,22 +44,22 @@ package com.xiaomu.view.group
 			titleLab = new Label();
 			titleLab.text = '确认移除吗？';
 			titleLab.color = 0xffffff;
-			titleLab.fontSize = 10;
+			titleLab.fontSize = 20;
 			addChild(titleLab);
 			
 			okBtn =  new Button();
-			okBtn.width = 30;
-			okBtn.height = 14;
+			okBtn.width = 60;
+			okBtn.height = 28;
 			okBtn.label = '确认';
-			okBtn.fontSize = 8;
+			okBtn.fontSize = 16;
 			okBtn.addEventListener(MouseEvent.CLICK,okBtnHandler);
 			addChild(okBtn);
 			
 			cancelBtn =  new Button();
-			cancelBtn.width = 30;
-			cancelBtn.height = 14;
+			cancelBtn.width = 60;
+			cancelBtn.height = 28;
 			cancelBtn.label = '取消';
-			cancelBtn.fontSize = 8;
+			cancelBtn.fontSize = 16;
 			cancelBtn.addEventListener(MouseEvent.CLICK,cancelBtnHandler);
 			addChild(cancelBtn);
 		}
@@ -69,13 +69,13 @@ package com.xiaomu.view.group
 			super.updateDisplayList();
 			
 			titleLab.width = width;
-			titleLab.y = 5;
+			titleLab.y = 10;
 			
 			cancelBtn.x = (width-cancelBtn.width)/2;
-			cancelBtn.y = height-cancelBtn.height-10;
+			cancelBtn.y = height-cancelBtn.height-20;
 			
 			okBtn.x = (width-okBtn.width)/2;
-			okBtn.y = cancelBtn.y-okBtn.height-10;
+			okBtn.y = cancelBtn.y-okBtn.height-20;
 		}
 		
 		override protected function drawSkin():void

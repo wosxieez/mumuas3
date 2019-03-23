@@ -23,7 +23,7 @@ package com.xiaomu.view.userBarView
 		
 		private var _typeSource:String;
 		private var _count:String = '0';
-		private var _iconWidthHeight:Array=[20,20];
+		private var _iconWidthHeight:Array=[34,35];
 
 		public function get iconWidthHeight():Array
 		{
@@ -68,10 +68,10 @@ package com.xiaomu.view.userBarView
 			number.backgroundAlpha = 0.1;
 			number.borderAlpha = 0.6;
 			number.editable = false;
-			number.radius = 10;
-			number.fontSize = 10;
+			number.radius =  height*0.6;
+			number.fontSize = height*0.6;
 			number.width = width;
-			number.height = height*0.8;
+			number.height = height*0.9;
 			number.color = 0xFFCC33;
 			number.textAlign = TextAlign.CENTER;
 			addChild(number);

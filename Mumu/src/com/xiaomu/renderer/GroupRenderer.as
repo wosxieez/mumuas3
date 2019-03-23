@@ -52,13 +52,16 @@ package com.xiaomu.renderer
 			super.updateDisplayList()
 			icon.width = width*0.9
 			icon.height = height*0.9
+			icon.x = (width-icon.width)/2-10;
+			icon.y = (height-icon.height)/2;
 				
 			labelDisplay.width = width
 			labelDisplay.height = 30
 			labelDisplay.y = height - 35
 				
 			nameLab.width = width;
-			nameLab.height = 30;
+			nameLab.height = 35;
+			nameLab.fontSize = 30;
 			nameLab.y = height-25;
 		}
 		

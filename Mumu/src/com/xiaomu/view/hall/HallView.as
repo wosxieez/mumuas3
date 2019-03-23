@@ -12,7 +12,7 @@ package com.xiaomu.view.hall
 	import com.xiaomu.view.group.GroupView;
 	import com.xiaomu.view.hall.popUpPanel.CreateGroupPanel;
 	import com.xiaomu.view.home.HomeView;
-	import com.xiaomu.view.userBarView.UserInfoView;
+	import com.xiaomu.view.userBarView.UserInfoView2;
 	
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -43,7 +43,7 @@ package com.xiaomu.view.hall
 		private var groupsList:List
 		private var signoutBtn:Image
 		private var goback:Image;
-		private var userInfoView : UserInfoView
+		private var userInfoView : UserInfoView2
 		private var joinGroupBtn : ImgBtn;
 		private var createGroupBtn : ImgBtn;
 		
@@ -55,15 +55,16 @@ package com.xiaomu.view.hall
 			
 			topbg = new Image()
 			topbg.source = 'assets/hall/home_top_headbg.png'
-			topbg.height = 40
+			topbg.height = 80
 			addChild(topbg)
+			topbg.visible = false;
 			
 			bottombg = new Image()
 			bottombg.source = 'assets/hall/img_home_btnsBg.png'
-			bottombg.height = 30
+			bottombg.height = 80
 			addChild(bottombg)
 			
-			userInfoView =new UserInfoView();
+			userInfoView =new UserInfoView2();
 			addChild(userInfoView);
 			
 			groupsList = new List()
@@ -75,8 +76,8 @@ package com.xiaomu.view.hall
 			groupsList.verticalScrollEnabled = false
 			groupsList.itemRendererClass = GroupRenderer
 			groupsList.itemRendererRowCount = 1
-			groupsList.itemRendererHeight = 132
-			groupsList.itemRendererWidth = 100
+			groupsList.itemRendererHeight = 456
+			groupsList.itemRendererWidth = 345
 			groupsList.horizontalAlign = HorizontalAlign.CENTER
 			groupsList.verticalAlign = VerticalAlign.MIDDLE
 			groupsList.addEventListener(UIEvent.CHANGE, groupsList_changeHandler)
@@ -84,27 +85,27 @@ package com.xiaomu.view.hall
 			
 			goback = new Image();
 			goback.source = 'assets/club_btn_back.png';
-			goback.width = 71*0.35;
-			goback.height = 86*0.35;
+			goback.width = 71;
+			goback.height = 86;
 			goback.addEventListener(MouseEvent.CLICK,gobackHandler);
 			addChild(goback);
 			
 			joinGroupBtn = new ImgBtn();
 			joinGroupBtn.imgSource = 'assets/hall/join_group.png';
-			joinGroupBtn.width = 70;
-			joinGroupBtn.height = 20;
+			joinGroupBtn.width = 140*1.5;
+			joinGroupBtn.height = 40*1.5;
 			joinGroupBtn.labText = '加入亲友圈';
-			joinGroupBtn.labFontSize = 10;
+			joinGroupBtn.labFontSize = 20*1.5;
 			joinGroupBtn.labColor = 0xffffff;
 			joinGroupBtn.addEventListener(MouseEvent.CLICK,joinGroupHandler);
 			addChild(joinGroupBtn);
 			
 			createGroupBtn = new ImgBtn();
 			createGroupBtn.imgSource = 'assets/hall/create_group.png';
-			createGroupBtn.width = 70;
-			createGroupBtn.height = 20;
+			createGroupBtn.width = 140*1.5;
+			createGroupBtn.height = 40*1.5;
 			createGroupBtn.labText = '创建亲友圈';
-			createGroupBtn.labFontSize = 10;
+			createGroupBtn.labFontSize = 20*1.5;
 			createGroupBtn.labColor = 0xffffff;
 			createGroupBtn.addEventListener(MouseEvent.CLICK,createGroupHandler);
 			addChild(createGroupBtn);
@@ -130,10 +131,10 @@ package com.xiaomu.view.hall
 			groupsList.width = width
 			groupsList.height = bottombg.y - groupsList.y
 			
-			goback.x = width - goback.width - 5
-			goback.y = 5;
+			goback.x = width - goback.width - 20
+			goback.y = 20;
 			
-			joinGroupBtn.x = width - joinGroupBtn.width-40;
+			joinGroupBtn.x = width - joinGroupBtn.width-60;
 			joinGroupBtn.y = height-joinGroupBtn.height-5;
 			
 			createGroupBtn.x = joinGroupBtn.x-10-createGroupBtn.width;

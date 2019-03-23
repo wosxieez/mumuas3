@@ -22,8 +22,8 @@ package com.xiaomu.view.group
 		{
 			super();
 			
-			width = 150
-			height = 120
+			width = 300
+			height = 240
 			backgroundColor = 0x000000
 			backgroundAlpha = .8
 			borderAlpha = 0
@@ -59,21 +59,24 @@ package com.xiaomu.view.group
 			titleDisplay.color = 0xFFFFFF
 			
 			memberUsernameInput = new TextInput()
-			memberUsernameInput.width = 100
-			memberUsernameInput.height = 20
+			memberUsernameInput.width = 200
+			memberUsernameInput.height = 40
+			memberUsernameInput.fontSize = 28
 			addChild(memberUsernameInput)
 			
 			submitButton = new Button()
-			submitButton.width = 100
-			submitButton.height = 20
+			submitButton.width = 200
+			submitButton.height = 40
 			submitButton.label = "确定"
+			submitButton.fontSize = 26
 			submitButton.addEventListener(MouseEvent.CLICK, submitButton_clickHandler)
 			addChild(submitButton)
 			
 			cancelButton = new Button()
-			cancelButton.width = 100
-			cancelButton.height = 20
+			cancelButton.width = 200
+			cancelButton.height = 40
 			cancelButton.label = "取消"
+			cancelButton.fontSize = 26
 			cancelButton.addEventListener(MouseEvent.CLICK, cancelButton_clickHandler)
 			addChild(cancelButton)
 		}

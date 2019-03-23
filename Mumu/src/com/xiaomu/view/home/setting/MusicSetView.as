@@ -39,20 +39,22 @@ package com.xiaomu.view.home.setting
 			
 			bgImg = new Image();
 			bgImg.source = 'assets/home/settingPanel/setting_bg_diban01.png';
+			bgImg.width = 868;
+			bgImg.height = 397;
 			addChild(bgImg);
 			
 			bgmMusicLab = new Image();
 			bgmMusicLab.source = 'assets/home/settingPanel/setting_sound.png';
-			bgmMusicLab.width = 158*0.7;
-			bgmMusicLab.height = 50*0.7;
+			bgmMusicLab.width = 158;
+			bgmMusicLab.height = 50;
 			addChild(bgmMusicLab);
 			
 			bgmMusicSlider = new SettingMusicSlider();
 			bgmMusicSlider.sliderBtnSource = 'assets/home/settingPanel/setting_bar_sender.png';
 			bgmMusicSlider.sliderCoverImageSource = 'assets/home/settingPanel/setting_bar_full.png';
 			bgmMusicSlider.sliderBarImageSource = 'assets/home/settingPanel/setting_bar_void.png';
-			bgmMusicSlider.width = 290;
-			bgmMusicSlider.height = 8;
+			bgmMusicSlider.width = 593;
+			bgmMusicSlider.height = 23;
 			bgmMusicSlider.maxValue = 100;
 			bgmMusicSlider.minValue = 0;
 			bgmMusicSlider.value = parseInt(AppData.getInstane().bgmValue)?parseInt(AppData.getInstane().bgmValue):0;
@@ -61,16 +63,16 @@ package com.xiaomu.view.home.setting
 			
 			gameMusicLab = new Image();
 			gameMusicLab.source = 'assets/home/settingPanel/setting_music.png';
-			gameMusicLab.width = 158*0.7;
-			gameMusicLab.height = 50*0.7;
+			gameMusicLab.width = 158;
+			gameMusicLab.height = 50;
 			addChild(gameMusicLab);
 			
 			gameMusicSlider = new SettingMusicSlider();
 			gameMusicSlider.sliderBtnSource = 'assets/home/settingPanel/setting_bar_sender.png';
 			gameMusicSlider.sliderCoverImageSource = 'assets/home/settingPanel/setting_bar_full.png';
 			gameMusicSlider.sliderBarImageSource = 'assets/home/settingPanel/setting_bar_void.png';
-			gameMusicSlider.width = 290;
-			gameMusicSlider.height = 8;
+			gameMusicSlider.width = 593;
+			gameMusicSlider.height = 23;
 			gameMusicSlider.maxValue = 100;
 			gameMusicSlider.minValue = 0;
 			gameMusicSlider.value = parseInt(AppData.getInstane().gameMusicValue)?parseInt(AppData.getInstane().gameMusicValue):0;
@@ -96,18 +98,14 @@ package com.xiaomu.view.home.setting
 			
 			bgImg.width = width;
 			bgImg.height = height;
-			bgmMusicLab.width = 60;
-			bgmMusicLab.height = 20;
-			bgmMusicLab.x = 10;
-			bgmMusicLab.y = 20;
+			bgmMusicLab.x = 30;
+			bgmMusicLab.y = 40;
 			bgmMusicSlider.x = bgmMusicLab.x+bgmMusicLab.width;
-			bgmMusicSlider.y = bgmMusicLab.y+7;
-			gameMusicLab.width = 60;
-			gameMusicLab.height = 20;
+			bgmMusicSlider.y = bgmMusicLab.y+15;
 			gameMusicLab.x = bgmMusicLab.x;
-			gameMusicLab.y = bgmMusicLab.y+bgmMusicLab.height+15;
+			gameMusicLab.y = bgmMusicLab.y+bgmMusicLab.height+30;
 			gameMusicSlider.x = gameMusicLab.x+gameMusicLab.width;
-			gameMusicSlider.y = gameMusicLab.y+7;
+			gameMusicSlider.y = gameMusicLab.y+15;
 		}
 	}
 }

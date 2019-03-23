@@ -10,24 +10,19 @@ package com.xiaomu.view.group
 	import coco.component.Alert;
 	import coco.component.Button;
 	import coco.component.Label;
-	import coco.component.Panel;
 	import coco.component.TextAlign;
 	import coco.component.TextInput;
+	import coco.core.UIComponent;
 	import coco.manager.PopUpManager;
 	
-	public class SettingMemberPanel extends Panel
+	public class SettingMemberPanel extends UIComponent
 	{
 		public function SettingMemberPanel()
 		{
 			super();
 			
-			width = 250
-			height = 100
-			backgroundColor = 0x000000
-			backgroundAlpha = .8
-			borderAlpha = 0
-			
-			title = '设置成员'
+			width = 480
+			height = 200
 		}
 		
 		
@@ -41,6 +36,8 @@ package com.xiaomu.view.group
 			return instance
 		}
 		
+		private var titleHeight:int = 50;
+		private var titleLab:Label;
 		private var goldLab:Label;
 		private var goldInput:TextInput
 		private var nameLab:Label;
@@ -79,76 +76,82 @@ package com.xiaomu.view.group
 
 		override protected function createChildren():void {
 			super.createChildren()
-			
-			titleDisplay.color = 0xFFFFFF
+				
+			titleLab = new Label();
+			titleLab.text = '设置成员';
+			titleLab.color = 0xffffff;
+			titleLab.fontSize = 24;
+			titleLab.width = width;
+			titleLab.height = 40;
+			addChild(titleLab);
 			
 			nameLab = new Label();
-			nameLab.width = 30;
-			nameLab.height = 20;
+			nameLab.width = 60;
+			nameLab.height = 40;
 			nameLab.text = '姓名:';
 			nameLab.textAlign = TextAlign.LEFT;
 			nameLab.color = 0xffffff;
-			nameLab.fontSize = 10;
+			nameLab.fontSize = 20;
 			addChild(nameLab);
 			
 			nameInput = new TextInput()
 			nameInput.editable = false
-			nameInput.fontSize = 10;
-			nameInput.width = 60
-			nameInput.height = 20
+			nameInput.fontSize = 20;
+			nameInput.width = 120
+			nameInput.height = 40
 			addChild(nameInput)
 			
 			subNameLab = new Label();
-			subNameLab.width = 30;
-			subNameLab.height = 20;
+			subNameLab.width = 60;
+			subNameLab.height = 40;
 			subNameLab.text = '昵称:';
 			subNameLab.textAlign = TextAlign.LEFT;
 			subNameLab.color = 0xffffff;
-			subNameLab.fontSize = 10;
+			subNameLab.fontSize = 20;
 			addChild(subNameLab);
 			
 			subNameInput = new TextInput()
-			subNameInput.fontSize = 10;
-			subNameInput.width = 60
-			subNameInput.height = 20
+			subNameInput.fontSize = 20;
+			subNameInput.width = 120
+			subNameInput.height = 40
 			addChild(subNameInput)
 			
 			goldLab = new Label();
-			goldLab.width = 30;
-			goldLab.height = 20;
+			goldLab.width = 60;
+			goldLab.height = 40;
 			goldLab.text = '金币:';
 			goldLab.textAlign = TextAlign.LEFT;
 			goldLab.color = 0xffffff;
-			goldLab.fontSize = 10;
+			goldLab.fontSize = 20;
 			addChild(goldLab);
 			
 			goldInput = new TextInput()
-			goldInput.fontSize = 10
-			goldInput.width = 60
-			goldInput.height = 20
+			goldInput.fontSize = 20
+			goldInput.width = 120
+			goldInput.height = 40
 			addChild(goldInput)
 			
 			submitButton = new Button()
-			submitButton.width = 30
-			submitButton.height = 15
+			submitButton.width = 60
+			submitButton.height = 30
 			submitButton.label = "确定"
-			submitButton.fontSize = 10
+			submitButton.fontSize = 20
 			submitButton.addEventListener(MouseEvent.CLICK, submitButton_clickHandler)
 			addChild(submitButton)
 			
 			cancelButton = new Button()
-			cancelButton.width = 30
-			cancelButton.height = 15
+			cancelButton.width = 60
+			cancelButton.height = 30
 			cancelButton.label = "取消"
-			cancelButton.fontSize = 10
+			cancelButton.fontSize = 20
 			cancelButton.addEventListener(MouseEvent.CLICK, cancelButton_clickHandler)
 			addChild(cancelButton)
 			
 			removeButton = new Button()
-			removeButton.width = 50
-			removeButton.height = 15
+			removeButton.width = 100
+			removeButton.height = 30
 			removeButton.label = "移除成员"
-			removeButton.fontSize = 10
+			removeButton.fontSize = 20
 			removeButton.addEventListener(MouseEvent.CLICK, removeButton_clickHandler)
 			addChild(removeButton)
 		}
@@ -177,25 +180,28 @@ package com.xiaomu.view.group
 		{
 			super.updateDisplayList();
 			
-			nameLab.x = nameLab.y = 0;
-			nameInput.x = nameLab.x+nameLab.width;
-			nameInput.y = 0;
+			titleLab.y = (titleHeight-titleLab.height)/2;
 			
-			goldLab.x = nameInput.x+nameInput.width+15;
-			goldLab.y = 0;
+			nameLab.x = 20;
+			nameLab.y = titleHeight+10;
+			nameInput.x = nameLab.x+nameLab.width;
+			nameInput.y = nameLab.y;
+			
+			goldLab.x = nameInput.x+nameInput.width+30;
+			goldLab.y = nameLab.y;
 			goldInput.x = goldLab.x+goldLab.width;
-			goldInput.y = 0;
+			goldInput.y = nameLab.y;
 			
 			subNameLab.x = nameLab.x;
-			subNameLab.y = nameLab.y+nameLab.height+10;
+			subNameLab.y = nameLab.y+nameLab.height+20;
 			subNameInput.x = subNameLab.x+subNameLab.width;
 			subNameInput.y = subNameLab.y;
 			
-			submitButton.x = width/2-submitButton.width-5;
-			submitButton.y = height-submitButton.height-10;
-			cancelButton.x = width/2+5;
+			submitButton.x = width/2-submitButton.width-10;
+			submitButton.y = height+titleHeight-submitButton.height-20;
+			cancelButton.x = width/2+10;
 			cancelButton.y = submitButton.y;
-			removeButton.x = width-(removeButton.width+10);
+			removeButton.x = width-(removeButton.width+20);
 			removeButton.y = cancelButton.y;
 		}
 		

@@ -11,8 +11,8 @@ package com.xiaomu.itemRender
 		{
 			super();
 			
-			width = 63;
-			height = 30;
+			width = 126;
+			height = 60;
 			
 			autoDrawSkin = false;
 			this.mouseChildren = false;
@@ -72,8 +72,8 @@ package com.xiaomu.itemRender
 		{
 			super.updateDisplayList();
 			
-			coverImage.width = width*0.8;
-			coverImage.height = height*0.8;
+			coverImage.width = width*1;
+			coverImage.height = height*1;
 			coverImage.x = (width-coverImage.width)/2;
 			coverImage.y = (height-coverImage.height)/2;
 			

@@ -27,10 +27,11 @@ package com.xiaomu.view.hall.popUpPanel
 		public function CreateGroupPanel()
 		{
 			super();
-			width = 200;
-			height = 100;
+			width = 400;
+			height = 120;
 		}
 		
+		private var titleHeigh:int = 50;
 		private var titleLab:Label;
 		private var groupNameLab:Label;
 		private var groupNameInput:TextInput;
@@ -41,25 +42,42 @@ package com.xiaomu.view.hall.popUpPanel
 		{
 			super.createChildren();
 			
+			titleLab = new Label();
+			titleLab.text = '创建亲友圈';
+			titleLab.fontSize = 20;
+			titleLab.width = width;
+			titleLab.height = 40;
+			titleLab.color = 0xffffff;
+			addChild(titleLab);
+			
 			groupNameLab = new Label();
+			groupNameLab.color = 0xffffff;
 			groupNameLab.text = '群名:';
-			groupNameLab.width = 40;
-			groupNameLab.height = 20;
+			groupNameLab.width = 80;
+			groupNameLab.height = 40;
+			groupNameLab.fontSize = 20;
 			addChild(groupNameLab);
 			
 			groupNameInput = new TextInput();
 			groupNameInput.textAlign = TextAlign.CENTER;
-			groupNameInput.maxChars = 15;
-			groupNameInput.height = 20;
+			groupNameInput.maxChars = 30;
+			groupNameInput.height = 40;
+			groupNameInput.fontSize = 20;
 			addChild(groupNameInput);
 			
 			okBtn = new Button();
 			okBtn.label = '确定';
+			okBtn.width = 60;
+			okBtn.height = 30;
+			okBtn.fontSize = 20;
 			okBtn.addEventListener(MouseEvent.CLICK,oklHandler);
 			addChild(okBtn);
 			
 			cancelBtn = new Button();
 			cancelBtn.label = '取消'
+			cancelBtn.width = 60;
+			cancelBtn.height = 30;
+			cancelBtn.fontSize = 20;
 			cancelBtn.addEventListener(MouseEvent.CLICK,cancelHandler);
 			addChild(cancelBtn);
 		}
@@ -68,17 +86,17 @@ package com.xiaomu.view.hall.popUpPanel
 		{
 			super.updateDisplayList();
 			
-			groupNameLab.x = 10;
-			groupNameLab.y = 20;
+			titleLab.y = (titleHeigh-titleLab.height)/2;
+			
+			groupNameLab.x = 20;
+			groupNameLab.y = titleHeigh+10;
 			groupNameInput.x = groupNameLab.x+groupNameLab.width;
 			groupNameInput.y = groupNameLab.y;
+			groupNameInput.width = width-2*groupNameInput.x;
 			
-			okBtn.width = cancelBtn.width = 40;
-			okBtn.height = cancelBtn.height = 20;
-			
-			okBtn.x = width/2-okBtn.width-5;
-			okBtn.y = height-okBtn.height-5;
-			cancelBtn.x = width/2+5;
+			okBtn.x = width/2-okBtn.width-10;
+			okBtn.y = height+titleHeigh-okBtn.height-10;
+			cancelBtn.x = width/2+10;
 			cancelBtn.y = okBtn.y;
 		}
 		
@@ -86,10 +104,18 @@ package com.xiaomu.view.hall.popUpPanel
 		{
 			super.drawSkin();
 			
-			graphics.clear();
+			/*graphics.clear();
 			graphics.beginFill(0xffffff,1);
 			graphics.drawRoundRect(0,0,width,height,20,20);
-			graphics.endFill();
+			graphics.endFill();*/
+			
+			graphics.clear()
+			graphics.beginFill(0x000000, 0.7)
+			graphics.drawRoundRect(0, 0, width, height+titleHeigh, 5, 5)
+			graphics.endFill()
+			graphics.beginFill(0x000000)
+			graphics.drawRoundRect(0, 0, width, titleHeigh, 5, 5)
+			graphics.endFill()
 		}
 		
 		protected function cancelHandler(event:MouseEvent):void

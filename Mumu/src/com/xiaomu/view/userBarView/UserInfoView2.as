@@ -7,12 +7,12 @@ package com.xiaomu.view.userBarView
 	import coco.core.UIComponent;
 	import coco.manager.PopUpManager;
 	
-	public class UserInfoView extends UIComponent
+	public class UserInfoView2 extends UIComponent
 	{
-		public function UserInfoView()
+		public function UserInfoView2()
 		{
 			super();
-			height = 40;
+			height = 80;
 			width = 300
 		}
 		
@@ -38,22 +38,24 @@ package com.xiaomu.view.userBarView
 			super.createChildren();
 			
 			userinfoBar = new UserInfoBar();
-			userinfoBar.width = 70;
-			userinfoBar.height = 30;
+			userinfoBar.width = 270;
+			userinfoBar.height = height;
 			addChild(userinfoBar);
 			
 			goldBar = new GoldOrCardShowBar();
-			goldBar.width = 65;
-			goldBar.height = 20;
-			goldBar.iconWidthHeight = [22,22];
+			goldBar.width = 200;
+			goldBar.height = 50;
+//			goldBar.iconWidthHeight = [34,35];
+			goldBar.iconWidthHeight = [goldBar.height,goldBar.height];
 			goldBar.typeSource = 'assets/user/icon_jinbi_01.png';
 			goldBar.addEventListener(MouseEvent.CLICK,addGoldHandler);
 			addChild(goldBar);
 			
 			roomCardBar = new GoldOrCardShowBar();
-			roomCardBar.width = 80;
-			roomCardBar.height = 20;
-			roomCardBar.iconWidthHeight = [22,22];
+			roomCardBar.width = 200;
+			roomCardBar.height = 50;
+//			roomCardBar.iconWidthHeight = [34,35];
+			roomCardBar.iconWidthHeight = [roomCardBar.height,roomCardBar.height];
 			roomCardBar.typeSource = 'assets/user/icon_yuanbao_01.png';
 			addChild(roomCardBar);
 		}
@@ -63,16 +65,16 @@ package com.xiaomu.view.userBarView
 			super.updateDisplayList();
 			goldBar.visible = roomCardBar.visible = false;
 			userinfoBar.x = userinfoBar.y = 5;
-			goldBar.y = roomCardBar.y = 10;
+			goldBar.y = roomCardBar.y = 20;
 			if(AppData.getInstane().inGroupView){
 				if(AppData.getInstane().isNowGroupAdmin){
 					goldBar.visible = roomCardBar.visible = true;
 					roomCardBar.x = userinfoBar.x+userinfoBar.width+20
-					goldBar.x = roomCardBar.x+roomCardBar.width+20
+					goldBar.x = roomCardBar.x+roomCardBar.width+30
 				}else{
 					goldBar.visible = true;
 					roomCardBar.visible = false;
-					goldBar.x = userinfoBar.x+userinfoBar.width+20
+					goldBar.x = userinfoBar.x+userinfoBar.width+30
 				}
 			}else{
 				goldBar.visible = false;
@@ -96,7 +98,7 @@ package com.xiaomu.view.userBarView
 			super.drawSkin();
 			
 			/*graphics.clear();
-			graphics.beginFill(0xff0000,0.1);
+			graphics.beginFill(0xff0000,1);
 			graphics.drawRect(0,0,width,height);
 			graphics.endFill();*/
 		}

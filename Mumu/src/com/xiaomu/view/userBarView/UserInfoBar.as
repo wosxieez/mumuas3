@@ -34,13 +34,14 @@ package com.xiaomu.view.userBarView
 			
 			userIcon = new Image
 			userIcon.source = 'assets/hall/usericon.png'
-			userIcon.width = userIcon.height = 26
+			userIcon.width = userIcon.height = height*0.9
 			userIcon.x = userIcon.y = 2
 			addChild(userIcon)
 			
 			userNameLab = new Label()
-			userNameLab.x = 30
-			userNameLab.height = 30
+			userNameLab.x = userIcon.x+userIcon.width
+			userNameLab.height = height*0.9
+			userNameLab.fontSize = height*0.3
 			userNameLab.color = 0xFFFFFF
 			addChild(userNameLab)
 		}
