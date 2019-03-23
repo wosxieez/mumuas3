@@ -33,23 +33,10 @@ package com.xiaomu.view.room
 			Api.getInstane().addEventListener(ApiEvent.Notification, onNotificationHandler)
 		}
 		
-//		private var bg:Image
-		
 		private var bgLayer: UIComponent
-		private var preUserLine:Image
-		private var preUserBG:Image
-		private var preUserIcon:Image
-		private var preUserNameLabel:Label
-		
-		private var myUserLine:Image
-		private var myUserBG:Image
-		private var myUserIcon:Image
-		private var myUserNameLabel:Label
-		
-		private var nextUserLine:Image
-		private var nextUserBG:Image
-		private var nextUserIcon:Image
-		private var nextUserNameLabel:Label
+		private var preUserHead:RoomUserHead
+		private var myUserHead:RoomUserHead
+		private var nextUserHead:RoomUserHead
 		
 		private var cardLayer: UIComponent
 		private var cardsCarrUI:Image
@@ -100,81 +87,32 @@ package com.xiaomu.view.room
 			
 			cardsCarrUI = new Image()
 			cardsCarrUI.width = Size.BIG_CARD_WIDTH - 20
-			cardsCarrUI.height = Size.BIG_CARD_HEIGHT - 20
+			cardsCarrUI.height = Size.BIG_CARD_HEIGHT - 10
 			cardsCarrUI.rotation = 90
-			cardsCarrUI.y = 30
+			cardsCarrUI.y = 40
 			cardsCarrUI.source = Assets.getInstane().getAssets('fight_full_card.png')
 			cardsCarrUI.visible = false
 			bgLayer.addChild(cardsCarrUI)
 			
 			cardsLabel = new Label()
-			cardsLabel.y = 30
-			cardsLabel.fontSize = 25
-			cardsLabel.width = Size.BIG_CARD_HEIGHT - 20
+			cardsLabel.y = cardsCarrUI.y
+			cardsLabel.fontSize = 30
+			cardsLabel.width = Size.BIG_CARD_HEIGHT - 10
 			cardsLabel.height = Size.BIG_CARD_WIDTH - 20
 			cardsLabel.color = 0xFFFFFF
+			cardsLabel.bold = true
 			cardsLabel.visible = false
 			bgLayer.addChild(cardsLabel)
 			
-			
-			// 增加三个图像
-			preUserLine = new Image()
-			preUserLine.width = 80
-			preUserLine.height = 30
-			preUserLine.source = Assets.getInstane().getAssets('fight_userinfo_bg2.png')
-			bgLayer.addChild(preUserLine)
-			preUserBG = new Image()
-			preUserBG.width = preUserBG.height = 30
-			preUserBG.source = Assets.getInstane().getAssets('fight_userinfo_circle_bg.png')
-			bgLayer.addChild(preUserBG)
-			preUserIcon = new Image()
-			preUserIcon.width = preUserIcon.height = 20
-			preUserIcon.source = Assets.getInstane().getAssets('avatar1.png')
-			bgLayer.addChild(preUserIcon)
-			preUserNameLabel = new Label()
-			preUserNameLabel.color = 0xFFFFFF
-			preUserNameLabel.height = 30
-			preUserNameLabel.height = 30
-			bgLayer.addChild(preUserNameLabel)
-			
-			myUserLine = new Image()
-			myUserLine.width = 80
-			myUserLine.height = 30
-			myUserLine.source = Assets.getInstane().getAssets('fight_userinfo_bg2.png')
-			bgLayer.addChild(myUserLine)
-			myUserBG = new Image()
-			myUserBG.width = myUserBG.height = 30
-			myUserBG.source = Assets.getInstane().getAssets('fight_userinfo_circle_bg.png')
-			bgLayer.addChild(myUserBG)
-			myUserIcon = new Image()
-			myUserIcon.width = myUserIcon.height = 20
-			myUserIcon.source = Assets.getInstane().getAssets('avatar2.png')
-			bgLayer.addChild(myUserIcon)
-			myUserNameLabel = new Label()
-			myUserNameLabel.color = 0xFFFFFF
-			myUserNameLabel.height = 30
-			myUserNameLabel.height = 30
-			bgLayer.addChild(myUserNameLabel)
-			
-			nextUserLine = new Image()
-			nextUserLine.width = 80
-			nextUserLine.height = 30
-			nextUserLine.source = Assets.getInstane().getAssets('fight_userinfo_bg2.png')
-			bgLayer.addChild(nextUserLine)
-			nextUserBG = new Image()
-			nextUserBG.width = nextUserBG.height = 30
-			nextUserBG.source = Assets.getInstane().getAssets('fight_userinfo_circle_bg.png')
-			bgLayer.addChild(nextUserBG)
-			nextUserIcon = new Image()
-			nextUserIcon.width = nextUserIcon.height = 20
-			nextUserIcon.source = Assets.getInstane().getAssets('avatar3.png')
-			bgLayer.addChild(nextUserIcon)
-			nextUserNameLabel = new Label()
-			nextUserNameLabel.color = 0xFFFFFF
-			nextUserNameLabel.height = 30
-			nextUserNameLabel.height = 30
-			nextUserNameLabel.height = 30
-			bgLayer.addChild(nextUserNameLabel)
+			preUserHead = new RoomUserHead()
+			preUserHead.visible = false
+			bgLayer.addChild(preUserHead)
+			myUserHead = new RoomUserHead()
+			myUserHead.visible = false
+			bgLayer.addChild(myUserHead)
+			nextUserHead = new RoomUserHead()
+			nextUserHead.visible = false
+			bgLayer.addChild(nextUserHead)
 			
 			checkWaitTip = new Image()
 			checkWaitTip.width = 16
@@ -272,20 +210,17 @@ package com.xiaomu.view.room
 			//				passCards:[2, 4, 9]}
 			
 			if (preUser) {
-				preUserNameLabel.text = preUser.username
 				updatePreGroupCardUIs()
 				updatePrePassCardUIs()
 			}
 			
 			if (myUser) {
-				myUserNameLabel.text = myUser.username
 				updateMyHandCardUIs()
 				updateMyGroupCardUIs()
 				updateMyPassCardUIs()
 			}
 			
 			if (nextUser) {
-				nextUserNameLabel.text = nextUser.username
 				updateNextGroupCardUIs()
 				updateNextPassCardUIs()
 			}
@@ -294,39 +229,18 @@ package com.xiaomu.view.room
 		override protected function updateDisplayList():void {
 			super.updateDisplayList()
 			
-//			bg.width = width
-//			bg.height = height
+			preUserHead.x = 30
+			preUserHead.y = 30
 			
-			preUserLine.x = 20
-			preUserLine.y = 10
-			preUserBG.x = preUserLine.x - 15
-			preUserBG.y = preUserLine.y
-			preUserIcon.x = preUserBG.x + 5
-			preUserIcon.y = preUserBG.y + 5
-			preUserNameLabel.y = preUserLine.y
-			preUserNameLabel.x = preUserBG.x + 30
+			myUserHead.x = 30
+			myUserHead.y = height - myUserHead.height - 30
 			
-			myUserLine.x = 20
-			myUserLine.y = height - 35
-			myUserBG.x = myUserLine.x - 5
-			myUserBG.y = myUserLine.y
-			myUserIcon.x = myUserBG.x + 5
-			myUserIcon.y = myUserBG.y + 5
-			myUserNameLabel.y = myUserLine.y
-			myUserNameLabel.x = myUserBG.x + 30
-			
-			nextUserLine.x = width - 80
-			nextUserLine.y = 10
-			nextUserBG.x = nextUserLine.x - 15
-			nextUserBG.y = nextUserLine.y
-			nextUserIcon.x = nextUserBG.x + 5
-			nextUserIcon.y = nextUserBG.y + 5
-			nextUserNameLabel.y = nextUserLine.y 
-			nextUserNameLabel.x = nextUserBG.x + 30
+			nextUserHead.x = width - nextUserHead.width - 30
+			nextUserHead.y = 30
 			
 			cardsCarrUI.x = (width + cardsCarrUI.height)  / 2
 			cardsLabel.x = (width - cardsLabel.width)  / 2
-				
+			
 			cancelButton.x = width - cancelButton.width - 30
 			cancelButton.y = (height - cancelButton.height) / 2
 			
@@ -381,16 +295,25 @@ package com.xiaomu.view.room
 				}
 				
 				if (preUser) {
-					preUserNameLabel.text = preUser.username
-				} 
+					preUserHead.visible = true
+					preUserHead.username = preUser.username
+				}  else {
+					preUserHead.visible = false
+				}
 				
 				if (myUser) {
-					myUserNameLabel.text = myUser.username
-				} 
+					myUserHead.visible = true
+					myUserHead.username = myUser.username
+				}  else {
+					myUserHead.visible = false
+				}
 				
 				if (nextUser) {
-					nextUserNameLabel.text = nextUser.username
-				} 
+					nextUserHead.visible = true
+					nextUserHead.username = nextUser.username
+				}  else {
+					nextUserHead.visible = false
+				}
 				
 				if (roominfo.cc)
 					cardsLabel.text = '剩余' + roominfo.cc + '张牌'
@@ -436,12 +359,12 @@ package com.xiaomu.view.room
 		private function updateWaitTip():void {
 			if (preUser && checkUsername == preUser.username) {
 				checkWaitTip.visible = true
-				checkWaitTip.x = preUserIcon.x + 15
-				checkWaitTip.y = preUserIcon.y - 15
+				//				checkWaitTip.x = preUserIcon.x + 15
+				//				checkWaitTip.y = preUserIcon.y - 15
 			} else if (nextUser && checkUsername == nextUser.username) {
 				checkWaitTip.visible = true
-				checkWaitTip.x = nextUserIcon.x + 15
-				checkWaitTip.y = nextUserIcon.y - 15
+				//				checkWaitTip.x = nextUserIcon.x + 15
+				//				checkWaitTip.y = nextUserIcon.y - 15
 			} else {
 				checkWaitTip.visible = false
 			}
@@ -838,8 +761,8 @@ package com.xiaomu.view.room
 					updateNextGroupCardUIs()
 					updateNextPassCardUIs()
 					
-//					WinView.getInstane().data = notification.data
-//					PopUpManager.centerPopUp(PopUpManager.addPopUp(WinView.getInstane(), null, false, true))
+					//					WinView.getInstane().data = notification.data
+					//					PopUpManager.centerPopUp(PopUpManager.addPopUp(WinView.getInstane(), null, false, true))
 					break;
 				}
 				case Notifications.onTi : {
@@ -1066,7 +989,6 @@ package com.xiaomu.view.room
 			isHu = canHuButton.visible = canPengButton.visible = canChiButton.visible = cancelButton.visible = false
 			const action:Object = { name: Actions.Chi, data:  event.data}
 			Api.getInstane().sendAction(action)
-			
 		}
 		
 	}

@@ -10,8 +10,6 @@ package com.xiaomu.renderer
 		public function SelectRenderer()
 		{
 			super();
-			
-			backgroundAlpha = borderAlpha = 0
 		}
 		
 		private var myGroupCardUIs:Array = []
@@ -24,7 +22,7 @@ package com.xiaomu.renderer
 		
 		override protected function commitProperties():void {
 			super.commitProperties()
-				
+			
 			if (!data) return
 			
 			var oldMyGroupCardUIs:Array = []
@@ -39,7 +37,7 @@ package com.xiaomu.renderer
 			const horizontalGap:Number = 1
 			const verticalGap:Number = cardHeight * Size.GAP_RADIO
 			var newCardUI:CardUI
-			var startX:Number = 0
+			var startX:Number = 2
 			for (var j:int = 0; j < data.cards.length; j++) {
 				newCardUI = oldMyGroupCardUIs.pop()
 				if (!newCardUI) {
@@ -51,12 +49,19 @@ package com.xiaomu.renderer
 				newCardUI.width = cardWidth
 				newCardUI.height = cardHeight
 				newCardUI.x = startX
-				newCardUI.y = height - newCardUI.height - j * verticalGap
+				newCardUI.y = height - newCardUI.height - j * verticalGap - 2
 				newCardUI.card = data.cards[j]
 				newCardUI.type = CardUI.TYPE_BIG_CARD
 				setChildIndex(newCardUI, 0)
 				myGroupCardUIs.push(newCardUI)
 			}
+		}
+		
+		override protected function drawSkin():void {
+			graphics.clear()
+			graphics.beginFill(0xFF0000, selected ? 1 : 0)
+			graphics.drawRect(0, 0, width, height)
+			graphics.endFill()
 		}
 		
 	}

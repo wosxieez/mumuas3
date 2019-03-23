@@ -5,7 +5,6 @@ package com.xiaomu.view.room
 	
 	import coco.component.HGroup;
 	import coco.component.HorizontalAlign;
-	import coco.core.Application;
 	import coco.manager.PopUpManager;
 	
 	[Event(name="selected", type="com.xiaomu.event.SelectEvent")]
@@ -23,6 +22,7 @@ package com.xiaomu.view.room
 			
 			height = 800
 			width = 400
+			padding = 0
 			paddingRight = 30
 			horizontalAlign = HorizontalAlign.RIGHT
 		}
@@ -50,17 +50,17 @@ package com.xiaomu.view.room
 		{
 			return _dataProvider;
 		}
-
+		
 		public function set dataProvider(value:Array):void
 		{
 			_dataProvider = value;
 			invalidateProperties()
 		}
-
+		
 		
 		override protected function createChildren():void {
 			super.createChildren()
-				
+			
 			bi2Panel = new SelectPanel()
 			bi2Panel.title = '比牌'
 			bi2Panel.addEventListener(SelectEvent.SELECTED, bi2Panel_selectedHandler)
@@ -79,12 +79,12 @@ package com.xiaomu.view.room
 		
 		override protected function commitProperties():void {
 			super.commitProperties()
-				
+			
 			bi2Panel.visible = biPanel.visible = false
 			chiData = biData = bi2Data = null
 			chiPanel.dataProvider = dataProvider
 			if (dataProvider) {
-				chiPanel.width = Math.max(dataProvider.length * Size.MIDDLE_CARD_WIDTH / 2 + 20, 54)
+				chiPanel.width = Math.max(dataProvider.length * (Size.MIDDLE_CARD_WIDTH / 2 + 4) + 20, 54)
 			}
 		}
 		
@@ -105,7 +105,7 @@ package com.xiaomu.view.room
 				chiData = {name: event.data.name, cards: event.data.cards}
 				if (event.data.bi) {
 					// 有比牌数据
-					biPanel.width = Math.max(event.data.bi.length * Size.MIDDLE_CARD_WIDTH / 2 + 20, 54)
+					biPanel.width = Math.max(event.data.bi.length * (Size.MIDDLE_CARD_WIDTH / 2 + 4) + 20, 54)
 					biPanel.dataProvider = event.data.bi
 					biPanel.visible = true
 				} else {
@@ -124,7 +124,7 @@ package com.xiaomu.view.room
 				biData = {name: event.data.name, cards: event.data.cards}
 				if (event.data.bi) {
 					// 有比牌数据
-					bi2Panel.width = Math.max(event.data.bi.length * Size.MIDDLE_CARD_WIDTH / 2 + 20, 54)
+					bi2Panel.width = Math.max(event.data.bi.length * (Size.MIDDLE_CARD_WIDTH / 2 + 4) + 20, 54)
 					bi2Panel.dataProvider = event.data.bi
 					bi2Panel.visible = true
 				} else {

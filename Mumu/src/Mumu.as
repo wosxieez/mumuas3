@@ -39,7 +39,7 @@ package
 		override protected function updateDisplayList():void {
 //			super.updateDisplayList()
 			
-			this.coco::applicationPopUp.width = 1280
+			this.coco::applicationPopUp.width = 1280   // 16 / 9 分辨率
 			this.coco::applicationPopUp.height = 720
 			this.coco::applicationPopUp.scaleX = width / this.coco::applicationPopUp.width
 			this.coco::applicationPopUp.scaleY = height / this.coco::applicationPopUp.height
@@ -48,7 +48,7 @@ package
 			this.coco::applicationContent.width = this.coco::applicationPopUp.width
 			this.coco::applicationContent.height = this.coco::applicationPopUp.height
 			this.coco::applicationContent.scaleX = this.coco::applicationPopUp.scaleX
-			this.coco::applicationContent.scaleY = this.coco::applicationPopUp.scaleY
+			this.coco::applicationContent.scaleY = this.coco::applicationPopUp.scaleX
 				
 			MainView.getInstane().width = this.coco::applicationPopUp.width
 			MainView.getInstane().height = this.coco::applicationPopUp.height

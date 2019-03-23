@@ -22,7 +22,7 @@ package com.xiaomu.view.room
 			backgroundAlpha = 0.6
 			titleHeight = 20
 			width = 0
-			height = Size.MIDDLE_CARD_HEIGHT / 2 * 3  - Size.MIDDLE_CARD_HEIGHT * (1 - Size.GAP_RADIO) + titleHeight + 20
+			height = Size.MIDDLE_CARD_HEIGHT / 2 * 3  - Size.MIDDLE_CARD_HEIGHT * (1 - Size.GAP_RADIO) + titleHeight + 20 + 4
 		}
 		
 		private var _dataProvider:Array
@@ -45,8 +45,8 @@ package com.xiaomu.view.room
 			
 			selectList = new List()
 			selectList.addEventListener(UIEvent.CHANGE, selectList_changeHandler)
-			selectList.itemRendererWidth = Size.MIDDLE_CARD_WIDTH / 2
-			selectList.itemRendererHeight = Size.MIDDLE_CARD_HEIGHT / 2 * 3  - Size.MIDDLE_CARD_HEIGHT * (1 - Size.GAP_RADIO)
+			selectList.itemRendererWidth = Size.MIDDLE_CARD_WIDTH / 2 + 4
+			selectList.itemRendererHeight = Size.MIDDLE_CARD_HEIGHT / 2 * 3  - Size.MIDDLE_CARD_HEIGHT * (1 - Size.GAP_RADIO) + 4
 			selectList.itemRendererRowCount = 1
 			selectList.itemRendererClass = SelectRenderer
 			selectList.horizontalAlign = HorizontalAlign.CENTER
@@ -54,13 +54,18 @@ package com.xiaomu.view.room
 			addChild(selectList)
 		}
 		
+		private var oldIndex:int = -1
+		
 		protected function selectList_changeHandler(event:UIEvent):void
 		{
-			var se: SelectEvent = new SelectEvent(SelectEvent.SELECTED)
-			se.data = selectList.selectedItem
-			dispatchEvent(se)
-			
-			selectList.selectedIndex = -1
+			if (selectList.selectedIndex >= 0) {
+				oldIndex = selectList.selectedIndex
+				var se: SelectEvent = new SelectEvent(SelectEvent.SELECTED)
+				se.data = selectList.selectedItem
+				dispatchEvent(se)
+			} else {
+				selectList.selectedIndex = oldIndex
+			}
 		}
 		
 		override protected function commitProperties():void {

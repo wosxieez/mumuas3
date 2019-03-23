@@ -95,7 +95,7 @@ package com.xiaomu.component
 			if (!isReverse && card > 0) {
 				imageDisplay.source = Assets.getInstane().getAssets('fight_' + type + '_' + card + '.png')
 			} else {
-				imageDisplay.source = Assets.getInstane().getAssets('fight_big_card.png')
+				imageDisplay.source = Assets.getInstane().getAssets('fight_small_card.png')
 			}
 			
 			mask.visible = !canDeal
