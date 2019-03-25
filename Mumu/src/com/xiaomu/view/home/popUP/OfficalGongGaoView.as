@@ -65,7 +65,7 @@ package com.xiaomu.view.home.popUP
 			leftList.gap = 10;
 			leftList.width = 210;
 			leftList.height = height*0.8;
-			leftList.itemRendererHeight = 50;
+			leftList.itemRendererHeight = 65;
 			leftList.labelField = 'name';
 			leftList.addEventListener(UIEvent.CHANGE,leftListChangeHandler);
 			addChild(leftList);
