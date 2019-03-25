@@ -35,6 +35,8 @@ package com.xiaomu.view.room
 		
 		private var isGaming:Boolean = false
 		private var bgLayer: UIComponent
+		private var g1Image:Image
+		private var g2Image:Image
 		private var preUserHead:RoomUserHead
 		private var myUserHead:RoomUserHead
 		private var nextUserHead:RoomUserHead
@@ -87,6 +89,18 @@ package com.xiaomu.view.room
 			
 			bgLayer = new UIComponent()
 			addChild(bgLayer)
+			
+			g1Image = new Image()
+			g1Image.width = 330
+			g1Image.height = 32
+			g1Image.source = 'assets/room/g1.png'
+			addChild(g1Image)
+			
+			g2Image = new Image()
+			g2Image.width = 208
+			g2Image.height = 48
+			g2Image.source = 'assets/room/g2.png'
+			addChild(g2Image)
 			
 			cardsCarrUI = new Image()
 			cardsCarrUI.width = Size.BIG_CARD_WIDTH - 20
@@ -244,6 +258,12 @@ package com.xiaomu.view.room
 		
 		override protected function updateDisplayList():void {
 			super.updateDisplayList()
+				
+			g1Image.x = (width - g1Image.width) / 2
+			g1Image.y = height / 2 - g1Image.height - 40
+				
+			g2Image.x = (width - g2Image.width) / 2
+			g2Image.y = g1Image.y + g1Image.height + 20
 			
 			preUserHead.x = 30
 			preUserHead.y = 30
@@ -272,15 +292,14 @@ package com.xiaomu.view.room
 			canChiButton.x = canHuButton.x
 			canChiButton.y = canHuButton.y
 			
-			
 			newCardTip.x = (width - newCardTip.width) / 2
-			newCardTip.y = (height - newCardTip.height) / 2
+			newCardTip.y = (height - newCardTip.height) / 2 + 60
 			
 			backBtn.x = width - backBtn.width
 			zhunbeiButton.x = (width - zhunbeiButton.width) / 2
-			zhunbeiButton.y = (height - zhunbeiButton.height) / 2
+			zhunbeiButton.y = (height - zhunbeiButton.height) / 2 + 70
 			zhunbeiButton2.x = (width - zhunbeiButton2.width) / 2
-			zhunbeiButton2.y = (height - zhunbeiButton2.height) / 2
+			zhunbeiButton2.y = (height - zhunbeiButton2.height) / 2 + 70
 		}
 		
 		override protected function drawSkin():void {
@@ -487,7 +506,7 @@ package com.xiaomu.view.room
 						newCardUI.width = cardWidth
 						newCardUI.height = cardHeight
 						newCardUI.x = startX + i * (newCardUI.width + horizontalGap)
-						newCardUI.y = height / 2 - newCardUI.height - j * verticalGap - 70
+						newCardUI.y = height / 2 - newCardUI.height - j * verticalGap - 100
 						newCardUI.card = groupCards[j]
 						newCardUI.type = CardUI.TYPE_SMALL_CARD
 						cardLayer.setChildIndex(newCardUI, 0)
