@@ -20,8 +20,6 @@ package com.xiaomu.view.room
 		{
 			super();
 			
-			height = 800
-			width = 400
 			padding = 0
 			paddingRight = 30
 			horizontalAlign = HorizontalAlign.RIGHT

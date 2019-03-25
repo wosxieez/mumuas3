@@ -706,7 +706,6 @@ package com.xiaomu.view.room
 		protected function this_mouseUpHandler(event:MouseEvent):void {
 			this.removeEventListener(MouseEvent.MOUSE_UP, this_mouseUpHandler)
 			
-			trace('cards mouse up')
 			if (draggingCardUI) {
 				draggingCardUI.stopDrag()
 				if (mouseY <= height * 2 / 3) {
@@ -962,6 +961,9 @@ package com.xiaomu.view.room
 		
 		protected function cancelButton_clickHandler(event:MouseEvent):void
 		{
+			if (ChiSelectView.getInstane().isPopUp) {
+				ChiSelectView.getInstane().close()
+			}
 			isHu = canHuButton.visible = canPengButton.visible = canChiButton.visible = cancelButton.visible = false
 			const action:Object = { name: Actions.Cancel, data: '' }
 			Api.getInstane().sendAction(action)

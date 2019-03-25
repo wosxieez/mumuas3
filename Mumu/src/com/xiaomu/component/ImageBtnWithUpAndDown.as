@@ -3,13 +3,14 @@ package com.xiaomu.component
 	import flash.events.MouseEvent;
 	
 	import coco.component.Image;
-	import coco.core.UIComponent;
+	import coco.component.SkinComponent;
 	
-	public class ImageBtnWithUpAndDown extends UIComponent
+	public class ImageBtnWithUpAndDown extends SkinComponent
 	{
 		public function ImageBtnWithUpAndDown()
 		{
 			super();
+			backgroundAlpha = borderAlpha = 0
 			this.mouseChildren = false
 			addEventListener(MouseEvent.MOUSE_DOWN,mouseDownHandler);
 			addEventListener(MouseEvent.MOUSE_UP,mouseUpHandler);
@@ -33,43 +34,45 @@ package com.xiaomu.component
 		}
 		
 		private var _mouseDown:Boolean;
-
+		
 		public function get mouseDown():Boolean
 		{
 			return _mouseDown;
 		}
-
+		
 		public function set mouseDown(value:Boolean):void
 		{
 			_mouseDown = value;
 			invalidateProperties();
 		}
-
+		
 		
 		private var _upImageSource:String;
-
+		
 		public function get upImageSource():String
 		{
 			return _upImageSource;
 		}
-
+		
 		public function set upImageSource(value:String):void
 		{
 			_upImageSource = value;
+			invalidateProperties()
 		}
 		
 		private var _downImageSource:String;
-
+		
 		public function get downImageSource():String
 		{
 			return _downImageSource;
 		}
-
+		
 		public function set downImageSource(value:String):void
 		{
 			_downImageSource = value;
+			invalidateProperties()
 		}
-
+		
 		private var mouseUpImage:Image;
 		
 		override protected function createChildren():void
@@ -77,22 +80,21 @@ package com.xiaomu.component
 			super.createChildren();
 			
 			mouseUpImage = new Image();
-			mouseUpImage.width = width;
-			mouseUpImage.height = height;
-			
 			addChild(mouseUpImage);
 		}
 		
 		override protected function commitProperties():void
 		{
 			super.commitProperties();
-			
-			if(mouseDown){
-				mouseUpImage.source = downImageSource;
-			}else{
-				mouseUpImage.source = upImageSource;
-			}
+			mouseUpImage.source = mouseDown ? downImageSource : upImageSource;
 		}
-
+		
+		override protected function updateDisplayList():void {
+			super.updateDisplayList()
+				
+			mouseUpImage.width = width;
+			mouseUpImage.height = height;
+		}
+		
 	}
 }
