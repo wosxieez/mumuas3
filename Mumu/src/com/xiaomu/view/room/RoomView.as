@@ -2,6 +2,7 @@ package com.xiaomu.view.room
 {
 	import com.xiaomu.component.BigCardUI;
 	import com.xiaomu.component.CardUI;
+	import com.xiaomu.component.ImageBtnWithUpAndDown;
 	import com.xiaomu.event.ApiEvent;
 	import com.xiaomu.event.SelectEvent;
 	import com.xiaomu.util.Actions;
@@ -18,7 +19,6 @@ package com.xiaomu.view.room
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	
-	import coco.component.Button;
 	import coco.component.Image;
 	import coco.component.Label;
 	import coco.core.UIComponent;
@@ -33,6 +33,7 @@ package com.xiaomu.view.room
 			Api.getInstane().addEventListener(ApiEvent.Notification, onNotificationHandler)
 		}
 		
+		private var isGaming:Boolean = false
 		private var bgLayer: UIComponent
 		private var preUserHead:RoomUserHead
 		private var myUserHead:RoomUserHead
@@ -66,7 +67,8 @@ package com.xiaomu.view.room
 		private var thisCanChiCards:Array
 		private var thisCanHuDatas:Array
 		
-		private var zhunbeiButton:Button
+		private var zhunbeiButton:ImageBtnWithUpAndDown
+		private var zhunbeiButton2:ImageBtnWithUpAndDown
 		private var canHuButton:Image
 		private var canPengButton:Image
 		private var canChiButton:Image
@@ -179,13 +181,19 @@ package com.xiaomu.view.room
 			canHuButton.addEventListener(MouseEvent.CLICK,canHuButton_clickHandler)
 			iconLayer.addChild(canHuButton)
 			
-			zhunbeiButton = new Button()
-			zhunbeiButton.label = '准备'
-			zhunbeiButton.width = 100
-			zhunbeiButton.height = 40
-			zhunbeiButton.fontSize = 30;
+			zhunbeiButton = new ImageBtnWithUpAndDown()
+			zhunbeiButton.upImageSource = 'assets/room/zhunbeih_up.png'
+			zhunbeiButton.width = 191
+			zhunbeiButton.height = 68
 			zhunbeiButton.addEventListener(MouseEvent.CLICK, zhunbeiButton_clickHandler)
 			iconLayer.addChild(zhunbeiButton)
+			
+			zhunbeiButton2 = new ImageBtnWithUpAndDown()
+			zhunbeiButton2.upImageSource = 'assets/room/jbc_cancle_p.png'
+			zhunbeiButton2.width = 191
+			zhunbeiButton2.height = 68
+			zhunbeiButton2.addEventListener(MouseEvent.CLICK, zhunbeiButton2_clickHandler)
+			iconLayer.addChild(zhunbeiButton2)
 			
 			chatButton = new Image()
 			chatButton.width = 84
@@ -199,7 +207,7 @@ package com.xiaomu.view.room
 			backBtn.width = 71;
 			backBtn.height = 86;
 			backBtn.addEventListener(MouseEvent.CLICK, back_clickHandler)
-			addChild(backBtn)
+			iconLayer.addChild(backBtn)
 		}
 		
 		override protected function commitProperties():void {
@@ -268,10 +276,11 @@ package com.xiaomu.view.room
 			newCardTip.x = (width - newCardTip.width) / 2
 			newCardTip.y = (height - newCardTip.height) / 2
 			
-			backBtn.x = width - backBtn.width - 20
-			backBtn.y = height - backBtn.height - 20
+			backBtn.x = width - backBtn.width
 			zhunbeiButton.x = (width - zhunbeiButton.width) / 2
 			zhunbeiButton.y = (height - zhunbeiButton.height) / 2
+			zhunbeiButton2.x = (width - zhunbeiButton2.width) / 2
+			zhunbeiButton2.y = (height - zhunbeiButton2.height) / 2
 		}
 		
 		override protected function drawSkin():void {
@@ -329,9 +338,14 @@ package com.xiaomu.view.room
 				if (roominfo.cc)
 					cardsLabel.text = '剩余' + roominfo.cc + '张牌'
 				
-				for each(var user:Object in roominfo.users) {
-					if (user.username == AppData.getInstane().user.username) {
-						zhunbeiButton.label = user.isReady ? '取消准备' : '准备'
+				if (isGaming) {
+					zhunbeiButton2.visible = zhunbeiButton.visible = false
+				} else {
+					for each(var user:Object in roominfo.users) {
+						if (user.username == AppData.getInstane().user.username) {
+							zhunbeiButton2.visible = user.isReady
+							zhunbeiButton.visible = !zhunbeiButton2.visible
+						}
 					}
 				}
 			}
@@ -745,7 +759,8 @@ package com.xiaomu.view.room
 				}
 				case Notifications.onNewRound:
 				{
-					zhunbeiButton.visible = false
+					isGaming = true
+					zhunbeiButton.visible = zhunbeiButton2.visible = false
 					cardsCarrUI.visible = cardsLabel.visible = true
 					dealCardUI.visible = false
 					updateRoomInfo(notification.data)
@@ -920,21 +935,21 @@ package com.xiaomu.view.room
 					break
 				}
 				case Notifications.onWin: {
+					isGaming = false
 					trace('胡牌', JSON.stringify(notification.data))
 					Audio.getInstane().playHandle('hu')
 					cardsCarrUI.visible = cardsLabel.visible = false
 					WinView.getInstane().data = notification.data
-					PopUpManager.centerPopUp(PopUpManager.addPopUp(WinView.getInstane(), null, false, true))
+					PopUpManager.centerPopUp(PopUpManager.addPopUp(WinView.getInstane()))
 					zhunbeiButton.visible = true
-					zhunbeiButton.label = '准备'
 					break
 				}
 				case Notifications.onRoundEnd: {
+					isGaming = false
 					cardsCarrUI.visible = cardsLabel.visible = false
-					WinView.getInstane().data = notification.data
-					PopUpManager.centerPopUp(PopUpManager.addPopUp(WinView.getInstane(), null, false, true))
+					WinView.getInstane().data = null // 荒庄
+					PopUpManager.centerPopUp(PopUpManager.addPopUp(WinView.getInstane()))
 					zhunbeiButton.visible = true
-					zhunbeiButton.label = '准备'
 					break
 				}
 				default:
@@ -977,8 +992,9 @@ package com.xiaomu.view.room
 		}
 		
 		public function init(roominfo:Object): void {
-			zhunbeiButton.label = '准备'
+			isGaming = false
 			zhunbeiButton.visible = true
+			zhunbeiButton2.visible = false
 			Api.getInstane().addEventListener(ApiEvent.ON_ROOM, onRoomMessageHandler)
 		}
 		
@@ -991,7 +1007,13 @@ package com.xiaomu.view.room
 		
 		protected function zhunbeiButton_clickHandler(event:MouseEvent):void
 		{
-			const action:Object = { name: Actions.Ready, data: zhunbeiButton.label == '准备' ? true : false }
+			const action:Object = { name: Actions.Ready, data: true }
+			Api.getInstane().sendAction(action)
+		}
+		
+		protected function zhunbeiButton2_clickHandler(event:MouseEvent):void
+		{
+			const action:Object = { name: Actions.Ready, data: false }
 			Api.getInstane().sendAction(action)
 		}
 		

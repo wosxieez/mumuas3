@@ -47,7 +47,7 @@ package com.xiaomu.component
 		}
 		
 		
-		private var _upImageSource:String;
+		private var _upImageSource:String = null
 		
 		public function get upImageSource():String
 		{
@@ -60,10 +60,13 @@ package com.xiaomu.component
 			invalidateProperties()
 		}
 		
-		private var _downImageSource:String;
+		private var _downImageSource:String = null
 		
 		public function get downImageSource():String
 		{
+			if (!_downImageSource) {
+				return upImageSource
+			}
 			return _downImageSource;
 		}
 		

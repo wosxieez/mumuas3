@@ -1,5 +1,7 @@
 package com.xiaomu.view.room
 {
+	import com.xiaomu.util.AppData;
+	
 	import flash.events.MouseEvent;
 	
 	import coco.component.Image;
@@ -58,7 +60,6 @@ package com.xiaomu.view.room
 			addChild(background)
 			
 			titleImage = new Image()
-			titleImage.source = 'assets/room/Z_you_win.png'
 			titleImage.width = 220
 			titleImage.height = 64
 			addChild(titleImage)
@@ -107,8 +108,19 @@ package com.xiaomu.view.room
 		
 		override protected function commitProperties():void {
 			super.commitProperties()
-				
-			if (!data) return
+			
+			if (!data) {
+				titleImage.source = 'assets/room/pingju.png'
+				winUserCards.data = []
+				winUserTypes.data = {hx: 0, hts: []}
+				return
+			} 
+			
+			if (data.wn == AppData.getInstane().user.username) {
+				titleImage.source = 'assets/room/Z_you_win.png'
+			} else {
+				titleImage.source = 'assets/room/Z_nishul.png'
+			}
 			
 			for each(var user:Object in data.users) {
 				if (user.username == data.wn) {
