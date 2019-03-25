@@ -297,9 +297,9 @@ package com.xiaomu.view.room
 			
 			backBtn.x = width - backBtn.width
 			zhunbeiButton.x = (width - zhunbeiButton.width) / 2
-			zhunbeiButton.y = (height - zhunbeiButton.height) / 2 + 70
+			zhunbeiButton.y = (height - zhunbeiButton.height) / 2
 			zhunbeiButton2.x = (width - zhunbeiButton2.width) / 2
-			zhunbeiButton2.y = (height - zhunbeiButton2.height) / 2 + 70
+			zhunbeiButton2.y = (height - zhunbeiButton2.height) / 2
 		}
 		
 		override protected function drawSkin():void {

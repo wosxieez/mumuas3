@@ -28,7 +28,7 @@ package com.xiaomu.util
 		private var bgSoundChannel:SoundChannel
 		private var bgSound:Sound
 		
-		public function playBGM(url:String):void {
+		public function playBGM():void {
 			if (bgSoundChannel) {
 				try
 				{
@@ -40,7 +40,7 @@ package com.xiaomu.util
 				}
 			}
 			
-			bgSound = new Sound(new URLRequest(url))
+			bgSound = new Sound(new URLRequest('assets/bgm.mp3'))
 			bgSoundChannel = bgSound.play(0, 1000000)
 		}
 		

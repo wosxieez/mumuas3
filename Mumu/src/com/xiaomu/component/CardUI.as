@@ -21,6 +21,7 @@ package com.xiaomu.component
 		public static const TYPE_FULL_CARD:String = 'full_card'
 		public static const TYPE_BIG_CARD:String = 'big_card'
 		public static const TYPE_SMALL_CARD:String = 'small_card'
+			
 		
 		private var _card:int = 1
 		
@@ -77,6 +78,9 @@ package com.xiaomu.component
 
 		private var imageDisplay:Image
 		private var mask:UIComponent
+		
+		public var xIndex:int = -1
+		public var yIndex:int = -1
 		
 		override protected function createChildren():void {
 			super.createChildren()

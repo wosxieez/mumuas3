@@ -3,6 +3,7 @@ package com.xiaomu.view.home
 	import com.xiaomu.component.ImageBtnWithUpAndDown;
 	import com.xiaomu.itemRender.HomeBottomBarRender;
 	import com.xiaomu.util.AppData;
+	import com.xiaomu.util.Audio;
 	import com.xiaomu.util.HttpApi;
 	import com.xiaomu.view.MainView;
 	import com.xiaomu.view.hall.HallView;
@@ -207,6 +208,7 @@ package com.xiaomu.view.home
 		}
 		
 		public function init():void{
+			Audio.getInstane().playBGM()
 			HttpApi.getInstane().getUserInfoByName(AppData.getInstane().username,function(e:Event):void{
 				//trace('大厅界面：金币',JSON.parse(e.currentTarget.data).message[0].group_info);
 				//trace('大厅界面：房卡',JSON.parse(e.currentTarget.data).message[0].room_card);
