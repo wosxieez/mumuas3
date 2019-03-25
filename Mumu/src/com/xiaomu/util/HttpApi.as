@@ -247,5 +247,41 @@ package com.xiaomu.util
 			urlLoader.load(urlrequest)
 		}
 		
+		/**
+		 * 签到
+		 * @param today 今日日期
+		 * @param userId 用户id
+		 * @param resultHandler
+		 * @param faultHandler
+		 */
+		public function updateUserCheckIn(today:String,userId:int,resultHandler:Function=null,faultHandler:Function=null):void{
+			var params:Object = {update:{checkin_date: 
+				today}, query:{id:userId}}
+			var urlrequest:URLRequest = new URLRequest(WEB_URL + 'update_user');
+			urlrequest.method = URLRequestMethod.POST
+			urlrequest.contentType = 'application/json'
+			urlrequest.data = JSON.stringify(params)
+			var urlLoader:CocoURLLoader = new CocoURLLoader(resultHandler, faultHandler, true, 20000);
+			urlLoader.load(urlrequest)
+		}
+		
+		/**
+		 *更新用户的房卡数 
+		 * @param newRoomCardNumber 最新房卡数
+		 * @param userId
+		 * @param resultHandler
+		 * @param faultHandler
+		 */
+		public function updateUserRoomCard(newRoomCardNumber:int,userId:int,resultHandler:Function=null,faultHandler:Function=null):void{
+			var params:Object = {update:{room_card: 
+				newRoomCardNumber}, query:{id:userId}}
+			var urlrequest:URLRequest = new URLRequest(WEB_URL + 'update_user');
+			urlrequest.method = URLRequestMethod.POST
+			urlrequest.contentType = 'application/json'
+			urlrequest.data = JSON.stringify(params)
+			var urlLoader:CocoURLLoader = new CocoURLLoader(resultHandler, faultHandler, true, 20000);
+			urlLoader.load(urlrequest)
+		}
+		
 	}
 }

@@ -4,7 +4,7 @@ package com.xiaomu.view.newGroup
 	import com.xiaomu.util.HttpApi;
 	import com.xiaomu.view.MainView;
 	import com.xiaomu.view.hall.HallView;
-	import com.xiaomu.view.userBarView.UserInfoView;
+	import com.xiaomu.view.userBarView.UserInfoView2;
 	
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -20,7 +20,7 @@ package com.xiaomu.view.newGroup
 			super();
 		}
 		
-		private var userinfoView:UserInfoView;///用户的个人信息界面//作为该群群主，显示金币/房卡/  群成员只显示金币  群主能设置自身和群员的金币数
+		private var userinfoView:UserInfoView2;///用户的个人信息界面//作为该群群主，显示金币/房卡/  群成员只显示金币  群主能设置自身和群员的金币数
 		private var changePlayStyleBtn:Button;//显示玩法的按钮
 		private var changePlayStyleList:List;///切换玩法。作为群主可以查看选择玩法，添加/删除玩法。 群成员只能选择玩法。
 		private var changePlayRuleListView:ChangePlayRuleListView
@@ -45,7 +45,7 @@ package com.xiaomu.view.newGroup
 		{
 			super.createChildren();
 			
-			userinfoView = new UserInfoView();///从点击grouplist时就获取该群信息，反应在金币多少，房卡是否显示。
+			userinfoView = new UserInfoView2();///从点击grouplist时就获取该群信息，反应在金币多少，房卡是否显示。
 			addChild(userinfoView);
 			
 			changePlayStyleBtn = new Button();

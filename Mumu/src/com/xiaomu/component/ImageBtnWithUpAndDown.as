@@ -17,7 +17,6 @@ package com.xiaomu.component
 			addEventListener(MouseEvent.MOUSE_OUT, mouseOutHandler)
 		}
 		
-		
 		protected function mouseUpHandler(event:MouseEvent):void
 		{
 			mouseDown = false;

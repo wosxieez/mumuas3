@@ -7,6 +7,10 @@ package com.xiaomu.view.home
 	import com.xiaomu.util.HttpApi;
 	import com.xiaomu.view.MainView;
 	import com.xiaomu.view.hall.HallView;
+	import com.xiaomu.view.home.noticeBar.NoticeBar;
+	import com.xiaomu.view.home.popUP.OfficalGongGaoView;
+	import com.xiaomu.view.home.popUP.OfficalNoticeView;
+	import com.xiaomu.view.home.popUP.OfficalNoticeViewOfCopy;
 	import com.xiaomu.view.home.setting.SettingPanelView;
 	import com.xiaomu.view.userBarView.UserInfoView2;
 	
@@ -44,6 +48,7 @@ package com.xiaomu.view.home
 		private var paoDeKuaiImg:ImageBtnWithUpAndDown;
 		private var otherImg:ImageBtnWithUpAndDown;
 		private var gonggaoImg:Image;
+		private var noticeBar:NoticeBar;
 		override protected function createChildren():void
 		{
 			super.createChildren();
@@ -116,6 +121,7 @@ package com.xiaomu.view.home
 			shoppingBtn.height = 92;
 			shoppingBtn.upImageSource = 'assets/home/bottomBar/shangcheng_up.png';
 			shoppingBtn.downImageSource = 'assets/home/bottomBar/shangcheng_down.png';
+			shoppingBtn.addEventListener(MouseEvent.CLICK,shoppingBtnHandler);
 			addChild(shoppingBtn);
 			
 			btnGroup =  new ButtonGroup();
@@ -143,6 +149,7 @@ package com.xiaomu.view.home
 			proxyBtn.downImageSource = 'assets/home/cwdl_down.png';
 			proxyBtn.width = 109;
 			proxyBtn.height = 113;
+			proxyBtn.addEventListener(MouseEvent.CLICK,proxyBtnBtnHandler);
 			addChild(proxyBtn);
 			
 			checkInBtn = new ImageBtnWithUpAndDown();
@@ -150,6 +157,7 @@ package com.xiaomu.view.home
 			checkInBtn.downImageSource = 'assets/home/qiandao_down.png';
 			checkInBtn.width = 109*0.8;
 			checkInBtn.height = 111*0.8;
+			checkInBtn.addEventListener(MouseEvent.CLICK,checkInBtnHandler);
 			addChild(checkInBtn);
 			
 			waiterBtn = new ImageBtnWithUpAndDown();
@@ -157,7 +165,14 @@ package com.xiaomu.view.home
 			waiterBtn.downImageSource = 'assets/home/btn_kf_press.png';
 			waiterBtn.width = 104*0.8;
 			waiterBtn.height = 106*0.8;
+			waiterBtn.addEventListener(MouseEvent.CLICK,waiterBtnHandler);
 			addChild(waiterBtn);
+			
+			noticeBar = new NoticeBar();
+			noticeBar.width = 500;
+			noticeBar.height = 32;
+			addChild(noticeBar);
+			noticeBar.visible = false;
 		}
 		
 		override protected function updateDisplayList():void{
@@ -165,7 +180,6 @@ package com.xiaomu.view.home
 			
 			bg.width = width;
 			bg.height = height;
-			trace(width,height);
 			
 			shoppingBtn.x = 5;
 			shoppingBtn.y = height-shoppingBtn.height-2;
@@ -205,6 +219,9 @@ package com.xiaomu.view.home
 			
 			gonggaoImg.x = otherImg.x;
 			gonggaoImg.y = otherImg.y+otherImg.height-10;
+			
+			noticeBar.x = (width-noticeBar.width)/2;
+			noticeBar.y = myGroup.y-noticeBar.height-20;
 		}
 		
 		public function init():void{
@@ -239,6 +256,12 @@ package com.xiaomu.view.home
 					setPanelView = new SettingPanelView();
 				}
 				PopUpManager.centerPopUp(PopUpManager.addPopUp(setPanelView,null,true,false,0x000000,0.8));
+			}else if(btnGroup.selectedItem.name=='公告'){
+				var gonggaoView:OfficalGongGaoView;
+				if(!gonggaoView){
+					gonggaoView = new OfficalGongGaoView();
+					PopUpManager.centerPopUp(PopUpManager.addPopUp(gonggaoView,null,false,true,0,0.6));
+				}
 			}
 			
 			btnGroup.selectedIndex = -1
@@ -248,5 +271,88 @@ package com.xiaomu.view.home
 		{
 			trace('点击joinRoom');
 		}
+		
+		/**
+		 * 商场
+		 */
+		protected function shoppingBtnHandler(event:MouseEvent):void
+		{
+			var text:String = '如需购买房卡请联系客服微信：';
+			popUpHandler(text);
+		}
+		
+		/**
+		 * 联系客服
+		 */
+		protected function waiterBtnHandler(event:MouseEvent):void
+		{
+			var text:String = '有问题请联系微信：';
+			popUpHandler(text);
+		}
+		
+		/**
+		 * 成为代理
+		 */
+		protected function proxyBtnBtnHandler(event:MouseEvent):void
+		{
+			var text:String = '您不是代理，想成为代理请联系微信：';
+			popUpHandler(text);
+		}
+		
+		private function popUpHandler(text:String):void
+		{
+			var noticePanel:OfficalNoticeViewOfCopy;
+			if(!noticePanel){
+				noticePanel = new OfficalNoticeViewOfCopy();
+			}
+			noticePanel.showText = text;
+			PopUpManager.centerPopUp(PopUpManager.addPopUp(noticePanel,null,true,false,0,0.6));
+		}
+		
+		/**
+		 * 签到
+		 */
+		protected function checkInBtnHandler(event:MouseEvent):void
+		{
+			var noticePanel:OfficalNoticeView;
+			if(!noticePanel){noticePanel = new OfficalNoticeView()}
+			var todayDate:String = getTodayDate();
+//			trace("今日日期:",todayDate);
+			var user_id:int = parseInt(AppData.getInstane().user.userId);
+			HttpApi.getInstane().getUserInfoById(user_id,function(e:Event):void{
+				var oldDate:String = JSON.parse(e.currentTarget.data).message[0].checkin_date;
+				var oldRoomCardNumber:int = JSON.parse(e.currentTarget.data).message[0].room_card;
+//				trace('房卡数：',JSON.parse(e.currentTarget.data).message[0].room_card);
+				if(todayDate!=oldDate){
+					HttpApi.getInstane().updateUserCheckIn(todayDate,user_id,function(e:Event):void{
+						if(JSON.parse(e.currentTarget.data).result==0){
+//							trace('签到成功');
+							var str:String = '签到成功，赠送您2张房卡。祝您游戏愉快！';
+							noticePanel.showText = str;
+							PopUpManager.centerPopUp(PopUpManager.addPopUp(noticePanel,null,true,false,0,0.6));
+							HttpApi.getInstane().updateUserRoomCard(oldRoomCardNumber+2,user_id,function(e:Event):void{
+								if(JSON.parse(e.currentTarget.data).result==0){
+//									trace('房卡增加成功');
+									userInfoView.userInfoData = {"roomCard":oldRoomCardNumber+2,'userName':AppData.getInstane().username}
+								}
+							},null);
+						}
+					},null);
+				}else{
+					trace('今日已经签到');
+					var str:String = '今日已经签到过了哦，明天再来吧。亲！';
+					noticePanel.showText = str;
+					PopUpManager.centerPopUp(PopUpManager.addPopUp(noticePanel,null,true,false,0,0.6));
+				}
+			},null);
+		}
+		
+		private function getTodayDate():String
+		{
+			var date:Date = new Date();
+			return date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
+		}		
+		
+		
 	}
 }
