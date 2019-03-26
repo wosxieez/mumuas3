@@ -1,6 +1,5 @@
 package com.xiaomu.view.room
 {
-	import com.adobe.protocols.dict.events.MatchEvent;
 	import com.xiaomu.component.BigCardUI;
 	import com.xiaomu.component.CardUI;
 	import com.xiaomu.component.ImageBtnWithUpAndDown;
@@ -431,7 +430,6 @@ package com.xiaomu.view.room
 		
 		
 		private function getMyHandCardsIndex(mouseX:Number):int {
-			trace(mouseX)
 			for (var i:int = 0; i < 20; i++) {
 				var sx:Number = myHandCardStartX + i * (myHandCardWidth + myHandCardHorizontalGap)
 				var ex:Number = myHandCardStartX + (i + 1) * (myHandCardWidth + myHandCardHorizontalGap)
@@ -576,6 +574,12 @@ package com.xiaomu.view.room
 			}
 		}
 		
+		private function clearMyHandCardUIsCanOutTing():void {
+			for each(var cardUI:CardUI in myHandCardUIs) {
+				cardUI.tingCards = null
+			}
+		}
+		
 		private function updateMyHandCardUIsCanTing():void {
 			if (myUser) {
 				tingCardsView.tingCards = CardUtil.getInstane().canTing(myUser.groupCards, myUser.handCards, huxi)
@@ -603,6 +607,7 @@ package com.xiaomu.view.room
 				for (var i:int = 0; i < riffleCards.length; i++) {
 					var group:Object = riffleCards[i]
 					var groupCards:Array = group.cards
+					groupCards.sort()
 					var cardsLength:int = groupCards.length
 					for (var j:int = 0; j < cardsLength; j++) {
 						newCardUI = oldMyGroupCardUIs.pop()
@@ -866,10 +871,12 @@ package com.xiaomu.view.room
 						Api.getInstane().sendAction(action)
 						newCardTip.visible = false
 						isCheckNewCard = false
+						// 出牌之后清理出听提示
+						clearMyHandCardUIsCanOutTing()
 					}
 				} else {
 					ei = getMyHandCardsIndex(this.mouseX)
-					if (si > 0 && ei > 0 && si != ei) {
+					if (si >= 0 && ei >= 0) {
 						//  调整牌位置
 						if (myHandCards[si]) {
 							var index:int = (myHandCards[si] as Array).indexOf(draggingCardUI.card)
@@ -881,6 +888,7 @@ package com.xiaomu.view.room
 									} else if (myHandCards[ei].length == 3) {
 										if (myHandCards[ei][0] == myHandCards[ei][1] && myHandCards[ei][1] == myHandCards[ei][2]) {
 											// 坎元素不能堆积
+											trace('这是坎 不能堆积')
 										} else {
 											myHandCards[si].splice(index, 1) // 删除这个元素
 											myHandCards[ei].push(draggingCardUI.card)

@@ -169,7 +169,6 @@ package com.xiaomu.util
 					outTingCards.push({card: outCard, tingCards: tingCards})
 				}
 			}
-			trace('出听', JSON.stringify(outTingCards))
 			return outTingCards.length > 0 ? outTingCards : null
 		}
 		
@@ -184,13 +183,11 @@ package com.xiaomu.util
 			var tingCards:Array = []
 			for (var i:int = 1; i <= 20; i++) {
 				var canHuData:Array = canHu(handCards, groupCards, i)
-				trace('能胡的牌', JSON.stringify(canHuData))
 				if (canHuData && getHuXi(canHuData) >= huXi) {
 					tingCards.push(i)
 				}
 			}
 			
-			trace('能听的牌', tingCards)
 			if (tingCards.length > 0) {
 				return tingCards
 			} else {
@@ -274,20 +271,20 @@ package com.xiaomu.util
 				}
 				
 				// 顺子
-				if (countedCards[singleCard + 1] && countedCards[singleCard + 2]) {
+				if (countedCards[singleCard + 1] && countedCards[singleCard + 2] && singleCard != 9 && singleCard != 10) {
 					countedCards[singleCard]--;
 					countedCards[singleCard + 1]--;
 					countedCards[singleCard + 2]--;
 					return [singleCard, singleCard + 1, singleCard + 2];
 				}
-				if (countedCards[singleCard + 1] && countedCards[singleCard - 1]) {
+				if (countedCards[singleCard + 1] && countedCards[singleCard - 1] && singleCard !== 10 && singleCard !== 11) {
 					countedCards[singleCard]--;
 					countedCards[singleCard + 1]--;
 					countedCards[singleCard - 1]--;
 					return [singleCard - 1, singleCard, singleCard + 1];
 				}
 				
-				if (countedCards[singleCard - 1] && countedCards[singleCard - 2]) {
+				if (countedCards[singleCard - 1] && countedCards[singleCard - 2] && singleCard !== 11 && singleCard !== 12) {
 					countedCards[singleCard]--;
 					countedCards[singleCard - 1]--;
 					countedCards[singleCard - 2]--;

@@ -1,7 +1,5 @@
 package
 {
-	import com.xiaomu.component.CardUI;
-	import com.xiaomu.util.CardUtil;
 	import com.xiaomu.view.MainView;
 	import com.xiaomu.view.login.LoginView;
 	
@@ -16,10 +14,7 @@ package
 		{
 			super();
 			
-			CocoUI.useDebug = true
-			CocoUI.fontSize = 15
-				
-			CardUtil.getInstane().shouShun([1, 2, 3, 4, 5, 6, 7, 7, 7, 8, 8, 18])
+			CocoUI.fontSize = 20
 		}
 		
 		[Embed(source="assets/bg.png")]
