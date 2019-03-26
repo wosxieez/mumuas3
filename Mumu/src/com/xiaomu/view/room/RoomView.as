@@ -258,10 +258,10 @@ package com.xiaomu.view.room
 		
 		override protected function updateDisplayList():void {
 			super.updateDisplayList()
-				
+			
 			g1Image.x = (width - g1Image.width) / 2
 			g1Image.y = height / 2 - g1Image.height - 40
-				
+			
 			g2Image.x = (width - g2Image.width) / 2
 			g2Image.y = g1Image.y + g1Image.height + 20
 			
@@ -413,26 +413,100 @@ package com.xiaomu.view.room
 				checkWaitTip.visible = false
 			}
 		}
+		
+		private var myHandCards:Array = null
+		private var myHandCardWidth:Number = 0
+		private var myHandCardStartX:Number = 0
+		private var myHandCardHorizontalGap:Number = 1
+		
+		
+		private function getMyHandCardsIndex(mouseX:Number):int {
+			trace(mouseX)
+			for (var i:int = 0; i < 20; i++) {
+				var sx:Number = myHandCardStartX + i * (myHandCardWidth + myHandCardHorizontalGap)
+				var ex:Number = myHandCardStartX + (i + 1) * (myHandCardWidth + myHandCardHorizontalGap)
+				
+				if (sx <= mouseX && ex > mouseX) {
+					return i
+				}
+			}
+			
+			return -1
+		}
+		
 		/**
 		 *  更新我的牌视图
 		 */		
 		private function updateMyHandCardUIs():void {
 			if (myUser) {
-				const riffleCards:Array = CardUtil.getInstane().riffle(myUser.handCards)
+				if (!myHandCards) {
+					myHandCards = CardUtil.getInstane().riffle(myUser.handCards)
+				} else {
+					// myHandlers 已经存在了 匹配 增减就可以了
+					var oldCards:Array = []
+					var newCards:Array = []
+					for each(var newCard:int in myUser.handCards) {
+						newCards.push(newCard)
+					}
+					
+					for each(var group:Array in myHandCards) {
+						oldCards = oldCards.concat(group)
+					}
+					
+					function deleteNewCard(card):Boolean {
+						for (var i:int = newCards.length - 1; i >= 0; i--){
+							if (newCards[i] == card) {
+								newCards.splice(i, 1)
+								return true
+							}
+						} 
+						return false
+					}
+					
+					for (var j:int = oldCards.length - 1; j >= 0; j--) {
+						if (deleteNewCard(oldCards[j])) {
+							oldCards.splice(j, 1)
+						}
+					}
+					
+					function deleteMyHandCard(card):void {
+						for (var yi:int = myHandCards.length - 1; yi >= 0; yi--) {
+							for (var xi:int = 0; xi < myHandCards[yi].length; xi++) {
+								if (myHandCards[yi][xi] == card) {
+									myHandCards[yi].splice(xi, 1)
+									return 
+								}
+							}
+						}
+					}
+					
+					for each(var oldCard:int in oldCards) {
+						deleteMyHandCard(oldCard)
+					}
+				}
+				
+				for (var ii:int = myHandCards.length - 1; ii >= 0; ii--) {
+					if (myHandCards[ii].length == 0) {
+						myHandCards.splice(ii, 1)
+					}
+				}
+				
+				// 回收CardUIs
 				var oldMyHandCardUIs:Array = []
 				for each(var cardUI: CardUI in myHandCardUIs) {
 					cardUI.visible = false
 					oldMyHandCardUIs.push(cardUI)
 				}
 				myHandCardUIs = []
-				const cardWidth:Number = Size.MIDDLE_CARD_WIDTH
+				
+				myHandCardWidth = Size.MIDDLE_CARD_WIDTH
 				const cardHeight:Number = Size.MIDDLE_CARD_HEIGHT
-				const horizontalGap:Number = 1
+				myHandCardHorizontalGap = 1
 				const verticalGap:Number = cardHeight * 3 / 4
 				var newCardUI:CardUI
-				var startX:Number = (width - riffleCards.length * (cardWidth + horizontalGap)) / 2
-				for (var i:int = 0; i < riffleCards.length; i++) {
-					var groupCards:Array = riffleCards[i]
+				myHandCardStartX = (width - myHandCards.length * (myHandCardWidth + myHandCardHorizontalGap)) / 2
+				for (var i:int = 0; i < myHandCards.length; i++) {
+					var groupCards:Array = myHandCards[i]
 					var canDeal:Boolean = true
 					if (groupCards && groupCards.length >= 3) {
 						canDeal = false
@@ -448,7 +522,7 @@ package com.xiaomu.view.room
 							}
 						}
 					}
-					for (var j:int = 0; j < groupCards.length; j++) {
+					for (var jj:int = 0; jj < groupCards.length; jj++) {
 						newCardUI = oldMyHandCardUIs.pop()
 						if (!newCardUI) {
 							newCardUI = new CardUI()
@@ -457,17 +531,16 @@ package com.xiaomu.view.room
 						}
 						newCardUI.visible = true
 						newCardUI.canDeal = canDeal
-						newCardUI.width = cardWidth
+						newCardUI.width = myHandCardWidth
 						newCardUI.height = cardHeight
-						newCardUI.x = startX + i * (newCardUI.width + horizontalGap)
-						newCardUI.y = height - newCardUI.height - j * verticalGap - 5
-						newCardUI.card = riffleCards[i][j]
+						newCardUI.x = myHandCardStartX + i * (newCardUI.width + myHandCardHorizontalGap)
+						newCardUI.y = height - newCardUI.height - jj * verticalGap - 5
+						newCardUI.card = myHandCards[i][jj]
 						newCardUI.type = CardUI.TYPE_BIG_CARD
 						cardLayer.setChildIndex(newCardUI, 0)
 						myHandCardUIs.push(newCardUI)
 					}
 				}
-				
 			}
 		}
 		
@@ -722,13 +795,16 @@ package com.xiaomu.view.room
 		}
 		
 		private var draggingCardUI:CardUI
+		private var si:int = -1
+		private var ei:int = -1
 		
 		protected function cardUI_mouseDownHandler(event:MouseEvent):void
 		{
-			trace('cards mouse down')
 			const cardUI:CardUI = event.currentTarget as CardUI
-			if (cardUI && cardUI.canDeal && this.isCheckNewCard) {
+			if (cardUI && cardUI.canDeal) {
+				si = getMyHandCardsIndex(this.mouseX)
 				draggingCardUI = cardUI
+				draggingCardUI.parent.setChildIndex(draggingCardUI, draggingCardUI.parent.numChildren - 1)
 				oldPoint = cardLayer.localToGlobal(new Point(draggingCardUI.x, draggingCardUI.y))
 				draggingCardUI.startDrag()
 				
@@ -738,28 +814,59 @@ package com.xiaomu.view.room
 		
 		protected function this_mouseUpHandler(event:MouseEvent):void {
 			this.removeEventListener(MouseEvent.MOUSE_UP, this_mouseUpHandler)
-			
 			if (draggingCardUI) {
 				draggingCardUI.stopDrag()
-				if (mouseY <= height * 2 / 3) {
+				if (isCheckNewCard && mouseY <= height * 1 / 2) {
 					if (isCheckNewCard) {
 						const action:Object = { name: Actions.NewCard, data: draggingCardUI.card }
 						Api.getInstane().sendAction(action)
 						newCardTip.visible = false
 						isCheckNewCard = false
 					}
-				}	
-				
+				} else {
+					ei = getMyHandCardsIndex(this.mouseX)
+					if (si > 0 && ei > 0 && si != ei) {
+						//  调整牌位置
+						if (myHandCards[si]) {
+							var index:int = (myHandCards[si] as Array).indexOf(draggingCardUI.card)
+							if (index >= 0) {
+								if (myHandCards[ei]) {
+									if (myHandCards[ei].length < 3) {
+										myHandCards[si].splice(index, 1) // 删除这个元素
+										myHandCards[ei].push(draggingCardUI.card)
+									} else if (myHandCards[ei].length == 3) {
+										if (myHandCards[ei][0] == myHandCards[ei][1] && myHandCards[ei][1] == myHandCards[ei][2]) {
+											// 坎元素不能堆积
+										} else {
+											myHandCards[si].splice(index, 1) // 删除这个元素
+											myHandCards[ei].push(draggingCardUI.card)
+										}
+									}
+								} else {
+									myHandCards[si].splice(index, 1) // 删除这个元素
+									myHandCards.push([draggingCardUI.card])
+								}
+							}
+						}
+					}
+				}
+			}
+			
+			
+			updateMyHandCardUIs()
+		}
+		
+		protected function onNotificationHandler(event:ApiEvent):void
+		{
+			if (draggingCardUI) {
+				draggingCardUI.stopDrag()
 				// 恢复开始点
 				const thisPoint:Point = cardLayer.globalToLocal(oldPoint)
 				draggingCardUI.x = thisPoint.x
 				draggingCardUI.y = thisPoint.y
 				draggingCardUI = null
 			}
-		}
-		
-		protected function onNotificationHandler(event:ApiEvent):void
-		{
+			
 			isCheckNewCard = isHu = false
 			newCardTip.visible = cancelButton.visible = canChiButton.visible = canPengButton.visible = canHuButton.visible = false
 			thisCanChiCards = thisCanHuDatas = thisCanPengCards = null
@@ -779,6 +886,7 @@ package com.xiaomu.view.room
 				case Notifications.onNewRound:
 				{
 					isGaming = true
+					myHandCards = null
 					zhunbeiButton.visible = zhunbeiButton2.visible = false
 					cardsCarrUI.visible = cardsLabel.visible = true
 					dealCardUI.visible = false
@@ -795,6 +903,7 @@ package com.xiaomu.view.room
 				}
 				case Notifications.onGameStart:
 				{
+					myHandCards = null
 					dealCardUI2.visible = false // zhuangka
 					updateRoomInfo(notification.data)
 					updateMyHandCardUIs()
