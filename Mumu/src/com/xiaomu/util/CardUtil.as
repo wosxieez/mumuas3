@@ -146,71 +146,6 @@ package com.xiaomu.util
 			return riffledCards;
 		}
 		
-		/**
-		 * 是否可以碰牌 
-		 * @param cards
-		 * @param card
-		 * @return 
-		 * 
-		 */		
-		public function canPeng(cardsOnHand:Array, currentCard:int):Array {
-			var canPengCards:Array = null
-			var countedCards:Dictionary = countBy(cardsOnHand)
-			if(countedCards[currentCard] === 2){
-				canPengCards = [currentCard, currentCard];
-			}
-			return canPengCards;
-		}
-		
-		/**
-		 * 判断是否能吃 
-		 * @param cardsOnHand
-		 * @param currentCard
-		 * @return 
-		 */		
-		public function canChi(cardsOnHand:Array, currentCard:int):Array {
-			var canChiCards:Array = []
-			var card:int
-			var countedCards:Dictionary = countBy(cardsOnHand)
-			for (card in countedCards) {
-				if (countedCards[card] == 3) {
-					delete countedCards[card]
-				}
-			}
-			
-			// 比方 currentCard = 8
-			if (countedCards[currentCard - 1]) {
-				if (countedCards[currentCard - 2] && currentCard !== 11 && currentCard !== 12) {
-					canChiCards.push([currentCard - 1, currentCard - 2]) // 判断8在尾部 查询 6 7 '8'  尾牌不能等于 11 12
-				} 
-				if (countedCards[currentCard + 1] && currentCard !== 10 && currentCard !== 11) {
-					canChiCards.push([currentCard - 1, currentCard + 1]) // 判断8在中部 查询 7 '8' 9  中牌不能等于 10 11
-				}
-			} 
-			
-			if (currentCard < 11) {
-				if (countedCards[currentCard] && countedCards[currentCard + 10]) {
-					canChiCards.push([currentCard, currentCard + 10]) // 判断 8 8 18
-				}
-				if (countedCards[currentCard + 10] > 2) {
-					canChiCards.push([currentCard + 10, currentCard + 10]) // 判断 8 18 18
-				}
-			} else {
-				if (countedCards[currentCard] && countedCards[currentCard - 10]) {
-					canChiCards.push([currentCard, currentCard - 10]) // 判断 8 8 18
-				}
-				if (countedCards[currentCard - 10] > 2) {
-					canChiCards.push([currentCard - 10, currentCard - 10]) // 判断 8 18 18
-				}
-			}
-			
-			if (canChiCards.length > 0) {
-				return canChiCards
-			} else {
-				return null
-			}
-		}
-		
 		private function countBy(cards:Array):Dictionary {
 			var countedCards:Dictionary = new Dictionary()
 			for each(var card:int in cards) {
@@ -221,6 +156,280 @@ package com.xiaomu.util
 				}
 			}
 			return countedCards
+		}
+		
+		public function outCardCanTing(groupCards:Array, handCards:Array, huXi:int):Array {
+			var outTingCards:Array = []
+			for (var i:int = 0; i < handCards.length; i++) {
+				var newHandCards:Array = handCards.concat([])
+				var outCard:int = newHandCards[i]
+				newHandCards.splice(i, 1)
+				var tingCards:Array = canTing(groupCards, newHandCards, huXi)
+				if (tingCards) {
+					outTingCards.push({card: outCard, tingCards: tingCards})
+				}
+			}
+			trace('出听', JSON.stringify(outTingCards))
+			return outTingCards.length > 0 ? outTingCards : null
+		}
+		
+		/**
+		 * 是否能听牌 
+		 * @param groupCards
+		 * @param handCards
+		 * @param huXi
+		 * 
+		 */		
+		public function canTing(groupCards:Array, handCards:Array, huXi:int):Array {
+			var tingCards:Array = []
+			for (var i:int = 1; i <= 20; i++) {
+				var canHuData:Array = canHu(handCards, groupCards, i)
+				trace('能胡的牌', JSON.stringify(canHuData))
+				if (canHuData && getHuXi(canHuData) >= huXi) {
+					tingCards.push(i)
+				}
+			}
+			
+			trace('能听的牌', tingCards)
+			if (tingCards.length > 0) {
+				return tingCards
+			} else {
+				return null
+			}
+		}
+		
+		
+		public function canHu(handCards:Array, groupCards:Array, currntCard:int):Array {
+			var totalHandCards:Array = handCards.concat([currntCard])
+			var onHand:Array = shouShun(totalHandCards)
+			if (onHand) {
+				return groupCards.concat(onHand)
+			} else {
+				return null		
+			}
+		}
+		
+		/**
+		 * 玩家的牌是否无单牌。
+		 * @param cards: 手中的牌，或者手中的牌加新翻开的底牌。
+		 */
+		public function shouShun(cards):Array {
+			var countedCards:Dictionary = countBy(cards)
+			var results:Array = [];
+			
+			// 处理四张 三张
+			for (var key:int in countedCards) {
+				if (countedCards[key] == 4) {
+					results.push({ name: Actions.Pao, cards: [key, key, key, key] });
+				} else if (countedCards[key] === 3) {
+					results.push({ name: Actions.Kan, cards: [key, key, key] });
+					delete countedCards[key];
+				}
+			}
+			
+			var findShunzi:Function = function (singleCard:int):Array {
+				// 贰柒拾
+				if (singleCard == 2) {
+					if (countedCards[7] && countedCards[10]) {
+						countedCards[2]--
+						countedCards[7]--
+						countedCards[10]--
+						return [2, 7, 10]
+					}
+				} else if (singleCard == 7) {
+					if (countedCards[2] && countedCards[10]) {
+						countedCards[2]--
+						countedCards[7]--
+						countedCards[10]--
+						return [2, 7, 10]
+					}
+				} else if (singleCard == 10) {
+					if (countedCards[2] && countedCards[7]) {
+						countedCards[2]--
+						countedCards[7]--
+						countedCards[10]--
+						return [2, 7, 10]
+					}
+				} else if (singleCard == 12) {
+					if (countedCards[17] && countedCards[20]) {
+						countedCards[12]--
+						countedCards[17]--
+						countedCards[20]--
+						return [12, 17, 20]
+					}
+				} else if (singleCard == 17) {
+					if (countedCards[12] && countedCards[20]) {
+						countedCards[12]--
+						countedCards[17]--
+						countedCards[20]--
+						return [12, 17, 20]
+					}
+				} else  if (singleCard == 20) {
+					if (countedCards[12] && countedCards[17]) {
+						countedCards[12]--
+						countedCards[17]--
+						countedCards[20]--
+						return [12, 17, 20]
+					}
+				}
+				
+				// 顺子
+				if (countedCards[singleCard + 1] && countedCards[singleCard + 2]) {
+					countedCards[singleCard]--;
+					countedCards[singleCard + 1]--;
+					countedCards[singleCard + 2]--;
+					return [singleCard, singleCard + 1, singleCard + 2];
+				}
+				if (countedCards[singleCard + 1] && countedCards[singleCard - 1]) {
+					countedCards[singleCard]--;
+					countedCards[singleCard + 1]--;
+					countedCards[singleCard - 1]--;
+					return [singleCard - 1, singleCard, singleCard + 1];
+				}
+				
+				if (countedCards[singleCard - 1] && countedCards[singleCard - 2]) {
+					countedCards[singleCard]--;
+					countedCards[singleCard - 1]--;
+					countedCards[singleCard - 2]--;
+					return [singleCard - 2, singleCard - 1, singleCard];
+				}
+				
+				// 大小混搭
+				if (singleCard > 10 && (countedCards[singleCard - 10] > 1)) {
+					countedCards[singleCard]--;
+					countedCards[singleCard - 10] -= 2;
+					return [singleCard, singleCard - 10, singleCard - 10];
+				}
+				if (singleCard < 11 && (countedCards[singleCard + 10] > 1)) {
+					countedCards[singleCard]--;
+					countedCards[singleCard + 10] -= 2;
+					return [singleCard, singleCard + 10, singleCard + 10];
+				}
+				
+				return null
+			}
+			
+			for (var key2:int in countedCards) {
+				if (countedCards[key2] == 1) {
+					const shunzi:Array = findShunzi(key2)
+					if (shunzi) {
+						results.push({ name: Actions.Chi, cards: shunzi })
+					}
+				} 
+			}
+			
+			for (var key3:int in countedCards) {
+				if (countedCards[key3] == 0) {
+					delete countedCards[key3];
+				} 
+			}
+			
+			var keys:Array = []
+			for (var key4:int in countedCards) {
+				keys.push(key4)
+			}
+			
+			if (keys.length > 1) {
+				return null
+			} else if (keys.length == 1) {
+				if (countedCards[keys[0]] == 2) {
+					results.push({ name: Actions.Jiang, cards: [parseInt(keys[0]), parseInt(keys[0])] })
+				} else {
+					return null
+				}
+			}
+			
+			return results
+		}
+		
+		public function getHuXi(groups:Array):int {
+			var totalHuXi:int = 0
+			for each(var group:Object in groups) {
+				totalHuXi = totalHuXi + getGroupHuXi(group)
+			}
+			return totalHuXi
+		}
+		
+		private function getGroupHuXi(group:Object):int {
+			var cards:Array = group.cards
+			var type:String = group.name
+			// 1. 四张大牌--提 12 胡息
+			// 2. 四张小牌--提 9 胡
+			// 3. 四张大牌--跑 9 胡息
+			// 4. 四张小牌--跑 6 胡
+			if (cards.length === 4) {
+				switch (type) {
+					case Actions.Ti:
+						if (cards[0] > 10 && cards[0] < 21) {
+							return 12;
+						} else if (cards[0] > 0) {
+							return 9
+						}
+						break;
+					case Actions.Pao:
+						if (cards[0] > 10 && cards[0] < 21) {
+							return 9
+						} else if (cards[0] > 0) {
+							return 6
+						}
+						break;
+					default:
+						break;
+				}
+			}
+			
+			// 三张大牌-偎 6 胡
+			// 三张小牌-偎 3 胡
+			// 三张大牌-碰 3 胡
+			// 三张小牌-碰 1 胡
+			// 三张大牌-坎 6 胡
+			// 三张小牌-坎 3 胡
+			if (cards.length === 3) {
+				switch (type) {
+					case Actions.Wei:
+						if (cards[0] > 10 && cards[0] < 21) {
+							return 6
+						} else if (cards[0] > 0) {
+							return 3
+						}
+						break;
+					case Actions.Peng:
+						if (cards[0] > 10 && cards[0] < 21) {
+							return 3
+						} else if (cards[0] > 0) {
+							return 1
+						}
+						break;
+					case Actions.Kan:
+						if (cards[0] > 10 && cards[0] < 21) {
+							return 6
+						} else if (cards[0] > 0) {
+							return 3
+						}
+						break;
+					default:
+						break;
+				}
+			}
+			
+			
+			if (cards.length === 3 && type === Actions.Chi) { 
+				
+				// 9. 壹贰叁、贰柒拾 6 胡
+				if ((cards.indexOf(11) >= 0 && cards.indexOf(12) >= 0 && cards.indexOf(13) >= 0) || 
+					(cards.indexOf(12) >= 0 && cards.indexOf(17) >= 0 && cards.indexOf(20) >= 0)) {
+					return 6
+				}
+				
+				// 9. 壹贰叁、贰柒拾 6 胡
+				if ((cards.indexOf(1) >= 0 && cards.indexOf(2) >= 0 && cards.indexOf(3) >= 0) || 
+					(cards.indexOf(2) >= 0 && cards.indexOf(7) >= 0 && cards.indexOf(10) >= 0)) {
+					return 3
+				}
+				
+			}
+			
+			return 0
 		}
 		
 	}

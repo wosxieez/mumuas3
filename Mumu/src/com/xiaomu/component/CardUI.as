@@ -75,18 +75,33 @@ package com.xiaomu.component
 			_isReverse = value;
 			invalidateProperties()
 		}
+		
+		private var _tingCards:Array
+
+		public function get tingCards():Array
+		{
+			return _tingCards;
+		}
+
+		public function set tingCards(value:Array):void
+		{
+			_tingCards = value;
+			invalidateProperties()
+		}
 
 		private var imageDisplay:Image
+		private var tingIcon:Image
 		private var mask:UIComponent
-		
-		public var xIndex:int = -1
-		public var yIndex:int = -1
 		
 		override protected function createChildren():void {
 			super.createChildren()
 			
 			imageDisplay = new Image()
 			addChild(imageDisplay)
+			
+			tingIcon = new Image()
+			tingIcon.source = 'assets/room/ting.png'
+			addChild(tingIcon)
 			
 			mask = new UIComponent()
 			mask.visible = false
@@ -103,6 +118,7 @@ package com.xiaomu.component
 			}
 			
 			mask.visible = !canDeal
+			tingIcon.visible = canDeal && tingCards
 		}
 		
 		override protected function measure():void {

@@ -5,6 +5,8 @@ package com.xiaomu.util
 		public static const NewCard:String = 'newCard'         // 出牌
 		public static const Ti:String = "ti"         // 提
 		public static const Pao:String = "pao"       // 跑
+		public static const Kan:String = "kan"       // 坎
+		public static const Jiang:String = "jiang"   // 将牌
 		public static const Wei:String = "wei"       // 偎
 		public static const Peng:String = "peng"     // 碰
 		public static const Hu:String = "hu"         // 胡牌

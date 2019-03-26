@@ -1,5 +1,6 @@
 package com.xiaomu.view.room
 {
+	import com.adobe.protocols.dict.events.MatchEvent;
 	import com.xiaomu.component.BigCardUI;
 	import com.xiaomu.component.CardUI;
 	import com.xiaomu.component.ImageBtnWithUpAndDown;
@@ -32,6 +33,8 @@ package com.xiaomu.view.room
 			
 			Api.getInstane().addEventListener(ApiEvent.Notification, onNotificationHandler)
 		}
+		
+		private var huxi:int = 0
 		
 		private var isGaming:Boolean = false
 		private var bgLayer: UIComponent
@@ -81,6 +84,7 @@ package com.xiaomu.view.room
 		private var isCheckNewCard:Boolean = false // 是否在等待出牌
 		private var isHu:Boolean = false
 		private var chatButton:Image
+		private var tingCardsView:TingCardsView
 		
 		private var backBtn:Image
 		
@@ -143,6 +147,9 @@ package com.xiaomu.view.room
 			newCardTip.visible = false
 			newCardTip.source = Assets.getInstane().getAssets('fight_txt_finger_tips.png')
 			bgLayer.addChild(newCardTip)
+			
+			tingCardsView = new TingCardsView()
+			bgLayer.addChild(tingCardsView)
 			
 			// 卡牌层
 			cardLayer = new UIComponent()
@@ -300,6 +307,9 @@ package com.xiaomu.view.room
 			zhunbeiButton.y = (height - zhunbeiButton.height) / 2
 			zhunbeiButton2.x = (width - zhunbeiButton2.width) / 2
 			zhunbeiButton2.y = (height - zhunbeiButton2.height) / 2
+			
+			tingCardsView.x = 30
+			tingCardsView.y = (height - tingCardsView.height) / 2
 		}
 		
 		override protected function drawSkin():void {
@@ -500,6 +510,7 @@ package com.xiaomu.view.room
 				var oldMyHandCardUIs:Array = []
 				for each(var cardUI: CardUI in myHandCardUIs) {
 					cardUI.visible = false
+					cardUI.tingCards = null
 					oldMyHandCardUIs.push(cardUI)
 				}
 				myHandCardUIs = []
@@ -546,6 +557,28 @@ package com.xiaomu.view.room
 						myHandCardUIs.push(newCardUI)
 					}
 				}
+			}
+		}
+		
+		private function updateMyHandCardUIsCanOutTing():void {
+			if (myUser) {
+				var outTings:Array = CardUtil.getInstane().outCardCanTing(myUser.groupCards, myUser.handCards, huxi)
+				if (outTings) {
+					for each(var item:Object in outTings) {
+						for each(var cardUI:CardUI in myHandCardUIs) {
+							if (cardUI.card == item.card && !cardUI.tingCards) {
+								cardUI.tingCards = item.tingCards
+								break
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		private function updateMyHandCardUIsCanTing():void {
+			if (myUser) {
+				tingCardsView.tingCards = CardUtil.getInstane().canTing(myUser.groupCards, myUser.handCards, huxi)
 			}
 		}
 		
@@ -620,8 +653,8 @@ package com.xiaomu.view.room
 					newCardUI.visible = true
 					newCardUI.width = cardWidth
 					newCardUI.height = cardHeight
-					newCardUI.x = startX - i * (newCardUI.width + horizontalGap)
-					newCardUI.y = height - newCardUI.height - 10
+					newCardUI.x = startX - (i % 6) * (newCardUI.width + horizontalGap)
+					newCardUI.y = height - 5 - (Math.floor(i / 6) + 1)  * (newCardUI.height + 1)
 					newCardUI.card = riffleCards[i]
 					newCardUI.type = CardUI.TYPE_SMALL_CARD
 					cardLayer.setChildIndex(newCardUI, 0)
@@ -813,6 +846,12 @@ package com.xiaomu.view.room
 				oldPoint = cardLayer.localToGlobal(new Point(draggingCardUI.x, draggingCardUI.y))
 				draggingCardUI.startDrag()
 				
+				if (draggingCardUI.tingCards) {
+					tingCardsView.tingCards = draggingCardUI.tingCards
+				} else {
+					tingCardsView.tingCards = null
+				}
+				
 				this.addEventListener(MouseEvent.MOUSE_UP, this_mouseUpHandler)
 			}
 		}
@@ -821,7 +860,7 @@ package com.xiaomu.view.room
 			this.removeEventListener(MouseEvent.MOUSE_UP, this_mouseUpHandler)
 			if (draggingCardUI) {
 				draggingCardUI.stopDrag()
-				if (isCheckNewCard && mouseY <= height * 1 / 2) {
+				if (isCheckNewCard && mouseY <= height * 2 / 3) {
 					if (isCheckNewCard) {
 						const action:Object = { name: Actions.NewCard, data: draggingCardUI.card }
 						Api.getInstane().sendAction(action)
@@ -859,6 +898,7 @@ package com.xiaomu.view.room
 			
 			
 			updateMyHandCardUIs()
+			updateMyHandCardUIsCanOutTing()
 		}
 		
 		protected function onNotificationHandler(event:ApiEvent):void
@@ -881,6 +921,7 @@ package com.xiaomu.view.room
 				{
 					isGaming = true
 					myHandCards = null
+					tingCardsView.tingCards = null
 					zhunbeiButton.visible = zhunbeiButton2.visible = false
 					cardsCarrUI.visible = cardsLabel.visible = true
 					dealCardUI.visible = false
@@ -959,7 +1000,9 @@ package com.xiaomu.view.room
 						trace('请出牌')
 						newCardTip.visible = true
 						isCheckNewCard = true
+						updateMyHandCardUIsCanOutTing()
 					}
+					
 					break
 				}
 				case Notifications.onNewCard: {
@@ -969,6 +1012,7 @@ package com.xiaomu.view.room
 					updateNewCard()
 					updateWaitTip()
 					updateMyHandCardUIs()
+					updateMyHandCardUIsCanTing()
 					updateMyGroupCardUIs()
 					updateMyPassCardUIs()
 					updatePreGroupCardUIs()
@@ -1115,6 +1159,11 @@ package com.xiaomu.view.room
 		
 		public function init(roominfo:Object): void {
 			isGaming = false
+			if (roominfo.huxi) {
+				huxi = roominfo.huxi
+			} else {
+				huxi = 15
+			}
 			zhunbeiButton.visible = true
 			zhunbeiButton2.visible = false
 			Api.getInstane().addEventListener(ApiEvent.ON_ROOM, onRoomMessageHandler)
