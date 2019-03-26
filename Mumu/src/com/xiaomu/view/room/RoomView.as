@@ -439,6 +439,11 @@ package com.xiaomu.view.room
 		 */		
 		private function updateMyHandCardUIs():void {
 			if (myUser) {
+				
+				if (draggingCardUI) {
+					draggingCardUI.stopDrag()
+				}
+				
 				if (!myHandCards) {
 					myHandCards = CardUtil.getInstane().riffle(myUser.handCards)
 				} else {
@@ -858,23 +863,12 @@ package com.xiaomu.view.room
 		
 		protected function onNotificationHandler(event:ApiEvent):void
 		{
-			if (draggingCardUI) {
-				draggingCardUI.stopDrag()
-				// 恢复开始点
-				const thisPoint:Point = cardLayer.globalToLocal(oldPoint)
-				draggingCardUI.x = thisPoint.x
-				draggingCardUI.y = thisPoint.y
-				draggingCardUI = null
-			}
-			
 			isCheckNewCard = isHu = false
 			newCardTip.visible = cancelButton.visible = canChiButton.visible = canPengButton.visible = canHuButton.visible = false
 			thisCanChiCards = thisCanHuDatas = thisCanPengCards = null
-			
 			if (ChiSelectView.getInstane().isPopUp) {
 				PopUpManager.removePopUp(ChiSelectView.getInstane())
 			}
-			
 			const notification: Object = event.data
 			switch(notification.name)
 			{
