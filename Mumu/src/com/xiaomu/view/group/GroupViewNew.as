@@ -1,5 +1,6 @@
 package com.xiaomu.view.group
 {
+	import com.xiaomu.component.Loading;
 	import com.xiaomu.event.ApiEvent;
 	import com.xiaomu.event.AppManagerEvent;
 	import com.xiaomu.manager.AppManager;
@@ -212,6 +213,7 @@ package com.xiaomu.view.group
 					return;
 				}
 				selectedRoom = roomsList.selectedItem
+				Loading.getInstance().open()
 				Api.getInstane().joinRoom(selectedRoom)
 			}
 			roomsList.selectedIndex = -1
@@ -346,18 +348,15 @@ package com.xiaomu.view.group
 			invalidateProperties()
 		}
 		
-		protected function joinGroupFaultHandler(event:ApiEvent):void {
-			Alert.show(JSON.stringify(event.data))
-			MainView.getInstane().popView(HallView)
-		}
-		
 		protected function joinRoomSuccessHandler(event:ApiEvent):void
 		{
+			Loading.getInstance().close()
 			RoomView(MainView.getInstane().pushView(RoomView)).init(selectedRoom)
 		}
 		
 		protected function joinRoomFaultHandler(event:ApiEvent):void
 		{
+			Loading.getInstance().close()
 			Alert.show(JSON.stringify(event.data))
 		}
 		

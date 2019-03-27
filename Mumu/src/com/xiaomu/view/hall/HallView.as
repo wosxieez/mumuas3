@@ -2,6 +2,7 @@ package com.xiaomu.view.hall
 {
 	import com.xiaomu.component.ImageBtnWithUpAndDown;
 	import com.xiaomu.component.ImgBtn;
+	import com.xiaomu.component.Loading;
 	import com.xiaomu.event.ApiEvent;
 	import com.xiaomu.event.AppManagerEvent;
 	import com.xiaomu.manager.AppManager;
@@ -18,7 +19,6 @@ package com.xiaomu.view.hall
 	
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-	import flash.utils.setTimeout;
 	
 	import coco.component.Alert;
 	import coco.component.HorizontalAlign;
@@ -183,8 +183,9 @@ package com.xiaomu.view.hall
 				return
 			}
 			selectedItem = groupsList.selectedItem;
+			Loading.getInstance().open()
 			Api.getInstane().joinGroup(AppData.getInstane().user.username, int(selectedItem.group_id))
-			setTimeout(function ():void { groupsList.selectedIndex = -1 }, 100)
+			groupsList.selectedIndex = -1
 		}
 		
 		public function init():void {
@@ -282,6 +283,7 @@ package com.xiaomu.view.hall
 		
 		protected function joinGroupSuccessHandler(event:ApiEvent):void
 		{
+			Loading.getInstance().close()
 			var groupId:int = int(selectedItem.group_id)///群id
 			var groupAdminId:int = selectedItem.admin_id///该群群主id
 			var userId:int = AppData.getInstane().user.id///用户自身id
@@ -298,6 +300,7 @@ package com.xiaomu.view.hall
 		}
 		
 		protected function joinGroupFaultHandler(event:ApiEvent):void {
+			Loading.getInstance().close()
 			Alert.show(JSON.stringify(event.data))
 		}
 		

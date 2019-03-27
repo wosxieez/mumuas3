@@ -63,6 +63,9 @@ package com.xiaomu.component
 		
 		public function get downImageSource():String
 		{
+			if (!_downImageSource) {
+				return _upImageSource
+			}
 			return _downImageSource;
 		}
 		
@@ -100,6 +103,8 @@ package com.xiaomu.component
 			
 			mouseUpImage.width = width;
 			mouseUpImage.height = height;
+			mouseDwonImage.width = width
+			mouseDwonImage.height = height
 		}
 		
 		override protected function drawSkin():void {
