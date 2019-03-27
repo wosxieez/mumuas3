@@ -223,7 +223,7 @@ package com.xiaomu.view.group
 			// 查询到用户
 			HttpApi.getInstane().getUserInfoByName(oldUser.username, 
 				function (e:Event):void {
-					const response:Object = JSON.parse(e.currentTarget.data)
+					var response:Object = JSON.parse(e.currentTarget.data)
 					if (response.result == 0) {
 						if (response.message.length > 0) {
 							thisUser = response.message[0]
@@ -259,7 +259,7 @@ package com.xiaomu.view.group
 			}
 			HttpApi.getInstane().updateUserGroupInfo(thisUser.username, groups, 
 				function (e:Event):void {
-					const response:Object = JSON.parse(e.currentTarget.data)
+					var response:Object = JSON.parse(e.currentTarget.data)
 					if (response.result == 0) {
 						Alert.show('设置成功')
 						AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.UPDATE_MEMBER_INFO_SUCCESS));

@@ -46,8 +46,8 @@ package com.xiaomu.util
 			this.username = username
 			this.groupid = groupid
 			pomelo = new Pomelo()
-			pomelo.init("127.0.0.1", 3014)
-//			pomelo.init("106.14.148.139", 3014)
+//			pomelo.init("127.0.0.1", 3014)
+			pomelo.init("106.14.148.139", 3014)
 			pomelo.addEventListener(PomeloEvent.HANDSHAKE, onConnectHandler);
 			pomelo.addEventListener(PomeloEvent.ERROR, pomeloErrorHandler);
 		}
@@ -81,7 +81,7 @@ package com.xiaomu.util
 				function(response:Object):void {
 					if (response.code == 0) {
 						// 登录成功
-						const je:ApiEvent = new ApiEvent(ApiEvent.JOIN_GROUP_SUCCESS)
+						var je:ApiEvent = new ApiEvent(ApiEvent.JOIN_GROUP_SUCCESS)
 						je.data = response.data
 						dispatchEvent(je)
 						
@@ -101,7 +101,7 @@ package com.xiaomu.util
 							dispatchEvent(apiEvent)
 						})
 					} else {
-						const jef:ApiEvent = new ApiEvent(ApiEvent.JOIN_GROUP_FAULT)
+						var jef:ApiEvent = new ApiEvent(ApiEvent.JOIN_GROUP_FAULT)
 						jef.data = response.data
 						dispatchEvent(jef)
 					}

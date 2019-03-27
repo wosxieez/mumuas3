@@ -108,11 +108,11 @@ package com.xiaomu.view.login
 		{
 			super.commitProperties()
 			
-			const username:String = AppData.getInstane().username
+			var username:String = AppData.getInstane().username
 			if (username) {
 				phoneNumInput.text = username
 			}
-			const password:String = AppData.getInstane().password
+			var password:String = AppData.getInstane().password
 			if (password) {
 				passwordInput.text = password
 			}
@@ -164,7 +164,7 @@ package com.xiaomu.view.login
 			HttpApi.getInstane().login(phoneNumInput.text, passwordInput.text, function (ee:Event):void {
 				try
 				{
-					const response:Object = JSON.parse(ee.currentTarget.data)
+					var response:Object = JSON.parse(ee.currentTarget.data)
 					if (response.result == 0 && response.message.length > 0) {
 						AppData.getInstane().user = response.message[0]
 //						trace(JSON.stringify(response.message[0]))

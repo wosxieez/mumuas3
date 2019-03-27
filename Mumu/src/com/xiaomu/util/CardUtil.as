@@ -308,7 +308,7 @@ package com.xiaomu.util
 			
 			for (var key2:int in countedCards) {
 				if (countedCards[key2] == 1) {
-					const shunzi:Array = findShunzi(key2)
+					var shunzi:Array = findShunzi(key2)
 					if (shunzi) {
 						results.push({ name: Actions.Chi, cards: shunzi })
 					}

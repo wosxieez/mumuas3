@@ -514,9 +514,9 @@ package com.xiaomu.view.room
 				myHandCardUIs = []
 				
 				myHandCardWidth = Size.MIDDLE_CARD_WIDTH
-				const cardHeight:Number = Size.MIDDLE_CARD_HEIGHT
+				var cardHeight:Number = Size.MIDDLE_CARD_HEIGHT
 				myHandCardHorizontalGap = 1
-				const verticalGap:Number = cardHeight * 3 / 4
+				var verticalGap:Number = cardHeight * 3 / 4
 				var newCardUI:CardUI
 				myHandCardStartX = (width - myHandCards.length * (myHandCardWidth + myHandCardHorizontalGap)) / 2
 				for (var i:int = 0; i < myHandCards.length; i++) {
@@ -591,17 +591,17 @@ package com.xiaomu.view.room
 		 */		
 		private function updateMyGroupCardUIs():void {
 			if (myUser) {
-				const riffleCards:Array = this.myUser.groupCards
+				var riffleCards:Array = this.myUser.groupCards
 				var oldMyGroupCardUIs:Array = []
 				for each(var cardUI: CardUI in myGroupCardUIs) {
 					cardUI.visible = false
 					oldMyGroupCardUIs.push(cardUI)
 				}
 				myGroupCardUIs = []
-				const cardWidth:Number = Size.SMALL_CARD_WIDTH
-				const cardHeight:Number = Size.SMALL_CARD_HEIGHT
-				const horizontalGap:Number = 1
-				const verticalGap:Number = cardHeight * 3 / 4
+				var cardWidth:Number = Size.SMALL_CARD_WIDTH
+				var cardHeight:Number = Size.SMALL_CARD_HEIGHT
+				var horizontalGap:Number = 1
+				var verticalGap:Number = cardHeight * 3 / 4
 				var newCardUI:CardUI
 				var startX:Number = width / 2 - cardWidth * 4
 				for (var i:int = 0; i < riffleCards.length; i++) {
@@ -637,16 +637,16 @@ package com.xiaomu.view.room
 		 */		
 		private function updateMyPassCardUIs():void {
 			if (myUser) {
-				const riffleCards:Array = this.myUser.passCards
+				var riffleCards:Array = this.myUser.passCards
 				var oldMyPassCardUIs:Array = []
 				for each(var cardUI: CardUI in myPassCardUIs) {
 					cardUI.visible = false
 					oldMyPassCardUIs.push(cardUI)
 				}
 				myPassCardUIs = []
-				const cardWidth:Number = Size.SMALL_CARD_WIDTH
-				const cardHeight:Number = Size.SMALL_CARD_HEIGHT
-				const horizontalGap:Number = 1
+				var cardWidth:Number = Size.SMALL_CARD_WIDTH
+				var cardHeight:Number = Size.SMALL_CARD_HEIGHT
+				var horizontalGap:Number = 1
 				var newCardUI:CardUI
 				var startX:Number = width - cardWidth - 10
 				for (var i:int = 0; i < riffleCards.length; i++) {
@@ -675,17 +675,17 @@ package com.xiaomu.view.room
 		 */		
 		private function updatePreGroupCardUIs():void {
 			if (preUser) {
-				const riffleCards:Array = this.preUser.groupCards
+				var riffleCards:Array = this.preUser.groupCards
 				var oldPreGroupCardUIs:Array = []
 				for each(var cardUI: CardUI in preGroupCardUIs) {
 					cardUI.visible = false
 					oldPreGroupCardUIs.push(cardUI)
 				}
 				preGroupCardUIs = []
-				const cardWidth:Number = Size.SMALL_CARD_WIDTH
-				const cardHeight:Number = Size.SMALL_CARD_HEIGHT
-				const horizontalGap:Number = 1
-				const verticalGap:Number = Size.SMALL_CARD_HEIGHT * Size.GAP_RADIO
+				var cardWidth:Number = Size.SMALL_CARD_WIDTH
+				var cardHeight:Number = Size.SMALL_CARD_HEIGHT
+				var horizontalGap:Number = 1
+				var verticalGap:Number = Size.SMALL_CARD_HEIGHT * Size.GAP_RADIO
 				var newCardUI:CardUI
 				var startX:Number = 120
 				for (var i:int = 0; i < riffleCards.length; i++) {
@@ -721,16 +721,16 @@ package com.xiaomu.view.room
 		 */		
 		private function updatePrePassCardUIs():void {
 			if (preUser) {
-				const riffleCards:Array = this.preUser.passCards
+				var riffleCards:Array = this.preUser.passCards
 				var oldPrePassCardUIs:Array = []
 				for each(var cardUI: CardUI in prePassCardUIs) {
 					cardUI.visible = false
 					oldPrePassCardUIs.push(cardUI)
 				}
 				prePassCardUIs = []
-				const cardWidth:Number = Size.SMALL_CARD_WIDTH
-				const cardHeight:Number = Size.SMALL_CARD_HEIGHT
-				const horizontalGap:Number = 1
+				var cardWidth:Number = Size.SMALL_CARD_WIDTH
+				var cardHeight:Number = Size.SMALL_CARD_HEIGHT
+				var horizontalGap:Number = 1
 				var newCardUI:CardUI
 				var startX:Number = 120
 				for (var i:int = 0; i < riffleCards.length; i++) {
@@ -759,17 +759,17 @@ package com.xiaomu.view.room
 		 */		
 		private function updateNextGroupCardUIs():void {
 			if (nextUser) {
-				const riffleCards:Array = this.nextUser.groupCards
+				var riffleCards:Array = this.nextUser.groupCards
 				var oldNextGroupCardUIs:Array = []
 				for each(var cardUI: CardUI in nextGroupCardUIs) {
 					cardUI.visible = false
 					oldNextGroupCardUIs.push(cardUI)
 				}
 				nextGroupCardUIs = []
-				const cardWidth:Number = Size.SMALL_CARD_WIDTH
-				const cardHeight:Number = Size.SMALL_CARD_HEIGHT
-				const horizontalGap:Number = 1
-				const verticalGap:Number = Size.SMALL_CARD_HEIGHT * Size.GAP_RADIO
+				var cardWidth:Number = Size.SMALL_CARD_WIDTH
+				var cardHeight:Number = Size.SMALL_CARD_HEIGHT
+				var horizontalGap:Number = 1
+				var verticalGap:Number = Size.SMALL_CARD_HEIGHT * Size.GAP_RADIO
 				var newCardUI:CardUI
 				var startX:Number = width - cardWidth - 120
 				for (var i:int = 0; i < riffleCards.length; i++) {
@@ -805,16 +805,16 @@ package com.xiaomu.view.room
 		 */		
 		private function updateNextPassCardUIs():void {
 			if (nextUser) {
-				const riffleCards:Array = this.nextUser.passCards
+				var riffleCards:Array = this.nextUser.passCards
 				var oldNextPassCardUIs:Array = []
 				for each(var cardUI: CardUI in nextPassCardUIs) {
 					cardUI.visible = false
 					oldNextPassCardUIs.push(cardUI)
 				}
 				nextPassCardUIs = []
-				const cardWidth:Number = Size.SMALL_CARD_WIDTH
-				const cardHeight:Number = Size.SMALL_CARD_HEIGHT
-				const horizontalGap:Number = 1
+				var cardWidth:Number = Size.SMALL_CARD_WIDTH
+				var cardHeight:Number = Size.SMALL_CARD_HEIGHT
+				var horizontalGap:Number = 1
 				var newCardUI:CardUI
 				var startX:Number = width - cardWidth - 120
 				for (var i:int = 0; i < riffleCards.length; i++) {
@@ -843,7 +843,7 @@ package com.xiaomu.view.room
 		
 		protected function cardUI_mouseDownHandler(event:MouseEvent):void
 		{
-			const cardUI:CardUI = event.currentTarget as CardUI
+			var cardUI:CardUI = event.currentTarget as CardUI
 			if (cardUI && cardUI.canDeal) {
 				si = getMyHandCardsIndex(this.mouseX)
 				draggingCardUI = cardUI
@@ -867,7 +867,7 @@ package com.xiaomu.view.room
 				draggingCardUI.stopDrag()
 				if (isCheckNewCard && mouseY <= height * 2 / 3) {
 					if (isCheckNewCard) {
-						const action:Object = { name: Actions.NewCard, data: draggingCardUI.card }
+						var action:Object = { name: Actions.NewCard, data: draggingCardUI.card }
 						Api.getInstane().sendAction(action)
 						newCardTip.visible = false
 						isCheckNewCard = false
@@ -917,7 +917,7 @@ package com.xiaomu.view.room
 			if (ChiSelectView.getInstane().isPopUp) {
 				PopUpManager.removePopUp(ChiSelectView.getInstane())
 			}
-			const notification: Object = event.data
+			var notification: Object = event.data
 			switch(notification.name)
 			{
 				case Notifications.onReady:
@@ -1136,7 +1136,7 @@ package com.xiaomu.view.room
 		protected function canPengButton_clickHandler(event:MouseEvent):void
 		{
 			isHu = canHuButton.visible = canPengButton.visible = canChiButton.visible = cancelButton.visible = false
-			const action:Object = { name: Actions.Peng, data: thisCanPengCards }
+			var action:Object = { name: Actions.Peng, data: thisCanPengCards }
 			Api.getInstane().sendAction(action)
 		}
 		
@@ -1154,14 +1154,14 @@ package com.xiaomu.view.room
 				ChiSelectView.getInstane().close()
 			}
 			isHu = canHuButton.visible = canPengButton.visible = canChiButton.visible = cancelButton.visible = false
-			const action:Object = { name: Actions.Cancel, data: '' }
+			var action:Object = { name: Actions.Cancel, data: '' }
 			Api.getInstane().sendAction(action)
 		}
 		
 		protected function canHuButton_clickHandler(event:MouseEvent):void
 		{
 			isHu = canHuButton.visible = canPengButton.visible = canChiButton.visible = cancelButton.visible = false
-			const action:Object = { name: Actions.Hu, data: thisCanHuDatas }
+			var action:Object = { name: Actions.Hu, data: thisCanHuDatas }
 			Api.getInstane().sendAction(action)
 		}
 		
@@ -1186,13 +1186,13 @@ package com.xiaomu.view.room
 		
 		protected function zhunbeiButton_clickHandler(event:MouseEvent):void
 		{
-			const action:Object = { name: Actions.Ready, data: true }
+			var action:Object = { name: Actions.Ready, data: true }
 			Api.getInstane().sendAction(action)
 		}
 		
 		protected function zhunbeiButton2_clickHandler(event:MouseEvent):void
 		{
-			const action:Object = { name: Actions.Ready, data: false }
+			var action:Object = { name: Actions.Ready, data: false }
 			Api.getInstane().sendAction(action)
 		}
 		
@@ -1200,7 +1200,7 @@ package com.xiaomu.view.room
 		{
 			ChiSelectView.getInstane().close()
 			isHu = canHuButton.visible = canPengButton.visible = canChiButton.visible = cancelButton.visible = false
-			const action:Object = { name: Actions.Chi, data:  event.data}
+			var action:Object = { name: Actions.Chi, data:  event.data}
 			Api.getInstane().sendAction(action)
 		}
 		

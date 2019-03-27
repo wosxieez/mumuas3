@@ -56,10 +56,10 @@ package com.xiaomu.view.room
 			}
 			myGroupFlags = []
 			
-			const cardWidth:Number = Size.SMALL_CARD_WIDTH
-			const cardHeight:Number = Size.SMALL_CARD_HEIGHT
-			const horizontalGap:Number = 10
-			const verticalGap:Number = Size.SMALL_CARD_HEIGHT * Size.GAP_RADIO
+			var cardWidth:Number = Size.SMALL_CARD_WIDTH
+			var cardHeight:Number = Size.SMALL_CARD_HEIGHT
+			var horizontalGap:Number = 10
+			var verticalGap:Number = Size.SMALL_CARD_HEIGHT * Size.GAP_RADIO
 			var newCardUI:CardUI, newFlag:Image
 			var startX:Number = 10
 			for (var i:int = 0; i < data.length; i++) {

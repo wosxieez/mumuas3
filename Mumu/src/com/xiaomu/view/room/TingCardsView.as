@@ -67,9 +67,9 @@ package com.xiaomu.view.room
 				oldMyPassCardUIs.push(cardUI)
 			}
 			myPassCardUIs = []
-			const cardWidth:Number = Size.SMALL_CARD_WIDTH
-			const cardHeight:Number = Size.SMALL_CARD_HEIGHT
-			const horizontalGap:Number = 10
+			var cardWidth:Number = Size.SMALL_CARD_WIDTH
+			var cardHeight:Number = Size.SMALL_CARD_HEIGHT
+			var horizontalGap:Number = 10
 			var newCardUI:CardUI
 			var startX:Number = 96
 			for (var i:int = 0; i < tingCards.length; i++) {

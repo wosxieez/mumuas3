@@ -273,7 +273,7 @@ package com.xiaomu.view.group
 			HttpApi.getInstane().getGroupUsers(groupid, 
 				function (e:Event):void {
 					// get group users ok
-					const usersResponse:Object = JSON.parse(e.currentTarget.data)
+					var usersResponse:Object = JSON.parse(e.currentTarget.data)
 					if (usersResponse.result == 0 && usersResponse.message) {
 						var users:Array = usersResponse.message
 						for each(var user:Object in users) {
@@ -297,7 +297,7 @@ package com.xiaomu.view.group
 			// 加载群的房间信息
 			HttpApi.getInstane().getGroupRooms(thisGroupID, 
 				function (e:Event):void {
-					const roomsResponse:Object = JSON.parse(e.currentTarget.data)
+					var roomsResponse:Object = JSON.parse(e.currentTarget.data)
 					if (roomsResponse.result == 0 && roomsResponse.message) {
 						var rooms:Array = roomsResponse.message
 						/*for each(var room:Object in rooms) {
@@ -350,7 +350,7 @@ package com.xiaomu.view.group
 		
 		protected function joinGroupSuccessHandler(event:ApiEvent):void
 		{
-			const onlineUsernames:Array = event.data as Array
+			var onlineUsernames:Array = event.data as Array
 			var user:Object
 			for each(var username:String in onlineUsernames) {
 				user = getUser(username)
@@ -383,13 +383,13 @@ package com.xiaomu.view.group
 		
 		protected function onGroupHandler(event:ApiEvent):void
 		{
-			const notification:Object = event.data
+			var notification:Object = event.data
 			//			trace('notification:',JSON.stringify(notification));
 			switch(notification.name)
 			{
 				case Notifications.onJoinGroup:
 				{
-					const user:Object = getUser(notification.data.username)
+					var user:Object = getUser(notification.data.username)
 					if (user) { 
 						user.online = true 
 						invalidateProperties()
@@ -398,7 +398,7 @@ package com.xiaomu.view.group
 				}
 				case Notifications.onLeaveGroup:
 				{
-					const user2:Object = getUser(notification.data.username)
+					var user2:Object = getUser(notification.data.username)
 					if (user2) { 
 						user2.online = false 
 						invalidateProperties()
@@ -407,7 +407,7 @@ package com.xiaomu.view.group
 				}
 				case Notifications.onJoinRoom:
 				{
-					const room:Object = getRoom(notification.data.roomname)
+					var room:Object = getRoom(notification.data.roomname)
 					if (room) { 
 						room.users.push(notification.data.username)
 						invalidateProperties()
@@ -416,7 +416,7 @@ package com.xiaomu.view.group
 				}
 				case Notifications.onLeaveRoom:
 				{
-					const room2:Object = getRoom(notification.data.roomname)
+					var room2:Object = getRoom(notification.data.roomname)
 					if (room2) {
 						for (var i:int = 0; i < room2.users.length; i++) {
 							if (room2.users[i] == notification.data.username) {
@@ -480,7 +480,7 @@ package com.xiaomu.view.group
 			HttpApi.getInstane().getGroupUsers(thisGroupID, 
 				function (e:Event):void {
 					// get group users ok
-					const usersResponse:Object = JSON.parse(e.currentTarget.data)
+					var usersResponse:Object = JSON.parse(e.currentTarget.data)
 					if (usersResponse.result == 0 && usersResponse.message) {
 						var users:Array = usersResponse.message
 						for each(var user:Object in users) {
@@ -514,7 +514,7 @@ package com.xiaomu.view.group
 			HttpApi.getInstane().getGroupUsers(thisGroupID, 
 				function (e:Event):void {
 					// get group users ok
-					const usersResponse:Object = JSON.parse(e.currentTarget.data)
+					var usersResponse:Object = JSON.parse(e.currentTarget.data)
 					if (usersResponse.result == 0 && usersResponse.message) {
 						var users:Array = usersResponse.message
 						for each(var user:Object in users) {

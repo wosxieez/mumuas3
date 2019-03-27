@@ -32,10 +32,10 @@ package com.xiaomu.renderer
 			}
 			myGroupCardUIs = []
 			
-			const cardWidth:Number = Size.MIDDLE_CARD_WIDTH / 2
-			const cardHeight:Number = Size.MIDDLE_CARD_HEIGHT / 2
-			const horizontalGap:Number = 1
-			const verticalGap:Number = cardHeight * Size.GAP_RADIO
+			var cardWidth:Number = Size.MIDDLE_CARD_WIDTH / 2
+			var cardHeight:Number = Size.MIDDLE_CARD_HEIGHT / 2
+			var horizontalGap:Number = 1
+			var verticalGap:Number = cardHeight * Size.GAP_RADIO
 			var newCardUI:CardUI
 			var startX:Number = 2
 			for (var j:int = 0; j < data.cards.length; j++) {

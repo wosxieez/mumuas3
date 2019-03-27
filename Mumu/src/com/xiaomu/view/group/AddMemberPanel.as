@@ -131,7 +131,7 @@ package com.xiaomu.view.group
 			// 查询到用户
 			HttpApi.getInstane().getUserInfoByName(memberUsernameInput.text, 
 				function (e:Event):void {
-					const response:Object = JSON.parse(e.currentTarget.data)
+					var response:Object = JSON.parse(e.currentTarget.data)
 					if (response.result == 0) {
 						if (response.message.length > 0) {
 							var user:Object = response.message[0]
@@ -155,7 +155,7 @@ package com.xiaomu.view.group
 							groups.push({gold: 0, group_id: thisGroupID})
 							HttpApi.getInstane().updateUserGroupInfo(user.username, groups, 
 								function (e:Event):void {
-									const response2:Object = JSON.parse(e.currentTarget.data)
+									var response2:Object = JSON.parse(e.currentTarget.data)
 									if (response2.result == 0) {
 										Alert.show('添加成功')
 										AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.CHANGE_MEMBER_SUCCESS));
