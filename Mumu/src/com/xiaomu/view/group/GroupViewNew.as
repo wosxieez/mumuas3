@@ -173,6 +173,7 @@ package com.xiaomu.view.group
 			
 			AppData.getInstane().inGroupView = true;
 			roomsList.dataProvider = roomsData
+			trace('roomsData:',JSON.stringify(roomsData));
 			var tempArr:Array = [];
 			for each (var i:Object in usersData) 
 			{
@@ -272,9 +273,9 @@ package com.xiaomu.view.group
 					const roomsResponse:Object = JSON.parse(e.currentTarget.data)
 					if (roomsResponse.result == 0 && roomsResponse.message) {
 						var rooms:Array = roomsResponse.message
-						/*for each(var room:Object in rooms) {
+						for each(var room:Object in rooms) {
 						room.roomname = 'room' + room.id
-						}*/
+						}
 						///如果是该群的群主,才支持添加房间
 						if(_groupAdminId==AppData.getInstane().user.id){
 							rooms.push({"name":"+"})

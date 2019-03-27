@@ -66,6 +66,7 @@ package com.xiaomu.renderer
 			counter = new Label();
 			counter.color = 0xffffff;
 			addChild(counter);
+			counter.visible = false;
 			
 			labelDisplay.visible = false;
 		}
@@ -78,18 +79,21 @@ package com.xiaomu.renderer
 			addRoomImg.x = (width-addRoomImg.width)/2;
 			addRoomImg.y = (height-addRoomImg.height)/2;
 			
-			joiner1.visible = joiner2.visible = joiner3.visible = false;
+//			joiner1.visible = joiner2.visible = joiner3.visible = false;
 			roomName.width = width;
 			roomName.height = height/10;
 			roomName.fontSize = height/10;
-			tableImg.width = width/3;
-			tableImg.height = height/3;
+			/*tableImg.width = width/3;
+			tableImg.height = height/3;*/
+			tableImg.width = 320;
+			tableImg.height = 204;
 			joiner1.width = joiner2.width = joiner3.width=
 				joiner1.height = joiner2.height = joiner3.height = height*2/11;
 			
 			if(data){
 				counter.text = data.count+'人桌';
-				//				trace(JSON.stringify(data))
+				
+//								trace(JSON.stringify(data))
 				tableImg.x = (width-tableImg.width)/2;
 				tableImg.y = (height-tableImg.height)/2
 				
@@ -101,6 +105,8 @@ package com.xiaomu.renderer
 				
 				joiner3.x = (width-joiner3.width)/2;
 				joiner3.y = height/15;
+				
+				tableImg.source = 'assets/table/club_table_new'+data.count+'.png'
 			}
 			
 			counter.width = width;
@@ -118,14 +124,16 @@ package com.xiaomu.renderer
 		{
 			super.commitProperties();
 			
+			joiner1.visible = false;
+			joiner2.visible = false;
+			joiner3.visible = false;
+			
 			if(data.name=='+'){
-				counter.visible = false;
 				labelDisplay.visible = false;
 				roomName.visible = false;
 				addRoomImg.visible = true;
 				tableImg.visible = false;
 			}else{
-				counter.visible = true;
 				labelDisplay.visible = false;
 				roomName.visible = true;
 				addRoomImg.visible = false;
