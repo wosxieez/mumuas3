@@ -20,9 +20,9 @@ package com.xiaomu.view.room
 			borderColor = 0x000000
 			backgroundColor = 0x000000
 			backgroundAlpha = 0.6
-			titleHeight = 20
+			titleHeight = 30
 			width = 0
-			height = Size.MIDDLE_CARD_HEIGHT / 2 * 3  - Size.MIDDLE_CARD_HEIGHT * (1 - Size.GAP_RADIO) + titleHeight + 20 + 4
+			height = Size.CHI_CARD_HEIGHT * 3  - Size.CHI_CARD_HEIGHT * 2 * (1 - Size.GAP_RADIO) + titleHeight + 20 + 4
 		}
 		
 		private var _dataProvider:Array
@@ -45,8 +45,8 @@ package com.xiaomu.view.room
 			
 			selectList = new List()
 			selectList.addEventListener(UIEvent.CHANGE, selectList_changeHandler)
-			selectList.itemRendererWidth = Size.MIDDLE_CARD_WIDTH / 2 + 4
-			selectList.itemRendererHeight = Size.MIDDLE_CARD_HEIGHT / 2 * 3  - Size.MIDDLE_CARD_HEIGHT * (1 - Size.GAP_RADIO) + 4
+			selectList.itemRendererWidth = Size.CHI_CARD_WIDTH + 4
+			selectList.itemRendererHeight = Size.CHI_CARD_HEIGHT * 3  - Size.CHI_CARD_HEIGHT * 2 * (1 - Size.GAP_RADIO) + 4
 			selectList.itemRendererRowCount = 1
 			selectList.itemRendererClass = SelectRenderer
 			selectList.horizontalAlign = HorizontalAlign.CENTER

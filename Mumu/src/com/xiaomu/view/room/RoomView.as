@@ -322,7 +322,7 @@ package com.xiaomu.view.room
 				if (room.zn) { this.roominfo.zn = room.zn }
 				if (room.pc) { this.roominfo.pc = room.pc }
 				if (room.pn) { this.roominfo.pn = room.pn }
-				if (room.cc) { this.roominfo.cc = room.cc }
+				if (room.hasOwnProperty('cc')) { this.roominfo.cc = room.cc }
 				if (room.io) { this.roominfo.io = room.io } else { this.roominfo.io = false }
 				
 				this.myUser = this.preUser = this.nextUser = null
@@ -493,7 +493,8 @@ package com.xiaomu.view.room
 						}
 					}
 					
-					for each(var oldCard:int in oldCards) {
+					if (oldCards)
+						for each(var oldCard:int in oldCards) {
 						deleteMyHandCard(oldCard)
 					}
 				}
@@ -853,8 +854,6 @@ package com.xiaomu.view.room
 				
 				if (draggingCardUI.tingCards) {
 					tingCardsView.tingCards = draggingCardUI.tingCards
-				} else {
-					tingCardsView.tingCards = null
 				}
 				
 				this.addEventListener(MouseEvent.MOUSE_UP, this_mouseUpHandler)
@@ -866,47 +865,49 @@ package com.xiaomu.view.room
 			if (draggingCardUI) {
 				draggingCardUI.stopDrag()
 				if (isCheckNewCard && mouseY <= height * 2 / 3) {
-					if (isCheckNewCard) {
-						var action:Object = { name: Actions.NewCard, data: draggingCardUI.card }
-						Api.getInstane().sendAction(action)
-						newCardTip.visible = false
-						isCheckNewCard = false
-						// 出牌之后清理出听提示
-						clearMyHandCardUIsCanOutTing()
-					}
-				} else {
-					ei = getMyHandCardsIndex(this.mouseX)
-					if (si >= 0 && ei >= 0) {
-						//  调整牌位置
-						if (myHandCards[si]) {
-							var index:int = (myHandCards[si] as Array).indexOf(draggingCardUI.card)
-							if (index >= 0) {
-								if (myHandCards[ei]) {
-									if (myHandCards[ei].length < 3) {
+					var action:Object = { name: Actions.NewCard, data: draggingCardUI.card }
+					Api.getInstane().sendAction(action)
+					newCardTip.visible = false
+					isCheckNewCard = false
+					// 出牌之后清理出听提示
+					clearMyHandCardUIsCanOutTing()
+				}
+			} else {
+				ei = getMyHandCardsIndex(this.mouseX)
+				if (si >= 0 && ei >= 0) {
+					//  调整牌位置
+					if (myHandCards[si]) {
+						var index:int = (myHandCards[si] as Array).indexOf(draggingCardUI.card)
+						if (index >= 0) {
+							if (myHandCards[ei]) {
+								if (myHandCards[ei].length < 3) {
+									myHandCards[si].splice(index, 1) // 删除这个元素
+									myHandCards[ei].push(draggingCardUI.card)
+								} else if (myHandCards[ei].length == 3) {
+									if (myHandCards[ei][0] == myHandCards[ei][1] && myHandCards[ei][1] == myHandCards[ei][2]) {
+										// 坎元素不能堆积
+										trace('这是坎 不能堆积')
+									} else {
 										myHandCards[si].splice(index, 1) // 删除这个元素
 										myHandCards[ei].push(draggingCardUI.card)
-									} else if (myHandCards[ei].length == 3) {
-										if (myHandCards[ei][0] == myHandCards[ei][1] && myHandCards[ei][1] == myHandCards[ei][2]) {
-											// 坎元素不能堆积
-											trace('这是坎 不能堆积')
-										} else {
-											myHandCards[si].splice(index, 1) // 删除这个元素
-											myHandCards[ei].push(draggingCardUI.card)
-										}
 									}
-								} else {
-									myHandCards[si].splice(index, 1) // 删除这个元素
-									myHandCards.push([draggingCardUI.card])
 								}
+							} else {
+								myHandCards[si].splice(index, 1) // 删除这个元素
+								myHandCards.push([draggingCardUI.card])
 							}
 						}
 					}
 				}
 			}
 			
-			
 			updateMyHandCardUIs()
-			updateMyHandCardUIsCanOutTing()
+			if (isCheckNewCard) { // 出牌状态才会刷新
+				tingCardsView.tingCards = null
+				updateMyHandCardUIsCanOutTing()
+			} else {
+				updateMyHandCardUIsCanTing()
+			}
 		}
 		
 		protected function onNotificationHandler(event:ApiEvent):void
@@ -1008,6 +1009,7 @@ package com.xiaomu.view.room
 						trace('请出牌')
 						newCardTip.visible = true
 						isCheckNewCard = true
+						tingCardsView.tingCards = null
 						updateMyHandCardUIsCanOutTing()
 					}
 					

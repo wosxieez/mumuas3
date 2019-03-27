@@ -9,6 +9,9 @@ package com.xiaomu.util
 		public static const BIG_CARD_WIDTH:Number = 97
 		public static const BIG_CARD_HEIGHT:Number = 287 // 287
 			
+		public static const CHI_CARD_WIDTH:Number = 60 // 97
+		public static const CHI_CARD_HEIGHT:Number = 70  // 111
+			
 		public static const MIDDLE_CARD_WIDTH:Number = 90 // 97
 		public static const MIDDLE_CARD_HEIGHT:Number = 100  // 111
 			
