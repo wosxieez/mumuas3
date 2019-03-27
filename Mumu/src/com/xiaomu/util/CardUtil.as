@@ -183,8 +183,12 @@ package com.xiaomu.util
 			var tingCards:Array = []
 			for (var i:int = 1; i <= 20; i++) {
 				var canHuData:Array = canHu(handCards, groupCards, i)
-				if (canHuData && getHuXi(canHuData) >= huXi) {
-					tingCards.push(i)
+				if (canHuData) {
+					var gtx:int = getHuXi(canHuData)
+					if (gtx >= huXi) {
+						tingCards.push(i)
+						trace('听牌', i, '胡息', gtx)
+					}
 				}
 			}
 			

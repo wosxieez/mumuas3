@@ -1195,7 +1195,7 @@ package com.xiaomu.view.room
 			Api.getInstane().sendAction(action)
 		}
 		
-		public function init(roominfo:Object): void {
+		public function init(config:Object): void {
 			this.isHu = this.isCheckNewCard = this.isGaming = false
 			this.myUser = this.preUser = this.nextUser = null
 			this.checkUsername = null
@@ -1203,11 +1203,7 @@ package com.xiaomu.view.room
 			this.myHandCards = null
 			thisCanChiCards = thisCanHuDatas = thisCanPengCards = null
 			this.ei = this.si = -1
-			if (roominfo.huxi) {
-				huxi = roominfo.huxi
-			} else {
-				huxi = 15
-			}
+			this.huxi = config.huxi
 			Api.getInstane().addEventListener(ApiEvent.ON_ROOM, onRoomMessageHandler)
 			zhunbeiButton.visible = true
 			zhunbeiButton2.visible = false

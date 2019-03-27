@@ -214,6 +214,7 @@ package com.xiaomu.view.group
 				}
 				selectedRoom = roomsList.selectedItem
 				Loading.getInstance().open()
+				if (!selectedRoom.hasOwnProperty('huxi')) { selectedRoom.huxi = 5 }
 				Api.getInstane().joinRoom(selectedRoom)
 			}
 			roomsList.selectedIndex = -1
@@ -509,10 +510,6 @@ package com.xiaomu.view.group
 				},null);
 		}
 		
-		
-		/**
-		 * 
-		 */
 		protected function changeShowAndHideHandler(event:MouseEvent):void
 		{
 			if(usersList.showFlag){
