@@ -5,8 +5,6 @@ package com.xiaomu.util
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	
-	import coco.component.Alert;
-	
 	import org.idream.pomelo.Pomelo;
 	import org.idream.pomelo.PomeloEvent;
 	
@@ -52,8 +50,8 @@ package com.xiaomu.util
 			this.username = username
 			this.groupid = groupid
 			pomelo = new Pomelo()
-			pomelo.init("127.0.0.1", 3014)
-//			pomelo.init("106.14.148.139", 3014)
+//			pomelo.init("127.0.0.1", 3014)
+			pomelo.init("106.14.148.139", 3014)
 			pomelo.addEventListener(PomeloEvent.HANDSHAKE, onConnectHandler);
 			pomelo.addEventListener(PomeloEvent.ERROR, pomeloErrorHandler);
 		}
@@ -77,7 +75,10 @@ package com.xiaomu.util
 		
 		protected function pomeloErrorHandler(event:PomeloEvent):void
 		{
-			Alert.show('连接服务器失败')
+			trace('连接群失败')
+			var jef:ApiEvent = new ApiEvent(ApiEvent.JOIN_GROUP_FAULT)
+			jef.data = '连接服务器失败'
+			dispatchEvent(jef)
 			pomelo = null
 		}
 		
