@@ -1,4 +1,4 @@
-package com.xiaomu.view.home.popUP
+package com.xiaomu.view.home.popUp1
 {
 	import coco.component.Button;
 	import coco.component.TextArea;

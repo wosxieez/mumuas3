@@ -10,7 +10,7 @@ package com.xiaomu.view.hall
 	import com.xiaomu.util.Audio;
 	import com.xiaomu.util.HttpApi;
 	import com.xiaomu.view.MainView;
-	import com.xiaomu.view.group.GroupView;
+	import com.xiaomu.view.group.GroupViewNew;
 	import com.xiaomu.view.hall.popUpPanel.CreateGroupPanel;
 	import com.xiaomu.view.home.HomeView;
 	import com.xiaomu.view.userBarView.UserInfoView2;
@@ -190,8 +190,8 @@ package com.xiaomu.view.hall
 					'remark':selectedItem.remark,
 					'admin_id':selectedItem.admin_id,
 					'admin_name':JSON.parse(e.currentTarget.data).message[0].username}
-				GroupView(MainView.getInstane().pushView(GroupView)).init(groupId,groupAdminId,groupInfoObj)///进入房间界面，初始化，输入组id,同时传入需要该组的群主id
-//				NewGroupView(MainView.getInstane().pushView(NewGroupView)).init(groupInfoObj)///进入房间界面，初始化，输入组id,同时传入需要该组的群主id
+//				GroupView(MainView.getInstane().pushView(GroupView)).init(groupId,groupAdminId,groupInfoObj)///进入房间界面，初始化，输入组id,同时传入需要该组的群主id
+				GroupViewNew(MainView.getInstane().pushView(GroupViewNew)).init(groupId,groupAdminId,groupInfoObj)///进入房间界面，初始化，输入组id,同时传入需要该组的群主id
 			},null)
 			setTimeout(function ():void { groupsList.selectedIndex = -1 }, 100)
 		}

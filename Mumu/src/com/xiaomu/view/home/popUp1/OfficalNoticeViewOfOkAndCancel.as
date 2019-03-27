@@ -1,4 +1,4 @@
-package com.xiaomu.view.home.popUP
+package com.xiaomu.view.home.popUp1
 {
 	import com.xiaomu.component.ImageBtnWithUpAndDown;
 	
@@ -11,11 +11,11 @@ package com.xiaomu.view.home.popUP
 	import coco.util.FontFamily;
 	
 	/**
-	 * 皮皮官方弹出提示界面--按钮为确定按钮
+	 * 皮皮官方弹出设置界面--按钮为确定按钮-和取消按钮
 	 */
-	public class OfficalNoticeView extends UIComponent
+	public class OfficalNoticeViewOfOkAndCancel extends UIComponent
 	{
-		public function OfficalNoticeView()
+		public function OfficalNoticeViewOfOkAndCancel()
 		{
 			super();
 			width = 915;
@@ -34,23 +34,11 @@ package com.xiaomu.view.home.popUP
 			_showText = value;
 			invalidateProperties();
 		}
-		
-		private var _normalStyle:Boolean=true;
-
-		public function get normalStyle():Boolean
-		{
-			return _normalStyle;
-		}
-
-		public function set normalStyle(value:Boolean):void
-		{
-			_normalStyle = value;
-			invalidateProperties();
-		}
 
 		private var bgImg:Image;
 		private var titleImg:Image;
 		private var okImg:ImageBtnWithUpAndDown;
+		private var cancelImg:ImageBtnWithUpAndDown;
 		private var lab:TextArea;
 		
 		override protected function createChildren():void
@@ -64,7 +52,7 @@ package com.xiaomu.view.home.popUP
 			addChild(bgImg);
 			
 			titleImg = new Image();
-			titleImg.source = 'assets/home/popUp/Tishi.png';
+			titleImg.source = 'assets/home/popUp/shezhi.png';
 			titleImg.width = 293;
 			titleImg.height = 86;
 			addChild(titleImg);
@@ -88,6 +76,14 @@ package com.xiaomu.view.home.popUP
 			okImg.height = 70;
 			okImg.addEventListener(MouseEvent.CLICK,okImgHandler);
 			addChild(okImg);
+			
+			cancelImg = new ImageBtnWithUpAndDown();
+			cancelImg.upImageSource = 'assets/home/popUp/Z_cancelNormal.png';
+			cancelImg.downImageSource = 'assets/home/popUp/Z_cancelPress.png';
+			cancelImg.width = 166;
+			cancelImg.height = 70;
+			cancelImg.addEventListener(MouseEvent.CLICK,cancelImgHandler);
+			addChild(cancelImg);
 		}
 		
 		override protected function commitProperties():void
@@ -108,11 +104,19 @@ package com.xiaomu.view.home.popUP
 			lab.x = (width-lab.width)/2;
 			lab.y = height/3;
 			
-			okImg.x = (width-okImg.width)/2;
+			okImg.x = width/2-okImg.width-20;
 			okImg.y = height-okImg.height-20
+				
+			cancelImg.x = width/2+20;
+			cancelImg.y = okImg.y
 		}
 		
 		protected function okImgHandler(event:MouseEvent):void
+		{
+			PopUpManager.removePopUp(this);
+		}
+		
+		protected function cancelImgHandler(event:MouseEvent):void
 		{
 			PopUpManager.removePopUp(this);
 		}

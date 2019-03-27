@@ -1,7 +1,8 @@
-package com.xiaomu.view.home.popUP
+package com.xiaomu.view.home.popUp1
 {
+	import com.xiaomu.component.ImageBtnWithUpAndDown;
+	
 	import flash.events.MouseEvent;
-	import flash.system.System;
 	
 	import coco.component.Image;
 	import coco.component.Label;
@@ -11,11 +12,11 @@ package com.xiaomu.view.home.popUP
 	import coco.util.FontFamily;
 	
 	/**
-	 * 皮皮官方弹出提示界面---按钮为复制的特殊情况
+	 * 皮皮官方弹出提示界面--按钮为确定按钮
 	 */
-	public class OfficalNoticeViewOfCopy extends UIComponent
+	public class OfficalNoticeView extends UIComponent
 	{
-		public function OfficalNoticeViewOfCopy()
+		public function OfficalNoticeView()
 		{
 			super();
 			width = 915;
@@ -35,24 +36,13 @@ package com.xiaomu.view.home.popUP
 			invalidateProperties();
 		}
 		
-		private var _normalStyle:Boolean=true;
+		
 
-		public function get normalStyle():Boolean
-		{
-			return _normalStyle;
-		}
-
-		public function set normalStyle(value:Boolean):void
-		{
-			_normalStyle = value;
-			invalidateProperties();
-		}
-
-		private var weixingNumber:String = 'wx123456789';
 		private var bgImg:Image;
 		private var titleImg:Image;
-		private var copyImg:Image;
+		private var okImg:ImageBtnWithUpAndDown;
 		private var lab:TextArea;
+		private var copyBtn:Label;
 		
 		override protected function createChildren():void
 		{
@@ -82,19 +72,20 @@ package com.xiaomu.view.home.popUP
 			lab.color = 0x6f1614;
 			addChild(lab);
 			
-			copyImg = new Image();
-			copyImg.source = 'assets/home/popUp/copy.png';
-			copyImg.width = 88;
-			copyImg.height = 41;
-			copyImg.addEventListener(MouseEvent.CLICK,copyHandler);
-			addChild(copyImg);
+			okImg = new ImageBtnWithUpAndDown();
+			okImg.upImageSource = 'assets/home/popUp/btn_confirm_normal.png';
+			okImg.downImageSource = 'assets/home/popUp/btn_confirm_press.png';
+			okImg.width = 166;
+			okImg.height = 70;
+			okImg.addEventListener(MouseEvent.CLICK,okImgHandler);
+			addChild(okImg);
 		}
 		
 		override protected function commitProperties():void
 		{
 			super.commitProperties();
 			
-			lab.text = showText+weixingNumber;
+			lab.text = showText;
 		}
 		
 		override protected function updateDisplayList():void
@@ -108,14 +99,13 @@ package com.xiaomu.view.home.popUP
 			lab.x = (width-lab.width)/2;
 			lab.y = height/3;
 			
-			copyImg.x = (width-copyImg.width)/2;
-			copyImg.y = height-copyImg.height-20
+			okImg.x = (width-okImg.width)/2;
+			okImg.y = height-okImg.height-20
 		}
 		
-		protected function copyHandler(event:MouseEvent):void
+		protected function okImgHandler(event:MouseEvent):void
 		{
 			PopUpManager.removePopUp(this);
-			System.setClipboard(weixingNumber);
 		}
 		
 	}

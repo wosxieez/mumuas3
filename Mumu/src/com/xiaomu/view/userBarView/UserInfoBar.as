@@ -3,45 +3,64 @@ package com.xiaomu.view.userBarView
 	import coco.component.Image;
 	import coco.component.Label;
 	import coco.core.UIComponent;
+	import coco.util.FontFamily;
 	
 	public class UserInfoBar extends UIComponent
 	{
 		public function UserInfoBar()
 		{
 			super();
+			height = 94;
+			width = 306;
 		}
-		
+		private var headBg:Image;
+		private var contentBg:Image;
 		private var userIcon: Image
 		private var userNameLab : Label
 		private var userGold:Label
 		
 		private var _userName:String='测试数据';
-
+		
 		public function get userName():String
 		{
 			return _userName;
 		}
-
+		
 		public function set userName(value:String):void
 		{
 			_userName = value;
 			invalidateProperties();
 		}
-
+		
 		override protected function createChildren():void
 		{
 			super.createChildren();
 			
-			userIcon = new Image
+			headBg = new Image()
+			headBg.source = 'assets/hall/headback.png'
+			headBg.width = headBg.height = 94
+			headBg.x = headBg.y = 0
+			addChild(headBg)
+			
+			contentBg = new Image()
+			contentBg.source = 'assets/hall/HeadBk.png'
+			contentBg.height = 78
+			contentBg.width = 212
+			contentBg.x = headBg.x+headBg.width-5;
+			contentBg.y = (headBg.height-contentBg.height)/2;
+			addChild(contentBg)
+			
+			userIcon = new Image();
 			userIcon.source = 'assets/hall/usericon.png'
-			userIcon.width = userIcon.height = height*0.9
-			userIcon.x = userIcon.y = 2
-			addChild(userIcon)
+			userIcon.width = userIcon.height = 94*0.8
+			userIcon.x = userIcon.y = (94-userIcon.height)/2
+			addChild(userIcon);
 			
 			userNameLab = new Label()
-			userNameLab.x = userIcon.x+userIcon.width
-			userNameLab.height = height*0.9
-			userNameLab.fontSize = height*0.3
+			userNameLab.x = headBg.x+headBg.width+5
+			userNameLab.height = 94*0.9
+			userNameLab.fontSize = 24
+			userNameLab.fontFamily = FontFamily.MICROSOFT_YAHEI
 			userNameLab.color = 0xFFFFFF
 			addChild(userNameLab)
 		}
@@ -50,7 +69,7 @@ package com.xiaomu.view.userBarView
 		{
 			super.commitProperties();
 			
-			userNameLab.text = userName
+			userNameLab.text = "ID: "+userName
 		}
 		
 		override protected function drawSkin():void

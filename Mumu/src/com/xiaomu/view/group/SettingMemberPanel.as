@@ -1,5 +1,6 @@
 package com.xiaomu.view.group
 {
+	import com.xiaomu.component.ImageBtnWithUpAndDown;
 	import com.xiaomu.event.AppManagerEvent;
 	import com.xiaomu.manager.AppManager;
 	import com.xiaomu.util.HttpApi;
@@ -9,20 +10,21 @@ package com.xiaomu.view.group
 	
 	import coco.component.Alert;
 	import coco.component.Button;
+	import coco.component.Image;
 	import coco.component.Label;
 	import coco.component.TextAlign;
 	import coco.component.TextInput;
 	import coco.core.UIComponent;
 	import coco.manager.PopUpManager;
+	import coco.util.FontFamily;
 	
 	public class SettingMemberPanel extends UIComponent
 	{
 		public function SettingMemberPanel()
 		{
 			super();
-			
-			width = 480
-			height = 200
+			width = 915;
+			height = 518;
 		}
 		
 		
@@ -36,8 +38,12 @@ package com.xiaomu.view.group
 			return instance
 		}
 		
-		private var titleHeight:int = 50;
-		private var titleLab:Label;
+		
+		private var bgImg:Image;
+		private var titleImg:Image;
+		private var okImg:ImageBtnWithUpAndDown;
+		private var cancelImg:ImageBtnWithUpAndDown;
+		
 		private var goldLab:Label;
 		private var goldInput:TextInput
 		private var nameLab:Label;
@@ -45,9 +51,7 @@ package com.xiaomu.view.group
 		private var subNameLab:Label;
 		private var subNameInput:TextInput;
 		
-		private var submitButton:Button
-		private var cancelButton:Button
-		private var removeButton:Button
+		private var removeImg:ImageBtnWithUpAndDown
 		private var oldUser:Object
 		private var _thisUser:Object
 		
@@ -77,86 +81,136 @@ package com.xiaomu.view.group
 		override protected function createChildren():void {
 			super.createChildren()
 				
-			titleLab = new Label();
-			titleLab.text = '设置成员';
-			titleLab.color = 0xffffff;
-			titleLab.fontSize = 24;
-			titleLab.width = width;
-			titleLab.height = 40;
-			addChild(titleLab);
+			bgImg = new Image();
+			bgImg.source = 'assets/home/popUp/bac_04.png';
+			bgImg.width = width;
+			bgImg.height = height;
+			addChild(bgImg);
+			
+			titleImg = new Image();
+			titleImg.source = 'assets/home/popUp/shezhi.png';
+			titleImg.width = 293;
+			titleImg.height = 86;
+			addChild(titleImg);
+			
+			okImg = new ImageBtnWithUpAndDown();
+			okImg.upImageSource = 'assets/home/popUp/btn_confirm_normal.png';
+			okImg.downImageSource = 'assets/home/popUp/btn_confirm_press.png';
+			okImg.width = 166;
+			okImg.height = 70;
+			okImg.addEventListener(MouseEvent.CLICK,okImgHandler);
+			addChild(okImg);
+			
+			cancelImg = new ImageBtnWithUpAndDown();
+			cancelImg.upImageSource = 'assets/home/popUp/Z_cancelNormal.png';
+			cancelImg.downImageSource = 'assets/home/popUp/Z_cancelPress.png';
+			cancelImg.width = 166;
+			cancelImg.height = 70;
+			cancelImg.addEventListener(MouseEvent.CLICK,cancelImgHandler);
+			addChild(cancelImg);
 			
 			nameLab = new Label();
-			nameLab.width = 60;
-			nameLab.height = 40;
 			nameLab.text = '姓名:';
-			nameLab.textAlign = TextAlign.LEFT;
-			nameLab.color = 0xffffff;
-			nameLab.fontSize = 20;
+			nameLab.fontFamily = FontFamily.MICROSOFT_YAHEI;
+			nameLab.color = 0x6f1614;
+			nameLab.fontSize = 32;
+			nameLab.width = 90;
+			nameLab.height = 40;
 			addChild(nameLab);
 			
 			nameInput = new TextInput()
 			nameInput.editable = false
-			nameInput.fontSize = 20;
-			nameInput.width = 120
-			nameInput.height = 40
+			nameInput.maxChars = 12;
+			nameInput.radius = 10;
+			nameInput.fontFamily = FontFamily.MICROSOFT_YAHEI;
+			nameInput.color = 0x6f1614;
+			nameInput.fontSize = 32;
+			nameInput.width = 300;
+			nameInput.height = 50;
 			addChild(nameInput)
 			
 			subNameLab = new Label();
-			subNameLab.width = 60;
-			subNameLab.height = 40;
 			subNameLab.text = '昵称:';
-			subNameLab.textAlign = TextAlign.LEFT;
-			subNameLab.color = 0xffffff;
-			subNameLab.fontSize = 20;
+			subNameLab.fontFamily = FontFamily.MICROSOFT_YAHEI;
+			subNameLab.color = 0x6f1614;
+			subNameLab.fontSize = 32;
+			subNameLab.width = 90;
+			subNameLab.height = 40;
 			addChild(subNameLab);
 			
 			subNameInput = new TextInput()
-			subNameInput.fontSize = 20;
-			subNameInput.width = 120
-			subNameInput.height = 40
+			subNameInput.maxChars = 12;
+			subNameInput.radius = 10;
+			subNameInput.fontFamily = FontFamily.MICROSOFT_YAHEI;
+			subNameInput.color = 0x6f1614;
+			subNameInput.fontSize = 32;
+			subNameInput.width = 300;
+			subNameInput.height = 50;
 			addChild(subNameInput)
 			
 			goldLab = new Label();
-			goldLab.width = 60;
-			goldLab.height = 40;
 			goldLab.text = '金币:';
-			goldLab.textAlign = TextAlign.LEFT;
-			goldLab.color = 0xffffff;
-			goldLab.fontSize = 20;
+			goldLab.fontFamily = FontFamily.MICROSOFT_YAHEI;
+			goldLab.color = 0x6f1614;
+			goldLab.fontSize = 32;
+			goldLab.width = 90;
+			goldLab.height = 40;
 			addChild(goldLab);
 			
 			goldInput = new TextInput()
-			goldInput.fontSize = 20
-			goldInput.width = 120
-			goldInput.height = 40
+			goldInput.maxChars = 12;
+			goldInput.radius = 10;
+			goldInput.fontFamily = FontFamily.MICROSOFT_YAHEI;
+			goldInput.color = 0x6f1614;
+			goldInput.fontSize = 32;
+			goldInput.width = 300;
+			goldInput.height = 50;
 			addChild(goldInput)
 			
-			submitButton = new Button()
-			submitButton.width = 60
-			submitButton.height = 30
-			submitButton.label = "确定"
-			submitButton.fontSize = 20
-			submitButton.addEventListener(MouseEvent.CLICK, submitButton_clickHandler)
-			addChild(submitButton)
-			
-			cancelButton = new Button()
-			cancelButton.width = 60
-			cancelButton.height = 30
-			cancelButton.label = "取消"
-			cancelButton.fontSize = 20
-			cancelButton.addEventListener(MouseEvent.CLICK, cancelButton_clickHandler)
-			addChild(cancelButton)
-			
-			removeButton = new Button()
-			removeButton.width = 100
-			removeButton.height = 30
-			removeButton.label = "移除成员"
-			removeButton.fontSize = 20
-			removeButton.addEventListener(MouseEvent.CLICK, removeButton_clickHandler)
-			addChild(removeButton)
+			removeImg = new ImageBtnWithUpAndDown()
+			removeImg.upImageSource = 'assets/home/popUp/shanchu_up.png';
+			removeImg.downImageSource = 'assets/home/popUp/shanchu_down.png';
+			removeImg.width = 146
+			removeImg.height = 59
+			removeImg.addEventListener(MouseEvent.CLICK, removeButton_clickHandler)
+			addChild(removeImg)
 		}
 		
-		
+		override protected function updateDisplayList():void
+		{
+			super.updateDisplayList();
+			
+			bgImg.x = bgImg.y = 0;
+			titleImg.x = (width-titleImg.width)/2;
+			titleImg.y = 0;
+			
+			okImg.x = width/2-okImg.width-20;
+			okImg.y = height-okImg.height-20
+			
+			cancelImg.x = width/2+20;
+			cancelImg.y = okImg.y
+			
+			nameLab.x = 200;
+			nameLab.y = 150;
+			
+			nameInput.x = nameLab.x+nameLab.width+20;
+			nameInput.y = nameLab.y-(nameInput.height-nameLab.height)/2;
+			
+			subNameLab.x = 200;
+			subNameLab.y = nameLab.y+nameLab.height+20;
+			
+			subNameInput.x = subNameLab.x+subNameLab.width+20;
+			subNameInput.y = subNameLab.y-(subNameInput.height-subNameLab.height)/2;
+			
+			goldLab.x = 200;
+			goldLab.y = subNameLab.y+subNameLab.height+20;
+			
+			goldInput.x = goldLab.x+goldLab.width+20;
+			goldInput.y = goldLab.y-(goldInput.height-goldLab.height)/2;
+			
+			removeImg.x = cancelImg.x+cancelImg.width+20;
+			removeImg.y = cancelImg.y+(cancelImg.height-removeImg.height)/2;
+		}
 		
 		override protected function commitProperties():void {
 			super.commitProperties()
@@ -174,45 +228,6 @@ package com.xiaomu.view.group
 					}
 				}
 			}
-		}
-		
-		override protected function updateDisplayList():void
-		{
-			super.updateDisplayList();
-			
-			titleLab.y = (titleHeight-titleLab.height)/2;
-			
-			nameLab.x = 20;
-			nameLab.y = titleHeight+10;
-			nameInput.x = nameLab.x+nameLab.width;
-			nameInput.y = nameLab.y;
-			
-			goldLab.x = nameInput.x+nameInput.width+30;
-			goldLab.y = nameLab.y;
-			goldInput.x = goldLab.x+goldLab.width;
-			goldInput.y = nameLab.y;
-			
-			subNameLab.x = nameLab.x;
-			subNameLab.y = nameLab.y+nameLab.height+20;
-			subNameInput.x = subNameLab.x+subNameLab.width;
-			subNameInput.y = subNameLab.y;
-			
-			submitButton.x = width/2-submitButton.width-10;
-			submitButton.y = height+titleHeight-submitButton.height-20;
-			cancelButton.x = width/2+10;
-			cancelButton.y = submitButton.y;
-			removeButton.x = width-(removeButton.width+20);
-			removeButton.y = cancelButton.y;
-		}
-		
-		override protected function drawSkin():void {
-			graphics.clear()
-			graphics.beginFill(0x000000, 0.7)
-			graphics.drawRoundRect(0, 0, width, height+titleHeight, 5, 5)
-			graphics.endFill()
-			graphics.beginFill(0x000000)
-			graphics.drawRoundRect(0, 0, width, titleHeight, 5, 5)
-			graphics.endFill()
 		}
 		
 		public function open(user:Object):void {
@@ -243,7 +258,7 @@ package com.xiaomu.view.group
 			PopUpManager.removePopUp(this)
 		}
 		
-		protected function submitButton_clickHandler(event:MouseEvent):void
+		protected function okImgHandler(event:MouseEvent):void
 		{
 			if(!parseInt(goldInput.text)){
 				Alert.show('输入金币数有误');
@@ -273,7 +288,7 @@ package com.xiaomu.view.group
 				})
 		}
 		
-		protected function cancelButton_clickHandler(event:MouseEvent):void
+		protected function cancelImgHandler(event:MouseEvent):void
 		{
 			close()
 		}

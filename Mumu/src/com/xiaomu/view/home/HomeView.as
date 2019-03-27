@@ -8,9 +8,9 @@ package com.xiaomu.view.home
 	import com.xiaomu.view.MainView;
 	import com.xiaomu.view.hall.HallView;
 	import com.xiaomu.view.home.noticeBar.NoticeBar;
-	import com.xiaomu.view.home.popUP.OfficalGongGaoView;
-	import com.xiaomu.view.home.popUP.OfficalNoticeView;
-	import com.xiaomu.view.home.popUP.OfficalNoticeViewOfCopy;
+	import com.xiaomu.view.home.popUp1.OfficalGongGaoView;
+	import com.xiaomu.view.home.popUp1.OfficalNoticeView;
+	import com.xiaomu.view.home.popUp1.OfficalNoticeViewOfCopy;
 	import com.xiaomu.view.home.setting.SettingPanelView;
 	import com.xiaomu.view.userBarView.UserInfoView2;
 	
@@ -63,8 +63,8 @@ package com.xiaomu.view.home
 			myGroup = new ImageBtnWithUpAndDown();
 			myGroup.width = 270;
 			myGroup.height = 407;
-			myGroup.upImageSource = 'assets/home/guild_up.png';
-			myGroup.downImageSource = 'assets/home/guild_down.png';
+			myGroup.upImageSource = 'assets/home/myGroup1_up.png';
+			myGroup.downImageSource = 'assets/home/myGroup1_down.png';
 			myGroup.addEventListener(MouseEvent.CLICK,clickHandler);
 			addChild(myGroup);
 			
@@ -81,6 +81,7 @@ package com.xiaomu.view.home
 			daTongZiImg.upImageSource = 'assets/home/other/fen_up.png';
 			daTongZiImg.downImageSource = 'assets/home/other/fen_down.png';
 			addChild(daTongZiImg);
+			daTongZiImg.visible =false;
 			
 			ziPaiImg = new ImageBtnWithUpAndDown();
 			ziPaiImg.width = 260;
@@ -95,12 +96,15 @@ package com.xiaomu.view.home
 			xiuXianImg.upImageSource = 'assets/home/other/coinRoom_up.png';
 			xiuXianImg.downImageSource = 'assets/home/other/coinRoom_down.png';
 			addChild(xiuXianImg);
+			xiuXianImg.visible = false;
 			
 			paoDeKuaiImg = new ImageBtnWithUpAndDown();
 			paoDeKuaiImg.width = 260;
 			paoDeKuaiImg.height = 190;
-			paoDeKuaiImg.upImageSource = 'assets/home/other/zi_up.png';
-			paoDeKuaiImg.downImageSource = 'assets/home/other/zi_down.png';
+			/*paoDeKuaiImg.upImageSource = 'assets/home/other/zi_up.png';
+			paoDeKuaiImg.downImageSource = 'assets/home/other/zi_down.png';*/
+			paoDeKuaiImg.upImageSource = 'assets/home/other/caicaicai_up.png';
+			paoDeKuaiImg.downImageSource = 'assets/home/other/caicaicai_down.png';
 			addChild(paoDeKuaiImg);
 			
 			otherImg = new ImageBtnWithUpAndDown();
@@ -147,8 +151,8 @@ package com.xiaomu.view.home
 			proxyBtn = new ImageBtnWithUpAndDown();
 			proxyBtn.upImageSource = 'assets/home/cwdl_up.png';
 			proxyBtn.downImageSource = 'assets/home/cwdl_down.png';
-			proxyBtn.width = 109;
-			proxyBtn.height = 113;
+			proxyBtn.width = 104*0.8;
+			proxyBtn.height = 106*0.8;
 			proxyBtn.addEventListener(MouseEvent.CLICK,proxyBtnBtnHandler);
 			addChild(proxyBtn);
 			
@@ -199,10 +203,14 @@ package com.xiaomu.view.home
 			waiterBtn.x = checkInBtn.x;
 			waiterBtn.y = checkInBtn.y+checkInBtn.height+10;
 			
+			//////////////////////
+			
 			daTongZiImg.x = width/2-daTongZiImg.width-3;
 			daTongZiImg.y = height/2-daTongZiImg.height-1;
 			
-			ziPaiImg.x = width/2+3;
+			/*ziPaiImg.x = width/2+3;
+			ziPaiImg.y = daTongZiImg.y;*/
+			ziPaiImg.x = (width-ziPaiImg.width)/2;
 			ziPaiImg.y = daTongZiImg.y;
 			
 			xiuXianImg.x = daTongZiImg.x;
@@ -214,8 +222,9 @@ package com.xiaomu.view.home
 			myGroup.x = ziPaiImg.x+ziPaiImg.width+10;
 			myGroup.y = (height-myGroup.height)/2;
 			
-			otherImg.x = daTongZiImg.x-otherImg.width-10;
-			otherImg.y = myGroup.y;
+//			otherImg.x = daTongZiImg.x-otherImg.width-10;
+			otherImg.x = ziPaiImg.x-otherImg.width-10;
+			otherImg.y = ziPaiImg.y-5;
 			
 			gonggaoImg.x = otherImg.x;
 			gonggaoImg.y = otherImg.y+otherImg.height-10;
@@ -252,9 +261,7 @@ package com.xiaomu.view.home
 			}
 			if(btnGroup.selectedItem.name=='设置'){
 				var setPanelView:SettingPanelView
-				if(!setPanelView){
-					setPanelView = new SettingPanelView();
-				}
+				if(!setPanelView){setPanelView = new SettingPanelView();}
 				PopUpManager.centerPopUp(PopUpManager.addPopUp(setPanelView,null,true,false,0x000000,0.8));
 			}else if(btnGroup.selectedItem.name=='公告'){
 				var gonggaoView:OfficalGongGaoView;
@@ -262,6 +269,12 @@ package com.xiaomu.view.home
 					gonggaoView = new OfficalGongGaoView();
 					PopUpManager.centerPopUp(PopUpManager.addPopUp(gonggaoView,null,false,true,0,0.6));
 				}
+			}else if(btnGroup.selectedItem.name=='分享'){
+				var noticeView:OfficalNoticeViewOfCopy;
+				if(!noticeView){noticeView = new OfficalNoticeViewOfCopy();}
+				noticeView.showText = '请用浏览器打开次链接：';
+				noticeView.copyText = 'www.baidu.com';
+				PopUpManager.centerPopUp(PopUpManager.addPopUp(noticeView,null,true,false,0x000000,0.8));
 			}
 			
 			btnGroup.selectedIndex = -1

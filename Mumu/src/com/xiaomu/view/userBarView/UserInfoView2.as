@@ -38,8 +38,6 @@ package com.xiaomu.view.userBarView
 			super.createChildren();
 			
 			userinfoBar = new UserInfoBar();
-			userinfoBar.width = 270;
-			userinfoBar.height = height;
 			addChild(userinfoBar);
 			
 			goldBar = new GoldOrCardShowBar();

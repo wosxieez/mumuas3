@@ -6,7 +6,9 @@ package com.xiaomu.renderer
 	
 	import coco.component.DefaultItemRenderer;
 	import coco.component.Image;
+	import coco.component.Label;
 	import coco.component.TextAlign;
+	import coco.util.FontFamily;
 	
 	public class UserRenderer extends DefaultItemRenderer
 	{
@@ -16,61 +18,81 @@ package com.xiaomu.renderer
 			mouseChildren = true
 		}
 		private var _data : Object;
-
+		
 		override public function get data():Object
 		{
 			return _data;
 		}
-
+		
 		override public function set data(value:Object):void
 		{
 			_data = value;
 			invalidateProperties()
 		}
-
+		
+		private var bgImg:Image;
 		private var onlineIcon : Image;
 		private var offlineIcon : Image;
 		private var settingButton:Image
 		private var adminIcon:Image;
+		private var nameLab:Label;
 		override protected function createChildren():void
 		{
 			super.createChildren();
 			
+			labelDisplay.visible = false;
+			
+			bgImg = new Image();
+			bgImg.source = 'assets/user/club_black_mem_bg.png';
+			addChild(bgImg);
+			
 			onlineIcon = new Image();
 			onlineIcon.source = 'assets/room/online.png';
-			onlineIcon.width = onlineIcon.height = 40;
 			addChild(onlineIcon);
 			onlineIcon.visible = false;
 			
 			offlineIcon = new Image();
 			offlineIcon.source = 'assets/room/offline.png';
-			offlineIcon.width = offlineIcon.height = 40;
 			addChild(offlineIcon);
 			offlineIcon.visible = false;
 			
-			labelDisplay.color = 0xFFFFFF
-				
 			settingButton = new Image()
-			settingButton.source = 'assets/room/user_setting.png';
-			settingButton.width = settingButton.height = 32
+			settingButton.source = 'assets/room/user_setting1.png';
 			settingButton.addEventListener(MouseEvent.CLICK, settingButton_clickHandler)
 			addChild(settingButton)
 			
 			adminIcon = new Image();
 			adminIcon.source = 'assets/room/admin.png';
-			adminIcon.width = adminIcon.height = 32
 			addChild(adminIcon)
+			
+			nameLab = new Label();
+			nameLab.color = 0x6f1614;
+			nameLab.fontFamily = FontFamily.MICROSOFT_YAHEI;
+			addChild(nameLab);
 		}
 		
 		override protected function updateDisplayList():void
 		{
 			super.updateDisplayList();
 			
+			bgImg.width = width;
+			bgImg.height = height;
+			onlineIcon.width = onlineIcon.height = height*0.8;
+			offlineIcon.width = offlineIcon.height = height*0.8;
+			settingButton.width = settingButton.height = height*0.8
+			adminIcon.width = adminIcon.height = 32
+			
 			onlineIcon.x = offlineIcon.x = 5;
 			onlineIcon.y = offlineIcon.y = (height-onlineIcon.height)/2;
 			
 			adminIcon.x = settingButton.x = width - settingButton.width-4;
 			adminIcon.y = settingButton.y =(height-settingButton.height)/2;
+			
+			nameLab.fontSize = 28;
+			nameLab.height = 40;
+			nameLab.textAlign = TextAlign.LEFT;
+			nameLab.x = onlineIcon.x+onlineIcon.width+8;
+			nameLab.y = 10;
 		}
 		
 		override protected function commitProperties():void
@@ -86,12 +108,7 @@ package com.xiaomu.renderer
 						data.subname = i.subname
 					}
 				}
-				labelDisplay.text = data.allowSetFlag?(data.subname?data.subname:data.username):data.username
-				labelDisplay.fontSize = 28;
-				labelDisplay.height = 30;
-				labelDisplay.textAlign = TextAlign.LEFT;
-				labelDisplay.x = onlineIcon.x+onlineIcon.width+8;
-				labelDisplay.y = (height-labelDisplay.height)/2
+				nameLab.text = data.allowSetFlag?(data.subname?data.subname:data.username):data.username
 				if(data.online){
 					onlineIcon.visible = true;
 					offlineIcon.visible = false;
@@ -103,7 +120,7 @@ package com.xiaomu.renderer
 				adminIcon.visible = data.allowSetFlag?false:data.isAdmin;
 			}
 			else
-				labelDisplay.text = "";
+				nameLab.text = "";
 		}
 		
 		override protected function drawSkin():void
@@ -111,7 +128,7 @@ package com.xiaomu.renderer
 			super.drawSkin();
 			
 			graphics.clear();
-			graphics.beginFill(0xffffff,0.1);
+			graphics.beginFill(0xffffff,1);
 			graphics.drawRoundRect(0,0,width,height,10,10);
 			graphics.endFill();
 		}

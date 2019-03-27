@@ -1,5 +1,6 @@
 package com.xiaomu.view.userBarView
 {
+	import com.xiaomu.component.ImageBtnWithUpAndDown;
 	import com.xiaomu.event.AppManagerEvent;
 	import com.xiaomu.manager.AppManager;
 	import com.xiaomu.util.HttpApi;
@@ -9,11 +10,13 @@ package com.xiaomu.view.userBarView
 	
 	import coco.component.Alert;
 	import coco.component.Button;
+	import coco.component.Image;
 	import coco.component.Label;
 	import coco.component.TextAlign;
 	import coco.component.TextInput;
 	import coco.core.UIComponent;
 	import coco.manager.PopUpManager;
+	import coco.util.FontFamily;
 	
 	/**
 	 * 设置群主自身的金币
@@ -23,23 +26,23 @@ package com.xiaomu.view.userBarView
 		public function SettingGoldPanel()
 		{
 			super();
-			width = 320
-			height = 120
+			width = 915;
+			height = 518;
 		}
 		
-		private var titleHeigh:Number = 50;
-		private var titleLab:Label;
+		
+		private var bgImg:Image;
+		private var titleImg:Image;
+		
 		private var goldLab:Label;
 		private var goldNumberTextInput:TextInput;
-		private var okBtn:Button;
-		private var cancelBtn:Button;
+		private var okImg:ImageBtnWithUpAndDown;
+		private var cancelImg:ImageBtnWithUpAndDown;
 		private var _data:Object;
-		
 		public function get data():Object
 		{
 			return _data;
 		}
-		
 		public function set data(value:Object):void
 		{
 			_data = value;
@@ -50,43 +53,52 @@ package com.xiaomu.view.userBarView
 		{
 			super.createChildren();
 			
-			titleLab = new Label();
-			titleLab.width = width;
-			titleLab.text = '群主金币设置';
-			titleLab.fontSize = 24;
-			titleLab.height = 40;
-			titleLab.color = 0xffffff;
-			addChild(titleLab);
+			bgImg = new Image();
+			bgImg.source = 'assets/home/popUp/bac_04.png';
+			bgImg.width = width;
+			bgImg.height = height;
+			addChild(bgImg);
+			
+			titleImg = new Image();
+			titleImg.source = 'assets/home/popUp/shezhi.png';
+			titleImg.width = 293;
+			titleImg.height = 86;
+			addChild(titleImg);
 			
 			goldLab = new Label();
-			goldLab.width = 80;
-			goldLab.height = 40;
-			goldLab.textAlign = TextAlign.LEFT;
 			goldLab.text = '金币数:';
-			goldLab.fontSize = 20;
-			goldLab.color = 0xffffff;
+			goldLab.fontFamily = FontFamily.MICROSOFT_YAHEI;
+			goldLab.color = 0x6f1614;
+			goldLab.fontSize = 32;
+			goldLab.width = 120;
+			goldLab.height = 30;
 			addChild(goldLab);
 			
 			goldNumberTextInput = new TextInput();
-			goldNumberTextInput.fontSize = 20;
-			goldNumberTextInput.height = 40;
+			goldNumberTextInput.maxChars = 5;
+			goldNumberTextInput.radius = 10;
+			goldNumberTextInput.fontFamily = FontFamily.MICROSOFT_YAHEI;
+			goldNumberTextInput.color = 0x6f1614;
+			goldNumberTextInput.fontSize = 32;
+			goldNumberTextInput.width = 300;
+			goldNumberTextInput.height = 50;
 			addChild(goldNumberTextInput)
 			
-			okBtn = new Button();
-			okBtn.width = 60
-			okBtn.height = 30
-			okBtn.label = "确定"
-			okBtn.fontSize = 20
-			okBtn.addEventListener(MouseEvent.CLICK,okBtnHandler);
-			addChild(okBtn);
+			okImg = new ImageBtnWithUpAndDown();
+			okImg.upImageSource = 'assets/home/popUp/btn_confirm_normal.png';
+			okImg.downImageSource = 'assets/home/popUp/btn_confirm_press.png';
+			okImg.width = 166;
+			okImg.height = 70;
+			okImg.addEventListener(MouseEvent.CLICK,okImgHandler);
+			addChild(okImg);
 			
-			cancelBtn = new Button();
-			cancelBtn.width = 60
-			cancelBtn.height = 30
-			cancelBtn.label = "取消"
-			cancelBtn.fontSize = 20
-			cancelBtn.addEventListener(MouseEvent.CLICK,cancelBtnHandler);
-			addChild(cancelBtn);
+			cancelImg = new ImageBtnWithUpAndDown();
+			cancelImg.upImageSource = 'assets/home/popUp/Z_cancelNormal.png';
+			cancelImg.downImageSource = 'assets/home/popUp/Z_cancelPress.png';
+			cancelImg.width = 166;
+			cancelImg.height = 70;
+			cancelImg.addEventListener(MouseEvent.CLICK,cancelImgHandler);
+			addChild(cancelImg);
 		}
 		
 		override protected function commitProperties():void
@@ -101,36 +113,29 @@ package com.xiaomu.view.userBarView
 		{
 			super.updateDisplayList();
 			
-			titleLab.y = (titleHeigh-titleLab.height)/2
+			bgImg.x = bgImg.y = 0;
+			titleImg.x = (width-titleImg.width)/2;
+			titleImg.y = 0;
 			
-			goldLab.x = 10;
-			goldLab.y = 10+titleHeigh;
-			goldNumberTextInput.x = goldLab.x+goldLab.width+5;
-			goldNumberTextInput.y = goldLab.y;
-			goldNumberTextInput.width = width-goldNumberTextInput.x-60
+			okImg.x = width/2-okImg.width-20;
+			okImg.y = height-okImg.height-20
 			
-			okBtn.y = height+titleHeigh-okBtn.height-5;
-			okBtn.x = width/2-okBtn.width-10;
-			cancelBtn.y = okBtn.y;
-			cancelBtn.x = width/2+10;
+			cancelImg.x = width/2+20;
+			cancelImg.y = okImg.y
+			
+			goldLab.x = 170;
+			goldLab.y = 150;
+			
+			goldNumberTextInput.x = goldLab.x+goldLab.width+20;
+			goldNumberTextInput.y = goldLab.y-(goldNumberTextInput.height-goldLab.height)/2;
 		}
 		
-		override protected function drawSkin():void {
-			graphics.clear()
-			graphics.beginFill(0x000000, 0.7)
-			graphics.drawRoundRect(0, 0, width, height+titleHeigh, 5, 5)
-			graphics.endFill()
-			graphics.beginFill(0x000000)
-			graphics.drawRoundRect(0, 0, width, titleHeigh, 5, 5)
-			graphics.endFill()
-		}
-		
-		protected function cancelBtnHandler(event:MouseEvent):void
+		protected function cancelImgHandler(event:MouseEvent):void
 		{
 			PopUpManager.removeAllPopUp();
 		}
 		
-		protected function okBtnHandler(event:MouseEvent):void
+		protected function okImgHandler(event:MouseEvent):void
 		{
 			///user_id: 2 group_id 29 gold 200 user_name fangchao
 			PopUpManager.removeAllPopUp();

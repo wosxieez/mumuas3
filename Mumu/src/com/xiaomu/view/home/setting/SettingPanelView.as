@@ -16,7 +16,7 @@ package com.xiaomu.view.home.setting
 	import coco.manager.PopUpManager;
 	
 	/**
-	 * 设置界面
+	 * 游戏主设置界面
 	 */
 	public class SettingPanelView extends UIComponent
 	{
