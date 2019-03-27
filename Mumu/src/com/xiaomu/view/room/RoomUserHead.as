@@ -23,6 +23,7 @@ package com.xiaomu.view.room
 		private var headBg:Image
 		private var icon:Image
 		private var usernameDisplay:Label
+		private var huxiDisplay:Label
 		
 		private var _username:String
 		
@@ -37,16 +38,17 @@ package com.xiaomu.view.room
 			invalidateProperties()
 		}
 
-		private var _huxi:String
+		private var _huxi:int = 0
 		
-		public function get huxi():String
+		public function get huxi():int
 		{
 			return _huxi;
 		}
 
-		public function set huxi(value:String):void
+		public function set huxi(value:int):void
 		{
 			_huxi = value;
+			invalidateProperties()
 		}
 
 		override protected function createChildren():void {
@@ -67,14 +69,24 @@ package com.xiaomu.view.room
 			usernameDisplay.y = 80
 			usernameDisplay.color = 0xFFFFFF
 			usernameDisplay.fontSize = 15
-			usernameDisplay.width = usernameDisplay.height = 80
+			usernameDisplay.width = 80
+			usernameDisplay.height = 40
 			addChild(usernameDisplay)
+			
+			huxiDisplay = new Label()
+			huxiDisplay.y = 120
+			huxiDisplay.color = 0xFFFFFF
+			huxiDisplay.fontSize = 15
+			huxiDisplay.width = 80
+			huxiDisplay.height = 40
+			addChild(huxiDisplay)
 		}
 		
 		override protected function commitProperties():void {
 			super.commitProperties()
 				
 			usernameDisplay.text = username
+			huxiDisplay.text = '胡息:' + huxi
 		}
 		
 		

@@ -370,6 +370,7 @@ package com.xiaomu.view.room
 				if (preUser) {
 					preUserHead.visible = true
 					preUserHead.username = preUser.username
+					preUserHead.huxi = CardUtil.getInstane().getHuXi(preUser.groupCards)
 				}  else {
 					preUserHead.visible = false
 				}
@@ -377,6 +378,7 @@ package com.xiaomu.view.room
 				if (myUser) {
 					myUserHead.visible = true
 					myUserHead.username = myUser.username
+					myUserHead.huxi = CardUtil.getInstane().getHuXi(myUser.groupCards)
 				}  else {
 					myUserHead.visible = false
 				}
@@ -384,11 +386,12 @@ package com.xiaomu.view.room
 				if (nextUser) {
 					nextUserHead.visible = true
 					nextUserHead.username = nextUser.username
+					nextUserHead.huxi = CardUtil.getInstane().getHuXi(nextUser.groupCards)
 				}  else {
 					nextUserHead.visible = false
 				}
 				
-				if (roominfo.cc)
+				if (this.roominfo.hasOwnProperty('cc'))
 					cardsLabel.text = '剩余' + roominfo.cc + '张牌'
 				
 				if (isGaming) {
@@ -896,42 +899,42 @@ package com.xiaomu.view.room
 					isCheckNewCard = false
 					// 出牌之后清理出听提示
 					clearMyHandCardUIsCanOutTing()
-				}
-			} else {
-				ei = getMyHandCardsIndex(this.mouseX)
-				if (si >= 0 && ei >= 0) {
-					//  调整牌位置
-					if (myHandCards[si]) {
-						var index:int = (myHandCards[si] as Array).indexOf(draggingCardUI.card)
-						if (index >= 0) {
-							if (myHandCards[ei]) {
-								if (myHandCards[ei].length < 3) {
-									myHandCards[si].splice(index, 1) // 删除这个元素
-									myHandCards[ei].push(draggingCardUI.card)
-								} else if (myHandCards[ei].length == 3) {
-									if (myHandCards[ei][0] == myHandCards[ei][1] && myHandCards[ei][1] == myHandCards[ei][2]) {
-										// 坎元素不能堆积
-										trace('这是坎 不能堆积')
-									} else {
+				} else {
+					ei = getMyHandCardsIndex(this.mouseX)
+					if (si >= 0 && ei >= 0 && si != ei) {
+						//  调整牌位置
+						if (myHandCards[si]) {
+							var index:int = (myHandCards[si] as Array).indexOf(draggingCardUI.card)
+							if (index >= 0) {
+								if (myHandCards[ei]) {
+									if (myHandCards[ei].length < 3) {
 										myHandCards[si].splice(index, 1) // 删除这个元素
 										myHandCards[ei].push(draggingCardUI.card)
+									} else if (myHandCards[ei].length == 3) {
+										if (myHandCards[ei][0] == myHandCards[ei][1] && myHandCards[ei][1] == myHandCards[ei][2]) {
+											// 坎元素不能堆积
+											trace('这是坎 不能堆积')
+										} else {
+											myHandCards[si].splice(index, 1) // 删除这个元素
+											myHandCards[ei].push(draggingCardUI.card)
+										}
 									}
+								} else {
+									myHandCards[si].splice(index, 1) // 删除这个元素
+									myHandCards.push([draggingCardUI.card])
 								}
-							} else {
-								myHandCards[si].splice(index, 1) // 删除这个元素
-								myHandCards.push([draggingCardUI.card])
 							}
 						}
 					}
 				}
-			}
-			
-			updateMyHandCardUIs()
-			if (isCheckNewCard) { // 出牌状态才会刷新
-				tingCardsView.tingCards = null
-				updateMyHandCardUIsCanOutTing()
-			} else {
-				updateMyHandCardUIsCanTing()
+				
+				updateMyHandCardUIs()
+				if (isCheckNewCard) { // 出牌状态才会刷新
+					tingCardsView.tingCards = null
+					updateMyHandCardUIsCanOutTing()
+				} else {
+					updateMyHandCardUIsCanTing()
+				}
 			}
 		}
 		
