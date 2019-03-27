@@ -4,7 +4,6 @@ package com.xiaomu.component
 	
 	import coco.component.Image;
 	import coco.component.SkinComponent;
-	import coco.util.CocoUI;
 	
 	public class ImageBtnWithUpAndDown extends SkinComponent
 	{
@@ -44,7 +43,6 @@ package com.xiaomu.component
 		public function set mouseDown(value:Boolean):void
 		{
 			_mouseDown = value;
-			invalidateProperties();
 			invalidateSkin()
 		}
 		
@@ -75,19 +73,26 @@ package com.xiaomu.component
 		}
 		
 		private var mouseUpImage:Image;
+		private var mouseDwonImage:Image
 		
 		override protected function createChildren():void
 		{
 			super.createChildren();
 			
 			mouseUpImage = new Image();
+			mouseUpImage.visible = false
 			addChild(mouseUpImage);
+			
+			mouseDwonImage = new Image();
+			mouseDwonImage.visible = false
+			addChild(mouseDwonImage)
 		}
 		
 		override protected function commitProperties():void
 		{
 			super.commitProperties();
-			mouseUpImage.source = mouseDown ? downImageSource : upImageSource;
+			mouseUpImage.source = upImageSource
+			mouseDwonImage.source = downImageSource
 		}
 		
 		override protected function updateDisplayList():void {
@@ -98,14 +103,10 @@ package com.xiaomu.component
 		}
 		
 		override protected function drawSkin():void {
-			super.drawSkin();
+//			super.drawSkin();
 			
-			if (mouseDown)
-			{
-				graphics.beginFill(CocoUI.themeBackgroundColorSelected, backgroundAlpha);
-				graphics.drawRoundRectComplex(0, 0, width, height, topLeftRadius, topRightRadius, bottomLeftRadius, bottomRightRadius);
-				graphics.endFill();
-			}
+			mouseUpImage.visible = !mouseDown
+			mouseDwonImage.visible = mouseDown
 		}
 		
 	}

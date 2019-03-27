@@ -2,11 +2,12 @@ package com.xiaomu.view.hall
 {
 	import com.xiaomu.component.ImageBtnWithUpAndDown;
 	import com.xiaomu.component.ImgBtn;
+	import com.xiaomu.event.ApiEvent;
 	import com.xiaomu.event.AppManagerEvent;
 	import com.xiaomu.manager.AppManager;
 	import com.xiaomu.renderer.GroupRenderer;
+	import com.xiaomu.util.Api;
 	import com.xiaomu.util.AppData;
-	import com.xiaomu.util.Assets;
 	import com.xiaomu.util.Audio;
 	import com.xiaomu.util.HttpApi;
 	import com.xiaomu.view.MainView;
@@ -19,6 +20,7 @@ package com.xiaomu.view.hall
 	import flash.events.MouseEvent;
 	import flash.utils.setTimeout;
 	
+	import coco.component.Alert;
 	import coco.component.HorizontalAlign;
 	import coco.component.Image;
 	import coco.component.List;
@@ -37,6 +39,8 @@ package com.xiaomu.view.hall
 			super();
 			AppManager.getInstance().addEventListener(AppManagerEvent.UPDATE_GROUP_SUCCESS,updateGroupSuccessHandler);
 			AppManager.getInstance().addEventListener(AppManagerEvent.CREATE_GROUP_SUCCESS,createGroupSuccessHandler);
+			Api.getInstane().addEventListener(ApiEvent.JOIN_GROUP_SUCCESS, joinGroupSuccessHandler)
+			Api.getInstane().addEventListener(ApiEvent.JOIN_GROUP_FAULT, joinGroupFaultHandler)
 		}
 		
 		private var groupsList:List
@@ -132,7 +136,6 @@ package com.xiaomu.view.hall
 			createGroupBtn.labColor = 0xffffff;
 			createGroupBtn.addEventListener(MouseEvent.CLICK,createGroupHandler);
 			addChild(createGroupBtn);
-//			createGroupBtn.visible = false;
 		}
 		
 		protected function gobackHandler(event:MouseEvent):void
@@ -143,7 +146,7 @@ package com.xiaomu.view.hall
 		override protected function updateDisplayList():void{
 			super.updateDisplayList();
 			
-//			createGroupBtn.visible = AppData.getInstane().user.is_admin=='T'
+			//			createGroupBtn.visible = AppData.getInstane().user.is_admin=='T'
 			AppData.getInstane().inGroupView = false;
 			
 			bgImg.x = bgImg.y = 0;
@@ -155,7 +158,7 @@ package com.xiaomu.view.hall
 			
 			meiziImg.y = gonggaoImg.y;
 			meiziImg.x = gonggaoImg.x+gonggaoImg.width+30;
-				
+			
 			
 			groupsList.width = width
 			groupsList.height = groupsList.itemRendererHeight*1.1
@@ -172,27 +175,15 @@ package com.xiaomu.view.hall
 		}
 		
 		private var i:int = 1
+		private var selectedItem:Object
 		
 		protected function groupsList_changeHandler(event:UIEvent):void
 		{
 			if(!groupsList.selectedItem){
 				return
 			}
-			var selectedItem:Object = groupsList.selectedItem;
-			var groupId:int = int(groupsList.selectedItem.group_id)///群id
-			var groupAdminId:int = groupsList.selectedItem.admin_id///该群群主id
-			var userId:int = AppData.getInstane().user.id///用户自身id
-			HttpApi.getInstane().getUserInfoById(groupAdminId,function(e:Event):void{
-				///群消息对象
-				var groupInfoObj:Object={
-					'group_id':selectedItem.group_id,
-					'group_name':selectedItem.name,
-					'remark':selectedItem.remark,
-					'admin_id':selectedItem.admin_id,
-					'admin_name':JSON.parse(e.currentTarget.data).message[0].username}
-//				GroupView(MainView.getInstane().pushView(GroupView)).init(groupId,groupAdminId,groupInfoObj)///进入房间界面，初始化，输入组id,同时传入需要该组的群主id
-				GroupViewNew(MainView.getInstane().pushView(GroupViewNew)).init(groupId,groupAdminId,groupInfoObj)///进入房间界面，初始化，输入组id,同时传入需要该组的群主id
-			},null)
+			selectedItem = groupsList.selectedItem;
+			Api.getInstane().joinGroup(AppData.getInstane().user.username, int(selectedItem.group_id))
 			setTimeout(function ():void { groupsList.selectedIndex = -1 }, 100)
 		}
 		
@@ -203,9 +194,8 @@ package com.xiaomu.view.hall
 			}else{
 				groupsData = JSON.parse(AppData.getInstane().user.group_info) as Array;
 			}
-			Assets.getInstane().loadAssets('assets/niu.png', 'assets/niu.json')
 			HttpApi.getInstane().getUserInfoByName(AppData.getInstane().username,function(e:Event):void{
-//								trace('大厅界面：金币',JSON.parse(e.currentTarget.data).message[0].group_info);
+				//								trace('大厅界面：金币',JSON.parse(e.currentTarget.data).message[0].group_info);
 				//				trace('大厅界面：房卡',JSON.parse(e.currentTarget.data).message[0].room_card);
 				//				trace('大厅界面：用户id',JSON.parse(e.currentTarget.data).message[0].id);
 				var room_card:String = JSON.parse(e.currentTarget.data).message[0].room_card?JSON.parse(e.currentTarget.data).message[0].room_card+'':'0'
@@ -233,7 +223,7 @@ package com.xiaomu.view.hall
 					}
 				}
 				groupsList.dataProvider = groupsData
-//				groupsList.dataProvider = []
+				//				groupsList.dataProvider = []
 				refreshView();
 			},null);
 		}
@@ -288,6 +278,27 @@ package com.xiaomu.view.hall
 				AppData.getInstane().user.group_info = JSON.stringify(group_info_arr);
 				init();
 			},null);
+		}
+		
+		protected function joinGroupSuccessHandler(event:ApiEvent):void
+		{
+			var groupId:int = int(selectedItem.group_id)///群id
+			var groupAdminId:int = selectedItem.admin_id///该群群主id
+			var userId:int = AppData.getInstane().user.id///用户自身id
+			HttpApi.getInstane().getUserInfoById(groupAdminId,function(e:Event):void{
+				///群消息对象
+				var groupInfoObj:Object={
+					'group_id':selectedItem.group_id,
+					'group_name':selectedItem.name,
+					'remark':selectedItem.remark,
+					'admin_id':selectedItem.admin_id,
+					'admin_name':JSON.parse(e.currentTarget.data).message[0].username}
+				GroupViewNew(MainView.getInstane().pushView(GroupViewNew)).init(groupId,groupAdminId,groupInfoObj, event.data as Array)///进入房间界面，初始化，输入组id,同时传入需要该组的群主id
+			},null)
+		}
+		
+		protected function joinGroupFaultHandler(event:ApiEvent):void {
+			Alert.show(JSON.stringify(event.data))
 		}
 		
 	}

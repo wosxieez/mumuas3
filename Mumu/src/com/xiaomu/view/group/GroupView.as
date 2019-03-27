@@ -39,6 +39,8 @@ package com.xiaomu.view.group
 			
 			Api.getInstane().addEventListener(ApiEvent.JOIN_GROUP_SUCCESS, joinGroupSuccessHandler)
 			Api.getInstane().addEventListener(ApiEvent.JOIN_GROUP_FAULT, joinGroupFaultHandler)
+			Api.getInstane().addEventListener(ApiEvent.JOIN_ROOM_SUCCESS, joinRoomSuccessHandler)
+			Api.getInstane().addEventListener(ApiEvent.JOIN_ROOM_FAULT, joinRoomFaultHandler)
 			Api.getInstane().addEventListener(ApiEvent.ON_GROUP, onGroupHandler)
 			AppManager.getInstance().addEventListener(AppManagerEvent.UPDATE_GROUP_SUCCESS,updateGroupSuccessHandler);
 			AppManager.getInstance().addEventListener(AppManagerEvent.UPDATE_MEMBER_INFO_SUCCESS,updateMemberInfoSuccessHandler);
@@ -56,6 +58,7 @@ package com.xiaomu.view.group
 		private var goback:Image;
 		private var _roomsData:Array
 		private var _userData : Object;
+		private var selectedRoom:Object
 		
 		public function get userData():Object
 		{
@@ -236,14 +239,8 @@ package com.xiaomu.view.group
 					roomsList.selectedIndex = -1
 					return;
 				}
-				var room:Object = roomsList.selectedItem
-				Api.getInstane().joinRoom(room, function (response):void {
-					if (response.code == 0) {
-						RoomView(MainView.getInstane().pushView(RoomView)).init(room)
-					} else {
-						Alert.show("response.data：",response.data)
-					}
-				})
+				selectedRoom = roomsList.selectedItem
+				Api.getInstane().joinRoom(selectedRoom)
 			}
 			roomsList.selectedIndex = -1
 		}
@@ -379,6 +376,16 @@ package com.xiaomu.view.group
 		protected function joinGroupFaultHandler(event:ApiEvent):void {
 			Alert.show(JSON.stringify(event.data))
 			MainView.getInstane().popView(HallView)
+		}
+		
+		protected function joinRoomFaultHandler(event:ApiEvent):void
+		{
+			Alert.show(JSON.stringify(event.data))
+		}
+		
+		protected function joinRoomSuccessHandler(event:ApiEvent):void
+		{
+			RoomView(MainView.getInstane().pushView(RoomView)).init(selectedRoom)
 		}
 		
 		protected function onGroupHandler(event:ApiEvent):void

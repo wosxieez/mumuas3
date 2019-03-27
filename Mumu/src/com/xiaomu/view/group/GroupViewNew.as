@@ -19,7 +19,6 @@ package com.xiaomu.view.group
 	import caurina.transitions.Tweener;
 	
 	import coco.component.Alert;
-	import coco.component.Button;
 	import coco.component.HorizontalAlign;
 	import coco.component.Image;
 	import coco.component.Label;
@@ -37,8 +36,8 @@ package com.xiaomu.view.group
 		{
 			super();
 			
-			Api.getInstane().addEventListener(ApiEvent.JOIN_GROUP_SUCCESS, joinGroupSuccessHandler)
-			Api.getInstane().addEventListener(ApiEvent.JOIN_GROUP_FAULT, joinGroupFaultHandler)
+			Api.getInstane().addEventListener(ApiEvent.JOIN_ROOM_SUCCESS, joinRoomSuccessHandler)
+			Api.getInstane().addEventListener(ApiEvent.JOIN_ROOM_FAULT, joinRoomFaultHandler)
 			Api.getInstane().addEventListener(ApiEvent.ON_GROUP, onGroupHandler)
 			AppManager.getInstance().addEventListener(AppManagerEvent.UPDATE_GROUP_SUCCESS,updateGroupSuccessHandler);
 			AppManager.getInstance().addEventListener(AppManagerEvent.UPDATE_MEMBER_INFO_SUCCESS,updateMemberInfoSuccessHandler);
@@ -55,6 +54,7 @@ package com.xiaomu.view.group
 		private var goback:Image;
 		private var _roomsData:Array
 		private var _userData : Object;
+		private var selectedRoom:Object
 		
 		public function get userData():Object
 		{
@@ -103,6 +103,8 @@ package com.xiaomu.view.group
 			_isNowGroupAdmin = value;
 			invalidateDisplayList();
 		}
+		
+		private var onlineUsernames:Array
 		
 		override protected function createChildren():void {
 			super.createChildren()
@@ -203,20 +205,14 @@ package com.xiaomu.view.group
 				if(roomsList.selectedItem.name=='+'){
 					HttpApi.getInstane().addRoom(roomsData.length+"号房间",thisGroupID,3,function(e:Event):void{
 						if(JSON.parse(e.currentTarget.data).result==0){
-							getGroupRoomHandler(false);
+							getGroupRoomHandler();
 						}
 					},null);
 					roomsList.selectedIndex = -1
 					return;
 				}
-				var room:Object = roomsList.selectedItem
-				Api.getInstane().joinRoom(room, function (response):void {
-					if (response.code == 0) {
-						RoomView(MainView.getInstane().pushView(RoomView)).init(room)
-					} else {
-						Alert.show("response.data：",response.data)
-					}
-				})
+				selectedRoom = roomsList.selectedItem
+				Api.getInstane().joinRoom(selectedRoom)
 			}
 			roomsList.selectedIndex = -1
 		}
@@ -232,7 +228,7 @@ package com.xiaomu.view.group
 		 * @param groupAdminId 该群的群主id
 		 * @param groupInfoObj 该群的一些信息
 		 */
-		public function init(groupid:int,groupAdminId:int,groupInfoObj:Object): void {
+		public function init(groupid:int,groupAdminId:int,groupInfoObj:Object, onlineUsernames:Array): void {
 			_groupAdminId = groupAdminId;
 			_groupInfoObj = groupInfoObj;
 			isNowGroupAdmin = groupAdminId==AppData.getInstane().user.id;///当前该用户是不是这个群的群主
@@ -240,6 +236,7 @@ package com.xiaomu.view.group
 			groupInfoView.groupInfoData = groupInfoObj;
 			AppData.getInstane().isNowGroupAdmin = isNowGroupAdmin
 			thisGroupID = groupid
+			this.onlineUsernames = onlineUsernames
 			
 			getUserInfoByName();
 			
@@ -260,12 +257,12 @@ package com.xiaomu.view.group
 						usersData = tempUsers
 					} 
 					
-					getGroupRoomHandler(true);
+					getGroupRoomHandler();
 				}, 
 				null)
 		}
 		
-		private function getGroupRoomHandler(initFlag:Boolean):void
+		private function getGroupRoomHandler():void
 		{
 			// 加载群的房间信息
 			HttpApi.getInstane().getGroupRooms(thisGroupID, 
@@ -281,10 +278,9 @@ package com.xiaomu.view.group
 							rooms.push({"name":"+"})
 						}
 						roomsData = rooms
-						// 初始化加入群，后期调用时，用于刷新界面，不是再次加入该群
-						if(initFlag){
-							Api.getInstane().joinGroup(AppData.getInstane().user.username, thisGroupID)
-						}
+						
+						updateOnlineStatus()
+						updateRoomOnlineStatus()
 					} 
 				}, 
 				null)
@@ -321,9 +317,8 @@ package com.xiaomu.view.group
 			return null
 		}
 		
-		protected function joinGroupSuccessHandler(event:ApiEvent):void
+		protected function updateOnlineStatus():void
 		{
-			const onlineUsernames:Array = event.data as Array
 			var user:Object
 			for each(var username:String in onlineUsernames) {
 				user = getUser(username)
@@ -331,19 +326,21 @@ package com.xiaomu.view.group
 					user.online = true
 				}
 			}
-			
+			invalidateProperties()
+		}
+		
+		protected function updateRoomOnlineStatus():void
+		{
 			// 加入群成功 去查询下房间的人数信息
 			var roomnames:Array = []
 			for each(var room:Object in roomsData) {
 				roomnames.push(room.roomname)
 			}
 			Api.getInstane().getRoomsUsers(roomnames, function (data:Object):void {
-				//				trace('获取房间用户数据', JSON.stringify(data))
 				for (var roomname:String in data) {
 					var room:Object = getRoom(roomname)
 					if (room) { room.users = data[roomname] }
 				}
-				invalidateProperties()
 			})
 			
 			invalidateProperties()
@@ -352,6 +349,16 @@ package com.xiaomu.view.group
 		protected function joinGroupFaultHandler(event:ApiEvent):void {
 			Alert.show(JSON.stringify(event.data))
 			MainView.getInstane().popView(HallView)
+		}
+		
+		protected function joinRoomSuccessHandler(event:ApiEvent):void
+		{
+			RoomView(MainView.getInstane().pushView(RoomView)).init(selectedRoom)
+		}
+		
+		protected function joinRoomFaultHandler(event:ApiEvent):void
+		{
+			Alert.show(JSON.stringify(event.data))
 		}
 		
 		protected function onGroupHandler(event:ApiEvent):void

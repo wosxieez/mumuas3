@@ -11,8 +11,13 @@ package com.xiaomu.util
 	import org.idream.pomelo.PomeloEvent;
 	
 	[Event(name="notification", type="com.xiaomu.event.ApiEvent")]
-	[Event(name="joinGroup", type="com.xiaomu.event.ApiEvent")]
-	[Event(name="leaveGroup", type="com.xiaomu.event.ApiEvent")]
+	
+	[Event(name="joinGroupSuccess", type="com.xiaomu.event.ApiEvent")]
+	[Event(name="joinGroupFault", type="com.xiaomu.event.ApiEvent")]
+	
+	[Event(name="joinRoomSuccess", type="com.xiaomu.event.ApiEvent")]
+	[Event(name="joinRoomFault", type="com.xiaomu.event.ApiEvent")]
+	
 	[Event(name="onGroup", type="com.xiaomu.event.ApiEvent")]
 	[Event(name="onRoom", type="com.xiaomu.event.ApiEvent")]
 	
@@ -33,8 +38,9 @@ package com.xiaomu.util
 		}
 		
 		private var pomelo:Pomelo
-		private var username:String
-		private var groupid:int
+		private var username:String = null
+		private var groupid:int = -1
+		private var roominfo:Object = null
 		
 		/**
 		 * 用户登录 
@@ -81,9 +87,16 @@ package com.xiaomu.util
 				function(response:Object):void {
 					if (response.code == 0) {
 						// 登录成功
+						trace('连接群成功')
 						var je:ApiEvent = new ApiEvent(ApiEvent.JOIN_GROUP_SUCCESS)
 						je.data = response.data
 						dispatchEvent(je)
+						
+						// 如果有房间信息 自动加入房间
+						if (roominfo) {
+							trace('检测到需要重连的房间信息。。。正在重连房间')
+							joinRoom(roominfo)
+						}
 						
 						pomelo.on('onNotification', function (e: PomeloEvent): void {
 							var apiEvent: ApiEvent = new ApiEvent(ApiEvent.Notification)
@@ -101,6 +114,7 @@ package com.xiaomu.util
 							dispatchEvent(apiEvent)
 						})
 					} else {
+						trace('连接群失败')
 						var jef:ApiEvent = new ApiEvent(ApiEvent.JOIN_GROUP_FAULT)
 						jef.data = response.data
 						dispatchEvent(jef)
@@ -109,26 +123,42 @@ package com.xiaomu.util
 		}
 		
 		public function leaveGroup():void {
+			this.username = null
+			this.groupid = -1
+			trace('离开群成功')
 			if (!pomelo) return
 			pomelo.disconnect()
 			pomelo = null
 		}
 		
-		public function joinRoom(roominfo:Object, cb:Function = null):void {
+		public function joinRoom(roominfo:Object):void {
+			this.roominfo = roominfo
 			if (!pomelo) return
 			pomelo.request('connector.entryHandler.joinRoom', roominfo,
 				function(response:Object):void {
-					if (cb) { cb(response) }
+					if (response.code == 0) {
+						trace('连接房间成功')
+						var jres:ApiEvent = new ApiEvent(ApiEvent.JOIN_ROOM_SUCCESS)
+						jres.data = response.data
+						dispatchEvent(jres)
+					} else {
+						trace('连接房间失败')
+						var jref:ApiEvent = new ApiEvent(ApiEvent.JOIN_ROOM_FAULT)
+						jref.data = response.data
+						dispatchEvent(jref)
+					}
 				})
 		}
 		
 		public function leaveRoom():void {
+			this.roominfo = null
 			if (!pomelo) return
 			pomelo.request('connector.entryHandler.leaveRoom', {},
 				function(response:Object):void {
 					if (response.code == 0) {
-						
+						trace('离开房间成功')
 					} else {
+						trace('离开房间失败')
 					}
 				})
 		}
@@ -166,6 +196,25 @@ package com.xiaomu.util
 					cb([])
 				}
 			})
+		}
+		
+		
+		/**
+		 * 自动检查服务连接问题 
+		 * 
+		 */		
+		public function autoCheckConnection():void {
+			if (pomelo) {
+				trace('检测到服务已经连接')
+				return
+			} else {
+				trace('检测到服务未连接')
+			}
+			
+			if (this.username && this.groupid >= 0) { 
+				trace('检测到需要重连的群信息。。。正在重连')
+				joinGroup(this.username, this.groupid) 
+			}
 		}
 		
 	}
