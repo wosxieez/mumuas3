@@ -315,6 +315,31 @@ package com.xiaomu.view.room
 			super.drawSkin()
 		}
 		
+		public function hideAllCardUIs():void {
+			var cardUI:CardUI
+			for each(cardUI in myHandCardUIs) {
+				cardUI.visible = false
+			}
+			for each(cardUI in myGroupCardUIs) {
+				cardUI.visible = false
+			}
+			for each(cardUI in myPassCardUIs) {
+				cardUI.visible = false
+			}
+			for each(cardUI in preGroupCardUIs) {
+				cardUI.visible = false
+			}
+			for each(cardUI in prePassCardUIs) {
+				cardUI.visible = false
+			}
+			for each(cardUI in nextGroupCardUIs) {
+				cardUI.visible = false
+			}
+			for each(cardUI in nextPassCardUIs) {
+				cardUI.visible = false
+			}
+		}
+		
 		private function updateRoomInfo(room:Object):void {
 			if (room) {
 				this.roominfo.users = room.users
@@ -1168,22 +1193,33 @@ package com.xiaomu.view.room
 		}
 		
 		public function init(roominfo:Object): void {
-			isGaming = false
+			this.isHu = this.isCheckNewCard = this.isGaming = false
+			this.myUser = this.preUser = this.nextUser = null
+			this.checkUsername = null
+			this.roominfo = {}
+			this.myHandCards = null
+			thisCanChiCards = thisCanHuDatas = thisCanPengCards = null
+			this.ei = this.si = -1
 			if (roominfo.huxi) {
 				huxi = roominfo.huxi
 			} else {
 				huxi = 15
 			}
+			Api.getInstane().addEventListener(ApiEvent.ON_ROOM, onRoomMessageHandler)
 			zhunbeiButton.visible = true
 			zhunbeiButton2.visible = false
-			Api.getInstane().addEventListener(ApiEvent.ON_ROOM, onRoomMessageHandler)
 		}
 		
 		protected function back_clickHandler(event:MouseEvent):void
 		{
+			MainView.getInstane().popView(GroupView)
 			Api.getInstane().removeEventListener(ApiEvent.ON_ROOM, onRoomMessageHandler)
 			Api.getInstane().leaveRoom()
-			MainView.getInstane().popView(GroupView)
+			hideAllCardUIs()
+			dealCardUI.visible = dealCardUI2.visible = false
+			cardsCarrUI.visible = cardsLabel.visible = false
+			newCardTip.visible = cancelButton.visible = canChiButton.visible = canPengButton.visible = canHuButton.visible = false
+			preUserHead.visible = myUserHead.visible = nextUserHead.visible = false
 		}
 		
 		protected function zhunbeiButton_clickHandler(event:MouseEvent):void
