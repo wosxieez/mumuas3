@@ -50,8 +50,8 @@ package com.xiaomu.util
 			this.username = username
 			this.groupid = groupid
 			pomelo = new Pomelo()
-//			pomelo.init("127.0.0.1", 3014)
-			pomelo.init("106.14.148.139", 3014)
+			pomelo.init("127.0.0.1", 3014)
+//			pomelo.init("106.14.148.139", 3014)
 			pomelo.addEventListener(PomeloEvent.HANDSHAKE, onConnectHandler);
 			pomelo.addEventListener(PomeloEvent.ERROR, pomeloErrorHandler);
 		}
@@ -134,7 +134,10 @@ package com.xiaomu.util
 		
 		public function joinRoom(roominfo:Object):void {
 			this.roominfo = roominfo
-			if (!pomelo) return
+			if (!pomelo) {
+				reconnect()
+				return
+			}
 			pomelo.request('connector.entryHandler.joinRoom', roominfo,
 				function(response:Object):void {
 					if (response.code == 0) {
@@ -162,6 +165,29 @@ package com.xiaomu.util
 						trace('离开房间失败')
 					}
 				})
+		}
+		
+		public function resumeRoom():void {
+			if (!pomelo) return
+			pomelo.request('connector.entryHandler.resumeRoom', {},
+				function(response:Object):void {
+					if (response.code == 0) {
+						trace('恢复房间成功')
+					} else {
+						trace('恢复房间失败')
+					}
+				})
+		}
+		
+		public function disconnect():void {
+			if (!pomelo) return
+			pomelo.disconnect()
+			pomelo = null
+			trace('已断开服务连接')
+		}
+		
+		public function reconnect():void {
+			autoCheckConnection()
 		}
 		
 		/**
@@ -215,6 +241,8 @@ package com.xiaomu.util
 			if (this.username && this.groupid >= 0) { 
 				trace('检测到需要重连的群信息。。。正在重连')
 				joinGroup(this.username, this.groupid) 
+			} else {
+				trace('不需要重连')
 			}
 		}
 		

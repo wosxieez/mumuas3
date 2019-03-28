@@ -1,7 +1,11 @@
 package
 {
+	import com.xiaomu.util.Api;
 	import com.xiaomu.view.MainView;
 	import com.xiaomu.view.login.LoginView;
+	
+	import flash.events.Event;
+	import flash.events.MouseEvent;
 	
 	import coco.component.Image;
 	import coco.core.Application;
@@ -15,7 +19,10 @@ package
 			super();
 			
 			CocoUI.fontSize = 20
+				
+			addEventListener(Event.ADDED_TO_STAGE, this_addedToStageHandler)
 		}
+		
 		
 		[Embed(source="assets/bg.png")]
 		private var BgClass:Class
@@ -30,6 +37,27 @@ package
 			
 			addChild(MainView.getInstane())
 			LoginView(MainView.getInstane().pushView(LoginView)).init()
+				
+//			var button1:Button = new Button()
+//			button1.label = 'disconnect'
+//			button1.addEventListener(MouseEvent.CLICK, button1_clickHandler)
+//			addChild(button1)
+//			
+//			var button2:Button = new Button()
+//			button2.label = 'reconnect'
+//			button2.x = 200
+//			button2.addEventListener(MouseEvent.CLICK, button2_clickHandler)
+//			addChild(button2)
+		}
+		
+		protected function button1_clickHandler(event:MouseEvent):void
+		{	
+			Api.getInstane().disconnect()
+		}
+		
+		protected function button2_clickHandler(event:MouseEvent):void
+		{
+			Api.getInstane().reconnect()
 		}
 		
 		override protected function measure():void {
@@ -40,7 +68,7 @@ package
 		}
 		
 		override protected function updateDisplayList():void {
-//			super.updateDisplayList()
+			super.updateDisplayList()
 			
 			this.coco::applicationPopUp.width = 1280   // 16 / 9 分辨率
 			this.coco::applicationPopUp.height = 720
@@ -53,6 +81,23 @@ package
 				
 			MainView.getInstane().width = this.coco::applicationPopUp.width
 			MainView.getInstane().height = this.coco::applicationPopUp.height
+		}
+		
+		protected function this_addedToStageHandler(event:Event):void
+		{
+			stage.nativeWindow.addEventListener(Event.DEACTIVATE, this_deactivateHandler)
+			stage.nativeWindow.addEventListener(Event.ACTIVATE, this_activateHandler)
+		}
+		
+		protected function this_activateHandler(event:Event):void
+		{
+			trace('activate')
+			Api.getInstane().reconnect()
+		}
+		
+		protected function this_deactivateHandler(event:Event):void
+		{
+			trace('deactivate')
 		}
 		
 	}

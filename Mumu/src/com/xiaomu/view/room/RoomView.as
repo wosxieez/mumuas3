@@ -14,7 +14,7 @@ package com.xiaomu.view.room
 	import com.xiaomu.util.Notifications;
 	import com.xiaomu.util.Size;
 	import com.xiaomu.view.MainView;
-	import com.xiaomu.view.group.GroupView;
+	import com.xiaomu.view.group.GroupViewNew;
 	
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
@@ -1156,6 +1156,24 @@ package com.xiaomu.view.room
 					zhunbeiButton.visible = true
 					break
 				}
+				case Notifications.onResume: {
+					isGaming = true
+					myHandCards = null
+					tingCardsView.tingCards = null
+					zhunbeiButton.visible = zhunbeiButton2.visible = false
+					cardsCarrUI.visible = cardsLabel.visible = true
+					dealCardUI.visible = false
+					dealCardUI2.visible = false
+					updateRoomInfo(notification.data)
+					updateMyHandCardUIs()
+					updateMyGroupCardUIs()
+					updateMyPassCardUIs()
+					updatePreGroupCardUIs()
+					updatePrePassCardUIs()
+					updateNextGroupCardUIs()
+					updateNextPassCardUIs()
+					break
+				}
 				default:
 				{
 					break;
@@ -1203,20 +1221,22 @@ package com.xiaomu.view.room
 			this.myHandCards = null
 			thisCanChiCards = thisCanHuDatas = thisCanPengCards = null
 			this.ei = this.si = -1
-			this.huxi = config.huxi
-			Api.getInstane().addEventListener(ApiEvent.ON_ROOM, onRoomMessageHandler)
 			zhunbeiButton.visible = true
 			zhunbeiButton2.visible = false
+			this.huxi = config.huxi
+			Api.getInstane().addEventListener(ApiEvent.ON_ROOM, onRoomMessageHandler)
+			Api.getInstane().resumeRoom()
 		}
 		
 		protected function back_clickHandler(event:MouseEvent):void
 		{
-			MainView.getInstane().popView(GroupView)
+			MainView.getInstane().popView(GroupViewNew)
 			Api.getInstane().removeEventListener(ApiEvent.ON_ROOM, onRoomMessageHandler)
 			Api.getInstane().leaveRoom()
 			hideAllCardUIs()
 			dealCardUI.visible = dealCardUI2.visible = false
 			cardsCarrUI.visible = cardsLabel.visible = false
+			tingCardsView.tingCards = null
 			newCardTip.visible = cancelButton.visible = canChiButton.visible = canPengButton.visible = canHuButton.visible = false
 			preUserHead.visible = myUserHead.visible = nextUserHead.visible = false
 		}

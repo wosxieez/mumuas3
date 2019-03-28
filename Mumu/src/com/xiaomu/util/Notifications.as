@@ -24,5 +24,6 @@ package com.xiaomu.util
 		public static const checkHu:int = 20     // 有玩家准备
 		public static const onRoundEnd:int = 21     // 有玩家准备
 		public static const onBi:int = 22
+		public static const onResume:int = 23
 	}
 }

@@ -240,38 +240,49 @@ package com.xiaomu.view.group
 		 * @param groupAdminId 该群的群主id
 		 * @param groupInfoObj 该群的一些信息
 		 */
-		public function init(groupid:int,groupAdminId:int,groupInfoObj:Object, onlineUsernames:Array): void {
-			_groupAdminId = groupAdminId;
-			_groupInfoObj = groupInfoObj;
-			isNowGroupAdmin = groupAdminId==AppData.getInstane().user.id;///当前该用户是不是这个群的群主
-			groupInfoObj.isNowGroupAdmin = isNowGroupAdmin///当前该用户是不是这个群的群主
-			groupInfoView.groupInfoData = groupInfoObj;
-			AppData.getInstane().isNowGroupAdmin = isNowGroupAdmin
-			thisGroupID = groupid
-			this.onlineUsernames = onlineUsernames
-			
-			getUserInfoByName();
-			
-			HttpApi.getInstane().getGroupUsers(groupid, 
-				function (e:Event):void {
-					// get group users ok
-					const usersResponse:Object = JSON.parse(e.currentTarget.data)
-					if (usersResponse.result == 0 && usersResponse.message) {
-						var users:Array = usersResponse.message
-						for each(var user:Object in users) {
-							user.group_id = thisGroupID
-						}
-						tempUsers = JSON.parse(JSON.stringify(users)) as Array;
-						tempUsers.map(function(item:*,index:int,arr:Array):Object{
-							item.allowSetFlag = groupAdminId==AppData.getInstane().user.id; ///你只有是该群的群主 你才能给其他群成员设置金币
-							item.isAdmin = groupAdminId==item.id
-						},null);
-						usersData = tempUsers
-					} 
-					
-					getGroupRoomHandler();
-				}, 
-				null)
+		public function init(group_id:int,
+							 group_name:String,
+							 group_admin_id:int,
+							 group_remark:String,
+							 onlineUsernames:Array): void {
+			_groupAdminId = group_admin_id
+			HttpApi.getInstane().getUserInfoById(group_admin_id,function(e:Event):void{
+				_groupInfoObj = { group_id: group_id, 
+					group_name: group_name, 
+					remark: group_remark, 
+					admin_id: group_admin_id, 
+					admin_name:  JSON.parse(e.currentTarget.data).message[0].username}
+				
+				isNowGroupAdmin = _groupAdminId == AppData.getInstane().user.id;///当前该用户是不是这个群的群主
+				_groupInfoObj.isNowGroupAdmin = isNowGroupAdmin///当前该用户是不是这个群的群主
+				groupInfoView.groupInfoData = _groupInfoObj;
+				AppData.getInstane().isNowGroupAdmin = isNowGroupAdmin
+				thisGroupID = group_id
+				this.onlineUsernames = onlineUsernames
+				
+				getUserInfoByName();
+				
+				HttpApi.getInstane().getGroupUsers(group_id, 
+					function (e:Event):void {
+						// get group users ok
+						const usersResponse:Object = JSON.parse(e.currentTarget.data)
+						if (usersResponse.result == 0 && usersResponse.message) {
+							var users:Array = usersResponse.message
+							for each(var user:Object in users) {
+								user.group_id = thisGroupID
+							}
+							tempUsers = JSON.parse(JSON.stringify(users)) as Array;
+							tempUsers.map(function(item:*,index:int,arr:Array):Object{
+								item.allowSetFlag = _groupAdminId==AppData.getInstane().user.id; ///你只有是该群的群主 你才能给其他群成员设置金币
+								item.isAdmin = _groupAdminId == item.id
+							},null);
+							usersData = tempUsers
+						} 
+						
+						getGroupRoomHandler();
+					}, 
+					null)
+			},null)
 		}
 		
 		private function getGroupRoomHandler():void
@@ -283,7 +294,7 @@ package com.xiaomu.view.group
 					if (roomsResponse.result == 0 && roomsResponse.message) {
 						var rooms:Array = roomsResponse.message
 						for each(var room:Object in rooms) {
-						room.roomname = 'room' + room.id
+							room.roomname = 'room' + room.id
 						}
 						///如果是该群的群主,才支持添加房间
 						if(_groupAdminId==AppData.getInstane().user.id){
@@ -360,6 +371,7 @@ package com.xiaomu.view.group
 		
 		protected function joinRoomSuccessHandler(event:ApiEvent):void
 		{
+			trace('跳转到房间')
 			Loading.getInstance().close()
 			RoomView(MainView.getInstane().pushView(RoomView)).init(selectedRoom)
 		}

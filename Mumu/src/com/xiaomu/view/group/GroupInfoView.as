@@ -88,7 +88,7 @@ package com.xiaomu.view.group
 			titleLab.text = groupInfoData?'群名: '+groupInfoData.group_name:'群名: /'
 			adminLab.text = groupInfoData?'群主: '+groupInfoData.admin_name:'群主: /'
 			remarkText.text = groupInfoData?groupInfoData.remark:'/'
-			settingButton.visible = groupInfoData.isNowGroupAdmin///只有群主才能看到设置界面
+			settingButton.visible = groupInfoData ? groupInfoData.isNowGroupAdmin : false///只有群主才能看到设置界面
 		}
 		
 		override protected function updateDisplayList():void

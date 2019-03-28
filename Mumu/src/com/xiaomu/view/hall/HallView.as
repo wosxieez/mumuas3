@@ -283,20 +283,13 @@ package com.xiaomu.view.hall
 		
 		protected function joinGroupSuccessHandler(event:ApiEvent):void
 		{
+			trace('跳转到群')
 			Loading.getInstance().close()
-			var groupId:int = int(selectedItem.group_id)///群id
-			var groupAdminId:int = selectedItem.admin_id///该群群主id
-			var userId:int = AppData.getInstane().user.id///用户自身id
-			HttpApi.getInstane().getUserInfoById(groupAdminId,function(e:Event):void{
-				///群消息对象
-				var groupInfoObj:Object={
-					'group_id':selectedItem.group_id,
-					'group_name':selectedItem.name,
-					'remark':selectedItem.remark,
-					'admin_id':selectedItem.admin_id,
-					'admin_name':JSON.parse(e.currentTarget.data).message[0].username}
-				GroupViewNew(MainView.getInstane().pushView(GroupViewNew)).init(groupId,groupAdminId,groupInfoObj, event.data as Array)///进入房间界面，初始化，输入组id,同时传入需要该组的群主id
-			},null)
+			GroupViewNew(MainView.getInstane().pushView(GroupViewNew)).init(selectedItem.group_id, 
+				selectedItem.name,
+				selectedItem.admin_id,
+				selectedItem.remark,
+				event.data as Array)
 		}
 		
 		protected function joinGroupFaultHandler(event:ApiEvent):void {
