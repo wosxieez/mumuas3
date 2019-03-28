@@ -53,6 +53,7 @@ package com.xiaomu.view.group
 		private var roomsList:List
 		private var usersList:HideUserListView
 		private var goback:Image;
+		private var changePlayRuleView:ChangePlayRuleView
 		private var _roomsData:Array
 		private var _userData : Object;
 		private var selectedRoom:Object
@@ -143,6 +144,9 @@ package com.xiaomu.view.group
 			usersList.changeShowAndHide.addEventListener(MouseEvent.CLICK,changeShowAndHideHandler);
 			usersList.statusImg.addEventListener(MouseEvent.CLICK,changeShowAndHideHandler);
 			usersList.addMemberBtn.addEventListener(MouseEvent.CLICK,addMemberButton_clickHandler);
+			
+			changePlayRuleView = new ChangePlayRuleView();
+			addChild(changePlayRuleView);
 		}
 		
 		override protected function updateDisplayList():void {
@@ -154,8 +158,8 @@ package com.xiaomu.view.group
 			
 			groupInfoView.x = roomsList.padding;
 			groupInfoView.y = goback.y+goback.height+20;
-			groupInfoView.width = width-(width/3+roomsList.padding*2)
-			groupInfoView.height = 100;
+			groupInfoView.width = width/2-roomsList.padding*1-5
+			groupInfoView.height = 70;
 			
 			roomsList.y = groupInfoView.y+groupInfoView.height+roomsList.padding;
 			roomsList.height = height - roomsList.y
@@ -169,6 +173,11 @@ package com.xiaomu.view.group
 			usersList.width = width / 4
 			usersList.height = height-usersList.y-50;
 			usersList.x = width;
+			
+			changePlayRuleView.x = groupInfoView.x+groupInfoView.width+10;
+			changePlayRuleView.y = groupInfoView.y;
+			changePlayRuleView.width = width-changePlayRuleView.x-20;
+			changePlayRuleView.height = groupInfoView.height;
 		}
 		
 		override protected function commitProperties():void {

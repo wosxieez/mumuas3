@@ -47,7 +47,7 @@ package com.xiaomu.view.home.popUp1
 			invalidateProperties();
 		}
 
-		private var _copyText:String = 'wx123456789';
+		private var _copyText:String = 'wxniuniu007';
 
 		public function get copyText():String
 		{
