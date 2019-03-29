@@ -16,8 +16,12 @@ package com.xiaomu.util
 	[Event(name="joinRoomSuccess", type="com.xiaomu.event.ApiEvent")]
 	[Event(name="joinRoomFault", type="com.xiaomu.event.ApiEvent")]
 	
+	[Event(name="joinGroupRoomSuccess", type="com.xiaomu.event.ApiEvent")]
+	[Event(name="joinGroupRoomFault", type="com.xiaomu.event.ApiEvent")]
+	
 	[Event(name="onGroup", type="com.xiaomu.event.ApiEvent")]
 	[Event(name="onRoom", type="com.xiaomu.event.ApiEvent")]
+	[Event(name="onGroupRoom", type="com.xiaomu.event.ApiEvent")]
 	
 	public class Api extends EventDispatcher
 	{
@@ -51,7 +55,7 @@ package com.xiaomu.util
 			this.groupid = groupid
 			pomelo = new Pomelo()
 			pomelo.init("127.0.0.1", 3014)
-//			pomelo.init("106.14.148.139", 3014)
+			//			pomelo.init("106.14.148.139", 3014)
 			pomelo.addEventListener(PomeloEvent.HANDSHAKE, onConnectHandler);
 			pomelo.addEventListener(PomeloEvent.ERROR, pomeloErrorHandler);
 		}
@@ -244,6 +248,128 @@ package com.xiaomu.util
 			} else {
 				trace('不需要重连')
 			}
+		}
+		
+		
+		private var username2:String = null
+		private var groupid2:int = -1
+		
+		/**
+		 * 用户登录2
+		 *  
+		 * @param username
+		 * @param password
+		 */		
+		public function joinGroupRoom(username:String, groupid:int):void {
+			this.username2 = username
+			this.groupid2 = groupid
+			pomelo = new Pomelo()
+			pomelo.init("127.0.0.1", 3014)
+			//			pomelo.init("106.14.148.139", 3014)
+			pomelo.addEventListener(PomeloEvent.HANDSHAKE, onConnectHandler2);
+			pomelo.addEventListener(PomeloEvent.ERROR, pomeloErrorHandler2);
+		}
+		
+		private function onConnectHandler2(event:Event):void {
+			if (!pomelo) return
+			pomelo.request("gate.gateHandler.queryEntry", {username: this.username2}, function(response:Object):void {
+				pomelo.disconnect()
+				pomelo.removeEventListener('handshake', onConnectHandler2)
+				pomelo.addEventListener('handshake', onQueryHandler2)
+				pomelo.addEventListener(Event.CLOSE, pomelo_closeHandler2)
+				pomelo.init(response.host, response.port)
+			})
+		}
+		
+		protected function pomelo_closeHandler2(event:Event):void
+		{
+			trace('断开连接')
+			pomelo = null
+		}
+		
+		protected function pomeloErrorHandler2(event:PomeloEvent):void
+		{
+			trace('连接群房间失败')
+			var jef:ApiEvent = new ApiEvent(ApiEvent.JOIN_GROUP_ROOM_FAULT)
+			jef.data = '连接服务器失败'
+			dispatchEvent(jef)
+			pomelo = null
+		}
+		
+		private function onQueryHandler2(event:Event):void {
+			if (!pomelo) return
+			pomelo.request('connector.entryHandler.joinGroupRoom', {username: this.username2, groupid: this.groupid2},
+				function(response:Object):void {
+					if (response.code == 0) {
+						// 登录成功
+						trace('连接群房间成功')
+						var je:ApiEvent = new ApiEvent(ApiEvent.JOIN_GROUP_ROOM_SUCCESS)
+						je.data = response.data
+						dispatchEvent(je)
+						
+						pomelo.on('onNotification', function (e: PomeloEvent): void {
+							var apiEvent: ApiEvent = new ApiEvent(ApiEvent.Notification)
+							apiEvent.data = e.message
+							dispatchEvent(apiEvent)
+						})
+						
+						pomelo.on('onGroupRoom', function (e: PomeloEvent): void {
+							var apiEvent: ApiEvent = new ApiEvent(ApiEvent.ON_GROUP_ROOM)
+							apiEvent.data = e.message
+							dispatchEvent(apiEvent)
+						})
+					} else {
+						trace('连接群房间失败')
+						var jef:ApiEvent = new ApiEvent(ApiEvent.JOIN_GROUP_ROOM_FAULT)
+						jef.data = response.data
+						dispatchEvent(jef)
+					}
+				})
+		}
+		
+		public function leaveGroupRoom():void {
+			this.username2 = null
+			this.groupid2 = -1
+			trace('离开群房间成功')
+			if (!pomelo) return
+			pomelo.disconnect()
+			pomelo = null
+		}
+		
+		/**
+		 * 发送动作 
+		 * @param action
+		 */		
+		public function sendAction2(action):void  {
+			if (!pomelo) return
+			pomelo.request('chat.groupRoomHandler.sendAction', action, function(response:Object):void {
+				if (response.code == 0) {
+				} else {
+				}
+			})
+		}
+		
+		public function sendGroupRoomMessage(message, cb:Function):void  {
+			if (!pomelo) return
+			pomelo.request('chat.groupRoomHandler.pushMessage', {message: message}, function(response:Object):void {
+				if (response.code == 0) {
+					cb(response.data)
+				} else {
+					cb([])
+				}
+			})
+		}
+		
+		public function resumeGroupRoom():void {
+			if (!pomelo) return
+			pomelo.request('connector.entryHandler.resumeGroupRoom', {},
+				function(response:Object):void {
+					if (response.code == 0) {
+						trace('恢复群房间成功')
+					} else {
+						trace('恢复群房间失败')
+					}
+				})
 		}
 		
 	}

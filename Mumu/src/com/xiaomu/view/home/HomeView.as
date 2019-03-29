@@ -1,12 +1,15 @@
 package com.xiaomu.view.home
 {
 	import com.xiaomu.component.ImageBtnWithUpAndDown;
+	import com.xiaomu.event.ApiEvent;
 	import com.xiaomu.itemRender.HomeBottomBarRender;
+	import com.xiaomu.util.Api;
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.Assets;
 	import com.xiaomu.util.Audio;
 	import com.xiaomu.util.HttpApi;
 	import com.xiaomu.view.MainView;
+	import com.xiaomu.view.grouproom.GroupRoomView;
 	import com.xiaomu.view.hall.HallView;
 	import com.xiaomu.view.home.noticeBar.NoticeBar;
 	import com.xiaomu.view.home.popUp1.OfficalGongGaoView;
@@ -33,7 +36,6 @@ package com.xiaomu.view.home
 		}
 		
 		private var bg : Image;
-		//		private var myGroup:ImageBtnWithUpAndDown;
 		private var myGroup:ImageBtnWithUpAndDown;
 		private var userInfoView:UserInfoView2
 		private var shoppingBtn:ImageBtnWithUpAndDown;
@@ -89,6 +91,7 @@ package com.xiaomu.view.home
 			ziPaiImg.height = 190;
 			ziPaiImg.upImageSource = 'assets/home/other/creatRoom_up.png';
 			ziPaiImg.downImageSource = 'assets/home/other/creatRoom_down.png';
+			ziPaiImg.addEventListener(MouseEvent.CLICK, ziPaiImg_clickHandler)
 			addChild(ziPaiImg);
 			
 			xiuXianImg = new ImageBtnWithUpAndDown();
@@ -178,6 +181,26 @@ package com.xiaomu.view.home
 			noticeBar.height = 32;
 			addChild(noticeBar);
 			noticeBar.visible = false;
+		}
+		
+		protected function ziPaiImg_clickHandler(event:MouseEvent):void
+		{
+			Api.getInstane().addEventListener(ApiEvent.JOIN_GROUP_ROOM_SUCCESS, joinGroupRoomSuccessHandler)
+			Api.getInstane().addEventListener(ApiEvent.JOIN_GROUP_ROOM_FAULT, joinGroupRoomFaultHandler)
+			Api.getInstane().joinGroupRoom('wosxieez', 123456)
+		}
+		
+		protected function joinGroupRoomFaultHandler(event:ApiEvent):void
+		{
+			Api.getInstane().removeEventListener(ApiEvent.JOIN_GROUP_ROOM_SUCCESS, joinGroupRoomSuccessHandler)
+			Api.getInstane().removeEventListener(ApiEvent.JOIN_GROUP_ROOM_FAULT, joinGroupRoomFaultHandler)
+		}
+		
+		protected function joinGroupRoomSuccessHandler(event:ApiEvent):void
+		{
+			Api.getInstane().removeEventListener(ApiEvent.JOIN_GROUP_ROOM_SUCCESS, joinGroupRoomSuccessHandler)
+			Api.getInstane().removeEventListener(ApiEvent.JOIN_GROUP_ROOM_FAULT, joinGroupRoomFaultHandler)
+			GroupRoomView(MainView.getInstane().pushView(GroupRoomView)).init({huxi: 15})
 		}
 		
 		override protected function updateDisplayList():void{

@@ -1,4 +1,4 @@
-package com.xiaomu.view.room
+package com.xiaomu.view.grouproom
 {
 	import com.xiaomu.component.BigCardUI;
 	import com.xiaomu.component.CardUI;
@@ -14,7 +14,12 @@ package com.xiaomu.view.room
 	import com.xiaomu.util.Notifications;
 	import com.xiaomu.util.Size;
 	import com.xiaomu.view.MainView;
-	import com.xiaomu.view.group.GroupViewNew;
+	import com.xiaomu.view.home.HomeView;
+	import com.xiaomu.view.room.ChiSelectView;
+	import com.xiaomu.view.room.RoomChatView;
+	import com.xiaomu.view.room.RoomUserHead;
+	import com.xiaomu.view.room.TingCardsView;
+	import com.xiaomu.view.room.WinView;
 	
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
@@ -24,9 +29,9 @@ package com.xiaomu.view.room
 	import coco.core.UIComponent;
 	import coco.manager.PopUpManager;
 	
-	public class RoomView extends UIComponent
+	public class GroupRoomView extends UIComponent
 	{
-		public function RoomView()
+		public function GroupRoomView()
 		{
 			super();
 		}
@@ -892,7 +897,7 @@ package com.xiaomu.view.room
 				draggingCardUI.stopDrag()
 				if (isCheckNewCard && mouseY <= height * 2 / 3) {
 					var action:Object = { name: Actions.NewCard, data: draggingCardUI.card }
-					Api.getInstane().sendAction(action)
+					Api.getInstane().sendAction2(action)
 					newCardTip.visible = false
 					isCheckNewCard = false
 					// 出牌之后清理出听提示
@@ -1183,7 +1188,7 @@ package com.xiaomu.view.room
 		{
 			isHu = canHuButton.visible = canPengButton.visible = canChiButton.visible = cancelButton.visible = false
 			var action:Object = { name: Actions.Peng, data: thisCanPengCards }
-			Api.getInstane().sendAction(action)
+			Api.getInstane().sendAction2(action)
 		}
 		
 		protected function canChiButton_clickHandler(event:MouseEvent):void
@@ -1201,14 +1206,14 @@ package com.xiaomu.view.room
 			}
 			isHu = canHuButton.visible = canPengButton.visible = canChiButton.visible = cancelButton.visible = false
 			var action:Object = { name: Actions.Cancel, data: '' }
-			Api.getInstane().sendAction(action)
+			Api.getInstane().sendAction2(action)
 		}
 		
 		protected function canHuButton_clickHandler(event:MouseEvent):void
 		{
 			isHu = canHuButton.visible = canPengButton.visible = canChiButton.visible = cancelButton.visible = false
 			var action:Object = { name: Actions.Hu, data: thisCanHuDatas }
-			Api.getInstane().sendAction(action)
+			Api.getInstane().sendAction2(action)
 		}
 		
 		public function init(config:Object): void {
@@ -1224,15 +1229,15 @@ package com.xiaomu.view.room
 			this.huxi = config.huxi
 			Api.getInstane().addEventListener(ApiEvent.Notification, onNotificationHandler)
 			Api.getInstane().addEventListener(ApiEvent.ON_ROOM, onRoomMessageHandler)
-			Api.getInstane().resumeRoom()
+			Api.getInstane().resumeGroupRoom()
 		}
 		
 		protected function back_clickHandler(event:MouseEvent):void
 		{
-			MainView.getInstane().popView(GroupViewNew)
+			MainView.getInstane().popView(HomeView)
 			Api.getInstane().removeEventListener(ApiEvent.Notification, onNotificationHandler)
 			Api.getInstane().removeEventListener(ApiEvent.ON_ROOM, onRoomMessageHandler)
-			Api.getInstane().leaveRoom()
+			Api.getInstane().leaveGroupRoom()
 			hideAllCardUIs()
 			dealCardUI.visible = dealCardUI2.visible = false
 			cardsCarrUI.visible = cardsLabel.visible = false
@@ -1244,13 +1249,13 @@ package com.xiaomu.view.room
 		protected function zhunbeiButton_clickHandler(event:MouseEvent):void
 		{
 			var action:Object = { name: Actions.Ready, data: true }
-			Api.getInstane().sendAction(action)
+			Api.getInstane().sendAction2(action)
 		}
 		
 		protected function zhunbeiButton2_clickHandler(event:MouseEvent):void
 		{
 			var action:Object = { name: Actions.Ready, data: false }
-			Api.getInstane().sendAction(action)
+			Api.getInstane().sendAction2(action)
 		}
 		
 		protected function chi_selectHandler(event:SelectEvent):void
@@ -1258,7 +1263,7 @@ package com.xiaomu.view.room
 			ChiSelectView.getInstane().close()
 			isHu = canHuButton.visible = canPengButton.visible = canChiButton.visible = cancelButton.visible = false
 			var action:Object = { name: Actions.Chi, data:  event.data}
-			Api.getInstane().sendAction(action)
+			Api.getInstane().sendAction2(action)
 		}
 		
 		protected function onRoomMessageHandler(event:ApiEvent):void

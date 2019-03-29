@@ -21,7 +21,7 @@ package com.xiaomu.view.login
 		{
 			super();
 			width=500;
-			height=260;
+			height=280;
 		}
 		
 		private var _visible:Boolean;
