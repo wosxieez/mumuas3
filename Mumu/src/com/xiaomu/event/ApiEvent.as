@@ -8,6 +8,8 @@ package com.xiaomu.event
 		public static const Notification:String = 'notification'
 		public static const JOIN_GROUP_SUCCESS:String = 'joinGroupSuccess'
 		public static const JOIN_GROUP_FAULT:String = 'joinGroupFault'
+		public static const CREATE_GROUP_ROOM_SUCCESS:String = 'createGroupRoomSuccess'
+		public static const CREATE_GROUP_ROOM_FAULT:String = 'createGroupRoomFault'
 		public static const JOIN_GROUP_ROOM_SUCCESS:String = 'joinGroupRoomSuccess'
 		public static const JOIN_GROUP_ROOM_FAULT:String = 'joinGroupRoomFault'
 		public static const JOIN_ROOM_SUCCESS:String = 'joinRoomSuccess'

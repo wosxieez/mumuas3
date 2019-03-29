@@ -105,10 +105,9 @@ package com.xiaomu.view.home
 			paoDeKuaiImg = new ImageBtnWithUpAndDown();
 			paoDeKuaiImg.width = 260;
 			paoDeKuaiImg.height = 190;
-			/*paoDeKuaiImg.upImageSource = 'assets/home/other/zi_up.png';
-			paoDeKuaiImg.downImageSource = 'assets/home/other/zi_down.png';*/
 			paoDeKuaiImg.upImageSource = 'assets/home/other/caicaicai_up.png';
 			paoDeKuaiImg.downImageSource = 'assets/home/other/caicaicai_down.png';
+			paoDeKuaiImg.addEventListener(MouseEvent.CLICK, paoDeKuaiImg_clickHandler)
 			addChild(paoDeKuaiImg);
 			
 			otherImg = new ImageBtnWithUpAndDown();
@@ -183,23 +182,28 @@ package com.xiaomu.view.home
 			noticeBar.visible = false;
 		}
 		
+		protected function paoDeKuaiImg_clickHandler(event:MouseEvent):void
+		{
+			new CaiCaiCaiPanel().open()
+		}
+		
 		protected function ziPaiImg_clickHandler(event:MouseEvent):void
 		{
-			Api.getInstane().addEventListener(ApiEvent.JOIN_GROUP_ROOM_SUCCESS, joinGroupRoomSuccessHandler)
-			Api.getInstane().addEventListener(ApiEvent.JOIN_GROUP_ROOM_FAULT, joinGroupRoomFaultHandler)
-			Api.getInstane().joinGroupRoom('wosxieez', 123456)
+			Api.getInstane().addEventListener(ApiEvent.CREATE_GROUP_ROOM_SUCCESS, createGroupRoomSuccessHandler)
+			Api.getInstane().addEventListener(ApiEvent.CREATE_GROUP_ROOM_FAULT, createGroupRoomFaultHandler)
+			Api.getInstane().createGroupRoom('wosxieez')
 		}
 		
-		protected function joinGroupRoomFaultHandler(event:ApiEvent):void
+		protected function createGroupRoomFaultHandler(event:ApiEvent):void
 		{
-			Api.getInstane().removeEventListener(ApiEvent.JOIN_GROUP_ROOM_SUCCESS, joinGroupRoomSuccessHandler)
-			Api.getInstane().removeEventListener(ApiEvent.JOIN_GROUP_ROOM_FAULT, joinGroupRoomFaultHandler)
+			Api.getInstane().removeEventListener(ApiEvent.CREATE_GROUP_ROOM_SUCCESS, createGroupRoomSuccessHandler)
+			Api.getInstane().removeEventListener(ApiEvent.CREATE_GROUP_ROOM_FAULT, createGroupRoomFaultHandler)
 		}
 		
-		protected function joinGroupRoomSuccessHandler(event:ApiEvent):void
+		protected function createGroupRoomSuccessHandler(event:ApiEvent):void
 		{
-			Api.getInstane().removeEventListener(ApiEvent.JOIN_GROUP_ROOM_SUCCESS, joinGroupRoomSuccessHandler)
-			Api.getInstane().removeEventListener(ApiEvent.JOIN_GROUP_ROOM_FAULT, joinGroupRoomFaultHandler)
+			Api.getInstane().removeEventListener(ApiEvent.CREATE_GROUP_ROOM_SUCCESS, createGroupRoomSuccessHandler)
+			Api.getInstane().removeEventListener(ApiEvent.CREATE_GROUP_ROOM_FAULT, createGroupRoomFaultHandler)
 			GroupRoomView(MainView.getInstane().pushView(GroupRoomView)).init({huxi: 15})
 		}
 		
@@ -246,7 +250,7 @@ package com.xiaomu.view.home
 			myGroup.x = ziPaiImg.x+ziPaiImg.width+10;
 			myGroup.y = (height-myGroup.height)/2;
 			
-//			otherImg.x = daTongZiImg.x-otherImg.width-10;
+			//			otherImg.x = daTongZiImg.x-otherImg.width-10;
 			otherImg.x = ziPaiImg.x-otherImg.width-10;
 			otherImg.y = ziPaiImg.y-5;
 			
@@ -299,7 +303,7 @@ package com.xiaomu.view.home
 				if(!noticeView){noticeView = new OfficalNoticeViewOfCopy();}
 				noticeView.showText = '请用浏览器打开次链接：';
 				noticeView.copyText = 'www.baidu.com';
-				PopUpManager.centerPopUp(PopUpManager.addPopUp(noticeView,null,true,false,0x000000,0.8));
+				PopUpManager.centerPopUp(PopUpManager.addPopUp(noticeView,null,true,true,0x000000,0.5));
 			}
 			
 			btnGroup.selectedIndex = -1
@@ -307,7 +311,22 @@ package com.xiaomu.view.home
 		
 		protected function joinRoomClickHandler(event:MouseEvent):void
 		{
-			trace('点击joinRoom');
+			Api.getInstane().addEventListener(ApiEvent.JOIN_GROUP_ROOM_SUCCESS, joinGroupRoomSuccessHandler)
+			Api.getInstane().addEventListener(ApiEvent.JOIN_GROUP_ROOM_FAULT, joinGroupRoomFaultHandler)
+			new JoinGroupRoomPanel().open()
+		}
+		
+		protected function joinGroupRoomFaultHandler(event:ApiEvent):void
+		{
+			Api.getInstane().removeEventListener(ApiEvent.JOIN_GROUP_ROOM_SUCCESS, joinGroupRoomSuccessHandler)
+			Api.getInstane().removeEventListener(ApiEvent.JOIN_GROUP_ROOM_FAULT, joinGroupRoomFaultHandler)
+		}
+		
+		protected function joinGroupRoomSuccessHandler(event:ApiEvent):void
+		{
+			Api.getInstane().removeEventListener(ApiEvent.JOIN_GROUP_ROOM_SUCCESS, joinGroupRoomSuccessHandler)
+			Api.getInstane().removeEventListener(ApiEvent.JOIN_GROUP_ROOM_FAULT, joinGroupRoomFaultHandler)
+			GroupRoomView(MainView.getInstane().pushView(GroupRoomView)).init({huxi: 15})
 		}
 		
 		/**
@@ -355,22 +374,22 @@ package com.xiaomu.view.home
 			var noticePanel:OfficalNoticeView;
 			if(!noticePanel){noticePanel = new OfficalNoticeView()}
 			var todayDate:String = getTodayDate();
-//			trace("今日日期:",todayDate);
+			//			trace("今日日期:",todayDate);
 			var user_id:int = parseInt(AppData.getInstane().user.userId);
 			HttpApi.getInstane().getUserInfoById(user_id,function(e:Event):void{
 				var oldDate:String = JSON.parse(e.currentTarget.data).message[0].checkin_date;
 				var oldRoomCardNumber:int = JSON.parse(e.currentTarget.data).message[0].room_card;
-//				trace('房卡数：',JSON.parse(e.currentTarget.data).message[0].room_card);
+				//				trace('房卡数：',JSON.parse(e.currentTarget.data).message[0].room_card);
 				if(todayDate!=oldDate){
 					HttpApi.getInstane().updateUserCheckIn(todayDate,user_id,function(e:Event):void{
 						if(JSON.parse(e.currentTarget.data).result==0){
-//							trace('签到成功');
+							//							trace('签到成功');
 							var str:String = '签到成功，赠送您2张房卡。祝您游戏愉快！';
 							noticePanel.showText = str;
 							PopUpManager.centerPopUp(PopUpManager.addPopUp(noticePanel,null,true,false,0,0.6));
 							HttpApi.getInstane().updateUserRoomCard(oldRoomCardNumber+2,user_id,function(e:Event):void{
 								if(JSON.parse(e.currentTarget.data).result==0){
-//									trace('房卡增加成功');
+									//									trace('房卡增加成功');
 									userInfoView.userInfoData = {"roomCard":oldRoomCardNumber+2,'userName':AppData.getInstane().username}
 								}
 							},null);
