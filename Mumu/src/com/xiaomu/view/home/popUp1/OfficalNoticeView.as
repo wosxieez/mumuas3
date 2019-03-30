@@ -1,6 +1,6 @@
 package com.xiaomu.view.home.popUp1
 {
-	import com.xiaomu.component.ImageBtnWithUpAndDown;
+	import com.xiaomu.component.ImageButton;
 	
 	import flash.events.MouseEvent;
 	
@@ -40,7 +40,7 @@ package com.xiaomu.view.home.popUp1
 
 		private var bgImg:Image;
 		private var titleImg:Image;
-		private var okImg:ImageBtnWithUpAndDown;
+		private var okImg:ImageButton;
 		private var lab:TextArea;
 		private var copyBtn:Label;
 		
@@ -72,7 +72,7 @@ package com.xiaomu.view.home.popUp1
 			lab.color = 0x6f1614;
 			addChild(lab);
 			
-			okImg = new ImageBtnWithUpAndDown();
+			okImg = new ImageButton();
 			okImg.upImageSource = 'assets/home/popUp/btn_confirm_normal.png';
 			okImg.downImageSource = 'assets/home/popUp/btn_confirm_press.png';
 			okImg.width = 166;

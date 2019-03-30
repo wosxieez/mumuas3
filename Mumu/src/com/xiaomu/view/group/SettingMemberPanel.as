@@ -1,6 +1,6 @@
 package com.xiaomu.view.group
 {
-	import com.xiaomu.component.ImageBtnWithUpAndDown;
+	import com.xiaomu.component.ImageButton;
 	import com.xiaomu.event.AppManagerEvent;
 	import com.xiaomu.manager.AppManager;
 	import com.xiaomu.util.HttpApi;
@@ -41,8 +41,8 @@ package com.xiaomu.view.group
 		
 		private var bgImg:Image;
 		private var titleImg:Image;
-		private var okImg:ImageBtnWithUpAndDown;
-		private var cancelImg:ImageBtnWithUpAndDown;
+		private var okImg:ImageButton;
+		private var cancelImg:ImageButton;
 		
 		private var goldLab:Label;
 		private var goldInput:TextInput
@@ -51,7 +51,7 @@ package com.xiaomu.view.group
 		private var subNameLab:Label;
 		private var subNameInput:TextInput;
 		
-		private var removeImg:ImageBtnWithUpAndDown
+		private var removeImg:ImageButton
 		private var oldUser:Object
 		private var _thisUser:Object
 		
@@ -93,7 +93,7 @@ package com.xiaomu.view.group
 			titleImg.height = 86;
 			addChild(titleImg);
 			
-			okImg = new ImageBtnWithUpAndDown();
+			okImg = new ImageButton();
 			okImg.upImageSource = 'assets/home/popUp/btn_confirm_normal.png';
 			okImg.downImageSource = 'assets/home/popUp/btn_confirm_press.png';
 			okImg.width = 166;
@@ -101,7 +101,7 @@ package com.xiaomu.view.group
 			okImg.addEventListener(MouseEvent.CLICK,okImgHandler);
 			addChild(okImg);
 			
-			cancelImg = new ImageBtnWithUpAndDown();
+			cancelImg = new ImageButton();
 			cancelImg.upImageSource = 'assets/home/popUp/Z_cancelNormal.png';
 			cancelImg.downImageSource = 'assets/home/popUp/Z_cancelPress.png';
 			cancelImg.width = 166;
@@ -167,7 +167,7 @@ package com.xiaomu.view.group
 			goldInput.height = 50;
 			addChild(goldInput)
 			
-			removeImg = new ImageBtnWithUpAndDown()
+			removeImg = new ImageButton()
 			removeImg.upImageSource = 'assets/home/popUp/shanchu_up.png';
 			removeImg.downImageSource = 'assets/home/popUp/shanchu_down.png';
 			removeImg.width = 146

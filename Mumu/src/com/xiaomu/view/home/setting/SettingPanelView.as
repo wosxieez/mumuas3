@@ -1,7 +1,7 @@
 package com.xiaomu.view.home.setting
 {
 	
-	import com.xiaomu.component.ImageBtnWithUpAndDown;
+	import com.xiaomu.component.ImageButton;
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.Audio;
 	import com.xiaomu.view.MainView;
@@ -30,8 +30,8 @@ package com.xiaomu.view.home.setting
 		private var setType:ButtonGroup;
 		private var musicSetView:MusicSetView;
 		private var otherSetView:OtherSetView;
-		private var signOutBtn:ImageBtnWithUpAndDown;
-		private var closeBtn:ImageBtnWithUpAndDown;
+		private var signOutBtn:ImageButton;
+		private var closeBtn:ImageButton;
 		override protected function createChildren():void
 		{
 			super.createChildren();
@@ -68,7 +68,7 @@ package com.xiaomu.view.home.setting
 			otherSetView.visible = false;
 			addChild(otherSetView);
 			
-			signOutBtn = new ImageBtnWithUpAndDown();
+			signOutBtn = new ImageButton();
 			signOutBtn.upImageSource = 'assets/home/settingPanel/logoutNormal.png';
 			signOutBtn.downImageSource = 'assets/home/settingPanel/logoutPress.png';
 			signOutBtn.width = 214
@@ -76,7 +76,7 @@ package com.xiaomu.view.home.setting
 			signOutBtn.addEventListener(MouseEvent.CLICK,signOutBtnHandler);
 			addChild(signOutBtn);
 			
-			closeBtn = new ImageBtnWithUpAndDown();
+			closeBtn = new ImageButton();
 			closeBtn.upImageSource = 'assets/home/settingPanel/btn_close_normal.png';
 			closeBtn.downImageSource = 'assets/home/settingPanel/btn_close_press.png';
 			closeBtn.width = 79

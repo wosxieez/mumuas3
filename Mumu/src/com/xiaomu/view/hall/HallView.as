@@ -1,6 +1,6 @@
 package com.xiaomu.view.hall
 {
-	import com.xiaomu.component.ImageBtnWithUpAndDown;
+	import com.xiaomu.component.ImageButton;
 	import com.xiaomu.component.ImgBtn;
 	import com.xiaomu.component.Loading;
 	import com.xiaomu.event.ApiEvent;
@@ -56,8 +56,8 @@ package com.xiaomu.view.hall
 		private var titleImg:Image;
 		private var gonggaoImg:Image;
 		private var meiziImg:Image;
-		private var createGroupImg:ImageBtnWithUpAndDown;
-		private var joinGroupImg:ImageBtnWithUpAndDown;
+		private var createGroupImg:ImageButton;
+		private var joinGroupImg:ImageButton;
 		
 		override protected function createChildren():void {
 			super.createChildren()

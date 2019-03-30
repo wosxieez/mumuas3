@@ -1,6 +1,6 @@
 package com.xiaomu.view.login
 {
-	import com.xiaomu.component.ImageBtnWithUpAndDown;
+	import com.xiaomu.component.ImageButton;
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.HttpApi;
 	import com.xiaomu.view.MainView;
@@ -42,8 +42,8 @@ package com.xiaomu.view.login
 		private var labPsw : Label;
 		private var phoneNumInput : TextInput;
 		private var passwordInput : TextInput;
-		private var loginBtn : ImageBtnWithUpAndDown;
-		public var regsiterBtn:ImageBtnWithUpAndDown;
+		private var loginBtn : ImageButton;
+		public var regsiterBtn:ImageButton;
 		override protected function createChildren():void
 		{
 			super.createChildren();
@@ -88,7 +88,7 @@ package com.xiaomu.view.login
 			passwordInput.displayAsPassword = true;
 			addChild(passwordInput);
 			
-			loginBtn = new ImageBtnWithUpAndDown();
+			loginBtn = new ImageButton();
 			loginBtn.width = 216;
 			loginBtn.height = 49;
 			loginBtn.upImageSource = 'assets/login/phonedenglu_up.png';
@@ -96,7 +96,7 @@ package com.xiaomu.view.login
 			loginBtn.addEventListener(MouseEvent.CLICK,loginHandler);
 			addChild(loginBtn);
 			
-			regsiterBtn = new ImageBtnWithUpAndDown();
+			regsiterBtn = new ImageButton();
 			regsiterBtn.width = 118;
 			regsiterBtn.height = 38;
 			regsiterBtn.upImageSource = 'assets/login/kuaisuzhuce_up.png';

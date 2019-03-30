@@ -2,7 +2,7 @@ package com.xiaomu.view.grouproom
 {
 	import com.xiaomu.component.BigCardUI;
 	import com.xiaomu.component.CardUI;
-	import com.xiaomu.component.ImageBtnWithUpAndDown;
+	import com.xiaomu.component.ImageButton;
 	import com.xiaomu.event.ApiEvent;
 	import com.xiaomu.event.SelectEvent;
 	import com.xiaomu.util.Actions;
@@ -74,8 +74,8 @@ package com.xiaomu.view.grouproom
 		private var thisCanChiCards:Array
 		private var thisCanHuDatas:Array
 		
-		private var zhunbeiButton:ImageBtnWithUpAndDown
-		private var zhunbeiButton2:ImageBtnWithUpAndDown
+		private var zhunbeiButton:ImageButton
+		private var zhunbeiButton2:ImageButton
 		private var canHuButton:Image
 		private var canPengButton:Image
 		private var canChiButton:Image
@@ -204,14 +204,14 @@ package com.xiaomu.view.grouproom
 			canHuButton.addEventListener(MouseEvent.CLICK,canHuButton_clickHandler)
 			iconLayer.addChild(canHuButton)
 			
-			zhunbeiButton = new ImageBtnWithUpAndDown()
+			zhunbeiButton = new ImageButton()
 			zhunbeiButton.upImageSource = 'assets/room/zhunbeih_up.png'
 			zhunbeiButton.width = 191
 			zhunbeiButton.height = 68
 			zhunbeiButton.addEventListener(MouseEvent.CLICK, zhunbeiButton_clickHandler)
 			iconLayer.addChild(zhunbeiButton)
 			
-			zhunbeiButton2 = new ImageBtnWithUpAndDown()
+			zhunbeiButton2 = new ImageButton()
 			zhunbeiButton2.upImageSource = 'assets/room/jbc_cancle_p.png'
 			zhunbeiButton2.width = 191
 			zhunbeiButton2.height = 68

@@ -11,6 +11,7 @@ package
 	import coco.core.Application;
 	import coco.core.coco;
 	import coco.util.CocoUI;
+	import coco.util.FontFamily;
 	
 	public class Mumu extends Application
 	{
@@ -19,6 +20,7 @@ package
 			super();
 			
 			CocoUI.fontSize = 20
+			CocoUI.fontFamily = FontFamily.MICROSOFT_YAHEI
 				
 			addEventListener(Event.ADDED_TO_STAGE, this_addedToStageHandler)
 		}

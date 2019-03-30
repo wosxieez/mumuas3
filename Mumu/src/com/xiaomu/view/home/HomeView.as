@@ -1,15 +1,13 @@
 package com.xiaomu.view.home
 {
-	import com.xiaomu.component.ImageBtnWithUpAndDown;
+	import com.xiaomu.component.ImageButton;
 	import com.xiaomu.event.ApiEvent;
 	import com.xiaomu.itemRender.HomeBottomBarRender;
-	import com.xiaomu.util.Api;
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.Assets;
 	import com.xiaomu.util.Audio;
 	import com.xiaomu.util.HttpApi;
 	import com.xiaomu.view.MainView;
-	import com.xiaomu.view.grouproom.GroupRoomView;
 	import com.xiaomu.view.hall.HallView;
 	import com.xiaomu.view.home.noticeBar.NoticeBar;
 	import com.xiaomu.view.home.popUp1.OfficalGongGaoView;
@@ -36,20 +34,20 @@ package com.xiaomu.view.home
 		}
 		
 		private var bg : Image;
-		private var myGroup:ImageBtnWithUpAndDown;
+		private var myGroup:ImageButton;
 		private var userInfoView:UserInfoView2
-		private var shoppingBtn:ImageBtnWithUpAndDown;
+		private var shoppingBtn:ImageButton;
 		private var btnGroup:ButtonGroup;
-		private var proxyBtn:ImageBtnWithUpAndDown;
-		private	var checkInBtn:ImageBtnWithUpAndDown;
-		private var waiterBtn:ImageBtnWithUpAndDown;
-		private var joinRoom:ImageBtnWithUpAndDown;
+		private var proxyBtn:ImageButton;
+		private	var checkInBtn:ImageButton;
+		private var waiterBtn:ImageButton;
+		private var joinRoom:ImageButton;
 		
-		private var daTongZiImg:ImageBtnWithUpAndDown;
-		private var ziPaiImg:ImageBtnWithUpAndDown;
-		private var xiuXianImg:ImageBtnWithUpAndDown;
-		private var paoDeKuaiImg:ImageBtnWithUpAndDown;
-		private var otherImg:ImageBtnWithUpAndDown;
+		private var daTongZiImg:ImageButton;
+		private var ziPaiImg:ImageButton;
+		private var xiuXianImg:ImageButton;
+		private var paoDeKuaiImg:ImageButton;
+		private var otherImg:ImageButton;
 		private var gonggaoImg:Image;
 		private var noticeBar:NoticeBar;
 		override protected function createChildren():void
@@ -63,7 +61,7 @@ package com.xiaomu.view.home
 			userInfoView = new UserInfoView2();
 			addChild(userInfoView);
 			
-			myGroup = new ImageBtnWithUpAndDown();
+			myGroup = new ImageButton();
 			myGroup.width = 270;
 			myGroup.height = 407;
 			myGroup.upImageSource = 'assets/home/myGroup1_up.png';
@@ -78,7 +76,7 @@ package com.xiaomu.view.home
 			myGroup.addEventListener(MouseEvent.CLICK,clickHandler);
 			addChild(myGroup);*/
 			
-			daTongZiImg = new ImageBtnWithUpAndDown();
+			daTongZiImg = new ImageButton();
 			daTongZiImg.width = 260;
 			daTongZiImg.height = 190;
 			daTongZiImg.upImageSource = 'assets/home/other/fen_up.png';
@@ -86,7 +84,7 @@ package com.xiaomu.view.home
 			addChild(daTongZiImg);
 			daTongZiImg.visible =false;
 			
-			ziPaiImg = new ImageBtnWithUpAndDown();
+			ziPaiImg = new ImageButton();
 			ziPaiImg.width = 260;
 			ziPaiImg.height = 190;
 			ziPaiImg.upImageSource = 'assets/home/other/creatRoom_up.png';
@@ -94,7 +92,7 @@ package com.xiaomu.view.home
 			ziPaiImg.addEventListener(MouseEvent.CLICK, ziPaiImg_clickHandler)
 			addChild(ziPaiImg);
 			
-			xiuXianImg = new ImageBtnWithUpAndDown();
+			xiuXianImg = new ImageButton();
 			xiuXianImg.width = 260;
 			xiuXianImg.height = 190;
 			xiuXianImg.upImageSource = 'assets/home/other/coinRoom_up.png';
@@ -102,7 +100,7 @@ package com.xiaomu.view.home
 			addChild(xiuXianImg);
 			xiuXianImg.visible = false;
 			
-			paoDeKuaiImg = new ImageBtnWithUpAndDown();
+			paoDeKuaiImg = new ImageButton();
 			paoDeKuaiImg.width = 260;
 			paoDeKuaiImg.height = 190;
 			paoDeKuaiImg.upImageSource = 'assets/home/other/caicaicai_up.png';
@@ -110,11 +108,12 @@ package com.xiaomu.view.home
 			paoDeKuaiImg.addEventListener(MouseEvent.CLICK, paoDeKuaiImg_clickHandler)
 			addChild(paoDeKuaiImg);
 			
-			otherImg = new ImageBtnWithUpAndDown();
+			otherImg = new ImageButton();
 			otherImg.width = 259;
 			otherImg.height = 291;
 			otherImg.upImageSource = 'assets/home/yl_tuibj.png';
 			otherImg.downImageSource = 'assets/home/yl_tuibjd.png';
+			otherImg.addEventListener(MouseEvent.CLICK, paoDeKuaiImg_clickHandler)
 			addChild(otherImg);
 			
 			gonggaoImg = new Image();
@@ -123,7 +122,7 @@ package com.xiaomu.view.home
 			gonggaoImg.source = 'assets/home/gonggao.png';
 			addChild(gonggaoImg);
 			
-			shoppingBtn = new ImageBtnWithUpAndDown();
+			shoppingBtn = new ImageButton();
 			shoppingBtn.width = 117;
 			shoppingBtn.height = 92;
 			shoppingBtn.upImageSource = 'assets/home/bottomBar/shangcheng_up.png';
@@ -143,7 +142,7 @@ package com.xiaomu.view.home
 			btnGroup.addEventListener(UIEvent.CHANGE,changeHandler);
 			addChild(btnGroup);
 			
-			joinRoom = new ImageBtnWithUpAndDown();
+			joinRoom = new ImageButton();
 			joinRoom.upImageSource = 'assets/home/newjoin_up.png';
 			joinRoom.downImageSource = 'assets/home/newjoin_down.png';
 			joinRoom.width = 354;
@@ -151,7 +150,7 @@ package com.xiaomu.view.home
 			joinRoom.addEventListener(MouseEvent.CLICK,joinRoomClickHandler);
 			addChild(joinRoom);
 			
-			proxyBtn = new ImageBtnWithUpAndDown();
+			proxyBtn = new ImageButton();
 			proxyBtn.upImageSource = 'assets/home/cwdl_up.png';
 			proxyBtn.downImageSource = 'assets/home/cwdl_down.png';
 			proxyBtn.width = 104*0.8;
@@ -159,7 +158,7 @@ package com.xiaomu.view.home
 			proxyBtn.addEventListener(MouseEvent.CLICK,proxyBtnBtnHandler);
 			addChild(proxyBtn);
 			
-			checkInBtn = new ImageBtnWithUpAndDown();
+			checkInBtn = new ImageButton();
 			checkInBtn.upImageSource = 'assets/home/qiandao_up.png';
 			checkInBtn.downImageSource = 'assets/home/qiandao_down.png';
 			checkInBtn.width = 109*0.8;
@@ -167,7 +166,7 @@ package com.xiaomu.view.home
 			checkInBtn.addEventListener(MouseEvent.CLICK,checkInBtnHandler);
 			addChild(checkInBtn);
 			
-			waiterBtn = new ImageBtnWithUpAndDown();
+			waiterBtn = new ImageButton();
 			waiterBtn.upImageSource = 'assets/home/btn_kf_normal.png';
 			waiterBtn.downImageSource = 'assets/home/btn_kf_press.png';
 			waiterBtn.width = 104*0.8;
@@ -184,27 +183,29 @@ package com.xiaomu.view.home
 		
 		protected function paoDeKuaiImg_clickHandler(event:MouseEvent):void
 		{
-			new CaiCaiCaiPanel().open()
+			DevelopingNotice.getInstane().open()
+//			new CaiCaiCaiPanel().open()
 		}
 		
 		protected function ziPaiImg_clickHandler(event:MouseEvent):void
 		{
-			Api.getInstane().addEventListener(ApiEvent.CREATE_GROUP_ROOM_SUCCESS, createGroupRoomSuccessHandler)
-			Api.getInstane().addEventListener(ApiEvent.CREATE_GROUP_ROOM_FAULT, createGroupRoomFaultHandler)
-			Api.getInstane().createGroupRoom('wosxieez')
+			DevelopingNotice.getInstane().open()
+//			Api.getInstane().addEventListener(ApiEvent.CREATE_GROUP_ROOM_SUCCESS, createGroupRoomSuccessHandler)
+//			Api.getInstane().addEventListener(ApiEvent.CREATE_GROUP_ROOM_FAULT, createGroupRoomFaultHandler)
+//			Api.getInstane().createGroupRoom('wosxieez')
 		}
 		
 		protected function createGroupRoomFaultHandler(event:ApiEvent):void
 		{
-			Api.getInstane().removeEventListener(ApiEvent.CREATE_GROUP_ROOM_SUCCESS, createGroupRoomSuccessHandler)
-			Api.getInstane().removeEventListener(ApiEvent.CREATE_GROUP_ROOM_FAULT, createGroupRoomFaultHandler)
+//			Api.getInstane().removeEventListener(ApiEvent.CREATE_GROUP_ROOM_SUCCESS, createGroupRoomSuccessHandler)
+//			Api.getInstane().removeEventListener(ApiEvent.CREATE_GROUP_ROOM_FAULT, createGroupRoomFaultHandler)
 		}
 		
 		protected function createGroupRoomSuccessHandler(event:ApiEvent):void
 		{
-			Api.getInstane().removeEventListener(ApiEvent.CREATE_GROUP_ROOM_SUCCESS, createGroupRoomSuccessHandler)
-			Api.getInstane().removeEventListener(ApiEvent.CREATE_GROUP_ROOM_FAULT, createGroupRoomFaultHandler)
-			GroupRoomView(MainView.getInstane().pushView(GroupRoomView)).init({huxi: 15})
+//			Api.getInstane().removeEventListener(ApiEvent.CREATE_GROUP_ROOM_SUCCESS, createGroupRoomSuccessHandler)
+//			Api.getInstane().removeEventListener(ApiEvent.CREATE_GROUP_ROOM_FAULT, createGroupRoomFaultHandler)
+//			GroupRoomView(MainView.getInstane().pushView(GroupRoomView)).init({huxi: 15})
 		}
 		
 		override protected function updateDisplayList():void{
@@ -304,6 +305,8 @@ package com.xiaomu.view.home
 				noticeView.showText = '请用浏览器打开次链接：';
 				noticeView.copyText = 'www.baidu.com';
 				PopUpManager.centerPopUp(PopUpManager.addPopUp(noticeView,null,true,true,0x000000,0.5));
+			} else {
+				DevelopingNotice.getInstane().open()
 			}
 			
 			btnGroup.selectedIndex = -1
@@ -311,22 +314,23 @@ package com.xiaomu.view.home
 		
 		protected function joinRoomClickHandler(event:MouseEvent):void
 		{
-			Api.getInstane().addEventListener(ApiEvent.JOIN_GROUP_ROOM_SUCCESS, joinGroupRoomSuccessHandler)
-			Api.getInstane().addEventListener(ApiEvent.JOIN_GROUP_ROOM_FAULT, joinGroupRoomFaultHandler)
-			new JoinGroupRoomPanel().open()
+			DevelopingNotice.getInstane().open()
+//			Api.getInstane().addEventListener(ApiEvent.JOIN_GROUP_ROOM_SUCCESS, joinGroupRoomSuccessHandler)
+//			Api.getInstane().addEventListener(ApiEvent.JOIN_GROUP_ROOM_FAULT, joinGroupRoomFaultHandler)
+//			new JoinGroupRoomPanel().open()
 		}
 		
 		protected function joinGroupRoomFaultHandler(event:ApiEvent):void
 		{
-			Api.getInstane().removeEventListener(ApiEvent.JOIN_GROUP_ROOM_SUCCESS, joinGroupRoomSuccessHandler)
-			Api.getInstane().removeEventListener(ApiEvent.JOIN_GROUP_ROOM_FAULT, joinGroupRoomFaultHandler)
+//			Api.getInstane().removeEventListener(ApiEvent.JOIN_GROUP_ROOM_SUCCESS, joinGroupRoomSuccessHandler)
+//			Api.getInstane().removeEventListener(ApiEvent.JOIN_GROUP_ROOM_FAULT, joinGroupRoomFaultHandler)
 		}
 		
 		protected function joinGroupRoomSuccessHandler(event:ApiEvent):void
 		{
-			Api.getInstane().removeEventListener(ApiEvent.JOIN_GROUP_ROOM_SUCCESS, joinGroupRoomSuccessHandler)
-			Api.getInstane().removeEventListener(ApiEvent.JOIN_GROUP_ROOM_FAULT, joinGroupRoomFaultHandler)
-			GroupRoomView(MainView.getInstane().pushView(GroupRoomView)).init({huxi: 15})
+//			Api.getInstane().removeEventListener(ApiEvent.JOIN_GROUP_ROOM_SUCCESS, joinGroupRoomSuccessHandler)
+//			Api.getInstane().removeEventListener(ApiEvent.JOIN_GROUP_ROOM_FAULT, joinGroupRoomFaultHandler)
+//			GroupRoomView(MainView.getInstane().pushView(GroupRoomView)).init({huxi: 15})
 		}
 		
 		/**

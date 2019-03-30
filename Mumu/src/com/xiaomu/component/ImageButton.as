@@ -5,9 +5,9 @@ package com.xiaomu.component
 	import coco.component.Image;
 	import coco.component.SkinComponent;
 	
-	public class ImageBtnWithUpAndDown extends SkinComponent
+	public class ImageButton extends SkinComponent
 	{
-		public function ImageBtnWithUpAndDown()
+		public function ImageButton()
 		{
 			super();
 			

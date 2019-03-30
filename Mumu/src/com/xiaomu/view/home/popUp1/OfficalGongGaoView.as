@@ -1,6 +1,6 @@
 package com.xiaomu.view.home.popUp1
 {
-	import com.xiaomu.component.ImageBtnWithUpAndDown;
+	import com.xiaomu.component.ImageButton;
 	import com.xiaomu.view.MainView;
 	
 	import flash.events.MouseEvent;
@@ -27,7 +27,7 @@ package com.xiaomu.view.home.popUp1
 		private var bgImg:Image;
 		private var bgImg1:Image;
 		private var titleImg:Image;
-		private var closeBtn:ImageBtnWithUpAndDown;
+		private var closeBtn:ImageButton;
 		private var viewChangeNavigation:MainView;
 		private var leftList:List;
 		override protected function createChildren():void
@@ -52,7 +52,7 @@ package com.xiaomu.view.home.popUp1
 			titleImg.height = 55;
 			addChild(titleImg);
 			
-			closeBtn = new ImageBtnWithUpAndDown();
+			closeBtn = new ImageButton();
 			closeBtn.upImageSource = 'assets/home/settingPanel/btn_close_normal.png';
 			closeBtn.downImageSource = 'assets/home/settingPanel/btn_close_press.png';
 			closeBtn.width = 79

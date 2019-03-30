@@ -1,6 +1,6 @@
 package com.xiaomu.view.userBarView
 {
-	import com.xiaomu.component.ImageBtnWithUpAndDown;
+	import com.xiaomu.component.ImageButton;
 	import com.xiaomu.event.AppManagerEvent;
 	import com.xiaomu.manager.AppManager;
 	import com.xiaomu.util.HttpApi;
@@ -36,8 +36,8 @@ package com.xiaomu.view.userBarView
 		
 		private var goldLab:Label;
 		private var goldNumberTextInput:TextInput;
-		private var okImg:ImageBtnWithUpAndDown;
-		private var cancelImg:ImageBtnWithUpAndDown;
+		private var okImg:ImageButton;
+		private var cancelImg:ImageButton;
 		private var _data:Object;
 		public function get data():Object
 		{
@@ -84,7 +84,7 @@ package com.xiaomu.view.userBarView
 			goldNumberTextInput.height = 50;
 			addChild(goldNumberTextInput)
 			
-			okImg = new ImageBtnWithUpAndDown();
+			okImg = new ImageButton();
 			okImg.upImageSource = 'assets/home/popUp/btn_confirm_normal.png';
 			okImg.downImageSource = 'assets/home/popUp/btn_confirm_press.png';
 			okImg.width = 166;
@@ -92,7 +92,7 @@ package com.xiaomu.view.userBarView
 			okImg.addEventListener(MouseEvent.CLICK,okImgHandler);
 			addChild(okImg);
 			
-			cancelImg = new ImageBtnWithUpAndDown();
+			cancelImg = new ImageButton();
 			cancelImg.upImageSource = 'assets/home/popUp/Z_cancelNormal.png';
 			cancelImg.downImageSource = 'assets/home/popUp/Z_cancelPress.png';
 			cancelImg.width = 166;

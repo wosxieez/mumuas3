@@ -1,6 +1,6 @@
 package com.xiaomu.view.home.popUp1
 {
-	import com.xiaomu.component.ImageBtnWithUpAndDown;
+	import com.xiaomu.component.ImageButton;
 	
 	import flash.events.MouseEvent;
 	
@@ -37,8 +37,8 @@ package com.xiaomu.view.home.popUp1
 
 		private var bgImg:Image;
 		private var titleImg:Image;
-		private var okImg:ImageBtnWithUpAndDown;
-		private var cancelImg:ImageBtnWithUpAndDown;
+		private var okImg:ImageButton;
+		private var cancelImg:ImageButton;
 		private var lab:TextArea;
 		
 		override protected function createChildren():void
@@ -69,7 +69,7 @@ package com.xiaomu.view.home.popUp1
 			lab.color = 0x6f1614;
 			addChild(lab);
 			
-			okImg = new ImageBtnWithUpAndDown();
+			okImg = new ImageButton();
 			okImg.upImageSource = 'assets/home/popUp/btn_confirm_normal.png';
 			okImg.downImageSource = 'assets/home/popUp/btn_confirm_press.png';
 			okImg.width = 166;
@@ -77,7 +77,7 @@ package com.xiaomu.view.home.popUp1
 			okImg.addEventListener(MouseEvent.CLICK,okImgHandler);
 			addChild(okImg);
 			
-			cancelImg = new ImageBtnWithUpAndDown();
+			cancelImg = new ImageButton();
 			cancelImg.upImageSource = 'assets/home/popUp/Z_cancelNormal.png';
 			cancelImg.downImageSource = 'assets/home/popUp/Z_cancelPress.png';
 			cancelImg.width = 166;
