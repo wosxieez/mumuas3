@@ -1,10 +1,10 @@
 package com.xiaomu.view.home
 {
-	import com.xiaomu.component.AppPanel;
+	import com.xiaomu.component.AppPanelSmall;
 	
 	import coco.component.TextArea;
 	
-	public class DevelopingNotice extends AppPanel
+	public class DevelopingNotice extends AppPanelSmall
 	{
 		public function DevelopingNotice()
 		{

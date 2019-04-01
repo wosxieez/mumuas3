@@ -1,7 +1,6 @@
 package com.xiaomu.view.hall
 {
 	import com.xiaomu.component.ImageButton;
-	import com.xiaomu.component.ImgBtn;
 	import com.xiaomu.component.Loading;
 	import com.xiaomu.event.ApiEvent;
 	import com.xiaomu.event.AppManagerEvent;
@@ -13,7 +12,7 @@ package com.xiaomu.view.hall
 	import com.xiaomu.util.HttpApi;
 	import com.xiaomu.view.MainView;
 	import com.xiaomu.view.group.GroupView;
-	import com.xiaomu.view.hall.popUpPanel.CreateGroupPanel;
+	import com.xiaomu.view.hall.popUpPanel.AddGroupPanel;
 	import com.xiaomu.view.home.HomeView;
 	import com.xiaomu.view.userBarView.UserInfoView2;
 	
@@ -27,7 +26,6 @@ package com.xiaomu.view.hall
 	import coco.component.VerticalAlign;
 	import coco.core.UIComponent;
 	import coco.event.UIEvent;
-	import coco.manager.PopUpManager;
 	
 	/**
 	 * 大厅界面
@@ -43,19 +41,12 @@ package com.xiaomu.view.hall
 			Api.getInstane().addEventListener(ApiEvent.JOIN_GROUP_FAULT, joinGroupFaultHandler)
 		}
 		
+		private var bg:Image
 		private var groupsList:List
 		private var signoutBtn:Image
 		private var goback:Image;
 		private var userInfoView : UserInfoView2
-		private var joinGroupBtn : ImgBtn;
-		private var createGroupBtn : ImgBtn;
-		private var bgImg:Image;
-		private var titleImg:Image;
-		private var gonggaoImg:Image;
-		private var meiziImg:Image;
-		private var createGroupImg:ImageButton;
-		private var joinGroupImg:ImageButton;
-		
+		private var createGroupBtn : ImageButton
 		
 		private var _groupsData:Array
 		
@@ -73,37 +64,9 @@ package com.xiaomu.view.hall
 		override protected function createChildren():void {
 			super.createChildren()
 			
-			bgImg = new Image();
-			bgImg.width = 1280;
-			bgImg.height = 720;
-			bgImg.source = 'assets/hall/guild_hall_bg.png';
-			addChild(bgImg);
-			bgImg.visible = false;
-			
-			titleImg = new Image();
-			titleImg.width = 400;
-			titleImg.height = 92;
-			titleImg.source = 'assets/hall/guild_hall_logo.png';
-			addChild(titleImg);
-			titleImg.visible = false;
-			
-			gonggaoImg = new Image();
-			gonggaoImg.width = 360;
-			gonggaoImg.height = 480;
-			gonggaoImg.source = 'assets/hall/guild_hall_info.png';
-			addChild(gonggaoImg);
-			gonggaoImg.visible = false;
-			
-			meiziImg = new Image();
-			meiziImg.width = 239;
-			meiziImg.height = 393;
-			meiziImg.source = 'assets/hall/guild_hall_npc.png';
-			addChild(meiziImg);
-			meiziImg.visible = false;
-			
-			userInfoView =new UserInfoView2();
-			addChild(userInfoView);
-			userInfoView.visible = false;
+			bg = new Image()
+			bg.source = 'assets/hall/guild_hall_bg.png'
+			addChild(bg)
 			
 			groupsList = new List()
 			groupsList.padding = 20
@@ -126,23 +89,11 @@ package com.xiaomu.view.hall
 			goback.addEventListener(MouseEvent.CLICK,gobackHandler);
 			addChild(goback);
 			
-			joinGroupBtn = new ImgBtn();
-			joinGroupBtn.imgSource = 'assets/hall/join_group.png';
-			joinGroupBtn.width = 140*1.5;
-			joinGroupBtn.height = 40*1.5;
-			joinGroupBtn.labText = '加入亲友圈';
-			joinGroupBtn.labFontSize = 20*1.5;
-			joinGroupBtn.labColor = 0xffffff;
-			joinGroupBtn.addEventListener(MouseEvent.CLICK,joinGroupHandler);
-			addChild(joinGroupBtn);
-			
-			createGroupBtn = new ImgBtn();
-			createGroupBtn.imgSource = 'assets/hall/create_group.png';
-			createGroupBtn.width = 140*1.5;
-			createGroupBtn.height = 40*1.5;
-			createGroupBtn.labText = '创建亲友圈';
-			createGroupBtn.labFontSize = 20*1.5;
-			createGroupBtn.labColor = 0xffffff;
+			createGroupBtn = new ImageButton();
+			createGroupBtn.width = 196
+			createGroupBtn.height = 70
+			createGroupBtn.upImageSource = 'assets/hall/btn_guild_create_group_n.png';
+			createGroupBtn.downImageSource = 'assets/hall/btn_guild_create_group_p.png';
 			createGroupBtn.addEventListener(MouseEvent.CLICK,createGroupHandler);
 			addChild(createGroupBtn);
 		}
@@ -160,29 +111,18 @@ package com.xiaomu.view.hall
 		override protected function updateDisplayList():void{
 			super.updateDisplayList();
 			
-			bgImg.x = bgImg.y = 0;
-			titleImg.x = (width-titleImg.width)/2;
-			titleImg.y = 0;
-			
-			gonggaoImg.x = width/2-gonggaoImg.width-20;
-			gonggaoImg.y = height-gonggaoImg.height-30;
-			
-			meiziImg.y = gonggaoImg.y;
-			meiziImg.x = gonggaoImg.x+gonggaoImg.width+30;
-			
+			bg.width = width
+			bg.height = height
 			
 			groupsList.width = width
 			groupsList.height = groupsList.itemRendererHeight*1.1
-			groupsList.y = (height-groupsList.height)/2
+			groupsList.y = (height-groupsList.height) / 2 - 20
 			
 			goback.x = width - goback.width - 20
 			goback.y = 20;
 			
-			joinGroupBtn.x = width - joinGroupBtn.width-60;
-			joinGroupBtn.y = height-joinGroupBtn.height-5;
-			
-			createGroupBtn.x = joinGroupBtn.x-10-createGroupBtn.width;
-			createGroupBtn.y = joinGroupBtn.y;
+			createGroupBtn.x = (width - createGroupBtn.width) / 2
+			createGroupBtn.y = height - createGroupBtn.height - 30
 		}
 		
 		protected function groupsList_changeHandler(event:UIEvent):void
@@ -237,19 +177,13 @@ package com.xiaomu.view.hall
 		 * 创建亲友圈
 		 */
 		protected function createGroupHandler(event:MouseEvent):void{
-			var createCroupPanel : CreateGroupPanel;
-			if(!createCroupPanel){
-				createCroupPanel = new CreateGroupPanel();
+			
+			if (AppData.getInstane().user.ll >= 2) {
+				new AddGroupPanel().open()
+			} else {
+				Alert.show('您没有权限操作')
 			}
-			PopUpManager.centerPopUp(PopUpManager.addPopUp(createCroupPanel,null,true,false,0xffffff,0.5));
 		}
-		
-		/**
-		 * 加入亲友圈
-		 */
-		protected function joinGroupHandler(event:MouseEvent):void{
-			//			trace("加入亲友圈");
-		}		
 		
 		/**
 		 *监听到群信息更新成功 

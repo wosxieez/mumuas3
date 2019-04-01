@@ -1,6 +1,6 @@
 package com.xiaomu.view.group
 {
-	import com.xiaomu.component.AppPanel;
+	import com.xiaomu.component.AppPanelBig;
 	import com.xiaomu.component.TitleTextInput;
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.HttpApi;
@@ -11,7 +11,7 @@ package com.xiaomu.view.group
 	import coco.component.Alert;
 	import coco.layout.VerticalLayout;
 	
-	public class AddUserPanel extends AppPanel
+	public class AddUserPanel extends AppPanelBig
 	{
 		public function AddUserPanel()
 		{
@@ -34,7 +34,7 @@ package com.xiaomu.view.group
 		}
 		
 		override protected function commitButton_clickHandler(event:MouseEvent):void {
-			HttpApi.getInstane().getUser(usernameInput.text, null, 
+			HttpApi.getInstane().getUser({username: usernameInput.text}, 
 				function (e:Event):void {
 					try {
 						var response:Object = JSON.parse(e.currentTarget.data)
@@ -45,7 +45,7 @@ package com.xiaomu.view.group
 								uid: user.id, 
 								pid: AppData.getInstane().user.id,
 								fs: 0, 
-								ll: 5}, 
+								ll: 0}, 
 								function (ee:Event):void {
 									var response2:Object = JSON.parse(ee.currentTarget.data)
 									if (response2.code == 0) {

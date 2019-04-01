@@ -1,9 +1,9 @@
 package com.xiaomu.view.group
 {
-	import com.xiaomu.component.ImageButton;
+	import com.xiaomu.component.AppPanelBig;
+	import com.xiaomu.itemRender.GroupUserRender;
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.HttpApi;
-	import com.xiaomu.view.MainView;
 	
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -11,18 +11,18 @@ package com.xiaomu.view.group
 	import coco.component.Button;
 	import coco.component.HGroup;
 	import coco.component.List;
-	import coco.core.UIComponent;
 	
-	public class GroupUsersView extends UIComponent
+	public class GroupUsersPanel extends AppPanelBig
 	{
-		public function GroupUsersView()
+		public function GroupUsersPanel()
 		{
 			super();
+			
+			title = '成员管理'
 		}
 		
 		private var usersList: List
 		private var bottomGroup: HGroup
-		private var backButton: ImageButton
 		
 		private var _usersData:Array
 		
@@ -41,8 +41,7 @@ package com.xiaomu.view.group
 			super.createChildren()
 			
 			usersList = new List()
-			usersList.itemRendererColumnCount = 4
-			usersList.labelField = 'username'
+			usersList.itemRendererClass = GroupUserRender
 			addChild(usersList)
 			
 			bottomGroup = new HGroup()
@@ -54,15 +53,6 @@ package com.xiaomu.view.group
 				new AddUserPanel().open()
 			})
 			bottomGroup.addChild(addUserButton)
-			
-			backButton = new ImageButton()
-			backButton.upImageSource = 'assets/club_btn_back.png';
-			backButton.width = 71;
-			backButton.height = 86;
-			backButton.addEventListener(MouseEvent.CLICK, function(e:MouseEvent):void {
-				MainView.getInstane().popView()
-			})
-			addChild(backButton)
 		}
 		
 		override protected function commitProperties():void {
@@ -74,20 +64,17 @@ package com.xiaomu.view.group
 		override protected function updateDisplayList():void {
 			super.updateDisplayList()
 			
-			bottomGroup.width = width
-			bottomGroup.height = 100
-			bottomGroup.y = height - bottomGroup.height
+			bottomGroup.width = contentWidth
+			bottomGroup.height = 50
+			bottomGroup.y = contentHeight - bottomGroup.height
 			
-			usersList.itemRendererWidth = width / 4
-			usersList.itemRendererHeight = usersList.itemRendererWidth / 2
-			usersList.width = width
+			usersList.width = contentWidth
 			usersList.height = bottomGroup.y
-			
-			backButton.x = width - backButton.width - 10
-			backButton.y = 10
 		}
 		
-		public function init():void {
+		override public function open():void {
+			super.open()
+				
 			HttpApi.getInstane().getGroupUser({gid: AppData.getInstane().group.id}, function (e:Event):void {
 				try
 				{
@@ -101,7 +88,25 @@ package com.xiaomu.view.group
 						HttpApi.getInstane().getUser({id: {'$in': uids}}, function (ee:Event):void {
 							var response2:Object = JSON.parse(ee.currentTarget.data)
 							if (response2.code == 0) {
-								usersData = response2.data
+								var users:Array = response2.data
+								
+								function getUser(id:int):Object {
+									for each(var user:Object in users) {
+										if (user.id == id) {
+											return user
+										} 
+									}
+									return null
+								}
+								
+								for each(var groupuser:Object in groupusers) {
+									var guser:Object = getUser(groupuser.uid)
+									if (guser) {
+										groupuser.username = guser.username
+									}
+								}
+								
+								usersData = groupusers
 							}
 						})
 					} else {

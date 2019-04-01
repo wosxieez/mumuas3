@@ -1,13 +1,13 @@
 package com.xiaomu.view.home
 {
-	import com.xiaomu.component.AppPanel;
+	import com.xiaomu.component.AppPanelBig;
 	import com.xiaomu.component.Ball;
 	
 	import coco.component.HorizontalAlign;
 	import coco.component.VerticalAlign;
 	import coco.layout.HorizontalLayout;
 	
-	public class CaiCaiCaiPanel extends AppPanel
+	public class CaiCaiCaiPanel extends AppPanelBig
 	{
 		public function CaiCaiCaiPanel()
 		{

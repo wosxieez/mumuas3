@@ -1,8 +1,7 @@
 package com.xiaomu.view.group
 {
-	import com.xiaomu.component.AppPanelSmall;
+	import com.xiaomu.component.AppPanelBig;
 	import com.xiaomu.component.TitleTextInput;
-	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.HttpApi;
 	
 	import flash.events.Event;
@@ -11,13 +10,13 @@ package com.xiaomu.view.group
 	import coco.component.Alert;
 	import coco.layout.VerticalLayout;
 	
-	public class AddRulePanel extends AppPanelSmall
+	public class SettingRulePanel extends AppPanelBig
 	{
-		public function AddRulePanel()
+		public function SettingRulePanel()
 		{
 			super();
 			
-			title = '添加玩法'
+			title = '玩法设置'
 			var vl:VerticalLayout = new VerticalLayout()
 			layout = vl
 		}
@@ -32,6 +31,19 @@ package com.xiaomu.view.group
 		private var ruleTCInput:TitleTextInput
 		private var ruleTC2Input:TitleTextInput
 		private var ruleTC1Input:TitleTextInput
+		
+		private var _ruleData:Object
+		
+		public function get ruleData():Object
+		{
+			return _ruleData;
+		}
+		
+		public function set ruleData(value:Object):void
+		{
+			_ruleData = value;
+			invalidateProperties()
+		}
 		
 		override protected function createChildren():void {
 			super.createChildren()
@@ -89,11 +101,21 @@ package com.xiaomu.view.group
 		
 		override protected function commitProperties():void {
 			super.commitProperties()
+			
+			ruleNameInput.text = ruleData.rulename
+			ruleCountInput.text = ruleData.cc
+			ruleHXInput.text = ruleData.hx
+			ruleXFInput.text = ruleData.xf
+			ruleNFInput.text = ruleData.nf
+			ruleFDInput.text = ruleData.fd
+			ruleTFInput.text = ruleData.tf
+			ruleTCInput.text = ruleData.tc
+			ruleTC2Input.text = ruleData.tc2
+			ruleTC1Input.text = ruleData.tc1
 		}
 		
 		override protected function commitButton_clickHandler(event:MouseEvent):void {
-			HttpApi.getInstane().addRule({
-				gid: AppData.getInstane().group.id,
+			HttpApi.getInstane().updateRule({update: {
 				rulename: ruleNameInput.text,
 				cc: int(ruleCountInput.text),
 				hx: int(ruleHXInput.text),
@@ -103,26 +125,24 @@ package com.xiaomu.view.group
 				tc2: Number(ruleTC2Input.text),
 				tc1: Number(ruleTC1Input.text),
 				tc: Number(ruleTCInput.text),
-				tf: Number(ruleTFInput.text)},  
+				tf: Number(ruleTFInput.text)}, query: {id: ruleData.id}},  
 				function (e:Event):void {
 					try
 					{
 						var response:Object = JSON.parse(e.currentTarget.data)
 						if (response.code == 0) {
-							Alert.show('添加玩法成功')
+							Alert.show('更新玩法成功')
 							close()
 						} else {
-							Alert.show('添加玩法失败')
+							Alert.show('更新玩法失败')
 						}
 					} 
 					catch(error:Error) 
 					{
-						Alert.show('添加玩法失败')
+						Alert.show('更新玩法失败')
 					}
 				})
 		}
 		
 	}
 }
-
-

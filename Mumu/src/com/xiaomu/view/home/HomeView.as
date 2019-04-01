@@ -3,20 +3,16 @@ package com.xiaomu.view.home
 	import com.xiaomu.component.ImageButton;
 	import com.xiaomu.event.ApiEvent;
 	import com.xiaomu.itemRender.HomeBottomBarRender;
-	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.Assets;
 	import com.xiaomu.util.Audio;
-	import com.xiaomu.util.HttpApi;
 	import com.xiaomu.view.MainView;
 	import com.xiaomu.view.hall.HallView;
 	import com.xiaomu.view.home.noticeBar.NoticeBar;
 	import com.xiaomu.view.home.popUp1.OfficalGongGaoView;
-	import com.xiaomu.view.home.popUp1.OfficalNoticeView;
 	import com.xiaomu.view.home.popUp1.OfficalNoticeViewOfCopy;
 	import com.xiaomu.view.home.setting.SettingPanelView;
 	import com.xiaomu.view.userBarView.UserInfoView2;
 	
-	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.utils.setTimeout;
 	
@@ -55,7 +51,7 @@ package com.xiaomu.view.home
 			super.createChildren();
 			
 			bg = new Image();
-			bg.source = 'assets/bg.png';
+			bg.source = 'assets/home/hallBg.png';
 			addChild(bg);
 			
 			userInfoView = new UserInfoView2();

@@ -29,6 +29,7 @@ package com.xiaomu.util
 		private var bgSound:Sound
 		
 		public function playBGM():void {
+			return
 			if (bgSoundChannel) {
 				try
 				{

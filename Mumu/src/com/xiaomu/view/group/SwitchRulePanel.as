@@ -1,21 +1,22 @@
 package com.xiaomu.view.group
 {
-	import com.xiaomu.component.AppPanel;
+	import com.xiaomu.component.AppPanelSmall;
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.HttpApi;
 	
 	import flash.events.Event;
-	import flash.events.MouseEvent;
 	
 	import coco.component.List;
+	import coco.event.UIEvent;
 	
-	public class SwitchRulePanel extends AppPanel
+	public class SwitchRulePanel extends AppPanelSmall
 	{
 		public function SwitchRulePanel()
 		{
 			super();
 			
 			title = '切换玩法'
+			commitEnabled = false
 		}
 		
 		private var rulesList:List
@@ -38,6 +39,7 @@ package com.xiaomu.view.group
 			
 			rulesList = new List()
 			rulesList.labelField = 'rulename'
+			rulesList.addEventListener(UIEvent.CHANGE, rulesList_changeHandler)
 			addChild(rulesList)
 			
 			HttpApi.getInstane().getRule({gid: AppData.getInstane().group.id}, 
@@ -48,7 +50,7 @@ package com.xiaomu.view.group
 						if (response.code == 0) {
 							rulesData = response.data
 						} else {
-						}
+						}	
 					} 
 					catch(error:Error) 
 					{
@@ -69,8 +71,10 @@ package com.xiaomu.view.group
 			rulesList.height = contentHeight
 		}
 		
-		override protected function commitButton_clickHandler(event:MouseEvent):void {
-			
+		protected function rulesList_changeHandler(event:UIEvent):void
+		{
+			AppData.getInstane().rule = rulesList.selectedItem
+			close()
 		}
 		
 	}

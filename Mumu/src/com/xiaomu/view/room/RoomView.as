@@ -1221,7 +1221,7 @@ package com.xiaomu.view.room
 			this.ei = this.si = -1
 			zhunbeiButton.visible = true
 			zhunbeiButton2.visible = false
-			this.huxi = config.huxi
+			this.huxi = config.hx
 			Api.getInstane().addEventListener(ApiEvent.Notification, onNotificationHandler)
 			Api.getInstane().addEventListener(ApiEvent.ON_ROOM, onRoomMessageHandler)
 			Api.getInstane().resumeRoom()

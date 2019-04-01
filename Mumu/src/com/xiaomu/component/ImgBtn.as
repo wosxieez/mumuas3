@@ -3,7 +3,6 @@ package com.xiaomu.component
 	import coco.component.Image;
 	import coco.component.Label;
 	import coco.component.TextAlign;
-	import coco.component.TextInput;
 	import coco.core.UIComponent;
 	
 	public class ImgBtn extends UIComponent

@@ -6,15 +6,15 @@ package com.xiaomu.component
 	import coco.component.Panel;
 	import coco.manager.PopUpManager;
 	
-	public class AppPanel extends Panel
+	public class AppPanelBig extends Panel
 	{
-		public function AppPanel()
+		public function AppPanelBig()
 		{
 			super();
 			
 			
 			backgroundAlpha = borderAlpha = 0
-			titleHeight = 120
+			titleHeight = 80
 		}
 		
 		override public function set width(value:Number):void {
@@ -65,7 +65,7 @@ package com.xiaomu.component
 			titleDisplay.fontSize = 24
 			
 			background = new Image()
-			background.source = 'assets/home/popUp/bac_04.png'
+			background.source = 'assets/component/bac_03.png'
 			addRawChildAt(background, 0)
 			
 			commitButton = new ImageButton()
@@ -92,8 +92,8 @@ package com.xiaomu.component
 		}
 		
 		override protected function measure():void {
-			measuredWidth = 915
-			measuredHeight = 518
+			measuredWidth = 1157
+			measuredHeight = 669
 		}
 		
 		override protected function updateDisplayList():void {
@@ -102,16 +102,13 @@ package com.xiaomu.component
 			background.width = width
 			background.height = height
 			
-			titleDisplay.y = 57
-			titleDisplay.height = titleHeight - titleDisplay.y
-			
-			realView.x = 115
-			realView.y = titleHeight + 10
-			realView.width = 680
-			realView.height = commitEnabled ? 270 : 370
+			realView.x = 120
+			realView.y = titleHeight
+			realView.width = width - 240
+			realView.height = commitEnabled ? height - 130 - realView.y : height - realView.y
 				
 			commitButton.x = (width - commitButton.width) / 2
-			commitButton.y = height - commitButton.height - 15
+			commitButton.y = height - commitButton.height - 30
 				
 			closeButton.x = width - closeButton.width - 100
 			closeButton.y = 57

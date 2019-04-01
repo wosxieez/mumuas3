@@ -1,6 +1,6 @@
 package com.xiaomu.view.home
 {
-	import com.xiaomu.component.AppPanel;
+	import com.xiaomu.component.AppPanelBig;
 	import com.xiaomu.util.Api;
 	import com.xiaomu.util.AppData;
 	
@@ -9,7 +9,7 @@ package com.xiaomu.view.home
 	import coco.component.Button;
 	import coco.component.TextInput;
 	
-	public class JoinGroupRoomPanel extends AppPanel
+	public class JoinGroupRoomPanel extends AppPanelBig
 	{
 		public function JoinGroupRoomPanel()
 		{

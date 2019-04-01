@@ -43,10 +43,10 @@ package com.xiaomu.component
 			
 			titleDisplay.y = textDisplay.y
 			titleDisplay.height = textDisplay.height
-			titleDisplay.width = 100
+			titleDisplay.width = 150
 				
-			textDisplay.x = 105;
-			textDisplay.width = width  - 110;
+			textDisplay.x = 155;
+			textDisplay.width = width  - 160;
 		}
 		
 	}

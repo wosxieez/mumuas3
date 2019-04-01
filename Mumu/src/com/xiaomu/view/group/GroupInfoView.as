@@ -7,7 +7,6 @@ package com.xiaomu.view.group
 	import coco.component.TextAlign;
 	import coco.component.TextArea;
 	import coco.core.UIComponent;
-	import coco.manager.PopUpManager;
 	
 	/**
 	 * 组群信息界面
@@ -121,12 +120,6 @@ package com.xiaomu.view.group
 		
 		protected function settingButton_clickHandler(event:MouseEvent):void
 		{
-			var settingGroupPanel:SettingGroupPanel;
-			if(!settingGroupPanel){
-				settingGroupPanel = new SettingGroupPanel();
-			}
-			settingGroupPanel.data = copyGroupInfoData?copyGroupInfoData:groupInfoData;
-			PopUpManager.centerPopUp(PopUpManager.addPopUp(settingGroupPanel,null,true,true,0xffffff,0.4));
 		}
 	}
 }
