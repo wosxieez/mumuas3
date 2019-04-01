@@ -12,7 +12,7 @@ package com.xiaomu.view.hall
 	import com.xiaomu.util.Audio;
 	import com.xiaomu.util.HttpApi;
 	import com.xiaomu.view.MainView;
-	import com.xiaomu.view.group.GroupViewNew;
+	import com.xiaomu.view.group.GroupView;
 	import com.xiaomu.view.hall.popUpPanel.CreateGroupPanel;
 	import com.xiaomu.view.home.HomeView;
 	import com.xiaomu.view.userBarView.UserInfoView2;
@@ -49,15 +49,26 @@ package com.xiaomu.view.hall
 		private var userInfoView : UserInfoView2
 		private var joinGroupBtn : ImgBtn;
 		private var createGroupBtn : ImgBtn;
-		
-		private var groupsData:Array
-		
 		private var bgImg:Image;
 		private var titleImg:Image;
 		private var gonggaoImg:Image;
 		private var meiziImg:Image;
 		private var createGroupImg:ImageButton;
 		private var joinGroupImg:ImageButton;
+		
+		
+		private var _groupsData:Array
+		
+		public function get groupsData():Array
+		{
+			return _groupsData;
+		}
+		
+		public function set groupsData(value:Array):void
+		{
+			_groupsData = value;
+			invalidateProperties()
+		}
 		
 		override protected function createChildren():void {
 			super.createChildren()
@@ -97,7 +108,6 @@ package com.xiaomu.view.hall
 			groupsList = new List()
 			groupsList.padding = 20
 			groupsList.gap = 10
-			groupsList.labelField = 'group_id'
 			groupsList.horizontalScrollEnabled = true
 			groupsList.verticalScrollEnabled = false
 			groupsList.itemRendererClass = GroupRenderer
@@ -108,7 +118,6 @@ package com.xiaomu.view.hall
 			groupsList.verticalAlign = VerticalAlign.MIDDLE
 			groupsList.addEventListener(UIEvent.CHANGE, groupsList_changeHandler)
 			addChild(groupsList)
-			groupsList.visible = false;
 			
 			goback = new Image();
 			goback.source = 'assets/club_btn_back.png';
@@ -138,6 +147,11 @@ package com.xiaomu.view.hall
 			addChild(createGroupBtn);
 		}
 		
+		override protected function commitProperties():void {
+			super.commitProperties()
+			groupsList.dataProvider = groupsData
+		}
+		
 		protected function gobackHandler(event:MouseEvent):void
 		{
 			MainView.getInstane().pushView(HomeView);
@@ -145,9 +159,6 @@ package com.xiaomu.view.hall
 		
 		override protected function updateDisplayList():void{
 			super.updateDisplayList();
-			
-			//			createGroupBtn.visible = AppData.getInstane().user.is_admin=='T'
-			AppData.getInstane().inGroupView = false;
 			
 			bgImg.x = bgImg.y = 0;
 			titleImg.x = (width-titleImg.width)/2;
@@ -174,70 +185,48 @@ package com.xiaomu.view.hall
 			createGroupBtn.y = joinGroupBtn.y;
 		}
 		
-		private var i:int = 1
-		private var selectedItem:Object
-		
 		protected function groupsList_changeHandler(event:UIEvent):void
 		{
 			if(!groupsList.selectedItem){
 				return
 			}
-			selectedItem = groupsList.selectedItem;
+			AppData.getInstane().group = groupsList.selectedItem;
 			Loading.getInstance().open()
-			Api.getInstane().joinGroup(AppData.getInstane().user.username, int(selectedItem.group_id))
+			Api.getInstane().joinGroup(AppData.getInstane().user.username, AppData.getInstane().group.id)
 			groupsList.selectedIndex = -1
 		}
 		
 		public function init():void {
-			if(AppData.getInstane().user.group_info==null){
-				AppData.getInstane().user.group_info="[]"
-				groupsData = [];
-			}else{
-				groupsData = JSON.parse(AppData.getInstane().user.group_info) as Array;
-			}
-			HttpApi.getInstane().getUserInfoByName(AppData.getInstane().username,function(e:Event):void{
-				//								trace('大厅界面：金币',JSON.parse(e.currentTarget.data).message[0].group_info);
-				//				trace('大厅界面：房卡',JSON.parse(e.currentTarget.data).message[0].room_card);
-				//				trace('大厅界面：用户id',JSON.parse(e.currentTarget.data).message[0].id);
-				var room_card:String = JSON.parse(e.currentTarget.data).message[0].room_card?JSON.parse(e.currentTarget.data).message[0].room_card+'':'0'
-				var user_id:String = JSON.parse(e.currentTarget.data).message[0].id+''
-				AppData.getInstane().user.userId = user_id;
-				userInfoView.userInfoData = {"roomCard":room_card,'userName':AppData.getInstane().username}
-			},null);
-			getAllGroupInfo();
-			invalidateDisplayList();
-		}
-		
-		/**
-		 * 查询group表，获取所有群信息
-		 */
-		private function getAllGroupInfo():void{
-			HttpApi.getInstane().getAllGroupInfo(function(e:Event):void{
-				var groupArr : Array = JSON.parse(e.currentTarget.data).message as Array;///所有组群信息
-				for each (var j:Object in groupArr) {
-					for each (var k:Object in groupsData) {
-						if(k.group_id==j.id){
-							k.name = j.name
-							k.admin_id = j.admin_id
-							k.remark = j.remark
+			// 登录成功 进入首页 加载群信息
+			HttpApi.getInstane().getGroupUser({uid: AppData.getInstane().user.id}, 
+				function (e:Event):void {
+					try
+					{
+						var response:Object = JSON.parse(e.currentTarget.data)
+						if (response.code == 0) {
+							var groupusers:Array = response.data
+							var gids:Array = []
+							for each(var groupuser:Object in groupusers) {
+								gids.push(groupuser.gid)
+							}
+							HttpApi.getInstane().getGroup({id: {'$in': gids}}, 
+								function (ee:Event):void {
+									var response2:Object = JSON.parse(ee.currentTarget.data)
+									if (response2.code == 0) {
+										groupsData = response2.data
+									} else {
+										groupsData = null
+									}
+								})
+						} else {
+							groupsData = null
 						}
+					} 
+					catch(error:Error) 
+					{
+						groupsData = null
 					}
-				}
-				groupsList.dataProvider = groupsData
-				//				groupsList.dataProvider = []
-				refreshView();
-			},null);
-		}
-		
-		private function refreshView():void
-		{
-			if(groupsList.dataProvider.length>0){
-				bgImg.visible = gonggaoImg.visible = meiziImg.visible = titleImg.visible = false;
-				userInfoView.visible = groupsList.visible = true;
-			}else{
-				bgImg.visible = gonggaoImg.visible = meiziImg.visible = titleImg.visible = true;
-				userInfoView.visible = groupsList.visible = false;
-			}
+				})
 		}
 		
 		public function dispose():void {
@@ -266,7 +255,6 @@ package com.xiaomu.view.hall
 		 *监听到群信息更新成功 
 		 */
 		protected function updateGroupSuccessHandler(event:AppManagerEvent):void{
-			getAllGroupInfo();
 		}
 		
 		/**
@@ -274,22 +262,13 @@ package com.xiaomu.view.hall
 		 */
 		protected function createGroupSuccessHandler(event:Event):void
 		{
-			HttpApi.getInstane().getUserInfoById(AppData.getInstane().user.id,function(e:Event):void{
-				var group_info_arr:Array = JSON.parse(JSON.parse(e.currentTarget.data).message[0].group_info) as Array;
-				AppData.getInstane().user.group_info = JSON.stringify(group_info_arr);
-				init();
-			},null);
 		}
 		
 		protected function joinGroupSuccessHandler(event:ApiEvent):void
 		{
 			trace('跳转到群')
 			Loading.getInstance().close()
-			GroupViewNew(MainView.getInstane().pushView(GroupViewNew)).init(selectedItem.group_id, 
-				selectedItem.name,
-				selectedItem.admin_id,
-				selectedItem.remark,
-				event.data as Array)
+			GroupView(MainView.getInstane().pushView(GroupView)).init()
 		}
 		
 		protected function joinGroupFaultHandler(event:ApiEvent):void {

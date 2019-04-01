@@ -1,11 +1,8 @@
 package com.xiaomu.view.userBarView
 {
-	import com.xiaomu.util.AppData;
-	
 	import flash.events.MouseEvent;
 	
 	import coco.core.UIComponent;
-	import coco.manager.PopUpManager;
 	
 	public class UserInfoView2 extends UIComponent
 	{
@@ -64,21 +61,21 @@ package com.xiaomu.view.userBarView
 			goldBar.visible = roomCardBar.visible = false;
 			userinfoBar.x = userinfoBar.y = 5;
 			goldBar.y = roomCardBar.y = 20;
-			if(AppData.getInstane().inGroupView){
-				if(AppData.getInstane().isNowGroupAdmin){
-					goldBar.visible = roomCardBar.visible = true;
-					roomCardBar.x = userinfoBar.x+userinfoBar.width+20
-					goldBar.x = roomCardBar.x+roomCardBar.width+30
-				}else{
-					goldBar.visible = true;
-					roomCardBar.visible = false;
-					goldBar.x = userinfoBar.x+userinfoBar.width+30
-				}
-			}else{
-				goldBar.visible = false;
-				roomCardBar.visible = true;
-				roomCardBar.x = userinfoBar.x+userinfoBar.width+20
-			}
+//			if(AppData.getInstane().inGroupView){
+//				if(AppData.getInstane().isNowGroupAdmin){
+//					goldBar.visible = roomCardBar.visible = true;
+//					roomCardBar.x = userinfoBar.x+userinfoBar.width+20
+//					goldBar.x = roomCardBar.x+roomCardBar.width+30
+//				}else{
+//					goldBar.visible = true;
+//					roomCardBar.visible = false;
+//					goldBar.x = userinfoBar.x+userinfoBar.width+30
+//				}
+//			}else{
+//				goldBar.visible = false;
+//				roomCardBar.visible = true;
+//				roomCardBar.x = userinfoBar.x+userinfoBar.width+20
+//			}
 			
 		}
 		
@@ -103,14 +100,14 @@ package com.xiaomu.view.userBarView
 		
 		protected function addGoldHandler(event:MouseEvent):void
 		{
-			if(AppData.getInstane().isNowGroupAdmin){
-				var goldSettingPanel:SettingGoldPanel;
-				if(!goldSettingPanel){
-					goldSettingPanel = new SettingGoldPanel();
-				}
-				goldSettingPanel.data = userInfoData;
-				PopUpManager.centerPopUp(PopUpManager.addPopUp(goldSettingPanel,null,true,true,0xffffff,0.4));
-			}
+//			if(AppData.getInstane().isNowGroupAdmin){
+//				var goldSettingPanel:SettingGoldPanel;
+//				if(!goldSettingPanel){
+//					goldSettingPanel = new SettingGoldPanel();
+//				}
+//				goldSettingPanel.data = userInfoData;
+//				PopUpManager.centerPopUp(PopUpManager.addPopUp(goldSettingPanel,null,true,true,0xffffff,0.4));
+//			}
 		}
 		
 		/**

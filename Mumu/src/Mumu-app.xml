@@ -50,7 +50,6 @@
 	<initialWindow>
 		<content>Mumu.swf</content>
 		<autoOrients>true</autoOrients>
-<!-- 		<fullScreen>false</fullScreen> -->
 		<visible>true</visible>
 		<renderMode>gpu</renderMode>
 		<aspectRatio>landscape</aspectRatio>
@@ -78,16 +77,13 @@
                        	       <action android:name="android.intent.action.VIEW"/>
                       	       <category android:name="android.intent.category.BROWSABLE"/>
                       	       <category android:name="android.intent.category.DEFAULT"/>
-                      	       <data android:scheme="app2formobile"/>
                     	 </intent-filter>
                  	</activity>
              	 </application>
 			    <uses-permission android:name="android.permission.INTERNET"/>
 			    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 			    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
- 			    <uses-permission android:name="android.permission.CAMERA"/>
- 			    <uses-permission android:name="android.permission.BLUETOOTH" />
-    			<uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+
 			</manifest>
 			
 		]]>

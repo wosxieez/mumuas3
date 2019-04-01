@@ -265,21 +265,10 @@ package com.xiaomu.view.home
 		public function init():void{
 			Audio.getInstane().playBGM()
 			Assets.getInstane().loadAssets('assets/niu.png', 'assets/niu.json')
-			HttpApi.getInstane().getUserInfoByName(AppData.getInstane().username,function(e:Event):void{
-				//trace('大厅界面：金币',JSON.parse(e.currentTarget.data).message[0].group_info);
-				//trace('大厅界面：房卡',JSON.parse(e.currentTarget.data).message[0].room_card);
-				//trace('大厅界面：用户id',JSON.parse(e.currentTarget.data).message[0].id);
-				var room_card:String = JSON.parse(e.currentTarget.data).message[0].room_card?JSON.parse(e.currentTarget.data).message[0].room_card+'':'0'
-				var user_id:String = JSON.parse(e.currentTarget.data).message[0].id+''
-				AppData.getInstane().user.userId = user_id;
-				userInfoView.userInfoData = {"roomCard":room_card,'userName':AppData.getInstane().username}
-			},null);
 		}
 		
 		protected function clickHandler(event:MouseEvent):void{
-			//			trace('选中我的组群---进入hallView');
 			setTimeout(function():void{
-				AppData.getInstane().inGroupView = false;
 				HallView(MainView.getInstane().pushView(HallView)).init()
 			},100);
 		}
@@ -375,37 +364,37 @@ package com.xiaomu.view.home
 		 */
 		protected function checkInBtnHandler(event:MouseEvent):void
 		{
-			var noticePanel:OfficalNoticeView;
-			if(!noticePanel){noticePanel = new OfficalNoticeView()}
-			var todayDate:String = getTodayDate();
-			//			trace("今日日期:",todayDate);
-			var user_id:int = parseInt(AppData.getInstane().user.userId);
-			HttpApi.getInstane().getUserInfoById(user_id,function(e:Event):void{
-				var oldDate:String = JSON.parse(e.currentTarget.data).message[0].checkin_date;
-				var oldRoomCardNumber:int = JSON.parse(e.currentTarget.data).message[0].room_card;
-				//				trace('房卡数：',JSON.parse(e.currentTarget.data).message[0].room_card);
-				if(todayDate!=oldDate){
-					HttpApi.getInstane().updateUserCheckIn(todayDate,user_id,function(e:Event):void{
-						if(JSON.parse(e.currentTarget.data).result==0){
-							//							trace('签到成功');
-							var str:String = '签到成功，赠送您2张房卡。祝您游戏愉快！';
-							noticePanel.showText = str;
-							PopUpManager.centerPopUp(PopUpManager.addPopUp(noticePanel,null,true,false,0,0.6));
-							HttpApi.getInstane().updateUserRoomCard(oldRoomCardNumber+2,user_id,function(e:Event):void{
-								if(JSON.parse(e.currentTarget.data).result==0){
-									//									trace('房卡增加成功');
-									userInfoView.userInfoData = {"roomCard":oldRoomCardNumber+2,'userName':AppData.getInstane().username}
-								}
-							},null);
-						}
-					},null);
-				}else{
-					trace('今日已经签到');
-					var str:String = '今日已经签到过了哦，明天再来吧。亲！';
-					noticePanel.showText = str;
-					PopUpManager.centerPopUp(PopUpManager.addPopUp(noticePanel,null,true,false,0,0.6));
-				}
-			},null);
+//			var noticePanel:OfficalNoticeView;
+//			if(!noticePanel){noticePanel = new OfficalNoticeView()}
+//			var todayDate:String = getTodayDate();
+//			//			trace("今日日期:",todayDate);
+//			var user_id:int = parseInt(AppData.getInstane().user.userId);
+//			HttpApi.getInstane().getUserInfoById(user_id,function(e:Event):void{
+//				var oldDate:String = JSON.parse(e.currentTarget.data).message[0].checkin_date;
+//				var oldRoomCardNumber:int = JSON.parse(e.currentTarget.data).message[0].room_card;
+//				//				trace('房卡数：',JSON.parse(e.currentTarget.data).message[0].room_card);
+//				if(todayDate!=oldDate){
+//					HttpApi.getInstane().updateUserCheckIn(todayDate,user_id,function(e:Event):void{
+//						if(JSON.parse(e.currentTarget.data).result==0){
+//							//							trace('签到成功');
+//							var str:String = '签到成功，赠送您2张房卡。祝您游戏愉快！';
+//							noticePanel.showText = str;
+//							PopUpManager.centerPopUp(PopUpManager.addPopUp(noticePanel,null,true,false,0,0.6));
+//							HttpApi.getInstane().updateUserRoomCard(oldRoomCardNumber+2,user_id,function(e:Event):void{
+//								if(JSON.parse(e.currentTarget.data).result==0){
+//									//									trace('房卡增加成功');
+//									userInfoView.userInfoData = {"roomCard":oldRoomCardNumber+2,'userName':AppData.getInstane().username}
+//								}
+//							},null);
+//						}
+//					},null);
+//				}else{
+//					trace('今日已经签到');
+//					var str:String = '今日已经签到过了哦，明天再来吧。亲！';
+//					noticePanel.showText = str;
+//					PopUpManager.centerPopUp(PopUpManager.addPopUp(noticePanel,null,true,false,0,0.6));
+//				}
+//			},null);
 		}
 		
 		private function getTodayDate():String

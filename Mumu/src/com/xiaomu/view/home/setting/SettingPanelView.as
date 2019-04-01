@@ -143,7 +143,6 @@ package com.xiaomu.view.home.setting
 		protected function signOutBtnHandler(event:MouseEvent):void
 		{
 			PopUpManager.removeAllPopUp();
-			AppData.getInstane().inGroupView = false;
 			dispose()
 			MainView.getInstane().popView(LoginView)
 		}

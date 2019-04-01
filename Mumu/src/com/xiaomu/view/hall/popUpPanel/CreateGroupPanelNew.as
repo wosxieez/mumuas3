@@ -1,15 +1,9 @@
 package com.xiaomu.view.hall.popUpPanel
 {
-	import com.xiaomu.event.AppManagerEvent;
 	import com.xiaomu.itemRender.CircleItemRender;
-	import com.xiaomu.manager.AppManager;
-	import com.xiaomu.util.AppData;
-	import com.xiaomu.util.HttpApi;
 	
-	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
-	import coco.component.Alert;
 	import coco.component.Button;
 	import coco.component.ButtonGroup;
 	import coco.component.Image;
@@ -35,8 +29,6 @@ package com.xiaomu.view.hall.popUpPanel
 		private var topValueBtnGroup:ButtonGroup;
 		private var playMethodLab:Label;
 		private var playMethodBtnGroup:ButtonGroup;
-		
-		private var mainPanelView:MainPanelView;
 		
 		private var okBtn : Button;
 		private var cancelBtn : Button;
@@ -141,9 +133,6 @@ package com.xiaomu.view.hall.popUpPanel
 		{
 			super.updateDisplayList();
 			
-			//			mainPanelView.width = width;
-			//			mainPanelView.height = height;
-			
 			groupNameLab.x = 10;
 			groupNameLab.y = 20;
 			groupNameInput.x = groupNameLab.x+groupNameLab.width;
@@ -192,30 +181,8 @@ package com.xiaomu.view.hall.popUpPanel
 		
 		protected function oklHandler(event:MouseEvent):void
 		{
-			/*
-			* 创建群的操作，先insert group表，再更新user表中当前用户的group_info字段
-			*/
-			var group_info_arr: Array = []; 
-			HttpApi.getInstane().getUserInfoByName(AppData.getInstane().username,function(e:Event):void{
-				group_info_arr  = JSON.parse(JSON.parse(e.currentTarget.data).message[0].group_info) as Array
-				if(groupNameInput.text){
-					////进行group表的插入工作
-					HttpApi.getInstane().insertGroupInfo(groupNameInput.text,parseInt(AppData.getInstane().user.userId),function(e:Event):void{
-						var newGroupInfoObj:Object = {'gold':0,'group_id':parseInt(JSON.parse(e.currentTarget.data).message.id)};
-						group_info_arr.push(newGroupInfoObj);
-						HttpApi.getInstane().updateUserGroupInfo(AppData.getInstane().username,group_info_arr,function(e:Event):void{
-							if(JSON.parse(e.currentTarget.data).result==0){
-								PopUpManager.removeAllPopUp();
-								///刷新界面
-								Alert.show('创建成功');
-								AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.CREATE_GROUP_SUCCESS));
-							}
-						},null)
-					},null)
-				}
-			},null);
 		}
 	}
 }
-import com.xiaomu.view.hall.popUpPanel;
+
 

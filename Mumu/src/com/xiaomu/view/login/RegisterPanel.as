@@ -130,24 +130,24 @@ package com.xiaomu.view.login
 		
 		protected function registerHandler(event:MouseEvent):void
 		{
-			if(!phoneNumInput.text&&!passwordInput.text){
-				return
-			}
-			HttpApi.getInstane().getUserInfoByName(phoneNumInput.text,function(e:Event):void{
-				if((JSON.parse(e.currentTarget.data).message as Array).length==0){
-					trace('该账号名可以用');
-					HttpApi.getInstane().addUser(phoneNumInput.text,passwordInput.text,function(e:Event):void{
-						if(JSON.parse(e.currentTarget.data).result==0){
-							Alert.show('注册成功');
-							AppData.getInstane().username = phoneNumInput.text;
-							AppData.getInstane().password = passwordInput.text;
-							trace(AppData.getInstane().username,AppData.getInstane().password);
-						}
-					},null);
-				}else{
-					Alert.show('该账号名已经存在');
-				}
-			},null);
+//			if(!phoneNumInput.text&&!passwordInput.text){
+//				return
+//			}
+//			HttpApi.getInstane().getUserInfoByName(phoneNumInput.text,function(e:Event):void{
+//				if((JSON.parse(e.currentTarget.data).message as Array).length==0){
+//					trace('该账号名可以用');
+//					HttpApi.getInstane().addUser(phoneNumInput.text,passwordInput.text,function(e:Event):void{
+//						if(JSON.parse(e.currentTarget.data).result==0){
+//							Alert.show('注册成功');
+//							AppData.getInstane().username = phoneNumInput.text;
+//							AppData.getInstane().password = passwordInput.text;
+//							trace(AppData.getInstane().username,AppData.getInstane().password);
+//						}
+//					},null);
+//				}else{
+//					Alert.show('该账号名已经存在');
+//				}
+//			},null);
 		}	
 	}
 }

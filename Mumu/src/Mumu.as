@@ -11,7 +11,6 @@ package
 	import coco.core.Application;
 	import coco.core.coco;
 	import coco.util.CocoUI;
-	import coco.util.FontFamily;
 	
 	public class Mumu extends Application
 	{
@@ -20,8 +19,6 @@ package
 			super();
 			
 			CocoUI.fontSize = 20
-			CocoUI.fontFamily = FontFamily.MICROSOFT_YAHEI
-				
 			addEventListener(Event.ADDED_TO_STAGE, this_addedToStageHandler)
 		}
 		
@@ -94,7 +91,7 @@ package
 		protected function this_activateHandler(event:Event):void
 		{
 			trace('activate')
-			Api.getInstane().reconnect()
+//			Api.getInstane().reconnect()
 		}
 		
 		protected function this_deactivateHandler(event:Event):void

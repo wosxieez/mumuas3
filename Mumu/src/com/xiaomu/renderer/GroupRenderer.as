@@ -45,7 +45,7 @@ package com.xiaomu.renderer
 		override protected function commitProperties():void
 		{
 			super.commitProperties();
-			nameLab.text = data.name?data.name:'/';
+			nameLab.text = data.groupname ? data.groupname: '/';
 		}
 		
 		override protected function updateDisplayList():void {

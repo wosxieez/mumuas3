@@ -18,19 +18,11 @@ package com.xiaomu.util
 			return instance
 		}
 		
-		public var user:Object
+		public var user:Object  // 当前用户
+		public var group:Object // 当前群
+		public var rule:Object  // 当前玩法
 		
-		/**
-		 *你是不是当前进入的群的群主 
-		 *默认 不是这个群的群主
-		 */
-		public var isNowGroupAdmin:Boolean=false;
 		
-		/**
-		 *用户当前有没有进入 groupView
-		 */
-		public var inGroupView:Boolean=false
-			
 		public function get gameMusicValue():String
 		{
 			return getShareObjectValue("gameMusicValue");

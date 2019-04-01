@@ -1,8 +1,6 @@
 package com.xiaomu.view.hall.popUpPanel
 {
 	import com.xiaomu.component.ImageButton;
-	import com.xiaomu.event.AppManagerEvent;
-	import com.xiaomu.manager.AppManager;
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.HttpApi;
 	
@@ -101,7 +99,7 @@ package com.xiaomu.view.hall.popUpPanel
 			
 			cancelImg.x = width/2+20;
 			cancelImg.y = okImg.y
-				
+			
 			groupNameLab.x = 200;
 			groupNameLab.y = 150;
 			
@@ -116,40 +114,29 @@ package com.xiaomu.view.hall.popUpPanel
 		
 		protected function okImgHandler(event:MouseEvent):void
 		{
-			/*
-			* 创建群的操作，先insert group表，再更新user表中当前用户的group_info字段
-			创建insert rooms表，添加x张桌子
-			*/
-			var group_info_arr: Array = []; 
-			HttpApi.getInstane().getUserInfoByName(AppData.getInstane().username,function(e:Event):void{
-				var group_info:String = "[]";
-				if(JSON.parse(e.currentTarget.data).message[0].group_info){
-					group_info = JSON.parse(e.currentTarget.data).message[0].group_info;
-				}
-				group_info_arr  = JSON.parse(group_info) as Array
-				if(groupNameInput.text){
-					////进行group表的插入工作
-					HttpApi.getInstane().insertGroupInfo(groupNameInput.text,parseInt(AppData.getInstane().user.userId),function(e:Event):void{
-						var newGroupInfoObj:Object = {'gold':0,'group_id':parseInt(JSON.parse(e.currentTarget.data).message.id)};
-						var group_id:int = parseInt(JSON.parse(e.currentTarget.data).message.id);
-						group_info_arr.push(newGroupInfoObj);
-						///添加桌子，insert room表
-						for (var i:int = 1; i <= 5; i++) 
-						{
-							HttpApi.getInstane().addRoom(i+'号房间',group_id,3,null,null);
+			HttpApi.getInstane().addGroup({groupname: groupNameInput.text, fc: 0}, 
+				function (e:Event):void {
+					try
+					{
+						var response:Object = JSON.parse(e.currentTarget.data)
+						if (response.code == 0) { 
+							var group:Object = response.data
+							// 创建群成功 把自己作为馆长身份加入进去
+							HttpApi.getInstane().addGroupUser({ gid: group.id, uid: AppData.getInstane().user.id }, 
+								function (ee:Event):void {
+									var response2:Object = JSON.parse(ee.currentTarget.data)
+									if (response2.code == 0) { 
+										Alert.show('创建群成功')
+									}
+								}) 
+						} else {
 						}
-						///对群主自身的groupInfo字段进行更新
-						HttpApi.getInstane().updateUserGroupInfo(AppData.getInstane().username,group_info_arr,function(e:Event):void{
-							if(JSON.parse(e.currentTarget.data).result==0){
-								PopUpManager.removeAllPopUp();
-								///刷新界面
-								Alert.show('创建成功');
-								AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.CREATE_GROUP_SUCCESS));
-							}
-						},null)
-					},null)
-				}
-			},null);
+					} 
+					catch(error:Error) 
+					{
+						
+					}
+				})
 		}
 	}
 }

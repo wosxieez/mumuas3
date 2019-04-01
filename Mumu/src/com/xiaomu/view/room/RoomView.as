@@ -14,7 +14,7 @@ package com.xiaomu.view.room
 	import com.xiaomu.util.Notifications;
 	import com.xiaomu.util.Size;
 	import com.xiaomu.view.MainView;
-	import com.xiaomu.view.group.GroupViewNew;
+	import com.xiaomu.view.group.GroupView;
 	
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
@@ -1229,7 +1229,7 @@ package com.xiaomu.view.room
 		
 		protected function back_clickHandler(event:MouseEvent):void
 		{
-			MainView.getInstane().popView(GroupViewNew)
+			MainView.getInstane().popView(GroupView)
 			Api.getInstane().removeEventListener(ApiEvent.Notification, onNotificationHandler)
 			Api.getInstane().removeEventListener(ApiEvent.ON_ROOM, onRoomMessageHandler)
 			Api.getInstane().leaveRoom()

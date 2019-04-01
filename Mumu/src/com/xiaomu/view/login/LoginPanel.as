@@ -25,12 +25,12 @@ package com.xiaomu.view.login
 		}
 		
 		private var _visible:Boolean;
-
+		
 		override public function get visible():Boolean
 		{
 			return _visible;
 		}
-
+		
 		override public function set visible(value:Boolean):void
 		{
 			_visible = value;
@@ -161,26 +161,25 @@ package com.xiaomu.view.login
 		public function doLogin():void
 		{
 			PopUpManager.removePopUp(this);
-			HttpApi.getInstane().login(phoneNumInput.text, passwordInput.text, function (ee:Event):void {
-				try
-				{
-					var response:Object = JSON.parse(ee.currentTarget.data)
-					if (response.result == 0 && response.message.length > 0) {
-						AppData.getInstane().user = response.message[0]
-//						trace(JSON.stringify(response.message[0]))
-//						trace(phoneNumInput.text,passwordInput.text);
-						AppData.getInstane().username = phoneNumInput.text
-						AppData.getInstane().password = passwordInput.text
-						HomeView(MainView.getInstane().pushView(HomeView)).init()
-					}  else {
-						Alert.show('登录失败 用户名密码错误')
+			HttpApi.getInstane().getUser({username: phoneNumInput.text, password: passwordInput.text}, 
+				function (ee:Event):void {
+					try
+					{
+						var response:Object = JSON.parse(ee.currentTarget.data)
+						if (response.code == 0 && response.data.length > 0) {
+							AppData.getInstane().user = response.data[0]
+							AppData.getInstane().username = phoneNumInput.text
+							AppData.getInstane().password = passwordInput.text
+							HomeView(MainView.getInstane().pushView(HomeView)).init()
+						}  else {
+							Alert.show('登录失败 用户名密码错误')
+						}
+					} 
+					catch(error:Error) 
+					{
 					}
-				} 
-				catch(error:Error) 
-				{
-				}
-			}, function (ee:Event):void {
-			})
+				}, function (ee:Event):void {
+				})
 			
 		}
 	}

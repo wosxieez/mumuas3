@@ -156,14 +156,14 @@ package com.xiaomu.view.group
 		
 		protected function okBtnHandler(event:MouseEvent):void
 		{
-			PopUpManager.removeAllPopUp();
-			var newData : Object = {'group_name':groupNameTextInput.text,'remark':groupRemarkTextArea.text};
-			HttpApi.getInstane().updateGroupByGroupId(data.group_id,newData,function(e:Event):void{
-				if(JSON.parse(e.currentTarget.data).result==0){
-					Alert.show('群信息修改成功');
-					AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.UPDATE_GROUP_SUCCESS));
-				}
-			},null);
+//			PopUpManager.removeAllPopUp();
+//			var newData : Object = {'group_name':groupNameTextInput.text,'remark':groupRemarkTextArea.text};
+//			HttpApi.getInstane().updateGroupByGroupId(data.group_id,newData,function(e:Event):void{
+//				if(JSON.parse(e.currentTarget.data).result==0){
+//					Alert.show('群信息修改成功');
+//					AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.UPDATE_GROUP_SUCCESS));
+//				}
+//			},null);
 		}
 	}
 }
