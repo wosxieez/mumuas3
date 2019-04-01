@@ -3,7 +3,7 @@ package com.xiaomu.view.group
 	import com.xiaomu.component.ImageButton;
 	import com.xiaomu.component.Loading;
 	import com.xiaomu.event.ApiEvent;
-	import com.xiaomu.renderer.RoomRenderer;
+	import com.xiaomu.itemRender.GroupRoomRenderer;
 	import com.xiaomu.util.Api;
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.HttpApi;
@@ -74,9 +74,9 @@ package com.xiaomu.view.group
 			addChild(bg1)
 			
 			roomsList = new List()
-			roomsList.itemRendererClass = RoomRenderer
 			roomsList.itemRendererColumnCount = 4
 			roomsList.horizontalAlign = HorizontalAlign.JUSTIFY;
+			roomsList.itemRendererClass = GroupRoomRenderer
 			roomsList.gap = 10;
 			roomsList.padding = 10;
 			roomsList.paddingTop = 0;
@@ -142,6 +142,8 @@ package com.xiaomu.view.group
 		
 		override protected function commitProperties():void {
 			super.commitProperties()
+			
+			roomsList.dataProvider = roomsData
 		}
 		
 		override protected function updateDisplayList():void {
@@ -178,7 +180,6 @@ package com.xiaomu.view.group
 					var response:Object = JSON.parse(e.currentTarget.data)
 					if (response.code == 0 && response.data.length > 0) {
 						AppData.getInstane().rule = response.data[0]
-						trace(JSON.stringify(AppData.getInstane().rule))
 					} else {
 					}
 				} 
@@ -190,8 +191,8 @@ package com.xiaomu.view.group
 		
 		protected function joinRoomSuccessHandler(event:ApiEvent):void
 		{
-			trace('跳转到房间')
-			RoomView(MainView.getInstane().pushView(RoomView)).init(AppData.getInstane().rule)
+			var config:Object = {cc: AppData.getInstane().rule.cc, hx: AppData.getInstane().rule.hx}
+			RoomView(MainView.getInstane().pushView(RoomView)).init(config)
 			Loading.getInstance().close()
 		}
 		
@@ -203,10 +204,14 @@ package com.xiaomu.view.group
 		
 		protected function onGroupHandler(event:ApiEvent):void
 		{
-			const notification:Object = event.data
-			//			trace('notification:',JSON.stringify(notification));
+			var notification:Object = event.data
 			switch(notification.name)
 			{
+				case Notifications.onRoomStatus:
+				{
+					roomsData = notification.data
+					break;
+				}
 				case Notifications.onJoinGroup:
 				{
 					break;
