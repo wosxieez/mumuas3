@@ -1,5 +1,6 @@
 package com.xiaomu.view.group
 {
+	import com.xiaomu.component.AppPanelBig;
 	import com.xiaomu.component.AppPanelSmall;
 	import com.xiaomu.component.TitleTextInput;
 	import com.xiaomu.util.AppData;
@@ -11,7 +12,7 @@ package com.xiaomu.view.group
 	import coco.component.Alert;
 	import coco.layout.VerticalLayout;
 	
-	public class AddRulePanel extends AppPanelSmall
+	public class AddRulePanel extends AppPanelBig
 	{
 		public function AddRulePanel()
 		{
