@@ -119,6 +119,7 @@ package com.xiaomu.component
 		
 		public function close():void
 		{
+			text = ''
 			PopUpManager.removePopUp(this);
 		}
 		

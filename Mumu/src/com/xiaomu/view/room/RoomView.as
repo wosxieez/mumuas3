@@ -19,6 +19,7 @@ package com.xiaomu.view.room
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	
+	import coco.component.Alert;
 	import coco.component.Image;
 	import coco.component.Label;
 	import coco.core.UIComponent;
@@ -388,9 +389,6 @@ package com.xiaomu.view.room
 				}  else {
 					nextUserHead.visible = false
 				}
-				
-				if (this.roominfo.hasOwnProperty('cc'))
-					cardsLabel.text = '剩余' + roominfo.cc + '张牌'
 				
 				if (isGaming) {
 					zhunbeiButton2.visible = zhunbeiButton.visible = false
@@ -860,7 +858,6 @@ package com.xiaomu.view.room
 					cardLayer.setChildIndex(newCardUI, 0)
 					nextPassCardUIs.push(newCardUI)
 				}
-				
 			}
 		}
 		
@@ -947,6 +944,13 @@ package com.xiaomu.view.room
 			var notification: Object = event.data
 			switch(notification.name)
 			{
+				case Notifications.onRoomStatus: {
+					updateRoomInfo(notification.data)
+					break
+				}
+				case Notifications.onRoomMessage: {
+					break
+				}
 				case Notifications.onReady:
 				{
 					updateRoomInfo(notification.data)
@@ -1211,7 +1215,7 @@ package com.xiaomu.view.room
 			Api.getInstane().sendAction(action)
 		}
 		
-		public function init(config:Object): void {
+		public function init(rule:Object): void {
 			this.isHu = this.isCheckNewCard = this.isGaming = false
 			this.myUser = this.preUser = this.nextUser = null
 			this.checkUsername = null
@@ -1221,18 +1225,41 @@ package com.xiaomu.view.room
 			this.ei = this.si = -1
 			zhunbeiButton.visible = true
 			zhunbeiButton2.visible = false
-			this.huxi = config.hx
-			Api.getInstane().addEventListener(ApiEvent.Notification, onNotificationHandler)
-			Api.getInstane().addEventListener(ApiEvent.ON_ROOM, onRoomMessageHandler)
-			Api.getInstane().resumeRoom()
+			this.huxi = rule.hx
+			Api.getInstane().addEventListener(ApiEvent.ON_ROOM, onNotificationHandler)
+			Api.getInstane().queryRoomStatus(function (response:Object):void {
+				if (response.code == 0) {
+					isGaming = response.data.gaming
+					if (isGaming) {
+						myHandCards = null
+						tingCardsView.tingCards = null
+						zhunbeiButton.visible = zhunbeiButton2.visible = false
+						cardsCarrUI.visible = cardsLabel.visible = true
+						dealCardUI.visible = false
+						dealCardUI2.visible = false
+						updateRoomInfo(response.data)
+						updateMyHandCardUIs()
+						updateMyGroupCardUIs()
+						updateMyPassCardUIs()
+						updatePreGroupCardUIs()
+						updatePrePassCardUIs()
+						updateNextGroupCardUIs()
+						updateNextPassCardUIs()
+					}
+				}
+			})
 		}
 		
 		protected function back_clickHandler(event:MouseEvent):void
 		{
+			if (this.isGaming) {
+				Alert.show('游戏中无法退出')
+				return
+			}
+			
 			MainView.getInstane().popView(GroupView)
-			Api.getInstane().removeEventListener(ApiEvent.Notification, onNotificationHandler)
-			Api.getInstane().removeEventListener(ApiEvent.ON_ROOM, onRoomMessageHandler)
-			Api.getInstane().leaveRoom()
+			Api.getInstane().removeEventListener(ApiEvent.ON_ROOM, onNotificationHandler)
+			Api.getInstane().leaveRoom(function (response:Object):void {})
 			hideAllCardUIs()
 			dealCardUI.visible = dealCardUI2.visible = false
 			cardsCarrUI.visible = cardsLabel.visible = false
@@ -1259,14 +1286,6 @@ package com.xiaomu.view.room
 			isHu = canHuButton.visible = canPengButton.visible = canChiButton.visible = cancelButton.visible = false
 			var action:Object = { name: Actions.Chi, data:  event.data}
 			Api.getInstane().sendAction(action)
-		}
-		
-		protected function onRoomMessageHandler(event:ApiEvent):void
-		{
-			var message:Object = event.data.data.message
-			if (message.cmd == 1) {
-				Audio.getInstane().playChat(message.data)
-			}
 		}
 		
 		protected function chatButton_clickHandler(event:MouseEvent):void

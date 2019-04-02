@@ -2,10 +2,6 @@ package com.xiaomu.util
 {
 	public class Notifications
 	{
-		public static const onJoinRoom:int = 1    // 新玩家加入通知
-		public static const onJoinGroup:int = 2 // 玩家离开通知
-		public static const onLeaveRoom:int = 3    // 新玩家加入通知
-		public static const onLeaveGroup:int = 4 // 玩家离开通知
 		public static const onReady:int = 5	   // 开局通知
 		public static const onNewRound:int = 6     //等待玩家出牌
 		public static const onGameStart:int = 7   	  // 玩家出的牌
@@ -25,6 +21,8 @@ package com.xiaomu.util
 		public static const onRoundEnd:int = 21     // 有玩家准备
 		public static const onBi:int = 22
 		public static const onResume:int = 23
-		public static const onRoomStatus:int = 24
+		public static const onGroupStatus:int = 24
+		public static const onRoomStatus:int = 25
+		public static const onRoomMessage:int = 26
 	}
 }

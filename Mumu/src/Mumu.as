@@ -1,6 +1,5 @@
 package
 {
-	import com.xiaomu.util.Api;
 	import com.xiaomu.view.MainView;
 	import com.xiaomu.view.login.LoginView;
 	
@@ -51,12 +50,12 @@ package
 		
 		protected function button1_clickHandler(event:MouseEvent):void
 		{	
-			Api.getInstane().disconnect()
+//			Api.getInstane().disconnect()
 		}
 		
 		protected function button2_clickHandler(event:MouseEvent):void
 		{
-			Api.getInstane().reconnect()
+//			Api.getInstane().reconnect()
 		}
 		
 		override protected function measure():void {

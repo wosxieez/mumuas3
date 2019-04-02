@@ -35,8 +35,6 @@ package com.xiaomu.view.group
 		{
 			super();
 			
-			Api.getInstane().addEventListener(ApiEvent.JOIN_ROOM_SUCCESS, joinRoomSuccessHandler)
-			Api.getInstane().addEventListener(ApiEvent.JOIN_ROOM_FAULT, joinRoomFaultHandler)
 			Api.getInstane().addEventListener(ApiEvent.ON_GROUP, onGroupHandler)
 		}
 		
@@ -145,7 +143,6 @@ package com.xiaomu.view.group
 		
 		override protected function commitProperties():void {
 			super.commitProperties()
-			
 			roomsList.dataProvider = roomsData
 		}
 		
@@ -178,13 +175,29 @@ package com.xiaomu.view.group
 		
 		public function init(rooms:Array): void {
 			roomsData = rooms
-			
 			HttpApi.getInstane().getRule({gid: AppData.getInstane().group.id}, function (e:Event):void {
 				try
 				{
 					var response:Object = JSON.parse(e.currentTarget.data)
 					if (response.code == 0 && response.data.length > 0) {
 						AppData.getInstane().rule = response.data[0]
+						
+						// 用户自己在不在房间数据中 在的话恢复游戏
+						for each(var room:Object in roomsData) {
+							for each(var username:String in room.users) {
+								if (username == AppData.getInstane().user.username) {
+									// 用户已经在游戏中了
+									Loading.getInstance().open()
+									Loading.getInstance().text = '游戏恢复中...'
+									Api.getInstane().joinRoom({roomname: room.name}, function (response:Object):void {
+										Loading.getInstance().close()
+										if (response.code == 0) {
+											RoomView(MainView.getInstane().pushView(RoomView)).init(response.data)
+										}
+									})
+								}
+							}
+						}
 					} else {
 					}
 				} 
@@ -194,45 +207,15 @@ package com.xiaomu.view.group
 			})
 		}
 		
-		protected function joinRoomSuccessHandler(event:ApiEvent):void
-		{
-			var config:Object = {cc: AppData.getInstane().rule.cc, hx: AppData.getInstane().rule.hx}
-			RoomView(MainView.getInstane().pushView(RoomView)).init(config)
-			Loading.getInstance().close()
-		}
-		
-		protected function joinRoomFaultHandler(event:ApiEvent):void
-		{
-			Loading.getInstance().close()
-			Alert.show(JSON.stringify(event.data))
-		}
-		
 		protected function onGroupHandler(event:ApiEvent):void
 		{
 			trace('收到消息', JSON.stringify(event.data))
-			
 			var notification:Object = event.data
 			switch(notification.name)
 			{
-				case Notifications.onRoomStatus:
+				case Notifications.onGroupStatus:
 				{
 					roomsData = notification.data
-					break;
-				}
-				case Notifications.onJoinGroup:
-				{
-					break;
-				}
-				case Notifications.onLeaveGroup:
-				{
-					break;
-				}
-				case Notifications.onJoinRoom:
-				{
-					break;
-				}
-				case Notifications.onLeaveRoom:
-				{
 					break;
 				}
 				default:
@@ -264,21 +247,35 @@ package com.xiaomu.view.group
 		
 		protected function startButton_clickHandler(event:MouseEvent):void
 		{
-			Api.getInstane().joinRoom(AppData.getInstane().rule)
+			Loading.getInstance().open() 
+			Api.getInstane().createRoom(AppData.getInstane().rule, function (response:Object):void {
+				Loading.getInstance().close() 
+				if (response.code == 0) {
+					RoomView(MainView.getInstane().pushView(RoomView)).init(response.data)
+				} else {
+					Alert.show(JSON.stringify(response.data))
+				}
+			})
 		}
 		
 		protected function roomsList_changeHandler(event:UIEvent):void
 		{
-			var roomname:String = roomsList.selectedItem.name
-			Api.getInstane().joinRoom({roomname: roomname, 
-				id: AppData.getInstane().rule.id,
-				cc: AppData.getInstane().rule.cc,
-				hx: AppData.getInstane().rule.hx})
+			Loading.getInstance().open()
+			Api.getInstane().joinRoom({roomname: roomsList.selectedItem.name}, function (response:Object):void {
+				Loading.getInstance().close()
+				if (response.code == 0) {
+					RoomView(MainView.getInstane().pushView(RoomView)).init(response.data)
+				} else {
+					Alert.show(JSON.stringify(response.data))
+				}
+			})
+			
+			roomsList.selectedIndex = -1
 		}
 		
 		protected function refreshButton_clickHandler(event:MouseEvent):void
 		{
-			Api.getInstane().queryStatus(function (response:Object):void {
+			Api.getInstane().queryGroupStatus(function (response:Object):void {
 				if (response.code == 0) {
 					roomsData = response.data
 				}

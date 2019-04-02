@@ -2,9 +2,6 @@ package com.xiaomu.view.hall
 {
 	import com.xiaomu.component.ImageButton;
 	import com.xiaomu.component.Loading;
-	import com.xiaomu.event.ApiEvent;
-	import com.xiaomu.event.AppManagerEvent;
-	import com.xiaomu.manager.AppManager;
 	import com.xiaomu.renderer.GroupRenderer;
 	import com.xiaomu.util.Api;
 	import com.xiaomu.util.AppData;
@@ -35,10 +32,6 @@ package com.xiaomu.view.hall
 		public function HallView()
 		{
 			super();
-			AppManager.getInstance().addEventListener(AppManagerEvent.UPDATE_GROUP_SUCCESS,updateGroupSuccessHandler);
-			AppManager.getInstance().addEventListener(AppManagerEvent.CREATE_GROUP_SUCCESS,createGroupSuccessHandler);
-			Api.getInstane().addEventListener(ApiEvent.JOIN_GROUP_SUCCESS, joinGroupSuccessHandler)
-			Api.getInstane().addEventListener(ApiEvent.JOIN_GROUP_FAULT, joinGroupFaultHandler)
 		}
 		
 		private var bg:Image
@@ -132,7 +125,17 @@ package com.xiaomu.view.hall
 			}
 			AppData.getInstane().group = groupsList.selectedItem;
 			Loading.getInstance().open()
-			Api.getInstane().joinGroup(AppData.getInstane().user.username, AppData.getInstane().group.id)
+			Api.getInstane().joinGroup(AppData.getInstane().user.username, AppData.getInstane().group.id, 
+				function (response:Object):void {
+					Loading.getInstance().close()
+					if (response.code == 0) {
+						var rooms:Array = response.data as Array
+						Loading.getInstance().close()
+						GroupView(MainView.getInstane().pushView(GroupView)).init(rooms)
+					} else {
+						Alert.show(JSON.stringify(response.data))
+					}
+				})
 			groupsList.selectedIndex = -1
 		}
 		
@@ -183,32 +186,6 @@ package com.xiaomu.view.hall
 			} else {
 				Alert.show('您没有权限操作')
 			}
-		}
-		
-		/**
-		 *监听到群信息更新成功 
-		 */
-		protected function updateGroupSuccessHandler(event:AppManagerEvent):void{
-		}
-		
-		/**
-		 * 创建亲友圈群成功
-		 */
-		protected function createGroupSuccessHandler(event:Event):void
-		{
-		}
-		
-		protected function joinGroupSuccessHandler(event:ApiEvent):void
-		{
-			trace('跳转到群')
-			var rooms:Array = event.data as Array
-			Loading.getInstance().close()
-			GroupView(MainView.getInstane().pushView(GroupView)).init(rooms)
-		}
-		
-		protected function joinGroupFaultHandler(event:ApiEvent):void {
-			Loading.getInstance().close()
-			Alert.show(JSON.stringify(event.data))
 		}
 		
 	}
