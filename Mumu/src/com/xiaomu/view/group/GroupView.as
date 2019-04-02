@@ -67,20 +67,20 @@ package com.xiaomu.view.group
 			bg.source = 'assets/group/guild2_bg.png'
 			addChild(bg)
 			
-			bg1 = new Image()
-			bg1.height = 114
-			bg1.source = 'assets/group/guild2_bg2.png'
-			addChild(bg1)
-			
 			roomsList = new List()
 			roomsList.itemRendererColumnCount = 4
 			roomsList.horizontalAlign = HorizontalAlign.JUSTIFY;
 			roomsList.itemRendererClass = GroupRoomRenderer
-			roomsList.gap = 10;
+			roomsList.gap = 30;
 			roomsList.addEventListener(UIEvent.CHANGE, roomsList_changeHandler)
 			roomsList.padding = 10;
-			roomsList.paddingTop = 0;
+			roomsList.paddingTop =100;
 			addChild(roomsList)
+			
+			bg1 = new Image()
+			bg1.height = 114
+			bg1.source = 'assets/group/guild2_bg2.png'
+			addChild(bg1)
 			
 			bottomGroup = new HGroup()
 			bottomGroup.verticalAlign = VerticalAlign.MIDDLE
@@ -155,10 +155,10 @@ package com.xiaomu.view.group
 			bg1.width = width
 			bg1.y = height - bg1.height
 			
-			roomsList.y = roomsList.padding;
-			roomsList.height = height - roomsList.y
+			roomsList.y = roomsList.paddingTop;
+			roomsList.height = height - roomsList.y-bg1.height;
 			roomsList.width = width
-			roomsList.itemRendererHeight = (roomsList.width- roomsList.padding * 3 - roomsList.gap*2) / 4
+			roomsList.itemRendererHeight = (roomsList.width- roomsList.padding * 2 - roomsList.gap*3) / 4
 			
 			bottomGroup.width = width
 			bottomGroup.y = height - bottomGroup.height
@@ -181,7 +181,8 @@ package com.xiaomu.view.group
 					var response:Object = JSON.parse(e.currentTarget.data)
 					if (response.code == 0 && response.data.length > 0) {
 						AppData.getInstane().rule = response.data[0]
-						
+						AppData.getInstane().allRules = response.data
+						roomsData = rooms
 						// 用户自己在不在房间数据中 在的话恢复游戏
 						for each(var room:Object in roomsData) {
 							for each(var username:String in room.users) {

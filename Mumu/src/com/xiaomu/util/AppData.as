@@ -21,6 +21,7 @@ package com.xiaomu.util
 		public var user:Object  // 当前用户
 		public var group:Object // 当前群
 		public var rule:Object  // 当前玩法
+		public var allRules:Array //该群中的所有玩法
 		
 		
 		public function get gameMusicValue():String
