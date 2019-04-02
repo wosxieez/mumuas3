@@ -23,6 +23,7 @@ package com.xiaomu.view.group
 	import coco.component.List;
 	import coco.component.VerticalAlign;
 	import coco.core.UIComponent;
+	import coco.event.UIEvent;
 	
 	
 	/**
@@ -78,6 +79,7 @@ package com.xiaomu.view.group
 			roomsList.horizontalAlign = HorizontalAlign.JUSTIFY;
 			roomsList.itemRendererClass = GroupRoomRenderer
 			roomsList.gap = 10;
+			roomsList.addEventListener(UIEvent.CHANGE, roomsList_changeHandler)
 			roomsList.padding = 10;
 			roomsList.paddingTop = 0;
 			addChild(roomsList)
@@ -116,6 +118,7 @@ package com.xiaomu.view.group
 			refreshButton.height = 91
 			refreshButton.upImageSource = 'assets/group/btn_guild2_refresh_n.png';
 			refreshButton.downImageSource = 'assets/group/btn_guild2_refresh_p.png';
+			refreshButton.addEventListener(MouseEvent.CLICK, refreshButton_clickHandler)
 			addChild(refreshButton)
 			
 			goback= new ImageButton()
@@ -151,7 +154,7 @@ package com.xiaomu.view.group
 			
 			bg.width = width
 			bg.height = height
-				
+			
 			bg1.width = width
 			bg1.y = height - bg1.height
 			
@@ -162,18 +165,20 @@ package com.xiaomu.view.group
 			
 			bottomGroup.width = width
 			bottomGroup.y = height - bottomGroup.height
-				
+			
 			userSettingButton.x = width - userSettingButton.width - 20
 			userSettingButton.y = 10
-				
+			
 			refreshButton.x = userSettingButton.x - 20 - refreshButton.width
 			refreshButton.y  = 10
-				
+			
 			startButton.x = width - startButton.width
 			startButton.y = height - startButton.height
 		}
 		
-		public function init(): void {
+		public function init(rooms:Array): void {
+			roomsData = rooms
+			
 			HttpApi.getInstane().getRule({gid: AppData.getInstane().group.id}, function (e:Event):void {
 				try
 				{
@@ -204,6 +209,8 @@ package com.xiaomu.view.group
 		
 		protected function onGroupHandler(event:ApiEvent):void
 		{
+			trace('收到消息', JSON.stringify(event.data))
+			
 			var notification:Object = event.data
 			switch(notification.name)
 			{
@@ -258,6 +265,24 @@ package com.xiaomu.view.group
 		protected function startButton_clickHandler(event:MouseEvent):void
 		{
 			Api.getInstane().joinRoom(AppData.getInstane().rule)
+		}
+		
+		protected function roomsList_changeHandler(event:UIEvent):void
+		{
+			var roomname:String = roomsList.selectedItem.name
+			Api.getInstane().joinRoom({roomname: roomname, 
+				id: AppData.getInstane().rule.id,
+				cc: AppData.getInstane().rule.cc,
+				hx: AppData.getInstane().rule.hx})
+		}
+		
+		protected function refreshButton_clickHandler(event:MouseEvent):void
+		{
+			Api.getInstane().queryStatus(function (response:Object):void {
+				if (response.code == 0) {
+					roomsData = response.data
+				}
+			})
 		}
 		
 	}

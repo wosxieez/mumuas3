@@ -56,12 +56,13 @@ package com.xiaomu.util
 			this.username = username
 			this.groupid = groupid
 			pomelo = new Pomelo()
-//			pomelo.init("127.0.0.1", 3014)
-						pomelo.init("106.14.148.139", 3014)
+			pomelo.init("192.168.0.169", 3014)
+			//			pomelo.init("127.0.0.1", 3014)
+			//						pomelo.init("106.14.148.139", 3014)
 			pomelo.addEventListener(PomeloEvent.HANDSHAKE, onConnectHandler);
 			pomelo.addEventListener(PomeloEvent.ERROR, pomeloErrorHandler);
 		}
-			
+		
 		private function onConnectHandler(event:Event):void {
 			if (!pomelo) return
 			pomelo.request("gate.gateHandler.queryEntry", {username: this.username}, function(response:Object):void {
@@ -100,10 +101,10 @@ package com.xiaomu.util
 						dispatchEvent(je)
 						
 						// 如果有房间信息 自动加入房间
-						if (roominfo) {
-							trace('检测到需要重连的房间信息。。。正在重连房间')
-							joinRoom(roominfo)
-						}
+//						if (roominfo) {
+//							trace('检测到需要重连的房间信息。。。正在重连房间')
+//							joinRoom(roominfo)
+//						}
 						
 						pomelo.on('onNotification', function (e: PomeloEvent): void {
 							var apiEvent: ApiEvent = new ApiEvent(ApiEvent.Notification)
@@ -129,6 +130,13 @@ package com.xiaomu.util
 				})
 		}
 		
+		public function queryStatus(cb:Function):void  {
+			if (!pomelo) return
+			pomelo.request('connector.entryHandler.queryStatus', {}, function(response:Object):void {
+				cb(response)
+			})
+		}
+		
 		public function leaveGroup():void {
 			this.username = null
 			this.groupid = -1
@@ -141,7 +149,7 @@ package com.xiaomu.util
 		public function joinRoom(roominfo:Object):void {
 			this.roominfo = roominfo
 			if (!pomelo) {
-				reconnect()
+//				reconnect()
 				return
 			}
 			pomelo.request('connector.entryHandler.joinRoom', roominfo,
@@ -193,7 +201,7 @@ package com.xiaomu.util
 		}
 		
 		public function reconnect():void {
-			autoCheckConnection()
+//			autoCheckConnection()
 		}
 		
 		/**

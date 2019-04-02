@@ -201,8 +201,9 @@ package com.xiaomu.view.hall
 		protected function joinGroupSuccessHandler(event:ApiEvent):void
 		{
 			trace('跳转到群')
+			var rooms:Array = event.data as Array
 			Loading.getInstance().close()
-			GroupView(MainView.getInstane().pushView(GroupView)).init()
+			GroupView(MainView.getInstane().pushView(GroupView)).init(rooms)
 		}
 		
 		protected function joinGroupFaultHandler(event:ApiEvent):void {
