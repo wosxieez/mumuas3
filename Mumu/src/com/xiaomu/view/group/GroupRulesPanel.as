@@ -9,7 +9,6 @@ package com.xiaomu.view.group
 	import flash.events.MouseEvent;
 	
 	import coco.component.Button;
-	import coco.component.HGroup;
 	import coco.component.List;
 	
 	public class GroupRulesPanel extends AppPanelBig
@@ -19,10 +18,11 @@ package com.xiaomu.view.group
 			super();
 			
 			title = '玩法管理'
+			commitEnabled = false
 		}
 		
 		private var rulesList: List
-		private var bottomGroup: HGroup
+		private var addUserButton:Button;
 		
 		private var _rulesData:Array
 		
@@ -41,18 +41,19 @@ package com.xiaomu.view.group
 			super.createChildren()
 			
 			rulesList = new List()
+			rulesList.itemRendererHeight = 70;
+			rulesList.gap = 10;
 			rulesList.itemRendererClass = GroupRuleRenderer
 			addChild(rulesList)
 			
-			bottomGroup = new HGroup()
-			addChild(bottomGroup)
-			
-			var addUserButton:Button = new Button()
+			addUserButton = new Button()
+			addUserButton.width = 132;
+			addUserButton.height = 51;
 			addUserButton.label = '添加玩法'
 			addUserButton.addEventListener(MouseEvent.CLICK, function (e:MouseEvent):void {
 				new AddRulePanel().open()
 			})
-			bottomGroup.addChild(addUserButton)
+			addChild(addUserButton)
 		}
 		
 		override protected function commitProperties():void {
@@ -64,12 +65,11 @@ package com.xiaomu.view.group
 		override protected function updateDisplayList():void {
 			super.updateDisplayList()
 			
-			bottomGroup.width = contentWidth
-			bottomGroup.height = 50
-			bottomGroup.y = contentHeight - bottomGroup.height
-			
 			rulesList.width = contentWidth
-			rulesList.height = bottomGroup.y
+			rulesList.height = contentHeight-80;
+			
+			addUserButton.x = (contentWidth-addUserButton.width)/2;
+			addUserButton.y = contentHeight-addUserButton.height-15;
 		}
 		
 		override public function open():void {

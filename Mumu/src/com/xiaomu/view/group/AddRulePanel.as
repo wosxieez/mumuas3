@@ -41,9 +41,9 @@ package com.xiaomu.view.group
 		private var ruleTFTool:CountTool;
 		private var ruleTCLab:Label//提成值
 		private var ruleTCTool:CountTool;
-		private var ruleTC2Lab:Label//C2
+		private var ruleTC2Lab:Label//C2 一级管理员
 		private var ruleTC2Tool:CountTool;
-		private var ruleTC1Lab:Label//C1
+		private var ruleTC1Lab:Label//C1  二级管理员
 		private var ruleTC1Tool:CountTool;
 		
 		override protected function createChildren():void {
@@ -204,7 +204,7 @@ package com.xiaomu.view.group
 			ruleTC1Lab.color = 0x6f1614;
 			ruleTC1Lab.width = 200;
 			ruleTC1Lab.height = 40;
-			ruleTC1Lab.text = '一级管理员提成:';
+			ruleTC1Lab.text = '二级管理员提成:';
 			addChild(ruleTC1Lab);
 			
 			ruleTC1Tool = new CountTool();
@@ -220,7 +220,7 @@ package com.xiaomu.view.group
 			ruleTC2Lab.color = 0x6f1614;
 			ruleTC2Lab.width = 200;
 			ruleTC2Lab.height = 40;
-			ruleTC2Lab.text = '二级管理员提成:';
+			ruleTC2Lab.text = '一级管理员提成:';
 			addChild(ruleTC2Lab);
 			
 			ruleTC2Tool = new CountTool();
@@ -247,8 +247,8 @@ package com.xiaomu.view.group
 			ruleFDLab.y= ruleFDBtnGroup.y=topPadding+gap*5
 			ruleTFLab.y= ruleTFTool.y=topPadding+gap*6
 			ruleTCLab.y= ruleTCTool.y=topPadding+gap*7
-			ruleTC1Lab.y= ruleTC1Tool.y=topPadding+gap*8
-			ruleTC2Lab.y= ruleTC2Tool.y=topPadding+gap*9
+			ruleTC2Lab.y= ruleTC2Tool.y=topPadding+gap*8
+			ruleTC1Lab.y= ruleTC1Tool.y=topPadding+gap*9
 				
 			ruleNameInput.x =ruleCountBtnGroup.x= ruleHXBtnGroup.x=ruleXFTool.x=ruleNFTool.x=ruleFDBtnGroup.x=ruleTFTool.x=ruleTCTool.x=ruleTC1Tool.x=ruleTC2Tool.x=320;
 			

@@ -20,7 +20,6 @@ package com.xiaomu.renderer
 			mouseChildren = true;
 		}
 		
-		
 		private var bgImg:Image;
 		private var selectBtn:ImageButton
 		private var selectedLab:Label;

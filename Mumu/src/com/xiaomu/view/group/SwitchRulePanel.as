@@ -94,7 +94,7 @@ package com.xiaomu.view.group
 			introduceLab.y = 30;
 			
 			rulesList.width = contentWidth
-			rulesList.height = contentHeight-60;
+			rulesList.height = contentHeight-60-40;
 			rulesList.y = 60;
 			
 			titleImg.x = (contentWidth-titleImg.width)/2;

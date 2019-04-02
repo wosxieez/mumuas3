@@ -75,10 +75,9 @@ package com.xiaomu.view.home
 			daTongZiImg = new ImageButton();
 			daTongZiImg.width = 260;
 			daTongZiImg.height = 190;
-			daTongZiImg.upImageSource = 'assets/home/other/fen_up.png';
-			daTongZiImg.downImageSource = 'assets/home/other/fen_down.png';
+			daTongZiImg.upImageSource = 'assets/home/other/guandan.png';
+			daTongZiImg.downImageSource = 'assets/home/other/guandan.png';
 			addChild(daTongZiImg);
-			daTongZiImg.visible =false;
 			
 			ziPaiImg = new ImageButton();
 			ziPaiImg.width = 260;
@@ -91,10 +90,9 @@ package com.xiaomu.view.home
 			xiuXianImg = new ImageButton();
 			xiuXianImg.width = 260;
 			xiuXianImg.height = 190;
-			xiuXianImg.upImageSource = 'assets/home/other/coinRoom_up.png';
-			xiuXianImg.downImageSource = 'assets/home/other/coinRoom_down.png';
+			xiuXianImg.upImageSource = 'assets/home/other/paodekuai.png';
+			xiuXianImg.downImageSource = 'assets/home/other/paodekuai.png';
 			addChild(xiuXianImg);
-			xiuXianImg.visible = false;
 			
 			paoDeKuaiImg = new ImageButton();
 			paoDeKuaiImg.width = 260;
@@ -107,15 +105,15 @@ package com.xiaomu.view.home
 			otherImg = new ImageButton();
 			otherImg.width = 259;
 			otherImg.height = 291;
-			otherImg.upImageSource = 'assets/home/yl_tuibj.png';
-			otherImg.downImageSource = 'assets/home/yl_tuibjd.png';
-			otherImg.addEventListener(MouseEvent.CLICK, paoDeKuaiImg_clickHandler)
+			otherImg.upImageSource = 'assets/home/youxigaonggao.png';
+			otherImg.downImageSource = 'assets/home/youxigaonggao.png';
+//			otherImg.addEventListener(MouseEvent.CLICK, paoDeKuaiImg_clickHandler)
 			addChild(otherImg);
 			
 			gonggaoImg = new Image();
 			gonggaoImg.width = 259;
 			gonggaoImg.height = 131;
-			gonggaoImg.source = 'assets/home/gonggao.png';
+			gonggaoImg.source = 'assets/home/gonggao1.png';
 			addChild(gonggaoImg);
 			
 			shoppingBtn = new ImageButton();
@@ -233,10 +231,10 @@ package com.xiaomu.view.home
 			daTongZiImg.x = width/2-daTongZiImg.width-3;
 			daTongZiImg.y = height/2-daTongZiImg.height-1;
 			
-			/*ziPaiImg.x = width/2+3;
-			ziPaiImg.y = daTongZiImg.y;*/
-			ziPaiImg.x = (width-ziPaiImg.width)/2;
+			ziPaiImg.x = width/2+3;
 			ziPaiImg.y = daTongZiImg.y;
+			/*ziPaiImg.x = (width-ziPaiImg.width)/2;
+			ziPaiImg.y = daTongZiImg.y;*/
 			
 			xiuXianImg.x = daTongZiImg.x;
 			xiuXianImg.y = height/2+1;
@@ -247,8 +245,8 @@ package com.xiaomu.view.home
 			myGroup.x = ziPaiImg.x+ziPaiImg.width+10;
 			myGroup.y = (height-myGroup.height)/2;
 			
-			//			otherImg.x = daTongZiImg.x-otherImg.width-10;
-			otherImg.x = ziPaiImg.x-otherImg.width-10;
+			otherImg.x = daTongZiImg.x-otherImg.width-10;
+//			otherImg.x = ziPaiImg.x-otherImg.width-10;
 			otherImg.y = ziPaiImg.y-5;
 			
 			gonggaoImg.x = otherImg.x;
