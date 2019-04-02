@@ -37,13 +37,13 @@ package com.xiaomu.view.userBarView
 			super.createChildren();
 			
 			headBg = new Image()
-			headBg.source = 'assets/hall/headback.png'
+			headBg.source = 'assets/user/headback.png'
 			headBg.width = headBg.height = 94
 			headBg.x = headBg.y = 0
 			addChild(headBg)
 			
 			contentBg = new Image()
-			contentBg.source = 'assets/hall/HeadBk.png'
+			contentBg.source = 'assets/user/HeadBk.png'
 			contentBg.height = 78
 			contentBg.width = 212
 			contentBg.x = headBg.x+headBg.width-5;
@@ -51,7 +51,7 @@ package com.xiaomu.view.userBarView
 			addChild(contentBg)
 			
 			userIcon = new Image();
-			userIcon.source = 'assets/hall/usericon.png'
+			userIcon.source = 'assets/hall/headIcon.png'
 			userIcon.width = userIcon.height = 94*0.8
 			userIcon.x = userIcon.y = (94-userIcon.height)/2
 			addChild(userIcon);

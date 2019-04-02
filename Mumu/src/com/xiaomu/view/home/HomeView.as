@@ -3,12 +3,12 @@ package com.xiaomu.view.home
 	import com.xiaomu.component.ImageButton;
 	import com.xiaomu.event.ApiEvent;
 	import com.xiaomu.itemRender.HomeBottomBarRender;
+	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.Assets;
 	import com.xiaomu.util.Audio;
 	import com.xiaomu.view.MainView;
 	import com.xiaomu.view.hall.HallView;
 	import com.xiaomu.view.home.noticeBar.NoticeBar;
-	import com.xiaomu.view.home.popUp1.OfficalGongGaoView;
 	import com.xiaomu.view.home.popUp1.OfficalNoticeViewOfCopy;
 	import com.xiaomu.view.home.setting.SettingPanelView;
 	import com.xiaomu.view.userBarView.UserInfoView2;
@@ -259,6 +259,7 @@ package com.xiaomu.view.home
 		public function init():void{
 			Audio.getInstane().playBGM()
 			Assets.getInstane().loadAssets('assets/niu.png', 'assets/niu.json')
+			userInfoView.userInfoData = {'userName':AppData.getInstane().username}
 		}
 		
 		protected function clickHandler(event:MouseEvent):void{
@@ -276,13 +277,15 @@ package com.xiaomu.view.home
 				var setPanelView:SettingPanelView
 				if(!setPanelView){setPanelView = new SettingPanelView();}
 				PopUpManager.centerPopUp(PopUpManager.addPopUp(setPanelView,null,true,false,0x000000,0.8));
-			}else if(btnGroup.selectedItem.name=='公告'){
+			}
+			/*else if(btnGroup.selectedItem.name=='公告'){
 				var gonggaoView:OfficalGongGaoView;
 				if(!gonggaoView){
 					gonggaoView = new OfficalGongGaoView();
 					PopUpManager.centerPopUp(PopUpManager.addPopUp(gonggaoView,null,false,true,0,0.6));
 				}
-			}else if(btnGroup.selectedItem.name=='分享'){
+			}*/
+			else if(btnGroup.selectedItem.name=='分享'){
 				var noticeView:OfficalNoticeViewOfCopy;
 				if(!noticeView){noticeView = new OfficalNoticeViewOfCopy();}
 				noticeView.showText = '请用浏览器打开次链接：';
@@ -321,8 +324,9 @@ package com.xiaomu.view.home
 		 */
 		protected function shoppingBtnHandler(event:MouseEvent):void
 		{
-			var text:String = '如需购买房卡请联系客服微信：';
-			popUpHandler(text);
+			DevelopingNotice.getInstane().open()
+			/*var text:String = '如需购买房卡请联系客服微信：';
+			popUpHandler(text);*/
 		}
 		
 		/**
@@ -330,8 +334,9 @@ package com.xiaomu.view.home
 		 */
 		protected function waiterBtnHandler(event:MouseEvent):void
 		{
-			var text:String = '有问题请联系微信：';
-			popUpHandler(text);
+			DevelopingNotice.getInstane().open()
+			/*var text:String = '有问题请联系微信：';
+			popUpHandler(text);*/
 		}
 		
 		/**
@@ -339,8 +344,9 @@ package com.xiaomu.view.home
 		 */
 		protected function proxyBtnBtnHandler(event:MouseEvent):void
 		{
-			var text:String = '您不是代理，想成为代理请联系微信：';
-			popUpHandler(text);
+			DevelopingNotice.getInstane().open()
+			/*var text:String = '您不是代理，想成为代理请联系微信：';
+			popUpHandler(text);*/
 		}
 		
 		private function popUpHandler(text:String):void
@@ -358,6 +364,8 @@ package com.xiaomu.view.home
 		 */
 		protected function checkInBtnHandler(event:MouseEvent):void
 		{
+			DevelopingNotice.getInstane().open()
+			return;
 //			var noticePanel:OfficalNoticeView;
 //			if(!noticePanel){noticePanel = new OfficalNoticeView()}
 //			var todayDate:String = getTodayDate();

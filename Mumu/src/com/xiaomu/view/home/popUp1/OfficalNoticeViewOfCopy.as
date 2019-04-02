@@ -1,24 +1,25 @@
 package com.xiaomu.view.home.popUp1
 {
+	import com.xiaomu.component.AppPanelSmall;
+	
 	import flash.events.MouseEvent;
 	import flash.system.System;
 	
 	import coco.component.Image;
 	import coco.component.TextArea;
-	import coco.core.UIComponent;
 	import coco.manager.PopUpManager;
 	import coco.util.FontFamily;
 	
 	/**
 	 * 皮皮官方弹出提示界面---按钮为复制的特殊情况
 	 */
-	public class OfficalNoticeViewOfCopy extends UIComponent
+	public class OfficalNoticeViewOfCopy extends AppPanelSmall
 	{
 		public function OfficalNoticeViewOfCopy()
 		{
 			super();
-			width = 915;
-			height = 518;
+//			width = 915;
+//			height = 518;
 		}
 		
 		private var _showText:String="测试数据。测试数据。测试数据。测试数据。测试数据。测试数据。测试数据。测试数据。测试数据。测试数据。测试数据。测试数据。vv";
@@ -44,7 +45,7 @@ package com.xiaomu.view.home.popUp1
 		public function set normalStyle(value:Boolean):void
 		{
 			_normalStyle = value;
-			invalidateProperties();
+			invalidateDisplayList();
 		}
 
 		private var _copyText:String = 'wxniuniu007';
@@ -57,23 +58,15 @@ package com.xiaomu.view.home.popUp1
 		public function set copyText(value:String):void
 		{
 			_copyText = value;
-			invalidateProperties();
+			invalidateDisplayList();
 		}
 
-		private var bgImg:Image;
 		private var titleImg:Image;
-		private var copyImg:Image;
 		private var lab:TextArea;
 		
 		override protected function createChildren():void
 		{
 			super.createChildren();
-			
-			bgImg = new Image();
-			bgImg.source = 'assets/home/popUp/bac_04.png';
-			bgImg.width = width;
-			bgImg.height = height;
-			addChild(bgImg);
 			
 			titleImg = new Image();
 			titleImg.source = 'assets/home/popUp/Tishi.png';
@@ -86,46 +79,28 @@ package com.xiaomu.view.home.popUp1
 			lab.editable = false;
 			lab.fontSize = 24;
 			lab.fontFamily = FontFamily.MICROSOFT_YAHEI;
-			lab.width = width*0.7;
-			lab.height = height*0.5;
 			lab.backgroundAlpha = 0;
 			lab.borderAlpha = 0;
 			lab.color = 0x6f1614;
 			addChild(lab);
-			
-			copyImg = new Image();
-			copyImg.source = 'assets/home/popUp/copy.png';
-			copyImg.width = 88;
-			copyImg.height = 41;
-			copyImg.addEventListener(MouseEvent.CLICK,copyHandler);
-			addChild(copyImg);
-		}
-		
-		override protected function commitProperties():void
-		{
-			super.commitProperties();
-			
-			lab.text = showText+copyText;
 		}
 		
 		override protected function updateDisplayList():void
 		{
 			super.updateDisplayList();
 			
-			bgImg.x = bgImg.y = 0;
-			titleImg.x = (width-titleImg.width)/2;
-			titleImg.y = 0;
+			lab.text = showText+copyText;
 			
-			lab.x = (width-lab.width)/2;
-			lab.y = height/3;
+			titleImg.x = (contentWidth-titleImg.width)/2;
+			titleImg.y = -120;
 			
-			copyImg.x = (width-copyImg.width)/2;
-			copyImg.y = height-copyImg.height-20
+			lab.width = contentWidth*0.7;
+			lab.height = contentHeight*0.5;
+			lab.x = (contentWidth-lab.width)/2;
+			lab.y = 0;
 		}
 		
-		protected function copyHandler(event:MouseEvent):void
-		{
-			PopUpManager.removePopUp(this);
+		override protected function commitButton_clickHandler(event:MouseEvent):void {
 			System.setClipboard(copyText);
 		}
 		
