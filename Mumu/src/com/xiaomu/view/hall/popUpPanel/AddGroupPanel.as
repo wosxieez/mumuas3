@@ -1,7 +1,6 @@
 package com.xiaomu.view.hall.popUpPanel
 {
 	import com.xiaomu.component.AppPanelSmall;
-	import com.xiaomu.component.TitleTextInput;
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.HttpApi;
 	
@@ -9,6 +8,9 @@ package com.xiaomu.view.hall.popUpPanel
 	import flash.events.MouseEvent;
 	
 	import coco.component.Alert;
+	import coco.component.Label;
+	import coco.component.TextAlign;
+	import coco.component.TextInput;
 	
 	/**
 	 * 创建亲友圈，交互框
@@ -20,14 +22,30 @@ package com.xiaomu.view.hall.popUpPanel
 			super();
 		}
 		
-		private var groupNameInput:TitleTextInput;
+		private var groupNameLab:Label;
+		private var groupNameInput:TextInput;
 		
 		override protected function createChildren():void
 		{
 			super.createChildren();
 			
-			groupNameInput = new TitleTextInput()
-			groupNameInput.title = '群名称'
+			groupNameLab = new Label();
+			groupNameLab.text = '群名称:';
+			groupNameLab.textAlign = TextAlign.RIGHT;
+			groupNameLab.fontSize = 24;
+			groupNameLab.color = 0x6f1614;
+			groupNameLab.width = 200;
+			groupNameLab.height = 40;
+			addChild(groupNameLab);
+			
+			groupNameInput = new TextInput()
+			groupNameInput.maxChars = 10;
+			groupNameInput.textAlign = TextAlign.CENTER;
+			groupNameInput.width = 300;
+			groupNameInput.height = 36;
+			groupNameInput.fontSize = 24;
+			groupNameInput.color = 0x6f1614;
+			groupNameInput.radius = 10;
 			addChild(groupNameInput)
 		}
 		
@@ -35,7 +53,11 @@ package com.xiaomu.view.hall.popUpPanel
 		{
 			super.updateDisplayList();
 			
-			groupNameInput.width = contentWidth
+			groupNameLab.x = 20;
+			groupNameLab.y = 60;
+			
+			groupNameInput.x=groupNameLab.x+groupNameLab.width+10;
+			groupNameInput.y = groupNameLab.y;
 		}
 		
 		override protected function commitButton_clickHandler(event:MouseEvent):void {
