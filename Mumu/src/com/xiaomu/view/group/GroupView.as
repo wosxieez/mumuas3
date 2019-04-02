@@ -144,6 +144,7 @@ package com.xiaomu.view.group
 		override protected function commitProperties():void {
 			super.commitProperties()
 			roomsList.dataProvider = roomsData
+//			trace("roomsData:",JSON.stringify(roomsData));
 		}
 		
 		override protected function updateDisplayList():void {
