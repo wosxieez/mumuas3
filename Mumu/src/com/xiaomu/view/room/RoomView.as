@@ -278,18 +278,24 @@ package com.xiaomu.view.room
 			if (preUser) {
 				preUserHead.visible = true
 				preUserHead.username = preUser.username
+				preUserHead.isZhuang = preUserHead.username == roomData.zn
+				preUserHead.isNiao = preUser.dn
 				preUserHead.huxi = CardUtil.getInstane().getHuXi(preUser.groupCards)
 			}
 			
 			if (myUser) {
 				myUserHead.visible = true
 				myUserHead.username = myUser.username
+				myUserHead.isZhuang = myUserHead.username == roomData.zn
+				myUserHead.isNiao = myUser.dn
 				myUserHead.huxi = CardUtil.getInstane().getHuXi(myUser.groupCards)
 			}
 			
 			if (nextUser) {
 				nextUserHead.visible = true
 				nextUserHead.username = nextUser.username
+				nextUserHead.isZhuang = nextUserHead.username == roomData.zn
+				nextUserHead.isNiao = nextUser.dn
 				nextUserHead.huxi = CardUtil.getInstane().getHuXi(nextUser.groupCards)
 			} 
 			
@@ -387,8 +393,14 @@ package com.xiaomu.view.room
 				if (response.code == 0) {
 					roomData = response.data
 					isNewHand = true
+					if (!roomData.og) {
+						new DaNiaoNoticePanel().open()
+					}
+				} else {
+					Alert.show('房间数据加载失败')
+					close()
 				}
-			})
+			}) 
 		}
 		
 		private function hideAllUI():void {
@@ -1131,11 +1143,7 @@ package com.xiaomu.view.room
 		
 		protected function back_clickHandler(event:MouseEvent):void
 		{
-			if (roomData && roomData.og) {
-				Alert.show('游戏中无法退出')
-			} else {
-				close()
-			}
+			close()
 		}
 		
 		public function close():void {

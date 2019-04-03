@@ -22,6 +22,8 @@ package com.xiaomu.view.room
 		
 		private var headBg:Image
 		private var icon:Image
+		private var zhuangImage:Image
+		private var niaoImage:Image
 		private var usernameDisplay:Label
 		private var huxiDisplay:Label
 		
@@ -37,6 +39,19 @@ package com.xiaomu.view.room
 			_username = value;
 			invalidateProperties()
 		}
+		
+		private var _thx:int = 0 
+
+		public function get thx():int
+		{
+			return _thx;
+		}
+
+		public function set thx(value:int):void
+		{
+			_thx = value;
+			invalidateProperties()
+		}
 
 		private var _huxi:int = 0
 		
@@ -48,6 +63,32 @@ package com.xiaomu.view.room
 		public function set huxi(value:int):void
 		{
 			_huxi = value;
+			invalidateProperties()
+		}
+		
+		private var _isZhuang:Boolean = false
+
+		public function get isZhuang():Boolean
+		{
+			return _isZhuang;
+		}
+
+		public function set isZhuang(value:Boolean):void
+		{
+			_isZhuang = value;
+			invalidateProperties()
+		}
+		
+		private var _isNiao:Boolean = false
+
+		public function get isNiao():Boolean
+		{
+			return _isNiao;
+		}
+
+		public function set isNiao(value:Boolean):void
+		{
+			_isNiao = value;
 			invalidateProperties()
 		}
 
@@ -64,6 +105,24 @@ package com.xiaomu.view.room
 			icon.x = icon.y = 4
 			icon.source = Assets.getInstane().getAssets('avatar1.png')
 			addChild(icon)
+			
+			zhuangImage = new Image()
+			zhuangImage.width = 38
+			zhuangImage.height = 38
+			zhuangImage.y = 55
+			zhuangImage.x = -19
+			zhuangImage.visible = false
+			zhuangImage.source = 'assets/room/Z_zhuang.png'
+			addChild(zhuangImage)
+			
+			niaoImage = new Image()
+			niaoImage.width = 38
+			niaoImage.height = 38
+			niaoImage.x = 61
+			niaoImage.y = -13
+			niaoImage.visible = false
+			niaoImage.source = 'assets/room/dn.png'
+			addChild(niaoImage)
 			
 			usernameDisplay = new Label()
 			usernameDisplay.y = 80
@@ -87,8 +146,10 @@ package com.xiaomu.view.room
 				
 			usernameDisplay.text = username
 			huxiDisplay.text = '胡息:' + huxi
+				
+			zhuangImage.visible = isZhuang
+			niaoImage.visible = isNiao
 		}
-		
 		
 	}
 }
