@@ -175,6 +175,7 @@ package com.xiaomu.view.group
 		}
 		
 		public function init(rooms:Array): void {
+			trace('init rooms', JSON.stringify(rooms))
 			HttpApi.getInstane().getRule({gid: AppData.getInstane().group.id}, function (e:Event):void {
 				try
 				{

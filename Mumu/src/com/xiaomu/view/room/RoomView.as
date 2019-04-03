@@ -32,27 +32,18 @@ package com.xiaomu.view.room
 			super();
 		}
 		
-		private var huxi:int = 0
-		
-		private var isGaming:Boolean = false
+		private var rule:Object
+		private var oldPoint:Point
 		private var bgLayer: UIComponent
 		private var g1Image:Image
 		private var g2Image:Image
 		private var preUserHead:RoomUserHead
 		private var myUserHead:RoomUserHead
 		private var nextUserHead:RoomUserHead
-		
 		private var cardLayer: UIComponent
 		private var cardsCarrUI:Image
 		private var cardsLabel:Label
-		/**
-		 * 当前的桌牌 
-		 */		
 		private var dealCardUI: BigCardUI
-		/**
-		 * 庄家牌显示 
-		 */		
-		private var dealCardUI2: BigCardUI
 		private var iconLayer:UIComponent
 		private var myUser:Object
 		private var preUser:Object
@@ -64,12 +55,6 @@ package com.xiaomu.view.room
 		private var prePassCardUIs:Array = []
 		private var nextGroupCardUIs:Array = []
 		private var nextPassCardUIs:Array = []
-		private var roominfo:Object = {}
-		private var oldPoint:Point
-		private var thisCanPengCards:Array
-		private var thisCanChiCards:Array
-		private var thisCanHuDatas:Array
-		
 		private var zhunbeiButton:ImageButton
 		private var zhunbeiButton2:ImageButton
 		private var canHuButton:Image
@@ -78,13 +63,48 @@ package com.xiaomu.view.room
 		private var cancelButton:Image
 		private var newCardTip:Image
 		private var checkWaitTip:Image
-		private var checkUsername: String
-		private var isCheckNewCard:Boolean = false // 是否在等待出牌
-		private var isHu:Boolean = false
 		private var chatButton:Image
 		private var tingCardsView:TingCardsView
-		
 		private var backBtn:Image
+		
+		private var _roomData:Object
+		
+		public function get roomData():Object
+		{
+			return _roomData;
+		}
+		
+		public function set roomData(value:Object):void
+		{
+			_roomData = value;
+			invalidateProperties()
+		}
+		
+		private var _isNewHand:Boolean = false
+		
+		public function get isNewHand():Boolean
+		{
+			return _isNewHand;
+		}
+		
+		public function set isNewHand(value:Boolean):void
+		{
+			_isNewHand = value;
+			invalidateProperties()
+		}
+		
+		private var _tingEnabled:Boolean = false
+		
+		public function get tingEnabled():Boolean
+		{
+			return _tingEnabled;
+		}
+		
+		public function set tingEnabled(value:Boolean):void
+		{
+			_tingEnabled = value;
+			invalidateProperties()
+		}
 		
 		override protected function createChildren():void {
 			super.createChildren()
@@ -104,6 +124,7 @@ package com.xiaomu.view.room
 			g2Image.source = 'assets/room/g2.png'
 			addChild(g2Image)
 			
+			// 剩余牌显示
 			cardsCarrUI = new Image()
 			cardsCarrUI.width = Size.BIG_CARD_WIDTH - 20
 			cardsCarrUI.height = Size.BIG_CARD_HEIGHT - 50
@@ -112,7 +133,6 @@ package com.xiaomu.view.room
 			cardsCarrUI.source = Assets.getInstane().getAssets('fight_full_card.png')
 			cardsCarrUI.visible = false
 			bgLayer.addChild(cardsCarrUI)
-			
 			cardsLabel = new Label()
 			cardsLabel.y = cardsCarrUI.y
 			cardsLabel.fontSize = 25
@@ -122,6 +142,7 @@ package com.xiaomu.view.room
 			cardsLabel.visible = false
 			bgLayer.addChild(cardsLabel)
 			
+			// 用户头像
 			preUserHead = new RoomUserHead()
 			preUserHead.visible = false
 			bgLayer.addChild(preUserHead)
@@ -132,6 +153,7 @@ package com.xiaomu.view.room
 			nextUserHead.visible = false
 			bgLayer.addChild(nextUserHead)
 			
+			// 等待提示
 			checkWaitTip = new Image()
 			checkWaitTip.width = 16
 			checkWaitTip.height = 16
@@ -139,6 +161,7 @@ package com.xiaomu.view.room
 			checkWaitTip.source = Assets.getInstane().getAssets('wait.png')
 			bgLayer.addChild(checkWaitTip)
 			
+			// 出牌提示
 			newCardTip = new Image()
 			newCardTip.width = 245
 			newCardTip.height = 40
@@ -146,6 +169,7 @@ package com.xiaomu.view.room
 			newCardTip.source = Assets.getInstane().getAssets('fight_txt_finger_tips.png')
 			bgLayer.addChild(newCardTip)
 			
+			// 听牌显示
 			tingCardsView = new TingCardsView()
 			bgLayer.addChild(tingCardsView)
 			
@@ -153,16 +177,11 @@ package com.xiaomu.view.room
 			cardLayer = new UIComponent()
 			addChild(cardLayer)
 			
+			// 出的牌提示
 			dealCardUI = new BigCardUI()
 			dealCardUI.visible = false
 			dealCardUI.card = 10
 			cardLayer.addChild(dealCardUI)
-			
-			dealCardUI2 = new BigCardUI()
-			dealCardUI2.isOut = false
-			dealCardUI2.visible = false
-			dealCardUI2.card = 10
-			cardLayer.addChild(dealCardUI2)
 			
 			// 图标层
 			iconLayer = new UIComponent()
@@ -200,13 +219,13 @@ package com.xiaomu.view.room
 			canHuButton.addEventListener(MouseEvent.CLICK,canHuButton_clickHandler)
 			iconLayer.addChild(canHuButton)
 			
+			// 准备按钮
 			zhunbeiButton = new ImageButton()
 			zhunbeiButton.upImageSource = 'assets/room/zhunbeih_up.png'
 			zhunbeiButton.width = 191
 			zhunbeiButton.height = 68
 			zhunbeiButton.addEventListener(MouseEvent.CLICK, zhunbeiButton_clickHandler)
 			iconLayer.addChild(zhunbeiButton)
-			
 			zhunbeiButton2 = new ImageButton()
 			zhunbeiButton2.upImageSource = 'assets/room/jbc_cancle_p.png'
 			zhunbeiButton2.width = 191
@@ -214,13 +233,13 @@ package com.xiaomu.view.room
 			zhunbeiButton2.addEventListener(MouseEvent.CLICK, zhunbeiButton2_clickHandler)
 			iconLayer.addChild(zhunbeiButton2)
 			
+			// 聊天返回 按钮
 			chatButton = new Image()
 			chatButton.width = 84
 			chatButton.height = 81
 			chatButton.source = 'assets/room/btn_chat.png'
 			chatButton.addEventListener(MouseEvent.CLICK, chatButton_clickHandler)
 			iconLayer.addChild(chatButton)
-			
 			backBtn = new Image()
 			backBtn.source = 'assets/club_btn_back.png';
 			backBtn.width = 71;
@@ -231,33 +250,84 @@ package com.xiaomu.view.room
 		
 		override protected function commitProperties():void {
 			super.commitProperties()
-			//			this.preUser = {username: 'wosxieez0', 
-			//				handCards: [1, 3, 5, 4, 4, 3, 11, 15, 18, 19, 11, 10, 9, 9, 8, 16, 17, 18, 9, 10, 8],
-			//				groupCards: [{name: 'ti', cards: [1, 1, 1, 1]}],
-			//				passCards:[2, 4, 9]}
-			//			this.nextUser = {username: 'wosxieez2', 
-			//				handCards: [1, 3, 5, 4, 4, 3, 11, 15, 18, 19, 11, 10, 9, 9, 8, 16, 17, 18, 9, 10, 8],
-			//				groupCards: [{name: 'ti', cards: [1, 1, 1, 1]}],
-			//				passCards:[2, 4, 9]}
-			//			this.myUser = {username: 'wosxieez1', 
-			//				handCards: [1, 3, 5, 4, 4, 4, 4, 3, 11, 15, 18, 19, 11, 10, 9, 9, 8, 16, 17, 18, 9, 10, 8],
-			//				groupCards: [{name: 'ti', cards: [1, 1, 1, 1]}],
-			//				passCards:[2, 4, 9]}
+			
+			if (!roomData) return
+			
+			// 隐藏所有
+			hideAllUI()
+			
+			// 生成 myUser preUser nextUser
+			for (var i:int = 0; i < roomData.us.length; i++) {
+				if (roomData.us[i].username == AppData.getInstane().user.username) {
+					var endUsers:Array = roomData.us.slice(i)
+					var startUsers:Array = roomData.us.slice(0, i)
+					var orderUsers:Array = endUsers.concat(startUsers)
+					this.myUser = orderUsers.shift()
+					if (orderUsers.length > 0) {
+						this.nextUser = orderUsers.shift()
+					}
+					if (orderUsers.length > 0) {
+						this.preUser = orderUsers.pop()
+					}
+					break
+				}
+			}
+			
+			if (isNewHand) myHandCards = null
 			
 			if (preUser) {
-				updatePreGroupCardUIs()
-				updatePrePassCardUIs()
+				preUserHead.visible = true
+				preUserHead.username = preUser.username
+				preUserHead.huxi = CardUtil.getInstane().getHuXi(preUser.groupCards)
 			}
 			
 			if (myUser) {
-				updateMyHandCardUIs()
-				updateMyGroupCardUIs()
-				updateMyPassCardUIs()
+				myUserHead.visible = true
+				myUserHead.username = myUser.username
+				myUserHead.huxi = CardUtil.getInstane().getHuXi(myUser.groupCards)
 			}
 			
 			if (nextUser) {
-				updateNextGroupCardUIs()
-				updateNextPassCardUIs()
+				nextUserHead.visible = true
+				nextUserHead.username = nextUser.username
+				nextUserHead.huxi = CardUtil.getInstane().getHuXi(nextUser.groupCards)
+			} 
+			
+			if (roomData.ig) {
+				if (preUser) {
+					updatePreGroupCardUIs()
+					updatePrePassCardUIs()
+				}
+				
+				if (myUser) {
+					updateMyHandCardUIs()
+					updateMyGroupCardUIs()
+					updateMyPassCardUIs()
+					if (tingEnabled) updateMyHandCardUIsCanOutTing()
+				}
+				
+				if (nextUser) {
+					updateNextGroupCardUIs()
+					updateNextPassCardUIs()
+				} 
+				
+				updateNewCard()
+				updateWaitTip()
+				updateCardsCount()
+				
+				if (roomData.an == AppData.getInstane().user.username) {
+					if (roomData.at == Notifications.checkEat) {
+						canChiButton.visible = cancelButton.visible = true
+					} else if (roomData.at == Notifications.checkHu) {
+						canHuButton.visible = cancelButton.visible = true
+					} else if (roomData.at == Notifications.checkNewCard) {
+						newCardTip.visible = true
+					} else if (roomData.at == Notifications.checkPeng) {
+						canPengButton.visible = cancelButton.visible = true
+					}
+				}
+			} else {
+				updateReadyUI()
 			}
 		}
 		
@@ -298,7 +368,7 @@ package com.xiaomu.view.room
 			canChiButton.y = canHuButton.y
 			
 			newCardTip.x = (width - newCardTip.width) / 2
-			newCardTip.y = (height - newCardTip.height) / 2 + 60
+			newCardTip.y = (height - newCardTip.height) / 2 + 50
 			
 			backBtn.x = width - backBtn.width
 			zhunbeiButton.x = (width - zhunbeiButton.width) / 2
@@ -310,14 +380,22 @@ package com.xiaomu.view.room
 			tingCardsView.y = (height - tingCardsView.height) / 2
 		}
 		
-		override protected function drawSkin():void {
-			super.drawSkin()
+		public function init(rule:Object): void {
+			this.rule = rule
+			Api.getInstane().addEventListener(ApiEvent.ON_ROOM, onNotificationHandler)
+			Api.getInstane().queryRoomStatus(function (response:Object):void {
+				if (response.code == 0) {
+					roomData = response.data
+					isNewHand = true
+				}
+			})
 		}
 		
-		public function hideAllCardUIs():void {
+		private function hideAllUI():void {
 			var cardUI:CardUI
 			for each(cardUI in myHandCardUIs) {
 				cardUI.visible = false
+				cardUI.tingCards = null
 			}
 			for each(cardUI in myGroupCardUIs) {
 				cardUI.visible = false
@@ -337,108 +415,79 @@ package com.xiaomu.view.room
 			for each(cardUI in nextPassCardUIs) {
 				cardUI.visible = false
 			}
+			
+			myUserHead.visible = preUserHead.visible = nextUserHead.visible = false
+			zhunbeiButton2.visible = zhunbeiButton.visible = false
+			dealCardUI.visible = false
+			newCardTip.visible = false
+			cardsCarrUI.visible = cardsLabel.visible = false
+			checkWaitTip.visible = false
+			cancelButton.visible = false
+			canChiButton.visible = false
+			canPengButton.visible = false
+			canHuButton.visible = false
 		}
 		
-		private function updateRoomInfo(room:Object):void {
-			if (room) {
-				this.roominfo.users = room.users
-				if (room.zc) { this.roominfo.zc = room.zc }
-				if (room.zn) { this.roominfo.zn = room.zn }
-				if (room.pc) { this.roominfo.pc = room.pc }
-				if (room.pn) { this.roominfo.pn = room.pn }
-				if (room.hasOwnProperty('cc')) { this.roominfo.cc = room.cc }
-				if (room.io) { this.roominfo.io = room.io } else { this.roominfo.io = false }
-				
-				this.myUser = this.preUser = this.nextUser = null
-				for (var i:int = 0; i < roominfo.users.length; i++) {
-					if (roominfo.users[i].username == AppData.getInstane().user.username) {
-						var endUsers:Array = roominfo.users.slice(i)
-						var startUsers:Array = roominfo.users.slice(0, i)
-						var orderUsers:Array = endUsers.concat(startUsers)
-						this.myUser = orderUsers.shift()
-						if (orderUsers.length > 0) {
-							this.nextUser = orderUsers.shift()
-						}
-						if (orderUsers.length > 0) {
-							this.preUser = orderUsers.pop()
-						}
-						break
-					}
-				}
-				
-				if (preUser) {
-					preUserHead.visible = true
-					preUserHead.username = preUser.username
-					preUserHead.huxi = CardUtil.getInstane().getHuXi(preUser.groupCards)
-				}  else {
-					preUserHead.visible = false
-				}
-				
-				if (myUser) {
-					myUserHead.visible = true
-					myUserHead.username = myUser.username
-					myUserHead.huxi = CardUtil.getInstane().getHuXi(myUser.groupCards)
-				}  else {
-					myUserHead.visible = false
-				}
-				
-				if (nextUser) {
-					nextUserHead.visible = true
-					nextUserHead.username = nextUser.username
-					nextUserHead.huxi = CardUtil.getInstane().getHuXi(nextUser.groupCards)
-				}  else {
-					nextUserHead.visible = false
-				}
-				
-				if (isGaming) {
-					zhunbeiButton2.visible = zhunbeiButton.visible = false
-				} else {
-					for each(var user:Object in roominfo.users) {
-						if (user.username == AppData.getInstane().user.username) {
-							zhunbeiButton2.visible = user.isReady
-							zhunbeiButton.visible = !zhunbeiButton2.visible
-						}
+		private function updateReadyUI():void {
+			if (roomData) {
+				for each(var user:Object in roomData.us) {
+					if (user.username == AppData.getInstane().user.username) {
+						zhunbeiButton2.visible = user.isReady
+						zhunbeiButton.visible = !zhunbeiButton2.visible
 					}
 				}
 			}
 		}
 		
-		private function updateZhuangCard():void {
-			if (roominfo) {
-				dealCardUI2.visible = true
-				dealCardUI2.card = roominfo.zc
-				dealCardUI2.x = (width - dealCardUI2.width) / 2
-				dealCardUI2.y =  110
-			} else {
-				dealCardUI2.visible = false
-			}
-		}
 		private function updateNewCard():void {
-			if (roominfo) {
+			if (roomData.pc > 0) {  // 有玩家出牌 或 翻牌
 				dealCardUI.visible = true
-				dealCardUI.card = roominfo.pc
-				dealCardUI.isOut = roominfo.io
-				if (this.preUser && roominfo.pn == this.preUser.username) {
+				dealCardUI.card = roomData.pc
+				dealCardUI.isOut = roomData.io
+				if (this.preUser && roomData.pn == this.preUser.username) {
 					dealCardUI.y = 30
 					dealCardUI.x = 270
-				} else if (this.nextUser && roominfo.pn == this.nextUser.username) {
+				} else if (this.nextUser && roomData.pn == this.nextUser.username) {
 					dealCardUI.y = 30
 					dealCardUI.x = width - 270 - dealCardUI.width
 				} else {
 					dealCardUI.x = (width - dealCardUI.width) / 2
 					dealCardUI.y = 110
 				}
-				Audio.getInstane().playCard(dealCardUI.card)
+			} else if (roomData.zc > 0) {
+				dealCardUI.visible = true
+				dealCardUI.card = roomData.zc
+				dealCardUI.isOut = false
+				if (this.preUser && roomData.zn == this.preUser.username) {
+					dealCardUI.y = 30
+					dealCardUI.x = 270
+				} else if (this.nextUser && roomData.zn == this.nextUser.username) {
+					dealCardUI.y = 30
+					dealCardUI.x = width - 270 - dealCardUI.width
+				} else {
+					dealCardUI.x = (width - dealCardUI.width) / 2
+					dealCardUI.y = 110
+				}
 			} else {
 				dealCardUI.visible = false
 			}
 		}
+		
+		private function updateCardsCount():void {
+			cardsCarrUI.visible = cardsLabel.visible = true
+			if (roomData) {
+				cardsLabel.text = '剩余' + roomData.cc + '张牌'
+			} else {
+				cardsLabel.text = '剩余0张牌'
+			}
+		}
+		
 		private function updateWaitTip():void {
-			if (preUser && checkUsername == preUser.username) {
+			if (preUser && roomData.an == preUser.username) {
 				checkWaitTip.visible = true
 				checkWaitTip.x = preUserHead.x + 15
 				checkWaitTip.y = preUserHead.y - 15
-			} else if (nextUser && checkUsername == nextUser.username) {
+			} else if (nextUser && roomData.an == nextUser.username) {
 				checkWaitTip.visible = true
 				checkWaitTip.x = nextUserHead.x + 15
 				checkWaitTip.y = nextUserHead.y - 15
@@ -585,7 +634,7 @@ package com.xiaomu.view.room
 		
 		private function updateMyHandCardUIsCanOutTing():void {
 			if (myUser) {
-				var outTings:Array = CardUtil.getInstane().outCardCanTing(myUser.groupCards, myUser.handCards, huxi)
+				var outTings:Array = CardUtil.getInstane().outCardCanTing(myUser.groupCards, myUser.handCards, this.rule.hx)
 				if (outTings) {
 					for each(var item:Object in outTings) {
 						for each(var cardUI:CardUI in myHandCardUIs) {
@@ -607,7 +656,7 @@ package com.xiaomu.view.room
 		
 		private function updateMyHandCardUIsCanTing():void {
 			if (myUser) {
-				tingCardsView.tingCards = CardUtil.getInstane().canTing(myUser.groupCards, myUser.handCards, huxi)
+				tingCardsView.tingCards = CardUtil.getInstane().canTing(myUser.groupCards, myUser.handCards, this.rule.hx)
 			}
 		}
 		
@@ -887,11 +936,11 @@ package com.xiaomu.view.room
 			this.removeEventListener(MouseEvent.MOUSE_UP, this_mouseUpHandler)
 			if (draggingCardUI) {
 				draggingCardUI.stopDrag()
-				if (isCheckNewCard && mouseY <= height * 2 / 3) {
+				if (roomData.an == AppData.getInstane().user.username &&
+					roomData.at == Notifications.checkNewCard &&
+					mouseY <= height / 2) {
 					var action:Object = { name: Actions.NewCard, data: draggingCardUI.card }
 					Api.getInstane().sendAction(action)
-					newCardTip.visible = false
-					isCheckNewCard = false
 					// 出牌之后清理出听提示
 					clearMyHandCardUIsCanOutTing()
 				} else {
@@ -924,7 +973,8 @@ package com.xiaomu.view.room
 				}
 				
 				updateMyHandCardUIs()
-				if (isCheckNewCard) { // 出牌状态才会刷新
+				if (roomData.an == AppData.getInstane().user.username &&
+					roomData.at == Notifications.checkNewCard) { // 出牌状态才会刷新
 					tingCardsView.tingCards = null
 					updateMyHandCardUIsCanOutTing()
 				} else {
@@ -935,245 +985,103 @@ package com.xiaomu.view.room
 		
 		protected function onNotificationHandler(event:ApiEvent):void
 		{
-			isCheckNewCard = isHu = false
-			newCardTip.visible = cancelButton.visible = canChiButton.visible = canPengButton.visible = canHuButton.visible = false
-			thisCanChiCards = thisCanHuDatas = thisCanPengCards = null
 			if (ChiSelectView.getInstane().isPopUp) {
 				PopUpManager.removePopUp(ChiSelectView.getInstane())
 			}
+			
 			var notification: Object = event.data
 			switch(notification.name)
 			{
-				case Notifications.onRoomStatus: {
-					updateRoomInfo(notification.data)
-					break
-				}
-				case Notifications.onRoomMessage: {
+				case Notifications.onRoomMessage: 
+				{
 					break
 				}
 				case Notifications.onReady:
-				{
-					updateRoomInfo(notification.data)
-					break
-				}
-				case Notifications.onNewRound:
-				{
-					isGaming = true
-					myHandCards = null
-					tingCardsView.tingCards = null
-					zhunbeiButton.visible = zhunbeiButton2.visible = false
-					cardsCarrUI.visible = cardsLabel.visible = true
-					dealCardUI.visible = false
-					updateRoomInfo(notification.data)
-					updateZhuangCard()
-					updateMyHandCardUIs()
-					updateMyGroupCardUIs()
-					updateMyPassCardUIs()
-					updatePreGroupCardUIs()
-					updatePrePassCardUIs()
-					updateNextGroupCardUIs()
-					updateNextPassCardUIs()
-					break;
-				}
 				case Notifications.onGameStart:
+				case Notifications.onNewRound:
+				case Notifications.onGameStart:
+				case Notifications.onRoomStatus: 
 				{
-					myHandCards = null
-					dealCardUI2.visible = false // zhuangka
-					updateRoomInfo(notification.data)
-					updateMyHandCardUIs()
-					updateMyGroupCardUIs()
-					updateMyPassCardUIs()
-					updatePreGroupCardUIs()
-					updatePrePassCardUIs()
-					updateNextGroupCardUIs()
-					updateNextPassCardUIs()
-					break;
+					isNewHand = true
+					roomData = notification.data
+					break
 				}
-				case Notifications.onTi : {
-					trace('有玩家提牌')
-					dealCardUI.visible = false
+				case Notifications.checkNewCard:
+				{
+					roomData = notification.data
+					if (roomData && roomData.an == AppData.getInstane().user.username) {
+						tingEnabled = true
+						tingCardsView.tingCards = null
+					}
+					break
+				}
+				case Notifications.checkPeng:
+				case Notifications.checkEat:
+				case Notifications.checkHu:
+				{
+					roomData = notification.data
+					break
+				}
+				case Notifications.onWin:
+				{
+					Alert.show('玩家赢牌')
+					roomData = notification.data
+					break
+				}
+				case Notifications.onRoundEnd:
+				{
+					Alert.show('一盘结束')
+					roomData = notification.data
+					break
+				}
+				case Notifications.onNewCard: 
+				{
+					roomData = notification.data
+					tingEnabled = false
+					Audio.getInstane().playCard(roomData.pc)
+					updateMyHandCardUIsCanTing()
+					break
+				}
+				case Notifications.onTi : 
+				{
 					Audio.getInstane().playHandle('ti')
-					updateRoomInfo(notification.data)
-					updateMyHandCardUIs()
-					updateMyGroupCardUIs()
-					updateMyPassCardUIs()
-					updatePreGroupCardUIs()
-					updatePrePassCardUIs()
-					updateNextGroupCardUIs()
-					updateNextPassCardUIs()
+					roomData = notification.data
 					break
 				}
-				case Notifications.onPao: {
-					trace('有玩家跑牌')
-					dealCardUI.visible = false
+				case Notifications.onPao: 
+				{
 					Audio.getInstane().playHandle('pao')
-					updateRoomInfo(notification.data)
-					updateMyHandCardUIs()
-					updateMyGroupCardUIs()
-					updateMyPassCardUIs()
-					updatePreGroupCardUIs()
-					updatePrePassCardUIs()
-					updateNextGroupCardUIs()
-					updateNextPassCardUIs()
+					roomData = notification.data
 					break
 				}
-				case Notifications.onWei: {
-					trace('有玩家偎牌')
-					dealCardUI.visible = false
+				case Notifications.onWei: 
+				{
 					Audio.getInstane().playHandle('wei')
-					updateRoomInfo(notification.data)
-					updateMyHandCardUIs()
-					updateMyGroupCardUIs()
-					updateMyPassCardUIs()
-					updatePreGroupCardUIs()
-					updatePrePassCardUIs()
-					updateNextGroupCardUIs()
-					updateNextPassCardUIs()
+					roomData = notification.data
 					break
 				}	
-				case Notifications.checkNewCard: {
-					// 请出牌
-					checkUsername = notification.data.username
-					updateWaitTip()
-					if (checkUsername == AppData.getInstane().user.username) {
-						trace('请出牌')
-						newCardTip.visible = true
-						isCheckNewCard = true
-						tingCardsView.tingCards = null
-						updateMyHandCardUIsCanOutTing()
-					}
-					
-					break
-				}
-				case Notifications.onNewCard: {
-					trace('有玩家发新牌', JSON.stringify(notification.data))
-					checkUsername = null
-					updateRoomInfo(notification.data)
-					updateNewCard()
-					updateWaitTip()
-					updateMyHandCardUIs()
-					updateMyHandCardUIsCanTing()
-					updateMyGroupCardUIs()
-					updateMyPassCardUIs()
-					updatePreGroupCardUIs()
-					updatePrePassCardUIs()
-					updateNextGroupCardUIs()
-					updateNextPassCardUIs()
-					break
-				}
-				case Notifications.checkPeng: {
-					// 检查碰
-					trace('检查碰', JSON.stringify(notification.data))
-					checkUsername = notification.data.username
-					updateWaitTip()
-					if (checkUsername == AppData.getInstane().user.username) {
-						thisCanPengCards = notification.data.group
-						canPengButton.visible = cancelButton.visible = true
-					}
-					break
-				}
-				case Notifications.onPeng: {
-					trace('有人碰')
-					dealCardUI.visible = false
+				case Notifications.onPeng: 
+				{
 					Audio.getInstane().playHandle('peng')
-					checkUsername = null
-					updateWaitTip()
-					updateRoomInfo(notification.data)
-					updateMyHandCardUIs()
-					updateMyGroupCardUIs()
-					updateMyPassCardUIs()
-					updatePreGroupCardUIs()
-					updatePrePassCardUIs()
-					updateNextGroupCardUIs()
-					updateNextPassCardUIs()
+					roomData = notification.data
 					break
 				}
-				case Notifications.checkEat: {
-					// 检查吃
-					trace('检查吃', JSON.stringify(notification.data))
-					newCardTip.visible = cancelButton.visible = canChiButton.visible = canPengButton.visible = false
-					checkUsername = notification.data.username
-					updateWaitTip()
-					if (notification.data.username == AppData.getInstane().user.username) {
-						thisCanChiCards = notification.data.data
-						canChiButton.visible = cancelButton.visible = true
-					}
-					break
-				}
-				case Notifications.onEat: {
-					trace('有人吃')
-					dealCardUI.visible = false
+				case Notifications.onEat: 
+				{
 					Audio.getInstane().playHandle('chi')
-					checkUsername = null
-					updateWaitTip()
-					updateRoomInfo(notification.data)
-					updateMyHandCardUIs()
-					updateMyGroupCardUIs()
-					updateMyPassCardUIs()
-					updatePreGroupCardUIs()
-					updatePrePassCardUIs()
-					updateNextGroupCardUIs()
-					updateNextPassCardUIs()
+					roomData = notification.data
 					break
 				}
-				case Notifications.onBi: {
-					trace('有人比')
-					dealCardUI.visible = false
+				case Notifications.onBi: 
+				{
 					Audio.getInstane().playHandle('bi')
-					checkUsername = null
-					updateWaitTip()
-					updateRoomInfo(notification.data)
-					updateMyHandCardUIs()
-					updateMyGroupCardUIs()
-					updateMyPassCardUIs()
-					updatePreGroupCardUIs()
-					updatePrePassCardUIs()
-					updateNextGroupCardUIs()
-					updateNextPassCardUIs()
+					roomData = notification.data
 					break
 				}
-				case Notifications.checkHu: {
-					trace('检查胡', notification.data)
-					if (notification.data.username == AppData.getInstane().user.username) {
-						isHu = canHuButton.visible = cancelButton.visible = true
-						thisCanHuDatas = notification.data.data
-					}
-					break
-				}
-				case Notifications.onWin: {
-					isGaming = false
-					trace('胡牌', JSON.stringify(notification.data))
-					Audio.getInstane().playHandle('hu')
-					cardsCarrUI.visible = cardsLabel.visible = false
-					WinView.getInstane().data = notification.data
-					PopUpManager.centerPopUp(PopUpManager.addPopUp(WinView.getInstane()))
-					zhunbeiButton.visible = true
-					break
-				}
-				case Notifications.onRoundEnd: {
-					isGaming = false
-					cardsCarrUI.visible = cardsLabel.visible = false
-					WinView.getInstane().data = null // 荒庄
-					PopUpManager.centerPopUp(PopUpManager.addPopUp(WinView.getInstane()))
-					zhunbeiButton.visible = true
-					break
-				}
-				case Notifications.onResume: {
-					isGaming = true
-					myHandCards = null
-					tingCardsView.tingCards = null
-					zhunbeiButton.visible = zhunbeiButton2.visible = false
-					cardsCarrUI.visible = cardsLabel.visible = true
-					dealCardUI.visible = false
-					dealCardUI2.visible = false
-					updateRoomInfo(notification.data)
-					updateMyHandCardUIs()
-					updateMyGroupCardUIs()
-					updateMyPassCardUIs()
-					updatePreGroupCardUIs()
-					updatePrePassCardUIs()
-					updateNextGroupCardUIs()
-					updateNextPassCardUIs()
+				case Notifications.onGameOver: 
+				{
+					Alert.show('一局游戏结束')
+					close()
 					break
 				}
 				default:
@@ -1185,17 +1093,21 @@ package com.xiaomu.view.room
 		
 		protected function canPengButton_clickHandler(event:MouseEvent):void
 		{
-			isHu = canHuButton.visible = canPengButton.visible = canChiButton.visible = cancelButton.visible = false
-			var action:Object = { name: Actions.Peng, data: thisCanPengCards }
-			Api.getInstane().sendAction(action)
+			canPengButton.visible = cancelButton.visible = false
+			if (roomData.an == AppData.getInstane().user.username) {
+				var action:Object = { name: Actions.Peng, data: roomData.ad }
+				Api.getInstane().sendAction(action)
+			}
 		}
 		
 		protected function canChiButton_clickHandler(event:MouseEvent):void
 		{
-			ChiSelectView.getInstane().addEventListener(SelectEvent.SELECTED, chi_selectHandler)
-			ChiSelectView.getInstane().y = 30
-			ChiSelectView.getInstane().width = width
-			ChiSelectView.getInstane().open(thisCanChiCards)
+			if (roomData.an == AppData.getInstane().user.username) {
+				ChiSelectView.getInstane().addEventListener(SelectEvent.SELECTED, chi_selectHandler)
+				ChiSelectView.getInstane().y = 30
+				ChiSelectView.getInstane().width = width
+				ChiSelectView.getInstane().open(roomData.ad)
+			}
 		}
 		
 		protected function cancelButton_clickHandler(event:MouseEvent):void
@@ -1203,69 +1115,34 @@ package com.xiaomu.view.room
 			if (ChiSelectView.getInstane().isPopUp) {
 				ChiSelectView.getInstane().close()
 			}
-			isHu = canHuButton.visible = canPengButton.visible = canChiButton.visible = cancelButton.visible = false
+			canHuButton.visible = canPengButton.visible = canChiButton.visible = cancelButton.visible = false
 			var action:Object = { name: Actions.Cancel, data: '' }
 			Api.getInstane().sendAction(action)
 		}
 		
 		protected function canHuButton_clickHandler(event:MouseEvent):void
 		{
-			isHu = canHuButton.visible = canPengButton.visible = canChiButton.visible = cancelButton.visible = false
-			var action:Object = { name: Actions.Hu, data: thisCanHuDatas }
-			Api.getInstane().sendAction(action)
-		}
-		
-		public function init(rule:Object): void {
-			this.isHu = this.isCheckNewCard = this.isGaming = false
-			this.myUser = this.preUser = this.nextUser = null
-			this.checkUsername = null
-			this.roominfo = {}
-			this.myHandCards = null
-			thisCanChiCards = thisCanHuDatas = thisCanPengCards = null
-			this.ei = this.si = -1
-			zhunbeiButton.visible = true
-			zhunbeiButton2.visible = false
-			this.huxi = rule.hx
-			Api.getInstane().addEventListener(ApiEvent.ON_ROOM, onNotificationHandler)
-			Api.getInstane().queryRoomStatus(function (response:Object):void {
-				if (response.code == 0) {
-					isGaming = response.data.gaming
-					if (isGaming) {
-						myHandCards = null
-						tingCardsView.tingCards = null
-						zhunbeiButton.visible = zhunbeiButton2.visible = false
-						cardsCarrUI.visible = cardsLabel.visible = true
-						dealCardUI.visible = false
-						dealCardUI2.visible = false
-						updateRoomInfo(response.data)
-						updateMyHandCardUIs()
-						updateMyGroupCardUIs()
-						updateMyPassCardUIs()
-						updatePreGroupCardUIs()
-						updatePrePassCardUIs()
-						updateNextGroupCardUIs()
-						updateNextPassCardUIs()
-					}
-				}
-			})
+			canHuButton.visible = cancelButton.visible = false
+			if (roomData.an == AppData.getInstane().user.username) {
+				var action:Object = { name: Actions.Hu, data: roomData.ad }
+				Api.getInstane().sendAction(action)
+			}
 		}
 		
 		protected function back_clickHandler(event:MouseEvent):void
 		{
-			if (this.isGaming) {
+			if (roomData && roomData.og) {
 				Alert.show('游戏中无法退出')
-				return
+			} else {
+				close()
 			}
-			
-			MainView.getInstane().popView(GroupView)
+		}
+		
+		public function close():void {
 			Api.getInstane().removeEventListener(ApiEvent.ON_ROOM, onNotificationHandler)
 			Api.getInstane().leaveRoom(function (response:Object):void {})
-			hideAllCardUIs()
-			dealCardUI.visible = dealCardUI2.visible = false
-			cardsCarrUI.visible = cardsLabel.visible = false
-			tingCardsView.tingCards = null
-			newCardTip.visible = cancelButton.visible = canChiButton.visible = canPengButton.visible = canHuButton.visible = false
-			preUserHead.visible = myUserHead.visible = nextUserHead.visible = false
+			hideAllUI()
+			MainView.getInstane().popView(GroupView)
 		}
 		
 		protected function zhunbeiButton_clickHandler(event:MouseEvent):void
@@ -1283,9 +1160,11 @@ package com.xiaomu.view.room
 		protected function chi_selectHandler(event:SelectEvent):void
 		{
 			ChiSelectView.getInstane().close()
-			isHu = canHuButton.visible = canPengButton.visible = canChiButton.visible = cancelButton.visible = false
-			var action:Object = { name: Actions.Chi, data:  event.data}
-			Api.getInstane().sendAction(action)
+			canChiButton.visible = cancelButton.visible = false
+			if (roomData.an == AppData.getInstane().user.username) {
+				var action:Object = { name: Actions.Chi, data:  event.data}
+				Api.getInstane().sendAction(action)
+			}
 		}
 		
 		protected function chatButton_clickHandler(event:MouseEvent):void

@@ -24,5 +24,6 @@ package com.xiaomu.util
 		public static const onGroupStatus:int = 24
 		public static const onRoomStatus:int = 25
 		public static const onRoomMessage:int = 26
+		public static const onGameOver:int = 27
 	}
 }
