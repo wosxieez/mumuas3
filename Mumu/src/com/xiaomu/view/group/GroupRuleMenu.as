@@ -1,5 +1,6 @@
 package com.xiaomu.view.group
 {
+	import com.xiaomu.renderer.GroupUserMenuRender;
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.HttpApi;
 	
@@ -17,6 +18,7 @@ package com.xiaomu.view.group
 		{
 			super();
 			
+			itemRendererClass = GroupUserMenuRender;
 			itemRendererColumnCount = 1
 			dataProvider = ['修改', '删除']
 			width = 200

@@ -1,5 +1,6 @@
 package com.xiaomu.view.group
 {
+	import com.xiaomu.renderer.GroupUserMenuRender;
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.HttpApi;
 	
@@ -17,6 +18,7 @@ package com.xiaomu.view.group
 		{
 			super();
 			
+			itemRendererClass = GroupUserMenuRender;
 			itemRendererColumnCount = 1
 			dataProvider = ['升职', '降职', '增加疲劳值', '减少疲劳值', '踢出群']
 			width = 200

@@ -65,7 +65,7 @@ package com.xiaomu.view.room
 		private var checkWaitTip:Image
 		private var chatButton:Image
 		private var tingCardsView:TingCardsView
-		private var backBtn:Image
+		private var backBtn:ImageButton
 		
 		private var _roomData:Object
 		
@@ -240,10 +240,14 @@ package com.xiaomu.view.room
 			chatButton.source = 'assets/room/btn_chat.png'
 			chatButton.addEventListener(MouseEvent.CLICK, chatButton_clickHandler)
 			iconLayer.addChild(chatButton)
-			backBtn = new Image()
-			backBtn.source = 'assets/club_btn_back.png';
-			backBtn.width = 71;
-			backBtn.height = 86;
+			
+			backBtn= new ImageButton()
+			backBtn.upImageSource = 'assets/group/btn_guild2_return_n.png';
+			backBtn.downImageSource = 'assets/group/btn_guild2_return_p.png';
+			backBtn.x = 20
+			backBtn.y = 10
+			backBtn.width = 85;
+			backBtn.height = 91;
 			backBtn.addEventListener(MouseEvent.CLICK, back_clickHandler)
 			iconLayer.addChild(backBtn)
 		}
@@ -376,7 +380,6 @@ package com.xiaomu.view.room
 			newCardTip.x = (width - newCardTip.width) / 2
 			newCardTip.y = (height - newCardTip.height) / 2 + 50
 			
-			backBtn.x = width - backBtn.width
 			zhunbeiButton.x = (width - zhunbeiButton.width) / 2
 			zhunbeiButton.y = (height - zhunbeiButton.height) / 2
 			zhunbeiButton2.x = (width - zhunbeiButton2.width) / 2

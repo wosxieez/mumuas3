@@ -38,7 +38,7 @@ package com.xiaomu.view.hall
 		private var titleImg:Image;
 		private var groupsList:List
 		private var signoutBtn:Image
-		private var goback:Image;
+		private var goback:ImageButton;
 		private var userInfoView : UserInfoView2
 		private var createGroupBtn : ImageButton
 		
@@ -80,13 +80,16 @@ package com.xiaomu.view.hall
 			groupsList.addEventListener(UIEvent.CHANGE, groupsList_changeHandler)
 			addChild(groupsList)
 			
-			goback = new Image();
-			goback.source = 'assets/club_btn_back.png';
-			goback.width = 71;
-			goback.height = 86;
+			goback= new ImageButton()
+			goback.upImageSource = 'assets/group/btn_guild2_return_n.png';
+			goback.downImageSource = 'assets/group/btn_guild2_return_p.png';
+			goback.x = 20
+			goback.y = 10
+			goback.width = 85;
+			goback.height = 91;
 			goback.addEventListener(MouseEvent.CLICK,gobackHandler);
 			addChild(goback);
-			
+		
 			createGroupBtn = new ImageButton();
 			createGroupBtn.width = 196
 			createGroupBtn.height = 70
@@ -120,9 +123,6 @@ package com.xiaomu.view.hall
 			groupsList.width = width
 			groupsList.height = groupsList.itemRendererHeight
 			groupsList.y = (height-groupsList.height) / 2 - 20
-			
-			goback.x = width - goback.width - 20
-			goback.y = 20;
 			
 			createGroupBtn.x = (width - createGroupBtn.width) / 2
 			createGroupBtn.y = height - createGroupBtn.height - 30

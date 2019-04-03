@@ -1,7 +1,6 @@
 package com.xiaomu.view.group
 {
-	import com.xiaomu.component.AppPanelBig;
-	import com.xiaomu.component.TitleTextInput;
+	import com.xiaomu.component.AppPanelSmall;
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.HttpApi;
 	
@@ -9,32 +8,54 @@ package com.xiaomu.view.group
 	import flash.events.MouseEvent;
 	
 	import coco.component.Alert;
-	import coco.layout.VerticalLayout;
+	import coco.component.Label;
+	import coco.component.TextInput;
 	
-	public class RemoveScorePanel extends AppPanelBig
+	public class RemoveScorePanel extends AppPanelSmall
 	{
 		public function RemoveScorePanel()
 		{
 			super();
 			
 			title = '玩家下分'
-			var vl:VerticalLayout = new VerticalLayout()
-			layout = vl
 		}
 		
 		public var targetUser:Object
 		
-		private var addScoreInput:TitleTextInput
+		private var addScoreLab:Label;
+		private var addScoreInput:TextInput
 		private var fromUser:Object
 		private var toUser:Object
 		
 		override protected function createChildren():void {
 			super.createChildren()
 			
-			addScoreInput = new TitleTextInput()
-			addScoreInput.width = 500
-			addScoreInput.title = '减少分数'
+			addScoreLab = new Label();
+			addScoreLab.text = '减少分数';
+			addScoreLab.fontSize = 24;
+			addScoreLab.color = 0x845525;
+			addScoreLab.height = 40;
+			addScoreLab.width = 120;
+			addChild(addScoreLab);
+			
+			addScoreInput = new TextInput()
+			addScoreInput.restrict = '0-9';
+			addScoreInput.width = 300
+			addScoreInput.height = 40;
+			addScoreInput.fontSize = 24;
+			addScoreInput.maxChars = 5;
 			addChild(addScoreInput)
+		}
+		
+		override protected function updateDisplayList():void
+		{
+			super.updateDisplayList();
+			
+			addScoreLab.x = 40;
+			addScoreLab.y = 60;
+			
+			addScoreInput.x = addScoreLab.x+addScoreLab.width+30;
+			addScoreInput.y = addScoreLab.y;
 		}
 		
 		override protected function commitButton_clickHandler(event:MouseEvent):void {
