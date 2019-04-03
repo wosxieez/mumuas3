@@ -68,6 +68,8 @@ package com.xiaomu.util
 				return
 			}
 			
+			ign = igornNext
+			
 			if (cardChannel) {
 				try
 				{
@@ -81,8 +83,6 @@ package com.xiaomu.util
 			
 			cardSound = new Sound(new URLRequest('sound/card/v' + card + '.mp3'))
 			cardChannel = cardSound.play()
-			
-			ign = igornNext
 		}
 		
 		private var handleChannel:SoundChannel
@@ -93,6 +93,8 @@ package com.xiaomu.util
 				ign = false
 				return
 			}
+			
+			ign = igornNext
 			
 			if (handleChannel) {
 				try
@@ -107,8 +109,6 @@ package com.xiaomu.util
 			
 			handleSound = new Sound(new URLRequest('sound/handle/' + name + '.mp3'))
 			handleChannel = handleSound.play()
-				
-			ign = igornNext
 		}
 		
 		private var chatChannel:SoundChannel

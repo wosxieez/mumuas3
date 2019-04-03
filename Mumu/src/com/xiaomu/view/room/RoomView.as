@@ -98,6 +98,19 @@ package com.xiaomu.view.room
 			invalidateProperties()
 		}
 		
+		private var _needOutTing:Boolean = false
+		
+		public function get needOutTing():Boolean
+		{
+			return _needOutTing;
+		}
+		
+		public function set needOutTing(value:Boolean):void
+		{
+			_needOutTing = value;
+			invalidateProperties()
+		}
+		
 		override protected function createChildren():void {
 			super.createChildren()
 			
@@ -260,6 +273,7 @@ package com.xiaomu.view.room
 			// 隐藏所有
 			hideAllUI()
 			
+			myUser = preUser = nextUser = null
 			// 生成 myUser preUser nextUser
 			for (var i:int = 0; i < roomData.us.length; i++) {
 				if (roomData.us[i].username == AppData.getInstane().user.username) {
@@ -279,7 +293,7 @@ package com.xiaomu.view.room
 			
 			if (needRiffleCard) {
 				myHandCards = null
-				needRiffleCard = false
+				_needRiffleCard = false
 			}
 			
 			if (preUser) {
@@ -318,7 +332,10 @@ package com.xiaomu.view.room
 					updateMyGroupCardUIs()
 					updateMyPassCardUIs()
 					updateMyHandCardUIsCanTing()
-					updateMyHandCardUIsCanOutTing()
+					if (needOutTing) {
+						updateMyHandCardUIsCanOutTing()
+						_needOutTing = false
+					}
 				}
 				
 				if (nextUser) {
@@ -1017,12 +1034,15 @@ package com.xiaomu.view.room
 				case Notifications.onGameStart:
 				case Notifications.onRoomStatus: 
 				{
+					trace(JSON.stringify(notification.data))
 					needRiffleCard = true // 需要整理手里牌
 					roomData = notification.data
 					break
 				}
 				case Notifications.checkNewCard:
 				{
+					trace('提示我出牌')
+					needOutTing = true
 					roomData = notification.data
 					break
 				}
