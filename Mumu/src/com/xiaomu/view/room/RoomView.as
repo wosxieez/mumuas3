@@ -974,43 +974,49 @@ package com.xiaomu.view.room
 				
 				// 告诉服务器出牌了
 				if (roomData.an == AppData.getInstane().user.username &&
-					roomData.at == Notifications.checkNewCard &&
-					mouseY <= height * 2 / 3) {
-					// 为了保持操作流畅 前端提前模拟出牌
-					meNewCard(draggingCardUI.card)
-					
-					var action:Object = { name: Actions.NewCard, data: draggingCardUI.card }
-					Api.getInstane().sendAction(action)
+					roomData.at == Notifications.checkNewCard) {
+					// 轮到我出牌
+					if (this.mouseY <= height * 2 / 3) { 
+						meNewCard(draggingCardUI.card)
+						var action:Object = { name: Actions.NewCard, data: draggingCardUI.card }
+						Api.getInstane().sendAction(action)
+					} else {
+						needOutTing = true
+						invalidateProperties()
+					}
 				} else {
-					// 整理牌
-					ei = getMyHandCardsIndex(this.mouseX)
-					if (si >= 0 && ei >= 0 && si != ei) {
-						//  调整牌位置
-						if (myHandCards[si]) {
-							var index:int = (myHandCards[si] as Array).indexOf(draggingCardUI.card)
-							if (index >= 0) {
-								if (myHandCards[ei]) {
-									if (myHandCards[ei].length < 3) {
-										myHandCards[si].splice(index, 1) // 删除这个元素
-										myHandCards[ei].push(draggingCardUI.card)
-									} else if (myHandCards[ei].length == 3) {
-										if (myHandCards[ei][0] == myHandCards[ei][1] && myHandCards[ei][1] == myHandCards[ei][2]) {
-											// 坎元素不能堆积
-											trace('这是坎 不能堆积')
-										} else {
-											myHandCards[si].splice(index, 1) // 删除这个元素
-											myHandCards[ei].push(draggingCardUI.card)
-										}
-									}
+					// 如果不是我出牌的
+					invalidateProperties()
+				}
+			}
+		}
+		
+		private function riffleCard():void {
+			// 整理牌
+			ei = getMyHandCardsIndex(this.mouseX)
+			if (si >= 0 && ei >= 0 && si != ei) {
+				//  调整牌位置
+				if (myHandCards[si]) {
+					var index:int = (myHandCards[si] as Array).indexOf(draggingCardUI.card)
+					if (index >= 0) {
+						if (myHandCards[ei]) {
+							if (myHandCards[ei].length < 3) {
+								myHandCards[si].splice(index, 1) // 删除这个元素
+								myHandCards[ei].push(draggingCardUI.card)
+							} else if (myHandCards[ei].length == 3) {
+								if (myHandCards[ei][0] == myHandCards[ei][1] && myHandCards[ei][1] == myHandCards[ei][2]) {
+									// 坎元素不能堆积
+									trace('这是坎 不能堆积')
 								} else {
 									myHandCards[si].splice(index, 1) // 删除这个元素
-									myHandCards.push([draggingCardUI.card])
+									myHandCards[ei].push(draggingCardUI.card)
 								}
 							}
+						} else {
+							myHandCards[si].splice(index, 1) // 删除这个元素
+							myHandCards.push([draggingCardUI.card])
 						}
 					}
-					
-					invalidateProperties()
 				}
 			}
 		}
@@ -1042,8 +1048,10 @@ package com.xiaomu.view.room
 				case Notifications.checkNewCard:
 				{
 					trace('提示我出牌')
-					needOutTing = true
 					roomData = notification.data
+					if (roomData.an == AppData.getInstane().user.username) {
+						needOutTing = true
+					}
 					break
 				}
 				case Notifications.checkPeng:
