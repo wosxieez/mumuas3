@@ -65,7 +65,8 @@ package com.xiaomu.view.room
 		private var checkWaitTip:Image
 		private var chatButton:Image
 		private var tingCardsView:TingCardsView
-		private var backBtn:ImageButton
+		private var goback:ImageButton
+		private var refreshButton:ImageButton
 		
 		private var _roomData:Object
 		
@@ -80,29 +81,20 @@ package com.xiaomu.view.room
 			invalidateProperties()
 		}
 		
-		private var _isNewHand:Boolean = false
+		private var _needRiffleCard:Boolean = false
 		
-		public function get isNewHand():Boolean
+		/**
+		 * 是否需要整理牌 
+		 * @return 
+		 */			
+		public function get needRiffleCard():Boolean
 		{
-			return _isNewHand;
+			return _needRiffleCard;
 		}
 		
-		public function set isNewHand(value:Boolean):void
+		public function set needRiffleCard(value:Boolean):void
 		{
-			_isNewHand = value;
-			invalidateProperties()
-		}
-		
-		private var _tingEnabled:Boolean = false
-		
-		public function get tingEnabled():Boolean
-		{
-			return _tingEnabled;
-		}
-		
-		public function set tingEnabled(value:Boolean):void
-		{
-			_tingEnabled = value;
+			_needRiffleCard = value;
 			invalidateProperties()
 		}
 		
@@ -241,15 +233,23 @@ package com.xiaomu.view.room
 			chatButton.addEventListener(MouseEvent.CLICK, chatButton_clickHandler)
 			iconLayer.addChild(chatButton)
 			
-			backBtn= new ImageButton()
-			backBtn.upImageSource = 'assets/group/btn_guild2_return_n.png';
-			backBtn.downImageSource = 'assets/group/btn_guild2_return_p.png';
-			backBtn.x = 20
-			backBtn.y = 10
-			backBtn.width = 85;
-			backBtn.height = 91;
-			backBtn.addEventListener(MouseEvent.CLICK, back_clickHandler)
-			iconLayer.addChild(backBtn)
+			goback= new ImageButton()
+			goback.upImageSource = 'assets/group/btn_guild2_return_n.png';
+			goback.downImageSource = 'assets/group/btn_guild2_return_p.png';
+			goback.x = 20
+			goback.y = 10
+			goback.width = 85;
+			goback.height = 91;
+			goback.addEventListener(MouseEvent.CLICK, back_clickHandler)
+			addChild(goback)
+			
+			refreshButton = new ImageButton()
+			refreshButton.width = 40
+			refreshButton.height = 44
+			refreshButton.upImageSource = 'assets/group/btn_guild2_refresh_n.png';
+			refreshButton.downImageSource = 'assets/group/btn_guild2_refresh_p.png';
+			refreshButton.addEventListener(MouseEvent.CLICK, refreshButton_clickHandler)
+			addChild(refreshButton)
 		}
 		
 		override protected function commitProperties():void {
@@ -277,7 +277,10 @@ package com.xiaomu.view.room
 				}
 			}
 			
-			if (isNewHand) myHandCards = null
+			if (needRiffleCard) {
+				myHandCards = null
+				needRiffleCard = false
+			}
 			
 			if (preUser) {
 				preUserHead.visible = true
@@ -289,6 +292,7 @@ package com.xiaomu.view.room
 			
 			if (myUser) {
 				myUserHead.visible = true
+				refreshButton.visible = true
 				myUserHead.username = myUser.username
 				myUserHead.isZhuang = myUserHead.username == roomData.zn
 				myUserHead.isNiao = myUser.dn
@@ -313,7 +317,8 @@ package com.xiaomu.view.room
 					updateMyHandCardUIs()
 					updateMyGroupCardUIs()
 					updateMyPassCardUIs()
-					if (tingEnabled) updateMyHandCardUIsCanOutTing()
+					updateMyHandCardUIsCanTing()
+					updateMyHandCardUIsCanOutTing()
 				}
 				
 				if (nextUser) {
@@ -324,6 +329,7 @@ package com.xiaomu.view.room
 				updateNewCard()
 				updateWaitTip()
 				updateCardsCount()
+				
 				
 				if (roomData.an == AppData.getInstane().user.username) {
 					if (roomData.at == Notifications.checkEat) {
@@ -355,6 +361,9 @@ package com.xiaomu.view.room
 			
 			myUserHead.x = 30
 			myUserHead.y = height - myUserHead.height - 30
+			
+			refreshButton.x = myUserHead.x + myUserHead.width + 10
+			refreshButton.y = myUserHead.y + myUserHead.height - refreshButton.height
 			
 			nextUserHead.x = width - nextUserHead.width - 30
 			nextUserHead.y = 30
@@ -395,7 +404,7 @@ package com.xiaomu.view.room
 			Api.getInstane().queryRoomStatus(function (response:Object):void {
 				if (response.code == 0) {
 					roomData = response.data
-					isNewHand = true
+					needRiffleCard = true
 					if (!roomData.og) {
 						new DaNiaoNoticePanel().open()
 					}
@@ -431,7 +440,8 @@ package com.xiaomu.view.room
 				cardUI.visible = false
 			}
 			
-			myUserHead.visible = preUserHead.visible = nextUserHead.visible = false
+			tingCardsView.tingCards = null
+			refreshButton.visible = myUserHead.visible = preUserHead.visible = nextUserHead.visible = false
 			zhunbeiButton2.visible = zhunbeiButton.visible = false
 			dealCardUI.visible = false
 			newCardTip.visible = false
@@ -535,7 +545,6 @@ package com.xiaomu.view.room
 		 */		
 		private function updateMyHandCardUIs():void {
 			if (myUser) {
-				
 				if (draggingCardUI) {
 					draggingCardUI.stopDrag()
 				}
@@ -663,12 +672,6 @@ package com.xiaomu.view.room
 			}
 		}
 		
-		private function clearMyHandCardUIsCanOutTing():void {
-			for each(var cardUI:CardUI in myHandCardUIs) {
-				cardUI.tingCards = null
-			}
-		}
-		
 		private function updateMyHandCardUIsCanTing():void {
 			if (myUser) {
 				tingCardsView.tingCards = CardUtil.getInstane().canTing(myUser.groupCards, myUser.handCards, this.rule.hx)
@@ -718,7 +721,6 @@ package com.xiaomu.view.room
 						myGroupCardUIs.push(newCardUI)
 					}
 				}
-				
 			}
 		}
 		/**
@@ -951,14 +953,19 @@ package com.xiaomu.view.room
 			this.removeEventListener(MouseEvent.MOUSE_UP, this_mouseUpHandler)
 			if (draggingCardUI) {
 				draggingCardUI.stopDrag()
+				draggingCardUI.visible = false
+				
+				// 告诉服务器出牌了
 				if (roomData.an == AppData.getInstane().user.username &&
 					roomData.at == Notifications.checkNewCard &&
-					mouseY <= height / 2) {
+					mouseY <= height * 2 / 3) {
+					// 为了保持操作流畅 前端提前模拟出牌
+					meNewCard(draggingCardUI.card)
+					
 					var action:Object = { name: Actions.NewCard, data: draggingCardUI.card }
 					Api.getInstane().sendAction(action)
-					// 出牌之后清理出听提示
-					clearMyHandCardUIsCanOutTing()
 				} else {
+					// 整理牌
 					ei = getMyHandCardsIndex(this.mouseX)
 					if (si >= 0 && ei >= 0 && si != ei) {
 						//  调整牌位置
@@ -985,15 +992,8 @@ package com.xiaomu.view.room
 							}
 						}
 					}
-				}
-				
-				updateMyHandCardUIs()
-				if (roomData.an == AppData.getInstane().user.username &&
-					roomData.at == Notifications.checkNewCard) { // 出牌状态才会刷新
-					tingCardsView.tingCards = null
-					updateMyHandCardUIsCanOutTing()
-				} else {
-					updateMyHandCardUIsCanTing()
+					
+					invalidateProperties()
 				}
 			}
 		}
@@ -1017,17 +1017,13 @@ package com.xiaomu.view.room
 				case Notifications.onGameStart:
 				case Notifications.onRoomStatus: 
 				{
-					isNewHand = true
+					needRiffleCard = true // 需要整理手里牌
 					roomData = notification.data
 					break
 				}
 				case Notifications.checkNewCard:
 				{
 					roomData = notification.data
-					if (roomData && roomData.an == AppData.getInstane().user.username) {
-						tingEnabled = true
-						tingCardsView.tingCards = null
-					}
 					break
 				}
 				case Notifications.checkPeng:
@@ -1052,9 +1048,7 @@ package com.xiaomu.view.room
 				case Notifications.onNewCard: 
 				{
 					roomData = notification.data
-					tingEnabled = false
 					Audio.getInstane().playCard(roomData.pc)
-					updateMyHandCardUIsCanTing()
 					break
 				}
 				case Notifications.onTi : 
@@ -1095,6 +1089,7 @@ package com.xiaomu.view.room
 				}
 				case Notifications.onGameOver: 
 				{
+					Audio.getInstane().playHandle('hu')
 					Alert.show('一局游戏结束')
 					close()
 					break
@@ -1110,6 +1105,8 @@ package com.xiaomu.view.room
 		{
 			canPengButton.visible = cancelButton.visible = false
 			if (roomData.an == AppData.getInstane().user.username) {
+				mePeng(roomData.ad)
+				
 				var action:Object = { name: Actions.Peng, data: roomData.ad }
 				Api.getInstane().sendAction(action)
 			}
@@ -1119,7 +1116,7 @@ package com.xiaomu.view.room
 		{
 			if (roomData.an == AppData.getInstane().user.username) {
 				ChiSelectView.getInstane().addEventListener(SelectEvent.SELECTED, chi_selectHandler)
-				ChiSelectView.getInstane().y = 30
+				ChiSelectView.getInstane().y = 50
 				ChiSelectView.getInstane().width = width
 				ChiSelectView.getInstane().open(roomData.ad)
 			}
@@ -1156,6 +1153,12 @@ package com.xiaomu.view.room
 			MainView.getInstane().popView(GroupView)
 		}
 		
+		protected function refreshButton_clickHandler(event:MouseEvent):void
+		{
+			needRiffleCard = true
+			invalidateProperties()
+		}
+		
 		protected function zhunbeiButton_clickHandler(event:MouseEvent):void
 		{
 			var action:Object = { name: Actions.Ready, data: true }
@@ -1173,6 +1176,7 @@ package com.xiaomu.view.room
 			ChiSelectView.getInstane().close()
 			canChiButton.visible = cancelButton.visible = false
 			if (roomData.an == AppData.getInstane().user.username) {
+				meChi(event.data as Array)
 				var action:Object = { name: Actions.Chi, data:  event.data}
 				Api.getInstane().sendAction(action)
 			}
@@ -1181,6 +1185,60 @@ package com.xiaomu.view.room
 		protected function chatButton_clickHandler(event:MouseEvent):void
 		{
 			RoomChatView.getInstane().open(chatButton.x - RoomChatView.getInstane().width, (height - RoomChatView.getInstane().height) / 2)
+		}
+		
+		private function meNewCard(card:int):void {
+			if (myUser) {
+				Audio.getInstane().playCard(card, true)
+				roomData.an = null
+				roomData.at = 0
+				roomData.ad = null
+				roomData.pn = myUser.username
+				roomData.pc = card
+				roomData.io = true
+				CardUtil.getInstane().deleteCard(myUser.handCards, card)
+				invalidateProperties()
+			}
+		}
+		
+		private function meChi(groups:Array):void {
+			if (myUser) {
+				roomData.an = null
+				roomData.at = 0
+				roomData.ad = null
+				myUser.handCards.push(roomData.pc)
+				roomData.pc = 0
+				var group:Object
+				for (var i:int = 0; i < groups.length; i++) {
+					group = groups[i]
+					for (var j:int = 0; j < group.cards.length; j++) {
+						CardUtil.getInstane().deleteCard(myUser.handCards, group.cards[j])
+					}
+					myUser.groupCards.push(group)
+				}
+				if (groups.length > 1) {
+					Audio.getInstane().playHandle('bi', true)
+				} else {
+					Audio.getInstane().playHandle('chi', true)
+				}
+				invalidateProperties()
+			}
+		}
+		
+		private function mePeng(cards:Array):void {
+			if (myUser) {
+				roomData.an = null
+				roomData.at = 0
+				roomData.ad = null
+				for (var i:int = 0; i < cards.length; i++) {
+					CardUtil.getInstane().deleteCard(myUser.handCards, cards[i])
+				}
+				cards.push(roomData.pc)
+				roomData.pc = 0
+				myUser.groupCards.push({name: Actions.Peng, cards: cards})
+				Audio.getInstane().playHandle('peng', true)
+				invalidateProperties()
+			}
 		}
 		
 	}

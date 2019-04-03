@@ -21,7 +21,7 @@ package com.xiaomu.view.room
 			super();
 			
 			padding = 0
-			paddingRight = 30
+			paddingRight = 100
 			horizontalAlign = HorizontalAlign.RIGHT
 		}
 		

@@ -433,5 +433,14 @@ package com.xiaomu.util
 			return 0
 		}
 		
+		public function deleteCard(cards:Array, card:int):void {
+			for (var i:int = 0; i < cards.length; i++) {
+				if (cards[i] == card) {
+					cards.splice(i, 1)
+					break
+				}
+			}
+		}
+		
 	}
 }

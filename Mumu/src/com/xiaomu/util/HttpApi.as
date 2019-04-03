@@ -20,8 +20,7 @@ package com.xiaomu.util
 			return instance
 		}
 		
-		//		private static const WEB_URL:String = 'http://172.20.10.5:3008/'
-		//		private static const WEB_URL:String = 'http://172.20.10.3:3008/'
+		//		private static const WEB_URL:String = 'http://192.168.0.169:3008/'
 		private static const WEB_URL:String = 'http://hefeixiaomu.com:3008/'
 		
 		

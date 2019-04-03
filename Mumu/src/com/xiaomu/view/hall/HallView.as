@@ -38,7 +38,7 @@ package com.xiaomu.view.hall
 		private var titleImg:Image;
 		private var groupsList:List
 		private var signoutBtn:Image
-		private var goback:ImageButton;
+		private var goback:ImageButton
 		private var userInfoView : UserInfoView2
 		private var createGroupBtn : ImageButton
 		
@@ -87,9 +87,11 @@ package com.xiaomu.view.hall
 			goback.y = 10
 			goback.width = 85;
 			goback.height = 91;
-			goback.addEventListener(MouseEvent.CLICK,gobackHandler);
-			addChild(goback);
-		
+			goback.addEventListener(MouseEvent.CLICK, function(e:MouseEvent):void {
+				MainView.getInstane().popView(HomeView);
+			})
+			addChild(goback)
+			
 			createGroupBtn = new ImageButton();
 			createGroupBtn.width = 196
 			createGroupBtn.height = 70
@@ -102,11 +104,6 @@ package com.xiaomu.view.hall
 		override protected function commitProperties():void {
 			super.commitProperties()
 			groupsList.dataProvider = groupsData
-		}
-		
-		protected function gobackHandler(event:MouseEvent):void
-		{
-			MainView.getInstane().pushView(HomeView);
 		}
 		
 		override protected function updateDisplayList():void{

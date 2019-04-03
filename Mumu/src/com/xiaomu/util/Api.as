@@ -1,5 +1,6 @@
 package com.xiaomu.util
 {
+	import com.xiaomu.component.Loading;
 	import com.xiaomu.event.ApiEvent;
 	
 	import flash.events.Event;
@@ -45,9 +46,8 @@ package com.xiaomu.util
 			this.groupid = groupid
 			this.cb = cb
 			pomelo = new Pomelo()
-			//			pomelo.init("172.20.10.5", 3014)
-			//			pomelo.init("127.0.0.1", 3014)
-			pomelo.init("106.14.148.139", 3014)
+						pomelo.init("192.168.0.169", 3014)
+//			pomelo.init("106.14.148.139", 3014)
 			pomelo.addEventListener(PomeloEvent.HANDSHAKE, onConnectHandler);
 			pomelo.addEventListener(PomeloEvent.ERROR, pomeloErrorHandler);
 		}
@@ -67,6 +67,7 @@ package com.xiaomu.util
 		{
 			trace('断开连接')
 			pomelo = null
+			Loading.getInstance().close()
 		}
 		
 		protected function pomeloErrorHandler(event:PomeloEvent):void

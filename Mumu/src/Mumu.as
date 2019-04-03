@@ -3,8 +3,12 @@ package
 	import com.xiaomu.view.MainView;
 	import com.xiaomu.view.login.LoginView;
 	
+	import flash.desktop.NativeApplication;
+	import flash.desktop.SystemIdleMode;
 	import flash.events.Event;
+	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
+	import flash.ui.Keyboard;
 	
 	import coco.component.Image;
 	import coco.core.Application;
@@ -83,19 +87,25 @@ package
 		
 		protected function this_addedToStageHandler(event:Event):void
 		{
-			stage.nativeWindow.addEventListener(Event.DEACTIVATE, this_deactivateHandler)
-			stage.nativeWindow.addEventListener(Event.ACTIVATE, this_activateHandler)
+			NativeApplication.nativeApplication.addEventListener(Event.DEACTIVATE, this_deactivateHandler)
+			NativeApplication.nativeApplication.addEventListener(Event.ACTIVATE, this_activateHandler)
+			NativeApplication.nativeApplication.addEventListener(KeyboardEvent.KEY_DOWN, handleKeys);
 		}
 		
 		protected function this_activateHandler(event:Event):void
 		{
-			trace('activate')
-//			Api.getInstane().reconnect()
+			NativeApplication.nativeApplication.systemIdleMode = SystemIdleMode.KEEP_AWAKE;
 		}
 		
 		protected function this_deactivateHandler(event:Event):void
 		{
-			trace('deactivate')
+			NativeApplication.nativeApplication.systemIdleMode = SystemIdleMode.NORMAL;
+		}
+		
+		protected function handleKeys(event:KeyboardEvent):void
+		{
+			if(event.keyCode == Keyboard.BACK)
+				NativeApplication.nativeApplication.exit();  //退出程序
 		}
 		
 	}

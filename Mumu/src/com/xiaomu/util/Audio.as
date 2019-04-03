@@ -60,8 +60,13 @@ package com.xiaomu.util
 		
 		private var cardChannel:SoundChannel
 		private var cardSound:Sound
+		private var ign:Boolean = false
 		
-		public function playCard(card:int):void {
+		public function playCard(card:int, igornNext:Boolean = false):void {
+			if (ign) {
+				ign = false
+				return
+			}
 			
 			if (cardChannel) {
 				try
@@ -76,12 +81,19 @@ package com.xiaomu.util
 			
 			cardSound = new Sound(new URLRequest('sound/card/v' + card + '.mp3'))
 			cardChannel = cardSound.play()
+			
+			ign = igornNext
 		}
 		
 		private var handleChannel:SoundChannel
 		private var handleSound:Sound
 		
-		public function playHandle(name:String):void {
+		public function playHandle(name:String, igornNext:Boolean = false):void {
+			if (ign) {
+				ign = false
+				return
+			}
+			
 			if (handleChannel) {
 				try
 				{
@@ -95,6 +107,8 @@ package com.xiaomu.util
 			
 			handleSound = new Sound(new URLRequest('sound/handle/' + name + '.mp3'))
 			handleChannel = handleSound.play()
+				
+			ign = igornNext
 		}
 		
 		private var chatChannel:SoundChannel
