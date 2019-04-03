@@ -8,6 +8,7 @@ package com.xiaomu.manager
 	[Event(name="updateMemberInfoSuccess", type="com.xiaomu.event.AppManagerEvent")]
 	[Event(name="updateAdminGoldSuccess", type="com.xiaomu.event.AppManagerEvent")]
 	[Event(name="changeMemberSuccess", type="com.xiaomu.event.AppManagerEvent")]
+	[Event(name="changeSelectedRule", type="com.xiaomu.event.AppManagerEvent")]
 	public class AppManager extends EventDispatcher
 	{
 		public function AppManager(target:IEventDispatcher=null)

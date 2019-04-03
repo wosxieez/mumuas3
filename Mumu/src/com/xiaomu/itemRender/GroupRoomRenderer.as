@@ -5,7 +5,6 @@ package com.xiaomu.itemRender
 	import coco.component.DefaultItemRenderer;
 	import coco.component.Image;
 	import coco.component.Label;
-	import coco.component.TextAlign;
 	
 	public class GroupRoomRenderer extends DefaultItemRenderer
 	{
@@ -13,8 +12,8 @@ package com.xiaomu.itemRender
 		{
 			super();
 			mouseChildren = true
-			backgroundAlpha=0.1;
-			borderAlpha = 0.2;
+			backgroundAlpha=0;
+			borderAlpha = 0;
 		}
 		
 		private var tableImg:Image;

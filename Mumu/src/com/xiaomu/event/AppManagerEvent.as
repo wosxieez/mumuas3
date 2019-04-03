@@ -33,6 +33,11 @@ package com.xiaomu.event
 		 *添加或移除成员成功
 		 */
 		public static const CHANGE_MEMBER_SUCCESS:String = 'changeMemberSuccess'	
+			
+		/**
+		 *改变了当前选择的玩法
+		 */
+		public static const CHANGE_SELECTED_RULE:String = 'changeSelectedRule'	
 		
 		/** Message用户事件信息存储*/
 		public var message:Object;

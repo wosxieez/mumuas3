@@ -10,6 +10,8 @@ package com.xiaomu.view.group
 	
 	import coco.component.Alert;
 	import coco.component.Image;
+	import coco.component.Label;
+	import coco.component.TextInput;
 	
 	public class AddUserPanel extends AppPanelSmall
 	{
@@ -23,7 +25,8 @@ package com.xiaomu.view.group
 		}
 		
 		private var titleImg:Image;
-		private var usernameInput:TitleTextInput
+		private var usernameLab:Label;
+		private var usernameInput:TextInput
 		
 		override protected function createChildren():void {
 			super.createChildren()
@@ -34,9 +37,19 @@ package com.xiaomu.view.group
 			titleImg.source ='assets/guild/guild_title_addMember.png';
 			this.addRawChild(titleImg);
 			
-			usernameInput = new TitleTextInput()
-			usernameInput.width = 500
-			usernameInput.title = '成员用户名'
+			usernameLab = new Label();
+			usernameLab.text = '成员用户名';
+			usernameLab.fontSize = 24;
+			usernameLab.color = 0x845525;
+			usernameLab.height = 40;
+			usernameLab.width = 160;
+			addChild(usernameLab);
+			
+			usernameInput = new TextInput()
+			usernameInput.width = 300
+			usernameInput.height = 40;
+			usernameInput.fontSize = 24;
+			usernameInput.color = 0x845525;
 			addChild(usernameInput)
 		}
 		
@@ -45,6 +58,12 @@ package com.xiaomu.view.group
 			super.updateDisplayList();
 			
 			titleImg.x = (width-titleImg.width)/2;
+			
+			usernameLab.x = 40;
+			usernameLab.y = 60;
+			
+			usernameInput.x = usernameLab.x+usernameLab.width+30;
+			usernameInput.y = usernameLab.y;
 		}
 		
 		override protected function commitButton_clickHandler(event:MouseEvent):void {

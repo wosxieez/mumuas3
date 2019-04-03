@@ -1,6 +1,8 @@
 package com.xiaomu.renderer
 {
 	import com.xiaomu.component.ImageButton;
+	import com.xiaomu.event.AppManagerEvent;
+	import com.xiaomu.manager.AppManager;
 	import com.xiaomu.util.AppData;
 	
 	import flash.events.MouseEvent;
@@ -73,19 +75,13 @@ package com.xiaomu.renderer
 		override protected function commitProperties():void
 		{
 			super.commitProperties();
-			
-			ruleName.text = data.rulename;
-			try
-			{
-				peopleNumbeStr =data.cc==2?"二人，":(data.cc==3?"三人，":"四人，");
+			if(data){
+				ruleName.text = data.rulename;
+				peopleNumbeStr =data.cc==1?"一人，":(data.cc==2?"二人，":(data.cc==3?"三人，":"四人，"));
 				huxiNumberStr = data.hx+"胡息起胡，";
 				daNiaoNumberStr = data.nf==0?"不打鸟，":"打鸟"+data.nf+"分，";
 				fenDingNumberStr = data.fd+"胡息封顶，";
-				timesNumberStr = data.nf==0?"不翻倍，":"翻"+data.nf+"倍";
-			} 
-			catch(error:Error) 
-			{
-				
+				timesNumberStr = data.nf==0?"不翻倍":"翻"+data.nf+"倍";
 			}
 			ruleDetail.text = peopleNumbeStr+huxiNumberStr+daNiaoNumberStr+fenDingNumberStr+timesNumberStr;
 		}
@@ -110,7 +106,7 @@ package com.xiaomu.renderer
 			ruleDetail.height = height*0.7;
 			ruleDetail.x = selectBtn.x-ruleDetail.width-20;
 			ruleDetail.y = (height-ruleDetail.height)/2
-				
+			
 			if(AppData.getInstane().rule.id==data.id){
 				selectBtn.visible = false;
 				selectedLab.visible = true;
@@ -124,6 +120,8 @@ package com.xiaomu.renderer
 		{
 			AppData.getInstane().rule = data as Object
 			PopUpManager.removePopUp(this.parent.parent.parent.parent.parent)///关闭玩法界面
+			///向外界派发事件
+			AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.CHANGE_SELECTED_RULE));
 		}
 	}
 }
