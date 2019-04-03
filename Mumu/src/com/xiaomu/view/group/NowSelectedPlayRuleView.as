@@ -1,7 +1,5 @@
 package com.xiaomu.view.group
 {
-	import com.xiaomu.util.AppData;
-	
 	import coco.component.Image;
 	import coco.component.TextArea;
 	import coco.core.UIComponent;
@@ -56,7 +54,7 @@ package com.xiaomu.view.group
 			super.commitProperties();
 			if(data){
 				var ruleNameStr:String = data.rulename+"\r";
-				var peopleNumbeStr :String=data.cc==2?"二人，":(data.cc==3?"三人，":"四人，");
+				var peopleNumbeStr :String=data.cc==1?"一人，":(data.cc==2?"二人，":(data.cc==3?"三人，":"四人，"));
 				var huxiNumberStr:String = data.hx+"胡息起胡，";
 				var daNiaoNumberStr :String= data.nf==0?"不打鸟，":"打鸟"+data.nf+"分，";
 				var fenDingNumberStr:String = data.fd+"胡息封顶，";

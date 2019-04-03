@@ -56,6 +56,7 @@ package com.xiaomu.view.group
 		private var startButton:ImageButton
 		private var bottomGroup:HGroup
 		private var nowSelectedPlayRuleView:NowSelectedPlayRuleView
+		private var nowJoinGroupInfoView:NowJoinGroupInfoView;
 		private var switchRuleButton:Button;
 		private var ruleSettingButton:Button;
 		private var _roomsData:Array
@@ -95,6 +96,9 @@ package com.xiaomu.view.group
 			
 			nowSelectedPlayRuleView = new NowSelectedPlayRuleView();
 			addChild(nowSelectedPlayRuleView);
+			
+			nowJoinGroupInfoView = new NowJoinGroupInfoView();
+			addChild(nowJoinGroupInfoView);
 			
 			bottomGroup = new HGroup()
 			bottomGroup.verticalAlign = VerticalAlign.MIDDLE
@@ -192,8 +196,11 @@ package com.xiaomu.view.group
 			nowSelectedPlayRuleView.x = startButton.x-nowSelectedPlayRuleView.width+20;
 			nowSelectedPlayRuleView.y = height-nowSelectedPlayRuleView.height-5;
 			
+			nowJoinGroupInfoView.x = 20;
+			nowJoinGroupInfoView.y = nowSelectedPlayRuleView.y;
+			
 			bottomGroup.width = 300
-			bottomGroup.y = startButton.y;
+			bottomGroup.y = startButton.y-5;
 			bottomGroup.x = startButton.x-bottomGroup.width;
 		}
 		
@@ -211,6 +218,7 @@ package com.xiaomu.view.group
 						AppData.getInstane().allRules = response.data
 						roomsData = rooms
 						nowSelectedPlayRuleView.data = response.data[0];
+						nowJoinGroupInfoView.data = AppData.getInstane().group;
 						// 用户自己在不在房间数据中 在的话恢复游戏
 						for each(var room:Object in roomsData) {
 							for each(var username:String in room.users) {
