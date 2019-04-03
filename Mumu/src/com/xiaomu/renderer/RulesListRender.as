@@ -35,7 +35,7 @@ package com.xiaomu.renderer
 			super.createChildren();
 			
 			bgImg = new Image();
-			bgImg.source = 'assets/guild/guild_diban08.png';
+			bgImg.source = 'assets/guild/guild_diban02.png';
 			addChild(bgImg);
 			
 			selectedLab = new Label();

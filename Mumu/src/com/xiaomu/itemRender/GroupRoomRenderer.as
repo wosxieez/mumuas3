@@ -44,12 +44,12 @@ package com.xiaomu.itemRender
 			if (data) {
 				labelDisplay.text = JSON.stringify(data)
 				labelDisplay.visible =false;
-				trace("数据：：",JSON.stringify(data));// {"users":["wosxieez4","xiebao"],"name":"room878234","rid":1}
-				trace("玩法：",JSON.stringify(AppData.getInstane().allRules));
+//				trace("数据：：",JSON.stringify(data));// {"users":["wosxieez4","xiebao"],"name":"room878234","rid":1}
+//				trace("玩法：",JSON.stringify(AppData.getInstane().allRules));
 				for each (var ruleObj:Object in AppData.getInstane().allRules) 
 				{
 					if(ruleObj.id==data.rid){
-						trace("人数：",ruleObj.cc);
+//						trace("人数：",ruleObj.cc);
 						tableImg.source = "assets/guild/guild2_bg_table"+parseInt(ruleObj.cc)+"_phz.png"
 						player1.text = data.users[0]
 						player2.text = data.users[1]

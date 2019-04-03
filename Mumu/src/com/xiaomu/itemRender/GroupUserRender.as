@@ -1,11 +1,14 @@
 package com.xiaomu.itemRender
 {
+	import com.xiaomu.component.ImageButton;
 	import com.xiaomu.view.group.GroupUserMenu;
 	
 	import flash.events.MouseEvent;
 	
-	import coco.component.Button;
 	import coco.component.DefaultItemRenderer;
+	import coco.component.Image;
+	import coco.component.Label;
+	import coco.component.TextArea;
 	import coco.manager.PopUpManager;
 	
 	public class GroupUserRender extends DefaultItemRenderer
@@ -14,15 +17,50 @@ package com.xiaomu.itemRender
 		{
 			super();
 			mouseChildren = true
+			backgroundAlpha = 0;
 		}
 		
-		private var manageButton:Button
+		private var bgImg:Image;
+		private var lab:TextArea;
+		private var manageButton:ImageButton
+		private var labFen:Label;
+		private var labZhiWei:Label;
+		private var labName:Label;
 		
 		override protected function createChildren():void {
 			super.createChildren()
 			
-			manageButton = new Button()
-			manageButton.label = '管理'
+			bgImg = new Image();
+			bgImg.source = 'assets/guild/guild_diban02.png';
+			addChild(bgImg);
+			
+			lab = new TextArea();
+			lab.borderAlpha = lab.backgroundAlpha = 0;
+			lab.fontSize = 24;
+			lab.editable = false;
+			lab.color = 0x845525;
+			lab.leading = 5;
+			addChild(lab);
+			lab.visible= false;
+			
+			labName = new Label();
+			labName.fontSize = 24;
+			labName.color = 0x845525;
+			addChild(labName);
+			
+			labZhiWei = new Label();
+			labZhiWei.fontSize = 24;
+			labZhiWei.color = 0x845525;
+			addChild(labZhiWei);
+			
+			labFen = new Label();
+			labFen.fontSize = 24;
+			labFen.color = 0x845525;
+			addChild(labFen);
+			
+			manageButton = new ImageButton()
+			manageButton.upImageSource = 'assets/guild/btn_guild_manager_n.png';
+			manageButton.downImageSource = 'assets/guild/btn_guild_manager_p.png';
 			manageButton.addEventListener(MouseEvent.CLICK, manageButton_clickHandler)
 			addChild(manageButton)
 		}
@@ -61,23 +99,50 @@ package com.xiaomu.itemRender
 					}
 				}
 				
-				labelDisplay.text = data.username + ' 积分 ' + data.fs + ' 职位' + flag
+//				lab.text = data.username + ' 积分 ' + data.fs + ' 职位' + flag
+				labName.text = data.username;
+				labZhiWei.text = flag;
+				labFen.text = data.fs;
 			}
 		}
 		
 		override protected function updateDisplayList():void {
 			super.updateDisplayList()
+			
+			bgImg.width = width;
+			bgImg.height = height;
+			
+			lab.width = width-200;
+			lab.height = height*0.7;
+			lab.x = 20;
+			lab.y = (height-lab.height)/2;
+			
+			manageButton.height =  51
+			manageButton.width = 132
+			manageButton.x = width - manageButton.width-20
+			manageButton.y = ( height-manageButton.height)/2
 				
-			manageButton.height = height
-			manageButton.width = height * 2
-			manageButton.x = width - manageButton.width
+			labName.x = 20;
+			labName.width = 200;
+			labName.height = 40;
+			labName.y = (height-labName.height)/2;
+			
+			labZhiWei.x = labName.x+labName.width+10;
+			labZhiWei.width = 200;
+			labZhiWei.height = 40;
+			labZhiWei.y = (height-labZhiWei.height)/2;
+			
+			labFen.x = labZhiWei.x+labZhiWei.width+10;
+			labFen.width = 200;
+			labFen.height = 40;
+			labFen.y = (height-labFen.height)/2;
 		}
 		
 		protected function manageButton_clickHandler(event:MouseEvent):void
 		{
 			event.preventDefault()
 			event.stopImmediatePropagation()
-				
+			
 			GroupUserMenu.getInstane().x = width
 			GroupUserMenu.getInstane().targetUser = data
 			PopUpManager.addPopUp(GroupUserMenu.getInstane(), this, false, true)

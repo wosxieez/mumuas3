@@ -1,6 +1,7 @@
 package com.xiaomu.view.group
 {
 	import com.xiaomu.component.AppPanelBig;
+	import com.xiaomu.component.ImageButton;
 	import com.xiaomu.itemRender.GroupUserRender;
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.HttpApi;
@@ -9,7 +10,7 @@ package com.xiaomu.view.group
 	import flash.events.MouseEvent;
 	
 	import coco.component.Button;
-	import coco.component.HGroup;
+	import coco.component.Image;
 	import coco.component.List;
 	
 	public class GroupUsersPanel extends AppPanelBig
@@ -18,11 +19,14 @@ package com.xiaomu.view.group
 		{
 			super();
 			
-			title = '成员管理'
+//			title = '成员管理'
+			commitEnabled = false;
 		}
 		
+		private var titleImg:Image;
+		private var bgImg:Image;
 		private var usersList: List
-		private var bottomGroup: HGroup
+		private var addUserButton:ImageButton;
 		
 		private var _usersData:Array
 		
@@ -39,20 +43,32 @@ package com.xiaomu.view.group
 		
 		override protected function createChildren():void {
 			super.createChildren()
+				
+			titleImg = new Image();
+			titleImg.source = 'assets/guild/guild_title_guildManage.png';
+			titleImg.width = 293;
+			titleImg.height = 86;
+			addChild(titleImg);
+				
+			bgImg = new Image();
+			bgImg.source = 'assets/guild/guild_diban01.png';
+			addChild(bgImg);
 			
 			usersList = new List()
+			usersList.itemRendererHeight = 70;
+			usersList.gap = 10;
 			usersList.itemRendererClass = GroupUserRender
 			addChild(usersList)
 			
-			bottomGroup = new HGroup()
-			addChild(bottomGroup)
-			
-			var addUserButton:Button = new Button()
-			addUserButton.label = '添加成员'
+			addUserButton = new ImageButton()
+			addUserButton.width = 196;
+			addUserButton.height =70;
+			addUserButton.upImageSource = 'assets/guild/btn_guild_add_n.png'
+			addUserButton.downImageSource = 'assets/guild/btn_guild_add_p.png'
 			addUserButton.addEventListener(MouseEvent.CLICK, function (e:MouseEvent):void {
 				new AddUserPanel().open()
 			})
-			bottomGroup.addChild(addUserButton)
+			addChild(addUserButton)
 		}
 		
 		override protected function commitProperties():void {
@@ -63,18 +79,27 @@ package com.xiaomu.view.group
 		
 		override protected function updateDisplayList():void {
 			super.updateDisplayList()
+				
+			titleImg.x = (contentWidth-titleImg.width)/2;
+			titleImg.y = -60;
 			
-			bottomGroup.width = contentWidth
-			bottomGroup.height = 50
-			bottomGroup.y = contentHeight - bottomGroup.height
+			addUserButton.x = (contentWidth-addUserButton.width)/2;
+			addUserButton.y = contentHeight-addUserButton.height-20;
 			
-			usersList.width = contentWidth
-			usersList.height = bottomGroup.y
+			bgImg.x = 10;
+			bgImg.y = 70;
+			bgImg.width = contentWidth-20;
+			bgImg.height = addUserButton.y-bgImg.y-20;
+			
+			usersList.y = bgImg.y+10;
+			usersList.x = bgImg.x+10;
+			usersList.width = contentWidth-40
+			usersList.height = addUserButton.y-usersList.y-30;
 		}
 		
 		override public function open():void {
 			super.open()
-				
+			
 			HttpApi.getInstane().getGroupUser({gid: AppData.getInstane().group.id}, function (e:Event):void {
 				try
 				{

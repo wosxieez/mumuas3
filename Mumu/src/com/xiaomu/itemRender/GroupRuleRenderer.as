@@ -27,7 +27,7 @@ package com.xiaomu.itemRender
 			super.createChildren()
 				
 			bgImg = new Image();
-			bgImg.source = 'assets/guild/guild_diban08.png';
+			bgImg.source = 'assets/guild/guild_diban02.png';
 			addChild(bgImg);
 			
 			lab = new TextArea();

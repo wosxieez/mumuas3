@@ -9,6 +9,7 @@ package com.xiaomu.view.group
 	import flash.events.MouseEvent;
 	
 	import coco.component.Button;
+	import coco.component.Image;
 	import coco.component.List;
 	
 	public class GroupRulesPanel extends AppPanelBig
@@ -21,6 +22,7 @@ package com.xiaomu.view.group
 			commitEnabled = false
 		}
 		
+		private var bgImg:Image;
 		private var rulesList: List
 		private var addUserButton:Button;
 		
@@ -39,6 +41,10 @@ package com.xiaomu.view.group
 		
 		override protected function createChildren():void {
 			super.createChildren()
+			
+			bgImg = new Image();
+			bgImg.source = 'assets/guild/guild_diban01.png';
+			addChild(bgImg);
 			
 			rulesList = new List()
 			rulesList.itemRendererHeight = 70;
@@ -65,11 +71,18 @@ package com.xiaomu.view.group
 		override protected function updateDisplayList():void {
 			super.updateDisplayList()
 			
-			rulesList.width = contentWidth
-			rulesList.height = contentHeight-80;
-			
 			addUserButton.x = (contentWidth-addUserButton.width)/2;
-			addUserButton.y = contentHeight-addUserButton.height-15;
+			addUserButton.y = contentHeight-addUserButton.height-20;
+			
+			bgImg.x = 10;
+			bgImg.y = 10;
+			bgImg.width = contentWidth-20;
+			bgImg.height = addUserButton.y-bgImg.y-20;
+			
+			rulesList.y = bgImg.y+10;
+			rulesList.x = bgImg.x+10;
+			rulesList.width = contentWidth-40
+			rulesList.height = addUserButton.y-rulesList.y-30;
 		}
 		
 		override public function open():void {

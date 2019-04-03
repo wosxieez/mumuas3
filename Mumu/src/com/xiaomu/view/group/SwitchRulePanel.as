@@ -24,6 +24,7 @@ package com.xiaomu.view.group
 		}
 		
 		private var titleImg:Image;
+		private var bgImg:Image;
 		private var introduceLab:Label;
 		private var rulesList:List
 		
@@ -48,6 +49,10 @@ package com.xiaomu.view.group
 			titleImg.width = 293;
 			titleImg.height = 86;
 			addChild(titleImg);
+			
+			bgImg = new Image();
+			bgImg.source = 'assets/guild/guild_diban01.png';
+			addChild(bgImg);
 			
 			introduceLab = new Label();
 			introduceLab.textAlign = TextAlign.LEFT;
@@ -93,12 +98,19 @@ package com.xiaomu.view.group
 			introduceLab.width = contentWidth;
 			introduceLab.y = 30;
 			
-			rulesList.width = contentWidth
-			rulesList.height = contentHeight-60-40;
-			rulesList.y = 60;
+			bgImg.x = 10;
+			bgImg.y = 70;
+			bgImg.width = contentWidth-20;
+			bgImg.height = contentHeight-bgImg.y-20;
+			
+			rulesList.y = bgImg.y+10;
+			rulesList.x = bgImg.x+10
+			rulesList.width = bgImg.width-20
+			rulesList.height = bgImg.height-20;
+			
 			
 			titleImg.x = (contentWidth-titleImg.width)/2;
-			titleImg.y = -(titleImg.height)/2-20;
+			titleImg.y = -60;
 		}
 		
 		protected function rulesList_changeHandler(event:UIEvent):void
