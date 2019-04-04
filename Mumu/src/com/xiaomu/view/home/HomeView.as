@@ -19,6 +19,7 @@ package com.xiaomu.view.home
 	
 	import coco.component.ButtonGroup;
 	import coco.component.Image;
+	import coco.component.Label;
 	import coco.core.UIComponent;
 	import coco.event.UIEvent;
 	import coco.manager.PopUpManager;
@@ -47,6 +48,7 @@ package com.xiaomu.view.home
 		private var otherImg:ImageButton;
 		private var gonggaoImg:Image;
 		private var noticeBar:NoticeBar;
+		private var versionLab:Label;
 		override protected function createChildren():void
 		{
 			super.createChildren();
@@ -57,6 +59,11 @@ package com.xiaomu.view.home
 			
 			userInfoView = new UserInfoView2();
 			addChild(userInfoView);
+			
+			versionLab = new Label();
+			versionLab.text = "ver:"+AppData.getInstane().versionNum;
+			versionLab.color = 0xffffff;
+			addChild(versionLab);
 			
 			myGroup = new ImageButton();
 			myGroup.width = 270;
@@ -108,7 +115,7 @@ package com.xiaomu.view.home
 			otherImg.height = 291;
 			otherImg.upImageSource = 'assets/home/youxigaonggao.png';
 			otherImg.downImageSource = 'assets/home/youxigaonggao.png';
-//			otherImg.addEventListener(MouseEvent.CLICK, paoDeKuaiImg_clickHandler)
+			//			otherImg.addEventListener(MouseEvent.CLICK, paoDeKuaiImg_clickHandler)
 			addChild(otherImg);
 			
 			gonggaoImg = new Image();
@@ -188,19 +195,22 @@ package com.xiaomu.view.home
 		
 		protected function createGroupRoomFaultHandler(event:ApiEvent):void
 		{
-//			Api.getInstane().removeEventListener(ApiEvent.CREATE_GROUP_ROOM_SUCCESS, createGroupRoomSuccessHandler)
-//			Api.getInstane().removeEventListener(ApiEvent.CREATE_GROUP_ROOM_FAULT, createGroupRoomFaultHandler)
+			//			Api.getInstane().removeEventListener(ApiEvent.CREATE_GROUP_ROOM_SUCCESS, createGroupRoomSuccessHandler)
+			//			Api.getInstane().removeEventListener(ApiEvent.CREATE_GROUP_ROOM_FAULT, createGroupRoomFaultHandler)
 		}
 		
 		protected function createGroupRoomSuccessHandler(event:ApiEvent):void
 		{
-//			Api.getInstane().removeEventListener(ApiEvent.CREATE_GROUP_ROOM_SUCCESS, createGroupRoomSuccessHandler)
-//			Api.getInstane().removeEventListener(ApiEvent.CREATE_GROUP_ROOM_FAULT, createGroupRoomFaultHandler)
-//			GroupRoomView(MainView.getInstane().pushView(GroupRoomView)).init({huxi: 15})
+			//			Api.getInstane().removeEventListener(ApiEvent.CREATE_GROUP_ROOM_SUCCESS, createGroupRoomSuccessHandler)
+			//			Api.getInstane().removeEventListener(ApiEvent.CREATE_GROUP_ROOM_FAULT, createGroupRoomFaultHandler)
+			//			GroupRoomView(MainView.getInstane().pushView(GroupRoomView)).init({huxi: 15})
 		}
 		
 		override protected function updateDisplayList():void{
 			super.updateDisplayList();
+			
+			versionLab.x = 10
+			versionLab.y= userInfoView.height+15
 			
 			bg.width = width;
 			bg.height = height;
@@ -218,7 +228,7 @@ package com.xiaomu.view.home
 			proxyBtn.y = 10;
 			
 			checkInBtn.x = 10;
-			checkInBtn.y = userInfoView.x+userInfoView.height+20;
+			checkInBtn.y = userInfoView.x+userInfoView.height+50;
 			
 			waiterBtn.x = checkInBtn.x;
 			waiterBtn.y = checkInBtn.y+checkInBtn.height+10;
@@ -243,7 +253,7 @@ package com.xiaomu.view.home
 			myGroup.y = (height-myGroup.height)/2;
 			
 			otherImg.x = daTongZiImg.x-otherImg.width-10;
-//			otherImg.x = ziPaiImg.x-otherImg.width-10;
+			//			otherImg.x = ziPaiImg.x-otherImg.width-10;
 			otherImg.y = ziPaiImg.y-5;
 			
 			gonggaoImg.x = otherImg.x;
@@ -273,13 +283,13 @@ package com.xiaomu.view.home
 			if(btnGroup.selectedItem.name=='设置'){
 				PopUpManager.centerPopUp(PopUpManager.addPopUp(SettingPanelView.getInstane(),null,true,false,0x000000,0.8));
 			}
-			/*else if(btnGroup.selectedItem.name=='公告'){
+				/*else if(btnGroup.selectedItem.name=='公告'){
 				var gonggaoView:OfficalGongGaoView;
 				if(!gonggaoView){
-					gonggaoView = new OfficalGongGaoView();
-					PopUpManager.centerPopUp(PopUpManager.addPopUp(gonggaoView,null,false,true,0,0.6));
+				gonggaoView = new OfficalGongGaoView();
+				PopUpManager.centerPopUp(PopUpManager.addPopUp(gonggaoView,null,false,true,0,0.6));
 				}
-			}*/
+				}*/
 			else if(btnGroup.selectedItem.name=='分享'){
 				var noticeView:OfficalNoticeViewOfCopy;
 				if(!noticeView){noticeView = new OfficalNoticeViewOfCopy();}
@@ -338,37 +348,37 @@ package com.xiaomu.view.home
 		{
 			AppAlert.show('程序员小哥哥正在努力的开发中....')
 			return;
-//			var noticePanel:OfficalNoticeView;
-//			if(!noticePanel){noticePanel = new OfficalNoticeView()}
-//			var todayDate:String = getTodayDate();
-//			//			trace("今日日期:",todayDate);
-//			var user_id:int = parseInt(AppData.getInstane().user.userId);
-//			HttpApi.getInstane().getUserInfoById(user_id,function(e:Event):void{
-//				var oldDate:String = JSON.parse(e.currentTarget.data).message[0].checkin_date;
-//				var oldRoomCardNumber:int = JSON.parse(e.currentTarget.data).message[0].room_card;
-//				//				trace('房卡数：',JSON.parse(e.currentTarget.data).message[0].room_card);
-//				if(todayDate!=oldDate){
-//					HttpApi.getInstane().updateUserCheckIn(todayDate,user_id,function(e:Event):void{
-//						if(JSON.parse(e.currentTarget.data).result==0){
-//							//							trace('签到成功');
-//							var str:String = '签到成功，赠送您2张房卡。祝您游戏愉快！';
-//							noticePanel.showText = str;
-//							PopUpManager.centerPopUp(PopUpManager.addPopUp(noticePanel,null,true,false,0,0.6));
-//							HttpApi.getInstane().updateUserRoomCard(oldRoomCardNumber+2,user_id,function(e:Event):void{
-//								if(JSON.parse(e.currentTarget.data).result==0){
-//									//									trace('房卡增加成功');
-//									userInfoView.userInfoData = {"roomCard":oldRoomCardNumber+2,'userName':AppData.getInstane().username}
-//								}
-//							},null);
-//						}
-//					},null);
-//				}else{
-//					trace('今日已经签到');
-//					var str:String = '今日已经签到过了哦，明天再来吧。亲！';
-//					noticePanel.showText = str;
-//					PopUpManager.centerPopUp(PopUpManager.addPopUp(noticePanel,null,true,false,0,0.6));
-//				}
-//			},null);
+			//			var noticePanel:OfficalNoticeView;
+			//			if(!noticePanel){noticePanel = new OfficalNoticeView()}
+			//			var todayDate:String = getTodayDate();
+			//			//			trace("今日日期:",todayDate);
+			//			var user_id:int = parseInt(AppData.getInstane().user.userId);
+			//			HttpApi.getInstane().getUserInfoById(user_id,function(e:Event):void{
+			//				var oldDate:String = JSON.parse(e.currentTarget.data).message[0].checkin_date;
+			//				var oldRoomCardNumber:int = JSON.parse(e.currentTarget.data).message[0].room_card;
+			//				//				trace('房卡数：',JSON.parse(e.currentTarget.data).message[0].room_card);
+			//				if(todayDate!=oldDate){
+			//					HttpApi.getInstane().updateUserCheckIn(todayDate,user_id,function(e:Event):void{
+			//						if(JSON.parse(e.currentTarget.data).result==0){
+			//							//							trace('签到成功');
+			//							var str:String = '签到成功，赠送您2张房卡。祝您游戏愉快！';
+			//							noticePanel.showText = str;
+			//							PopUpManager.centerPopUp(PopUpManager.addPopUp(noticePanel,null,true,false,0,0.6));
+			//							HttpApi.getInstane().updateUserRoomCard(oldRoomCardNumber+2,user_id,function(e:Event):void{
+			//								if(JSON.parse(e.currentTarget.data).result==0){
+			//									//									trace('房卡增加成功');
+			//									userInfoView.userInfoData = {"roomCard":oldRoomCardNumber+2,'userName':AppData.getInstane().username}
+			//								}
+			//							},null);
+			//						}
+			//					},null);
+			//				}else{
+			//					trace('今日已经签到');
+			//					var str:String = '今日已经签到过了哦，明天再来吧。亲！';
+			//					noticePanel.showText = str;
+			//					PopUpManager.centerPopUp(PopUpManager.addPopUp(noticePanel,null,true,false,0,0.6));
+			//				}
+			//			},null);
 		}
 		
 		private function getTodayDate():String

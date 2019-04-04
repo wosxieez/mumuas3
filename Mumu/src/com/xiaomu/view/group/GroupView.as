@@ -13,6 +13,7 @@ package com.xiaomu.view.group
 	import com.xiaomu.util.Notifications;
 	import com.xiaomu.view.MainView;
 	import com.xiaomu.view.hall.HallView;
+	import com.xiaomu.view.hall.popUpPanel.TestPanel;
 	import com.xiaomu.view.room.RoomView;
 	
 	import flash.events.Event;
@@ -78,6 +79,13 @@ package com.xiaomu.view.group
 			bg = new Image()
 			bg.source = 'assets/group/guild2_bg.png'
 			addChild(bg)
+			
+			var testBtn:Button = new Button();
+			testBtn.label = '测试按钮';
+			testBtn.x = 200;
+			testBtn.addEventListener(MouseEvent.CLICK,clickHandler);
+			addChild(testBtn);
+			testBtn.visible= false;
 			
 			roomsList = new List()
 			roomsList.itemRendererColumnCount = 4
@@ -312,7 +320,7 @@ package com.xiaomu.view.group
 		
 		protected function onGroupHandler(event:ApiEvent):void
 		{
-			trace('收到消息', JSON.stringify(event.data))
+//			trace('收到消息', JSON.stringify(event.data))
 			var notification:Object = event.data
 			switch(notification.name)
 			{
@@ -385,5 +393,13 @@ package com.xiaomu.view.group
 			})
 		}
 		
+		/**
+		 * 测试按钮，测试显示一盘游戏结果界面
+		 */
+		protected function clickHandler(event:MouseEvent):void
+		{
+			TestPanel.getInstane().open();
+			TestPanel.getInstane().data = AppData.getInstane().testData;
+		}
 	}
 }

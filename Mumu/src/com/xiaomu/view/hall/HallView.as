@@ -11,7 +11,7 @@ package com.xiaomu.view.hall
 	import com.xiaomu.view.MainView;
 	import com.xiaomu.view.group.GroupView;
 	import com.xiaomu.view.hall.popUpPanel.AddGroupPanel;
-	import com.xiaomu.view.hall.popUpPanel.JoinGroupNoticePanel;
+	import com.xiaomu.view.hall.popUpPanel.TestPanel;
 	import com.xiaomu.view.home.HomeView;
 	import com.xiaomu.view.userBarView.UserInfoView2;
 	
@@ -256,7 +256,8 @@ package com.xiaomu.view.hall
 		 */
 		protected function joinGroupBtnHandler(event:MouseEvent):void
 		{
-			JoinGroupNoticePanel.getInstane().open();
+			TestPanel.getInstane().open();
+			AppAlert.show('程序员小哥哥正在努力的开发中....\r请联系群主手动添加')
 		}
 	}
 }

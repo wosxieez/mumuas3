@@ -17,7 +17,10 @@ package com.xiaomu.util
 			
 			return instance
 		}
+		//测试数据，一把结束后的数据
+		public var testData:Object = {"pn":"wosxieez3","us":[{"groupCards":[{"name":"ti","huXi":9,"cards":[2,2,2,2]},{"name":"wei","huXi":3,"cards":[10,10,10]},{"name":"wei","huXi":6,"cards":[13,13,13]},{"cards":[15,16,17],"huXi":0,"name":"chi"}],"dn":false,"handCards":[6,9,3,6,9,6,4],"username":"wosxieez3","hx":0,"upCards":[11,18,19,7,1,5],"passCards":[11,14,18,19,16,7,5,3,12,18,1,11,12,5,8,8,14,16],"ucCards":[11,18,19,7,1,5],"isReady":true}],"ad":[{"name":"ti","huXi":9,"cards":[2,2,2,2]},{"name":"wei","huXi":3,"cards":[10,10,10]},{"name":"wei","huXi":6,"cards":[13,13,13]},{"cards":[15,16,17],"huXi":0,"name":"chi"},{"name":"kan","huXi":3,"cards":[6,6,6]},{"name":"chi","huXi":0,"cards":[3,4,5]},{"name":"jiang","huXi":0,"cards":[9,9]}],"zn":"wosxieez3","pc":5,"og":true,"io":false,"ig":true,"an":"wosxieez3","at":20,"cc":1,"zc":0}
 		
+		public var versionNum:String="0.0.1"
 		public var user:Object  // 当前用户
 		public var group:Object // 当前群
 		public var groupLL:int;//你在当前群中的等级 0普通，1二级管理员，2一级管理员，3副馆主，4馆主

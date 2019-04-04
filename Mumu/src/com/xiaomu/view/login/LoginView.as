@@ -6,6 +6,7 @@ package com.xiaomu.view.login
 	import flash.utils.setTimeout;
 	
 	import coco.component.Button;
+	import coco.component.Label;
 	import coco.component.TextAlign;
 	import coco.component.TextArea;
 	import coco.core.UIComponent;
@@ -27,6 +28,7 @@ package com.xiaomu.view.login
 		private var	loginBtn : Button;
 		private var bottomLab : TextArea;
 		private var NoticeInfo : String = '本网络游戏适合年满16岁以上用户，为了您的健康，请合理控制游戏时间';
+		private var versionLab:Label ;
 		public function get isloginFlag():Boolean
 		{
 			return _isloginFlag;
@@ -56,8 +58,13 @@ package com.xiaomu.view.login
 			bottomLab.color = 0xffffff;
 			bottomLab.backgroundAlpha = 0;
 			bottomLab.borderAlpha = 0;
-			bottomLab.fontSize = 7;
+			bottomLab.fontSize = 12;
 			addChild(bottomLab);
+			
+			versionLab = new Label();
+			versionLab.text = "ver:"+AppData.getInstane().versionNum;
+			versionLab.color = 0xffffff;
+			addChild(versionLab);
 		}
 		
 		override protected function commitProperties():void
@@ -68,9 +75,13 @@ package com.xiaomu.view.login
 		override protected function updateDisplayList():void{
 			super.updateDisplayList();
 			
+			versionLab.x = 0;
+			versionLab.y = 0;
+			
+			
 			loginPanel.x = (width - loginPanel.width) / 2
 			loginPanel.y = (height - loginPanel.height) / 2
-				
+			
 			registerPanel.x = loginPanel.x
 			registerPanel.y = loginPanel.y;
 			

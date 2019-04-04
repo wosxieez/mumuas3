@@ -19,7 +19,7 @@ package com.xiaomu.view.group
 			super();
 			
 			itemRendererClass = GroupUserMenuRender;
-			itemRendererHeight = 50;
+			itemRendererHeight = 80;
 			itemRendererColumnCount = 1
 			gap = 5;
 			dataProvider = ['升职', '降职', '增加疲劳值', '减少疲劳值', '踢出群']
