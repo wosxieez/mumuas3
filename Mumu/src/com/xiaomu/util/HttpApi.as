@@ -20,7 +20,7 @@ package com.xiaomu.util
 			return instance
 		}
 		
-		//		private static const WEB_URL:String = 'http://192.168.0.169:3008/'
+		//				private static const WEB_URL:String = 'http://192.168.0.169:3008/'
 		private static const WEB_URL:String = 'http://hefeixiaomu.com:3008/'
 		
 		
@@ -32,7 +32,7 @@ package com.xiaomu.util
 		 */			
 		public function addUser(params:Object, resultHandler:Function = null, faultHandler:Function = null):void
 		{
-			var urlrequest:URLRequest = new URLRequest(WEB_URL + 'inster_user');
+			var urlrequest:URLRequest = new URLRequest(WEB_URL + 'insert_user');
 			urlrequest.method = URLRequestMethod.POST
 			urlrequest.contentType = 'application/json'
 			urlrequest.data = JSON.stringify(params)

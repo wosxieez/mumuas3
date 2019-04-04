@@ -1,5 +1,6 @@
 package com.xiaomu.view.login
 {
+	import com.xiaomu.component.AppAlert;
 	import com.xiaomu.component.ImageButton;
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.HttpApi;
@@ -7,7 +8,6 @@ package com.xiaomu.view.login
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
-	import coco.component.Alert;
 	import coco.component.Label;
 	import coco.component.TextInput;
 	import coco.core.UIComponent;
@@ -130,24 +130,19 @@ package com.xiaomu.view.login
 		
 		protected function registerHandler(event:MouseEvent):void
 		{
-//			if(!phoneNumInput.text&&!passwordInput.text){
-//				return
-//			}
-//			HttpApi.getInstane().getUserInfoByName(phoneNumInput.text,function(e:Event):void{
-//				if((JSON.parse(e.currentTarget.data).message as Array).length==0){
-//					trace('该账号名可以用');
-//					HttpApi.getInstane().addUser(phoneNumInput.text,passwordInput.text,function(e:Event):void{
-//						if(JSON.parse(e.currentTarget.data).result==0){
-//							AppAlert.show('注册成功');
-//							AppData.getInstane().username = phoneNumInput.text;
-//							AppData.getInstane().password = passwordInput.text;
-//							trace(AppData.getInstane().username,AppData.getInstane().password);
-//						}
-//					},null);
-//				}else{
-//					AppAlert.show('该账号名已经存在');
-//				}
-//			},null);
+			if(!phoneNumInput.text&&!passwordInput.text){
+				return
+			}
+			HttpApi.getInstane().addUser({username: phoneNumInput.text, password: passwordInput.text},
+				function(e:Event):void{
+					if(JSON.parse(e.currentTarget.data).code==0){
+						AppAlert.show('注册成功');
+						AppData.getInstane().username = phoneNumInput.text;
+						AppData.getInstane().password = passwordInput.text;
+					} else {
+						AppAlert.show('注册失败');
+					}
+				},null);
 		}	
 	}
 }

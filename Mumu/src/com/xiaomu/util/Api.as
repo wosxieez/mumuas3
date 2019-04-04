@@ -47,7 +47,7 @@ package com.xiaomu.util
 			this.cb = cb
 			pomelo = new Pomelo()
 			pomelo.init("192.168.0.169", 3014)
-			//			pomelo.init("106.14.148.139", 3014)
+//						pomelo.init("106.14.148.139", 3014)
 			pomelo.addEventListener(PomeloEvent.HANDSHAKE, onConnectHandler);
 			pomelo.addEventListener(PomeloEvent.ERROR, pomeloErrorHandler);
 		}
