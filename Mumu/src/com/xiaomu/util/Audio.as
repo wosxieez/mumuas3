@@ -2,6 +2,7 @@ package com.xiaomu.util
 {
 	import flash.media.Sound;
 	import flash.media.SoundChannel;
+	import flash.media.SoundTransform;
 	import flash.net.URLRequest;
 	
 	/**
@@ -29,7 +30,6 @@ package com.xiaomu.util
 		private var bgSound:Sound
 		
 		public function playBGM():void {
-			return
 			if (bgSoundChannel) {
 				try
 				{
@@ -43,6 +43,7 @@ package com.xiaomu.util
 			
 			bgSound = new Sound(new URLRequest('assets/bgm.mp3'))
 			bgSoundChannel = bgSound.play(0, 1000000)
+			bgSoundChannel.soundTransform = new SoundTransform(int(AppData.getInstane().bgmValue) / 100, 0)
 		}
 		
 		public function stopBGM():void {
@@ -55,6 +56,25 @@ package com.xiaomu.util
 				{
 					
 				}
+			}
+			
+			bgSoundChannel = null
+			bgSound = null
+		}
+		
+		public function pauseBGM():void {
+			trace('暂停音乐')
+			if (bgSoundChannel) {
+				bgSoundChannel.stop()
+			}
+		}
+		
+		public function resumeBGM():void {
+			trace('恢复音乐')
+			if (bgSoundChannel && bgSound) {
+				bgSoundChannel.stop()
+				bgSoundChannel = bgSound.play(0, 1000000)
+				bgSoundChannel.soundTransform = new SoundTransform(int(AppData.getInstane().bgmValue) / 100, 0)
 			}
 		}
 		
@@ -83,6 +103,7 @@ package com.xiaomu.util
 			
 			cardSound = new Sound(new URLRequest('sound/card/v' + card + '.mp3'))
 			cardChannel = cardSound.play()
+			cardChannel.soundTransform = new SoundTransform(int(AppData.getInstane().gameMusicValue) / 100, 0)
 		}
 		
 		private var handleChannel:SoundChannel
@@ -109,6 +130,7 @@ package com.xiaomu.util
 			
 			handleSound = new Sound(new URLRequest('sound/handle/' + name + '.mp3'))
 			handleChannel = handleSound.play()
+			handleChannel.soundTransform = new SoundTransform(int(AppData.getInstane().gameMusicValue) / 100, 0)
 		}
 		
 		private var chatChannel:SoundChannel
@@ -128,14 +150,7 @@ package com.xiaomu.util
 			
 			chatSound = new Sound(new URLRequest('sound/msg/' + name + '.mp3'))
 			chatChannel = chatSound.play()
-		}
-		
-		public function changeBgmGain(gainValue:int):void{
-			trace('bgm增益：',gainValue);
-		}
-		
-		public function changeGameGain(gainValue:int):void{
-			trace('game增益：',gainValue);
+			chatChannel.soundTransform = new SoundTransform(int(AppData.getInstane().gameMusicValue) / 100, 0)
 		}
 		
 	}

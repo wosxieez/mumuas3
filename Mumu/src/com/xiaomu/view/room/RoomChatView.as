@@ -60,7 +60,10 @@ package com.xiaomu.view.room
 		
 		protected function list_changeHandler(event:UIEvent):void
 		{
-			Api.getInstane().sendRoomMessage({pn: AppData.getInstane().user.username, cmd: 1, data: list.selectedIndex}, function ():void {})
+			Api.getInstane().sendRoomMessage({sn: AppData.getInstane().user.username, data: list.selectedIndex}, 
+				function (response):void {
+					trace(JSON.stringify(response))
+				})
 			list.selectedIndex = -1
 			PopUpManager.removePopUp(this)
 		}

@@ -2,7 +2,6 @@ package com.xiaomu.view.home.setting
 {
 	
 	import com.xiaomu.component.ImageButton;
-	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.Audio;
 	import com.xiaomu.view.MainView;
 	import com.xiaomu.view.login.LoginView;
@@ -25,6 +24,16 @@ package com.xiaomu.view.home.setting
 			super();
 		}
 		
+		private static var instance:SettingPanelView
+		
+		public static function getInstane(): SettingPanelView {
+			if (!instance) {
+				instance = new SettingPanelView()
+			}
+			
+			return instance
+		}
+		
 		private var bgImg:Image;
 		private var titleImg:Image;
 		private var setType:ButtonGroup;
@@ -32,6 +41,7 @@ package com.xiaomu.view.home.setting
 		private var otherSetView:OtherSetView;
 		private var signOutBtn:ImageButton;
 		private var closeBtn:ImageButton;
+		
 		override protected function createChildren():void
 		{
 			super.createChildren();

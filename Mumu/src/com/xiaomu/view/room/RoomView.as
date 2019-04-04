@@ -564,6 +564,7 @@ package com.xiaomu.view.room
 			if (myUser) {
 				if (draggingCardUI) {
 					draggingCardUI.stopDrag()
+					this.removeEventListener(MouseEvent.MOUSE_UP, this_mouseUpHandler)
 				}
 				
 				if (!myHandCards) {
@@ -982,10 +983,12 @@ package com.xiaomu.view.room
 						Api.getInstane().sendAction(action)
 					} else {
 						needOutTing = true
+						riffleCard()
 						invalidateProperties()
 					}
 				} else {
-					// 如果不是我出牌的
+					// 如果不是我出牌的 整理牌
+					riffleCard()
 					invalidateProperties()
 				}
 			}
@@ -1032,6 +1035,7 @@ package com.xiaomu.view.room
 			{
 				case Notifications.onRoomMessage: 
 				{
+					Audio.getInstane().playChat(notification.data.data)
 					break
 				}
 				case Notifications.onReady:

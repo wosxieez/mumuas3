@@ -274,9 +274,7 @@ package com.xiaomu.view.home
 				return;
 			}
 			if(btnGroup.selectedItem.name=='设置'){
-				var setPanelView:SettingPanelView
-				if(!setPanelView){setPanelView = new SettingPanelView();}
-				PopUpManager.centerPopUp(PopUpManager.addPopUp(setPanelView,null,true,false,0x000000,0.8));
+				PopUpManager.centerPopUp(PopUpManager.addPopUp(SettingPanelView.getInstane(),null,true,false,0x000000,0.8));
 			}
 			/*else if(btnGroup.selectedItem.name=='公告'){
 				var gonggaoView:OfficalGongGaoView;

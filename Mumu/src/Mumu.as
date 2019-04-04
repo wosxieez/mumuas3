@@ -1,5 +1,6 @@
 package
 {
+	import com.xiaomu.util.Audio;
 	import com.xiaomu.view.MainView;
 	import com.xiaomu.view.login.LoginView;
 	
@@ -94,12 +95,16 @@ package
 		
 		protected function this_activateHandler(event:Event):void
 		{
+			trace('activate')
 			NativeApplication.nativeApplication.systemIdleMode = SystemIdleMode.KEEP_AWAKE;
+			Audio.getInstane().resumeBGM()
 		}
 		
 		protected function this_deactivateHandler(event:Event):void
 		{
+			trace('deactivate')
 			NativeApplication.nativeApplication.systemIdleMode = SystemIdleMode.NORMAL;
+			Audio.getInstane().pauseBGM()
 		}
 		
 		protected function handleKeys(event:KeyboardEvent):void

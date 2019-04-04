@@ -5,7 +5,6 @@ package com.xiaomu.view.home.setting
 	import com.xiaomu.util.Audio;
 	
 	import coco.component.Image;
-	import coco.component.Label;
 	import coco.core.UIComponent;
 	import coco.event.UIEvent;
 	
@@ -83,13 +82,12 @@ package com.xiaomu.view.home.setting
 		protected function changegameHandler(event:UIEvent):void
 		{
 			AppData.getInstane().gameMusicValue=gameMusicSlider.value+'';
-			Audio.getInstane().changeGameGain(int(gameMusicSlider.value));
 		}
 		
 		protected function changebgmHandler(event:UIEvent):void
 		{
 			AppData.getInstane().bgmValue=bgmMusicSlider.value+'';
-			Audio.getInstane().changeBgmGain(int(bgmMusicSlider.value));
+			Audio.getInstane().resumeBGM()
 		}
 		
 		override protected function updateDisplayList():void

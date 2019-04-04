@@ -26,7 +26,11 @@ package com.xiaomu.util
 		
 		public function get gameMusicValue():String
 		{
-			return getShareObjectValue("gameMusicValue");
+			if (getShareObjectValue("gameMusicValue")) {
+				return getShareObjectValue("gameMusicValue")
+			} else {
+				return '100'
+			}
 		}
 		
 		public function set gameMusicValue(value:String):void
@@ -36,7 +40,11 @@ package com.xiaomu.util
 		
 		public function get bgmValue():String
 		{
-			return getShareObjectValue("bgmValue");
+			if (getShareObjectValue("bgmValue")) {
+				return getShareObjectValue("bgmValue")
+			} else {
+				return '100'
+			}
 		}
 		
 		public function set bgmValue(value:String):void

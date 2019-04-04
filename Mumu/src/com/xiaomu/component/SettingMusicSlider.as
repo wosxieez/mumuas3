@@ -196,6 +196,7 @@ package com.xiaomu.component
 		{
 			stage.removeEventListener(MouseEvent.MOUSE_MOVE, this_mouseMoveHandler);
 			stage.removeEventListener(MouseEvent.MOUSE_UP, this_mouseUpHandler);
+			dispatchEvent(new UIEvent(UIEvent.CHANGE));
 		}
 		
 		protected function this_mouseMoveHandler(event:MouseEvent):void
@@ -207,7 +208,6 @@ package com.xiaomu.component
 				newThumbX = thumbMaxX;
 			thumbImage.x = newThumbX;
 			_value = newThumbX * valuePerX + minValue;
-			dispatchEvent(new UIEvent(UIEvent.CHANGE));
 			invalidateDisplayList();
 		}
 		
