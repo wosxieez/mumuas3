@@ -1,15 +1,14 @@
 package com.xiaomu.view.group
 {
+	import com.xiaomu.component.AppAlert;
 	import com.xiaomu.component.AppPanelBig;
 	import com.xiaomu.component.CountTool;
 	import com.xiaomu.renderer.AddRuleRender;
-	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.HttpApi;
 	
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
-	import coco.component.Alert;
 	import coco.component.ButtonGroup;
 	import coco.component.Label;
 	import coco.component.TextAlign;
@@ -316,15 +315,15 @@ package com.xiaomu.view.group
 					{
 						var response:Object = JSON.parse(e.currentTarget.data)
 						if (response.code == 0) {
-							Alert.show('更新玩法成功')
+							AppAlert.show('更新玩法成功')
 							close()
 						} else {
-							Alert.show('更新玩法失败')
+							AppAlert.show('更新玩法失败')
 						}
 					} 
 					catch(error:Error) 
 					{
-						Alert.show('更新玩法失败')
+						AppAlert.show('更新玩法失败')
 					}
 				})
 		}

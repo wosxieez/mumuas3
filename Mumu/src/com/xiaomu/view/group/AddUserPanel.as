@@ -1,14 +1,13 @@
 package com.xiaomu.view.group
 {
+	import com.xiaomu.component.AppAlert;
 	import com.xiaomu.component.AppPanelSmall;
-	import com.xiaomu.component.TitleTextInput;
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.HttpApi;
 	
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
-	import coco.component.Alert;
 	import coco.component.Image;
 	import coco.component.Label;
 	import coco.component.TextInput;
@@ -82,7 +81,7 @@ package com.xiaomu.view.group
 								function (ee:Event):void {
 									var response2:Object = JSON.parse(ee.currentTarget.data)
 									if (response2.code == 0) {
-										Alert.show('添加成员成功')
+										AppAlert.show('添加成员成功')
 										close()
 									}
 								})

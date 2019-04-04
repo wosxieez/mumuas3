@@ -1,5 +1,6 @@
 package com.xiaomu.view.group
 {
+	import com.xiaomu.component.AppAlert;
 	import com.xiaomu.component.AppPanelSmall;
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.HttpApi;
@@ -7,7 +8,6 @@ package com.xiaomu.view.group
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
-	import coco.component.Alert;
 	import coco.component.Label;
 	import coco.component.TextInput;
 	
@@ -85,7 +85,7 @@ package com.xiaomu.view.group
 		
 		private function doAction():void {
 			if (fromUser.ll != 4 && fromUser.ll != 3 && fromUser.uid != toUser.pid) {
-				Alert.show('您没有权限操作')
+				AppAlert.show('您没有权限操作')
 				return
 			}
 			var score:Number = Number(addScoreInput.text)
@@ -105,18 +105,18 @@ package com.xiaomu.view.group
 								function (ee:Event):void {
 									var response2:Object = JSON.parse(ee.currentTarget.data)
 									if (response2.code == 0) {
-										Alert.show('下分成功')
+										AppAlert.show('下分成功')
 										close()
 									} else {
-										Alert.show('下分失败')
+										AppAlert.show('下分失败')
 									}
 								})
 						} else {
-							Alert.show('下分失败')
+							AppAlert.show('下分失败')
 						}
 					})
 			} else {
-				Alert.show('对方积分不足，下分失败')
+				AppAlert.show('对方积分不足，下分失败')
 			}
 		}
 		

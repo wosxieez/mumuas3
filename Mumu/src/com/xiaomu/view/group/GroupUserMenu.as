@@ -1,5 +1,6 @@
 package com.xiaomu.view.group
 {
+	import com.xiaomu.component.AppAlert;
 	import com.xiaomu.renderer.GroupUserMenuRender;
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.HttpApi;
@@ -7,7 +8,6 @@ package com.xiaomu.view.group
 	import flash.events.Event;
 	import flash.utils.setTimeout;
 	
-	import coco.component.Alert;
 	import coco.component.ButtonGroup;
 	import coco.event.UIEvent;
 	import coco.manager.PopUpManager;
@@ -100,16 +100,16 @@ package com.xiaomu.view.group
 								function (e:Event):void {
 									var response:Object = JSON.parse(e.currentTarget.data)
 									if (response.code == 0) {
-										Alert.show('升职成功')
+										AppAlert.show('升职成功')
 									} else {
-										Alert.show('升职失败')
+										AppAlert.show('升职失败')
 									}
 								})
 						} else {
-							Alert.show('无法再升职了')
+							AppAlert.show('无法再升职了')
 						}
 					} else {
-						Alert.show('您没有权限操作')
+						AppAlert.show('您没有权限操作')
 					}
 					break;
 				}
@@ -124,16 +124,16 @@ package com.xiaomu.view.group
 								function (e:Event):void {
 									var response:Object = JSON.parse(e.currentTarget.data)
 									if (response.code == 0) {
-										Alert.show('降职成功')
+										AppAlert.show('降职成功')
 									} else {
-										Alert.show('降职失败')
+										AppAlert.show('降职失败')
 									}
 								})
 						} else {
-							Alert.show('无法再降职了')
+							AppAlert.show('无法再降职了')
 						}
 					} else {
-						Alert.show('您没有权限操作')
+						AppAlert.show('您没有权限操作')
 					}
 					break;
 				}
@@ -151,17 +151,17 @@ package com.xiaomu.view.group
 									HttpApi.getInstane().removeGroupUser({gid: toUser.gid, uid: toUser.uid}, function (ee:Event):void {
 										var response2:Object = JSON.parse(ee.currentTarget.data)
 										if (response2.code == 0) {
-											Alert.show('踢出成功')
+											AppAlert.show('踢出成功')
 										} else {
-											Alert.show('踢出失败')
+											AppAlert.show('踢出失败')
 										}
 									})
 								} else {
-									Alert.show('踢出失败')
+									AppAlert.show('踢出失败')
 								}
 							})
 					} else {
-						Alert.show('您没有权限操作')
+						AppAlert.show('您没有权限操作')
 					}
 					break;
 				}

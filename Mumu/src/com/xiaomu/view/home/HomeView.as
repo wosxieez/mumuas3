@@ -1,5 +1,6 @@
 package com.xiaomu.view.home
 {
+	import com.xiaomu.component.AppAlert;
 	import com.xiaomu.component.ImageButton;
 	import com.xiaomu.event.ApiEvent;
 	import com.xiaomu.itemRender.HomeBottomBarRender;
@@ -177,16 +178,12 @@ package com.xiaomu.view.home
 		
 		protected function paoDeKuaiImg_clickHandler(event:MouseEvent):void
 		{
-			DevelopingNotice.getInstane().open()
-//			new CaiCaiCaiPanel().open()
+			AppAlert.show('程序员小哥哥正在努力的开发中....')
 		}
 		
 		protected function ziPaiImg_clickHandler(event:MouseEvent):void
 		{
-			DevelopingNotice.getInstane().open()
-//			Api.getInstane().addEventListener(ApiEvent.CREATE_GROUP_ROOM_SUCCESS, createGroupRoomSuccessHandler)
-//			Api.getInstane().addEventListener(ApiEvent.CREATE_GROUP_ROOM_FAULT, createGroupRoomFaultHandler)
-//			Api.getInstane().createGroupRoom('wosxieez')
+			AppAlert.show('程序员小哥哥正在努力的开发中....')
 		}
 		
 		protected function createGroupRoomFaultHandler(event:ApiEvent):void
@@ -290,7 +287,7 @@ package com.xiaomu.view.home
 				noticeView.copyText = 'www.baidu.com';
 				PopUpManager.centerPopUp(PopUpManager.addPopUp(noticeView,null,true,true,0x000000,0.5));
 			} else {
-				DevelopingNotice.getInstane().open()
+				AppAlert.show('程序员小哥哥正在努力的开发中....')
 			}
 			
 			btnGroup.selectedIndex = -1
@@ -298,33 +295,14 @@ package com.xiaomu.view.home
 		
 		protected function joinRoomClickHandler(event:MouseEvent):void
 		{
-			DevelopingNotice.getInstane().open()
-//			Api.getInstane().addEventListener(ApiEvent.JOIN_GROUP_ROOM_SUCCESS, joinGroupRoomSuccessHandler)
-//			Api.getInstane().addEventListener(ApiEvent.JOIN_GROUP_ROOM_FAULT, joinGroupRoomFaultHandler)
-//			new JoinGroupRoomPanel().open()
-		}
-		
-		protected function joinGroupRoomFaultHandler(event:ApiEvent):void
-		{
-//			Api.getInstane().removeEventListener(ApiEvent.JOIN_GROUP_ROOM_SUCCESS, joinGroupRoomSuccessHandler)
-//			Api.getInstane().removeEventListener(ApiEvent.JOIN_GROUP_ROOM_FAULT, joinGroupRoomFaultHandler)
-		}
-		
-		protected function joinGroupRoomSuccessHandler(event:ApiEvent):void
-		{
-//			Api.getInstane().removeEventListener(ApiEvent.JOIN_GROUP_ROOM_SUCCESS, joinGroupRoomSuccessHandler)
-//			Api.getInstane().removeEventListener(ApiEvent.JOIN_GROUP_ROOM_FAULT, joinGroupRoomFaultHandler)
-//			GroupRoomView(MainView.getInstane().pushView(GroupRoomView)).init({huxi: 15})
-		}
+			AppAlert.show('程序员小哥哥正在努力的开发中....')		}
 		
 		/**
 		 * 商场
 		 */
 		protected function shoppingBtnHandler(event:MouseEvent):void
 		{
-			DevelopingNotice.getInstane().open()
-			/*var text:String = '如需购买房卡请联系客服微信：';
-			popUpHandler(text);*/
+			AppAlert.show('程序员小哥哥正在努力的开发中....')
 		}
 		
 		/**
@@ -332,9 +310,7 @@ package com.xiaomu.view.home
 		 */
 		protected function waiterBtnHandler(event:MouseEvent):void
 		{
-			DevelopingNotice.getInstane().open()
-			/*var text:String = '有问题请联系微信：';
-			popUpHandler(text);*/
+			AppAlert.show('程序员小哥哥正在努力的开发中....')
 		}
 		
 		/**
@@ -342,9 +318,7 @@ package com.xiaomu.view.home
 		 */
 		protected function proxyBtnBtnHandler(event:MouseEvent):void
 		{
-			DevelopingNotice.getInstane().open()
-			/*var text:String = '您不是代理，想成为代理请联系微信：';
-			popUpHandler(text);*/
+			AppAlert.show('程序员小哥哥正在努力的开发中....')
 		}
 		
 		private function popUpHandler(text:String):void
@@ -362,7 +336,7 @@ package com.xiaomu.view.home
 		 */
 		protected function checkInBtnHandler(event:MouseEvent):void
 		{
-			DevelopingNotice.getInstane().open()
+			AppAlert.show('程序员小哥哥正在努力的开发中....')
 			return;
 //			var noticePanel:OfficalNoticeView;
 //			if(!noticePanel){noticePanel = new OfficalNoticeView()}

@@ -152,14 +152,14 @@ package com.xiaomu.view.userBarView
 //					trace('最新金币数据：',JSON.stringify(group_info));
 					HttpApi.getInstane().updateUserGroupInfo(data.userName,group_info,function(e:Event):void{
 						if(JSON.parse(e.currentTarget.data).result==0){
-							Alert.show('金币更新成功');
+							AppAlert.show('金币更新成功');
 							AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.UPDATE_ADMIN_GOLD_SUCCESS));
 						}
 					},null);
 					
 				},null);
 			}else{
-				Alert.show('不是有效数字');
+				AppAlert.show('不是有效数字');
 			}
 		}
 	}

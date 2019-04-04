@@ -1,7 +1,5 @@
 package com.xiaomu.view.room
 {
-	import com.xiaomu.util.Assets;
-	
 	import coco.component.Image;
 	import coco.component.Label;
 	import coco.component.SkinComponent;
@@ -103,7 +101,7 @@ package com.xiaomu.view.room
 			icon = new Image()
 			icon.width = icon.height = 72
 			icon.x = icon.y = 4
-			icon.source = Assets.getInstane().getAssets('avatar1.png')
+			icon.source = 'assets/hall/headIcon.png'
 			addChild(icon)
 			
 			zhuangImage = new Image()

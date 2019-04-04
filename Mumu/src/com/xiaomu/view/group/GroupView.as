@@ -1,5 +1,6 @@
 package com.xiaomu.view.group
 {
+	import com.xiaomu.component.AppAlert;
 	import com.xiaomu.component.ImageButton;
 	import com.xiaomu.component.Loading;
 	import com.xiaomu.event.ApiEvent;
@@ -17,7 +18,6 @@ package com.xiaomu.view.group
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
-	import coco.component.Alert;
 	import coco.component.Button;
 	import coco.component.HGroup;
 	import coco.component.HorizontalAlign;
@@ -290,7 +290,7 @@ package com.xiaomu.view.group
 				if (response.code == 0) {
 					RoomView(MainView.getInstane().pushView(RoomView)).init(response.data)
 				} else {
-					Alert.show(JSON.stringify(response.data))
+					AppAlert.show(JSON.stringify(response.data))
 				}
 			})
 		}
@@ -303,7 +303,7 @@ package com.xiaomu.view.group
 				if (response.code == 0) {
 					RoomView(MainView.getInstane().pushView(RoomView)).init(response.data)
 				} else {
-					Alert.show(JSON.stringify(response.data))
+					AppAlert.show(JSON.stringify(response.data))
 				}
 			})
 			

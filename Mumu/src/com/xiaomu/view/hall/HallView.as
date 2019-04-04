@@ -1,5 +1,6 @@
 package com.xiaomu.view.hall
 {
+	import com.xiaomu.component.AppAlert;
 	import com.xiaomu.component.ImageButton;
 	import com.xiaomu.component.Loading;
 	import com.xiaomu.renderer.GroupRenderer;
@@ -16,7 +17,6 @@ package com.xiaomu.view.hall
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
-	import coco.component.Alert;
 	import coco.component.HorizontalAlign;
 	import coco.component.Image;
 	import coco.component.List;
@@ -140,7 +140,7 @@ package com.xiaomu.view.hall
 						Loading.getInstance().close()
 						GroupView(MainView.getInstane().pushView(GroupView)).init(rooms)
 					} else {
-						Alert.show(JSON.stringify(response.data))
+						AppAlert.show(JSON.stringify(response.data))
 					}
 				})
 			groupsList.selectedIndex = -1
@@ -234,7 +234,7 @@ package com.xiaomu.view.hall
 			if (AppData.getInstane().user.ll >= 2) {
 				new AddGroupPanel().open()
 			} else {
-				Alert.show('您没有权限操作')
+				AppAlert.show('您没有权限操作')
 			}
 		}
 		

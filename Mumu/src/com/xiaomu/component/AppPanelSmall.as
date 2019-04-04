@@ -64,7 +64,7 @@ package com.xiaomu.component
 			titleDisplay.fontSize = 24
 			
 			background = new Image()
-			background.source = 'assets/home/popUp/bac_04.png'
+			background.source = 'assets/component/bac_04.png'
 			addRawChildAt(background, 0)
 			
 			commitButton = new ImageButton()

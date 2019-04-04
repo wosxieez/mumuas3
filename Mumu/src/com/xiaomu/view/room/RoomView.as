@@ -1,5 +1,6 @@
 package com.xiaomu.view.room
 {
+	import com.xiaomu.component.AppAlert;
 	import com.xiaomu.component.BigCardUI;
 	import com.xiaomu.component.CardUI;
 	import com.xiaomu.component.ImageButton;
@@ -19,7 +20,6 @@ package com.xiaomu.view.room
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	
-	import coco.component.Alert;
 	import coco.component.Image;
 	import coco.component.Label;
 	import coco.core.UIComponent;
@@ -426,7 +426,7 @@ package com.xiaomu.view.room
 						new DaNiaoNoticePanel().open()
 					}
 				} else {
-					Alert.show('房间数据加载失败')
+					AppAlert.show('房间数据加载失败')
 					close()
 				}
 			}) 
@@ -1067,13 +1067,13 @@ package com.xiaomu.view.room
 				}
 				case Notifications.onWin:
 				{
-					Alert.show('玩家赢牌')
+					AppAlert.show('玩家赢牌')
 					roomData = notification.data
 					break
 				}
 				case Notifications.onRoundEnd:
 				{
-					Alert.show('一盘结束')
+					AppAlert.show('一盘结束')
 					roomData = notification.data
 					break
 				}
@@ -1122,7 +1122,7 @@ package com.xiaomu.view.room
 				case Notifications.onGameOver: 
 				{
 					Audio.getInstane().playHandle('hu')
-					Alert.show('一局游戏结束')
+					AppAlert.show('一局游戏结束')
 					close()
 					break
 				}

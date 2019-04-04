@@ -1,5 +1,6 @@
 package com.xiaomu.view.hall.popUpPanel
 {
+	import com.xiaomu.component.AppAlert;
 	import com.xiaomu.component.AppPanelSmall;
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.HttpApi;
@@ -7,7 +8,6 @@ package com.xiaomu.view.hall.popUpPanel
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
-	import coco.component.Alert;
 	import coco.component.Label;
 	import coco.component.TextAlign;
 	import coco.component.TextInput;
@@ -77,19 +77,19 @@ package com.xiaomu.view.hall.popUpPanel
 								function (ee:Event):void {
 									var response2:Object = JSON.parse(ee.currentTarget.data)
 									if (response2.code == 0) { 
-										Alert.show('创建群成功')
+										AppAlert.show('创建群成功')
 										close()
 									} else {
-										Alert.show('创建群失败')
+										AppAlert.show('创建群失败')
 									}
 								}) 
 						} else {
-							Alert.show('创建群失败')
+							AppAlert.show('创建群失败')
 						}
 					} 
 					catch(error:Error) 
 					{
-						Alert.show('创建群失败')
+						AppAlert.show('创建群失败')
 					}
 				})
 		}

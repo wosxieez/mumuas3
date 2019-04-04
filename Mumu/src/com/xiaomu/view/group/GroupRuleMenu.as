@@ -1,5 +1,6 @@
 package com.xiaomu.view.group
 {
+	import com.xiaomu.component.AppAlert;
 	import com.xiaomu.renderer.GroupUserMenuRender;
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.HttpApi;
@@ -7,7 +8,6 @@ package com.xiaomu.view.group
 	import flash.events.Event;
 	import flash.utils.setTimeout;
 	
-	import coco.component.Alert;
 	import coco.component.ButtonGroup;
 	import coco.event.UIEvent;
 	import coco.manager.PopUpManager;
@@ -62,13 +62,13 @@ package com.xiaomu.view.group
 									HttpApi.getInstane().removeRule({id: ruleData.id}, function (ee:Event):void {
 										var response2:Object = JSON.parse(ee.currentTarget.data)
 										if (response2.code == 0) {
-											Alert.show('删除成功')
+											AppAlert.show('删除成功')
 										} else {
-											Alert.show('删除失败')
+											AppAlert.show('删除失败')
 										}
 									})
 								} else {
-									Alert.show('您没有权限操作')
+									AppAlert.show('您没有权限操作')
 								}
 							}
 						} 

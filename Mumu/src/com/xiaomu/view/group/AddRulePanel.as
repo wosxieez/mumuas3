@@ -1,5 +1,6 @@
 package com.xiaomu.view.group
 {
+	import com.xiaomu.component.AppAlert;
 	import com.xiaomu.component.AppPanelBig;
 	import com.xiaomu.component.CountTool;
 	import com.xiaomu.renderer.AddRuleRender;
@@ -9,7 +10,6 @@ package com.xiaomu.view.group
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
-	import coco.component.Alert;
 	import coco.component.ButtonGroup;
 	import coco.component.Label;
 	import coco.component.TextAlign;
@@ -249,7 +249,7 @@ package com.xiaomu.view.group
 			ruleTCLab.y= ruleTCTool.y=topPadding+gap*7
 			ruleTC2Lab.y= ruleTC2Tool.y=topPadding+gap*8
 			ruleTC1Lab.y= ruleTC1Tool.y=topPadding+gap*9
-				
+			
 			ruleNameInput.x =ruleCountBtnGroup.x= ruleHXBtnGroup.x=ruleXFTool.x=ruleNFTool.x=ruleFDBtnGroup.x=ruleTFTool.x=ruleTCTool.x=ruleTC1Tool.x=ruleTC2Tool.x=320;
 			
 		}
@@ -277,35 +277,35 @@ package com.xiaomu.view.group
 		}
 		
 		override protected function commitButton_clickHandler(event:MouseEvent):void {
-		
-		HttpApi.getInstane().addRule({
-		gid: AppData.getInstane().group.id,
-		rulename: ruleNameInput.text,
-		cc: int(ruleCountBtnGroup.selectedItem.value),
-		hx: int(ruleHXBtnGroup.selectedItem.value),
-		xf: Number(ruleXFTool.value),
-		nf: Number(ruleNFTool.value),
-		fd: Number(ruleFDBtnGroup.selectedItem.value),
-		tc2: Number(ruleTC2Tool.value),
-		tc1: Number(ruleTC1Tool.value),
-		tc: Number(ruleTCTool.value),
-		tf: Number(ruleTFTool.value)},  
-		function (e:Event):void {
-		try
-		{
-		var response:Object = JSON.parse(e.currentTarget.data)
-		if (response.code == 0) {
-		Alert.show('添加玩法成功')
-		close()
-		} else {
-		Alert.show('添加玩法失败')
-		}
-		} 
-		catch(error:Error) 
-		{
-		Alert.show('添加玩法失败')
-		}
-		})
+			
+			HttpApi.getInstane().addRule({
+				gid: AppData.getInstane().group.id,
+				rulename: ruleNameInput.text,
+				cc: int(ruleCountBtnGroup.selectedItem.value),
+				hx: int(ruleHXBtnGroup.selectedItem.value),
+				xf: Number(ruleXFTool.value),
+				nf: Number(ruleNFTool.value),
+				fd: Number(ruleFDBtnGroup.selectedItem.value),
+				tc2: Number(ruleTC2Tool.value),
+				tc1: Number(ruleTC1Tool.value),
+				tc: Number(ruleTCTool.value),
+				tf: Number(ruleTFTool.value)},  
+				function (e:Event):void {
+					try
+					{
+						var response:Object = JSON.parse(e.currentTarget.data)
+						if (response.code == 0) {
+							AppAlert.show('添加玩法成功')
+							close()
+						} else {
+							AppAlert.show('添加玩法失败')
+						}
+					} 
+					catch(error:Error) 
+					{
+						AppAlert.show('添加玩法失败')
+					}
+				})
 		}
 		
 	}
