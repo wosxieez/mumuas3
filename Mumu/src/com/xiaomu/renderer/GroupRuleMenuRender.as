@@ -30,8 +30,6 @@ package com.xiaomu.renderer
 		{
 			super.commitProperties();
 			
-			//			lab.text = data+"";
-			trace(JSON.stringify(data));
 			if(data){
 				btn.upImageSource="assets/guild/"+data.image+"_n.png";
 				btn.downImageSource="assets/guild/"+data.image+"_p.png";

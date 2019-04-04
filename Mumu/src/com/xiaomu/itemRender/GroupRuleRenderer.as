@@ -32,7 +32,7 @@ package com.xiaomu.itemRender
 			
 			lab = new TextArea();
 			lab.borderAlpha = lab.backgroundAlpha = 0;
-			lab.fontSize = 15;
+			lab.fontSize = 20;
 			lab.editable = false;
 			lab.color = 0x845525;
 			lab.leading = 5;
@@ -62,7 +62,7 @@ package com.xiaomu.itemRender
 			bgImg.height = height;
 			
 			lab.width = width-200;
-			lab.height = height*0.7;
+			lab.height = height;
 			lab.x = 20;
 			lab.y = (height-lab.height)/2;
 				

@@ -18,7 +18,6 @@ package com.xiaomu.view.group
 		{
 			super();
 			
-//			backgroundColor = 0xe8dab5;
 			itemRendererClass = GroupRuleMenuRender
 			itemRendererColumnCount = 1
 			itemRendererHeight = 51;

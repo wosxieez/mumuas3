@@ -143,9 +143,10 @@ package com.xiaomu.itemRender
 			event.preventDefault()
 			event.stopImmediatePropagation()
 			
-			GroupUserMenu.getInstane().x = width
+			GroupUserMenu.getInstane().x = width+GroupUserMenu.getInstane().width;
+			GroupUserMenu.getInstane().y = 150;
 			GroupUserMenu.getInstane().targetUser = data
-			PopUpManager.addPopUp(GroupUserMenu.getInstane(), this, false, true)
+			PopUpManager.addPopUp(GroupUserMenu.getInstane(), null, false, true)
 		}
 		
 	}
