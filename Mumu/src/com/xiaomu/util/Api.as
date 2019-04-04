@@ -46,7 +46,7 @@ package com.xiaomu.util
 			this.groupid = groupid
 			this.cb = cb
 			pomelo = new Pomelo()
-			pomelo.init("192.168.0.169", 3014)
+			pomelo.init("127.0.0.1", 3014)
 //						pomelo.init("106.14.148.139", 3014)
 			pomelo.addEventListener(PomeloEvent.HANDSHAKE, onConnectHandler);
 			pomelo.addEventListener(PomeloEvent.ERROR, pomeloErrorHandler);

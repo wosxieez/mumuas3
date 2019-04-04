@@ -67,6 +67,7 @@ package com.xiaomu.view.room
 		private var tingCardsView:TingCardsView
 		private var goback:ImageButton
 		private var refreshButton:ImageButton
+		private var actionUser:Object
 		
 		private var _roomData:Object
 		
@@ -95,19 +96,6 @@ package com.xiaomu.view.room
 		public function set needRiffleCard(value:Boolean):void
 		{
 			_needRiffleCard = value;
-			invalidateProperties()
-		}
-		
-		private var _needOutTing:Boolean = false
-		
-		public function get needOutTing():Boolean
-		{
-			return _needOutTing;
-		}
-		
-		public function set needOutTing(value:Boolean):void
-		{
-			_needOutTing = value;
 			invalidateProperties()
 		}
 		
@@ -273,7 +261,7 @@ package com.xiaomu.view.room
 			// 隐藏所有
 			hideAllUI()
 			
-			myUser = preUser = nextUser = null
+			actionUser = myUser = preUser = nextUser = null
 			// 生成 myUser preUser nextUser
 			for (var i:int = 0; i < roomData.us.length; i++) {
 				if (roomData.us[i].username == AppData.getInstane().user.username) {
@@ -332,10 +320,6 @@ package com.xiaomu.view.room
 					updateMyGroupCardUIs()
 					updateMyPassCardUIs()
 					updateMyHandCardUIsCanTing()
-					if (needOutTing) {
-						updateMyHandCardUIsCanOutTing()
-						_needOutTing = false
-					}
 				}
 				
 				if (nextUser) {
@@ -347,16 +331,24 @@ package com.xiaomu.view.room
 				updateWaitTip()
 				updateCardsCount()
 				
-				
-				if (roomData.an == AppData.getInstane().user.username) {
-					if (roomData.at == Notifications.checkEat) {
-						canChiButton.visible = cancelButton.visible = true
-					} else if (roomData.at == Notifications.checkHu) {
-						canHuButton.visible = cancelButton.visible = true
-					} else if (roomData.at == Notifications.checkNewCard) {
-						newCardTip.visible = true
-					} else if (roomData.at == Notifications.checkPeng) {
-						canPengButton.visible = cancelButton.visible = true
+				if (roomData.aus) {
+					for (var n:int = 0; n < roomData.aus.length; n++) {
+						actionUser = roomData.aus[n]
+						if (actionUser && actionUser.un == AppData.getInstane().user.username) {
+							if (actionUser.nd) {
+								newCardTip.visible = true
+								updateMyHandCardUIsCanOutTing()
+							}
+							if (actionUser.hd) {
+								cancelButton.visible = canHuButton.visible = true
+							}
+							if (actionUser.cd) {
+								cancelButton.visible = canChiButton.visible = true
+							} 
+							if (actionUser.pd) {
+								cancelButton.visible = canChiButton.visible = true
+							}
+						}
 					}
 				}
 			} else {
@@ -397,10 +389,10 @@ package com.xiaomu.view.room
 			canPengButton.x = cancelButton.x - canPengButton.width - 10
 			canPengButton.y = (height - canChiButton.height) / 2
 			
-			canHuButton.x = canPengButton.x
+			canHuButton.x = canPengButton.x - canHuButton.width - 10
 			canHuButton.y = canPengButton.y
 			
-			canChiButton.x = canHuButton.x
+			canChiButton.x = canHuButton.x - canChiButton.width - 10
 			canChiButton.y = canHuButton.y
 			
 			newCardTip.x = (width - newCardTip.width) / 2
@@ -974,15 +966,15 @@ package com.xiaomu.view.room
 				draggingCardUI.visible = false
 				
 				// 告诉服务器出牌了
-				if (roomData.an == AppData.getInstane().user.username &&
-					roomData.at == Notifications.checkNewCard) {
+				if (actionUser) {
 					// 轮到我出牌
 					if (this.mouseY <= height * 2 / 3) { 
 						meNewCard(draggingCardUI.card)
-						var action:Object = { name: Actions.NewCard, data: draggingCardUI.card }
+						actionUser.nd.dt = draggingCardUI.card
+						actionUser.nd.ac = 1
+						var action:Object = { name: Actions.NewCard, data: actionUser  }
 						Api.getInstane().sendAction(action)
 					} else {
-						needOutTing = true
 						riffleCard()
 						invalidateProperties()
 					}
@@ -1051,11 +1043,7 @@ package com.xiaomu.view.room
 				}
 				case Notifications.checkNewCard:
 				{
-					trace('提示我出牌')
 					roomData = notification.data
-					if (roomData.an == AppData.getInstane().user.username) {
-						needOutTing = true
-					}
 					break
 				}
 				case Notifications.checkPeng:
@@ -1130,6 +1118,11 @@ package com.xiaomu.view.room
 					close()
 					break
 				}
+				case Notifications.onAction: 
+				{
+					roomData = notification.data
+					break;
+				}
 				default:
 				{
 					break;
@@ -1139,22 +1132,39 @@ package com.xiaomu.view.room
 		
 		protected function canPengButton_clickHandler(event:MouseEvent):void
 		{
-			canPengButton.visible = cancelButton.visible = false
-			if (roomData.an == AppData.getInstane().user.username) {
-				mePeng(roomData.ad)
-				
-				var action:Object = { name: Actions.Peng, data: roomData.ad }
+			if (actionUser) {
+				undoActionUser()
+				actionUser.pd.ac = 1
+				mePeng(actionUser.pd.dt)
+				var action:Object = { name: Actions.Peng, data: actionUser }
 				Api.getInstane().sendAction(action)
+				roomData.aus = []
+				invalidateProperties()
 			}
 		}
 		
 		protected function canChiButton_clickHandler(event:MouseEvent):void
 		{
-			if (roomData.an == AppData.getInstane().user.username) {
+			if (actionUser) {
 				ChiSelectView.getInstane().addEventListener(SelectEvent.SELECTED, chi_selectHandler)
 				ChiSelectView.getInstane().y = 50
 				ChiSelectView.getInstane().width = width
-				ChiSelectView.getInstane().open(roomData.ad)
+				ChiSelectView.getInstane().open(actionUser.cd.dt)
+			}
+		}
+		
+		protected function chi_selectHandler(event:SelectEvent):void
+		{
+			ChiSelectView.getInstane().close()
+			if (actionUser) {
+				meChi(event.data as Array)
+				undoActionUser()
+				actionUser.cd.dt = event.data
+				actionUser.cd.ac = 1
+				var action:Object = { name: Actions.Chi, data:  actionUser}
+				Api.getInstane().sendAction(action)
+				roomData.aus = []
+				invalidateProperties()
 			}
 		}
 		
@@ -1164,16 +1174,34 @@ package com.xiaomu.view.room
 				ChiSelectView.getInstane().close()
 			}
 			canHuButton.visible = canPengButton.visible = canChiButton.visible = cancelButton.visible = false
-			var action:Object = { name: Actions.Cancel, data: '' }
-			Api.getInstane().sendAction(action)
+			if (actionUser) {
+				undoActionUser()
+				var action:Object = { name: Actions.Cancel, data: actionUser }
+				Api.getInstane().sendAction(action)
+				roomData.aus = []
+				invalidateProperties()
+			}
+		}
+		
+		private function undoActionUser():void {
+			if (actionUser) {
+				if (actionUser.hd) actionUser.hd.ac = 0
+				if (actionUser.pd) actionUser.pd.ac = 0
+				if (actionUser.cd) actionUser.cd.ac = 0
+				if (actionUser.nd) actionUser.nd.ac = 0
+			}
 		}
 		
 		protected function canHuButton_clickHandler(event:MouseEvent):void
 		{
 			canHuButton.visible = cancelButton.visible = false
-			if (roomData.an == AppData.getInstane().user.username) {
-				var action:Object = { name: Actions.Hu, data: roomData.ad }
+			if (actionUser) {
+				undoActionUser()
+				actionUser.hd.ac = 1
+				var action:Object = { name: Actions.Hu, data: actionUser }
 				Api.getInstane().sendAction(action)
+				roomData.aus = []
+				invalidateProperties()
 			}
 		}
 		
@@ -1205,17 +1233,6 @@ package com.xiaomu.view.room
 		{
 			var action:Object = { name: Actions.Ready, data: false }
 			Api.getInstane().sendAction(action)
-		}
-		
-		protected function chi_selectHandler(event:SelectEvent):void
-		{
-			ChiSelectView.getInstane().close()
-			canChiButton.visible = cancelButton.visible = false
-			if (roomData.an == AppData.getInstane().user.username) {
-				meChi(event.data as Array)
-				var action:Object = { name: Actions.Chi, data:  event.data}
-				Api.getInstane().sendAction(action)
-			}
 		}
 		
 		protected function chatButton_clickHandler(event:MouseEvent):void
@@ -1263,9 +1280,6 @@ package com.xiaomu.view.room
 		
 		private function mePeng(cards:Array):void {
 			if (myUser) {
-				roomData.an = null
-				roomData.at = 0
-				roomData.ad = null
 				for (var i:int = 0; i < cards.length; i++) {
 					CardUtil.getInstane().deleteCard(myUser.handCards, cards[i])
 				}
