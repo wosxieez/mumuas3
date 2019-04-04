@@ -346,7 +346,7 @@ package com.xiaomu.view.room
 								cancelButton.visible = canChiButton.visible = true
 							} 
 							if (actionUser.pd) {
-								cancelButton.visible = canChiButton.visible = true
+								cancelButton.visible = canPengButton.visible = true
 							}
 						}
 					}
@@ -1135,9 +1135,10 @@ package com.xiaomu.view.room
 			if (actionUser) {
 				undoActionUser()
 				actionUser.pd.ac = 1
-				mePeng(actionUser.pd.dt)
 				var action:Object = { name: Actions.Peng, data: actionUser }
 				Api.getInstane().sendAction(action)
+					
+				mePeng(actionUser.pd.dt)
 				roomData.aus = []
 				invalidateProperties()
 			}
@@ -1157,12 +1158,13 @@ package com.xiaomu.view.room
 		{
 			ChiSelectView.getInstane().close()
 			if (actionUser) {
-				meChi(event.data as Array)
 				undoActionUser()
 				actionUser.cd.dt = event.data
 				actionUser.cd.ac = 1
 				var action:Object = { name: Actions.Chi, data:  actionUser}
 				Api.getInstane().sendAction(action)
+					
+				meChi(event.data as Array)
 				roomData.aus = []
 				invalidateProperties()
 			}
@@ -1241,6 +1243,7 @@ package com.xiaomu.view.room
 		}
 		
 		private function meNewCard(card:int):void {
+			return
 			if (myUser) {
 				Audio.getInstane().playCard(card, true)
 				roomData.an = null
@@ -1255,6 +1258,7 @@ package com.xiaomu.view.room
 		}
 		
 		private function meChi(groups:Array):void {
+			return
 			if (myUser) {
 				roomData.an = null
 				roomData.at = 0
@@ -1279,6 +1283,7 @@ package com.xiaomu.view.room
 		}
 		
 		private function mePeng(cards:Array):void {
+			return
 			if (myUser) {
 				for (var i:int = 0; i < cards.length; i++) {
 					CardUtil.getInstane().deleteCard(myUser.handCards, cards[i])
