@@ -1,7 +1,7 @@
 package com.xiaomu.view.group
 {
 	import com.xiaomu.component.AppAlert;
-	import com.xiaomu.renderer.GroupUserMenuRender;
+	import com.xiaomu.renderer.GroupRuleMenuRender;
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.HttpApi;
 	
@@ -18,11 +18,15 @@ package com.xiaomu.view.group
 		{
 			super();
 			
-			itemRendererClass = GroupUserMenuRender;
+//			backgroundColor = 0xe8dab5;
+			itemRendererClass = GroupRuleMenuRender
 			itemRendererColumnCount = 1
-			dataProvider = ['修改', '删除']
+			itemRendererHeight = 51;
+			gap = 30;
+			paddingTop = paddingBottom = 20;
+			dataProvider = [{"name":"修改","image":"btn_guild_floorModify2"},{"name":"删除","image":"btn_guild_delete"}]
 			width = 200
-			height = dataProvider.length * 40
+			height = 2 * itemRendererHeight+1*gap+paddingTop*2;
 			addEventListener(UIEvent.CHANGE, this_changeHandler)
 		}
 		
@@ -79,6 +83,16 @@ package com.xiaomu.view.group
 			}
 			
 			PopUpManager.removePopUp(this)
+		}
+		
+		override protected function drawSkin():void
+		{
+			super.drawSkin();
+			
+			graphics.clear();
+			graphics.beginFill(0xe8dab5);
+			graphics.drawRoundRect(0,0,width,height,8,8);
+			graphics.endFill();
 		}
 		
 	}

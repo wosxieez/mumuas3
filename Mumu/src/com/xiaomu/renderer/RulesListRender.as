@@ -28,7 +28,6 @@ package com.xiaomu.renderer
 		private var ruleName:Label;
 		private var ruleDetail:TextArea;
 		private var peopleNumbeStr:String;//人数
-		private var timesNumberStr:String; //倍数（翻倍）
 		private var huxiNumberStr:String; //胡息
 		private var fenDingNumberStr:String;//封顶
 		private var daNiaoNumberStr:String;//打鸟
@@ -80,10 +79,9 @@ package com.xiaomu.renderer
 				peopleNumbeStr =data.cc==1?"一人，":(data.cc==2?"二人，":(data.cc==3?"三人，":"四人，"));
 				huxiNumberStr = data.hx+"胡息起胡，";
 				daNiaoNumberStr = data.nf==0?"不打鸟，":"打鸟"+data.nf+"分，";
-				fenDingNumberStr = data.fd+"胡息封顶，";
-				timesNumberStr = data.nf==0?"不翻倍":"翻"+data.nf+"倍";
+				fenDingNumberStr = data.fd+"胡息封顶。";
 			}
-			ruleDetail.text = peopleNumbeStr+huxiNumberStr+daNiaoNumberStr+fenDingNumberStr+timesNumberStr;
+			ruleDetail.text = peopleNumbeStr+huxiNumberStr+daNiaoNumberStr+fenDingNumberStr;
 		}
 		
 		override protected function updateDisplayList():void
@@ -106,7 +104,7 @@ package com.xiaomu.renderer
 			ruleDetail.height = height*0.7;
 			ruleDetail.x = selectBtn.x-ruleDetail.width-20;
 			ruleDetail.y = (height-ruleDetail.height)/2
-			
+			//AppData.getInstane().rule为null
 			if(AppData.getInstane().rule.id==data.id){
 				selectBtn.visible = false;
 				selectedLab.visible = true;

@@ -3,9 +3,13 @@ package com.xiaomu.view.group
 	import com.xiaomu.component.AppAlert;
 	import com.xiaomu.component.AppPanelBig;
 	import com.xiaomu.component.CountTool;
+	import com.xiaomu.component.Loading;
 	import com.xiaomu.renderer.AddRuleRender;
+	import com.xiaomu.util.Api;
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.HttpApi;
+	import com.xiaomu.view.MainView;
+	import com.xiaomu.view.room.RoomView;
 	
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -296,6 +300,10 @@ package com.xiaomu.view.group
 						var response:Object = JSON.parse(e.currentTarget.data)
 						if (response.code == 0) {
 							AppAlert.show('添加玩法成功')
+							///这里要重新去获取
+							if(AppData.getInstane().rule==null){
+								getFirstResultHandler();
+							}
 							close()
 						} else {
 							AppAlert.show('添加玩法失败')
@@ -306,6 +314,28 @@ package com.xiaomu.view.group
 						AppAlert.show('添加玩法失败')
 					}
 				})
+		}
+		
+		/**
+		 * 如果是第一次创建某个玩法
+		 */
+		private function getFirstResultHandler():void
+		{
+			trace("初次添加玩法");
+			HttpApi.getInstane().getRule({gid: AppData.getInstane().group.id}, function (e:Event):void {
+				try
+				{
+					var response:Object = JSON.parse(e.currentTarget.data)
+					if (response.code == 0 && response.data.length > 0) {
+						AppData.getInstane().rule = response.data[0]
+						AppData.getInstane().allRules = response.data
+						NowSelectedPlayRuleView.getInstance().data = response.data[0];
+					} 
+				} 
+				catch(error:Error) 
+				{
+				}
+			})
 		}
 		
 	}

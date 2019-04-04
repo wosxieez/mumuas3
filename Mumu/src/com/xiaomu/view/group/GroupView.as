@@ -45,7 +45,7 @@ package com.xiaomu.view.group
 		protected function changSelectedRuleHandler(event:AppManagerEvent):void
 		{
 			trace("改变的玩法：",JSON.stringify(AppData.getInstane().rule));
-			nowSelectedPlayRuleView.data = AppData.getInstane().rule;
+			NowSelectedPlayRuleView.getInstance().data = AppData.getInstane().rule;
 		}
 		
 		private var bg:Image
@@ -56,8 +56,6 @@ package com.xiaomu.view.group
 		private var userSettingButton:ImageButton
 		private var startButton:ImageButton
 		private var bottomGroup:HGroup
-		private var nowSelectedPlayRuleView:NowSelectedPlayRuleView
-		private var nowJoinGroupInfoView:NowJoinGroupInfoView;
 		private var switchRuleButton:Button;
 		private var ruleSettingButton:Button;
 		private var _roomsData:Array
@@ -102,11 +100,9 @@ package com.xiaomu.view.group
 			bg1.source = 'assets/group/guild2_bg2.png'
 			addChild(bg1)
 			
-			nowSelectedPlayRuleView = new NowSelectedPlayRuleView();
-			addChild(nowSelectedPlayRuleView);
+			addChild(NowSelectedPlayRuleView.getInstance());
 			
-			nowJoinGroupInfoView = new NowJoinGroupInfoView();
-			addChild(nowJoinGroupInfoView);
+			addChild(NowJoinGroupInfoView.getInstance());
 			
 			bottomGroup = new HGroup()
 			bottomGroup.verticalAlign = VerticalAlign.MIDDLE
@@ -202,11 +198,11 @@ package com.xiaomu.view.group
 			startButton.x = width - startButton.width
 			startButton.y = height - startButton.height
 
-			nowSelectedPlayRuleView.x = startButton.x-nowSelectedPlayRuleView.width+20;
-			nowSelectedPlayRuleView.y = height-nowSelectedPlayRuleView.height-5;
+			NowSelectedPlayRuleView.getInstance().x = startButton.x-NowSelectedPlayRuleView.getInstance().width+20;
+			NowSelectedPlayRuleView.getInstance().y = height-NowSelectedPlayRuleView.getInstance().height-5;
 			
-			nowJoinGroupInfoView.x = 20;
-			nowJoinGroupInfoView.y = nowSelectedPlayRuleView.y;
+			NowJoinGroupInfoView.getInstance().x = 20;
+			NowJoinGroupInfoView.getInstance().y = NowSelectedPlayRuleView.getInstance().y;
 			
 			bottomGroup.width = 300
 			bottomGroup.y = startButton.y-5;
@@ -217,6 +213,8 @@ package com.xiaomu.view.group
 //			trace('init rooms', JSON.stringify(rooms))
 //			trace("当前群：",JSON.stringify(AppData.getInstane().group));
 //			trace("当前群群主：",AppData.getInstane().group.adminName);
+			NowSelectedPlayRuleView.getInstance().data = null; //先重置当前选中的玩法界面
+			NowJoinGroupInfoView.getInstance().data = AppData.getInstane().group;
 			ruleSettingButton.visible = AppData.getInstane().group.adminName==AppData.getInstane().username
 			HttpApi.getInstane().getRule({gid: AppData.getInstane().group.id}, function (e:Event):void {
 				try
@@ -226,8 +224,7 @@ package com.xiaomu.view.group
 						AppData.getInstane().rule = response.data[0]
 						AppData.getInstane().allRules = response.data
 						roomsData = rooms
-						nowSelectedPlayRuleView.data = response.data[0];
-						nowJoinGroupInfoView.data = AppData.getInstane().group;
+						NowSelectedPlayRuleView.getInstance().data = response.data[0];
 						// 用户自己在不在房间数据中 在的话恢复游戏
 						for each(var room:Object in roomsData) {
 							for each(var username:String in room.users) {
@@ -244,7 +241,6 @@ package com.xiaomu.view.group
 								}
 							}
 						}
-					} else {
 					}
 				} 
 				catch(error:Error) 

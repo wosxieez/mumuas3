@@ -2,7 +2,6 @@ package com.xiaomu.view.group
 {
 	import coco.component.Image;
 	import coco.component.Label;
-	import coco.component.TextArea;
 	import coco.core.UIComponent;
 	
 	/**
@@ -17,6 +16,13 @@ package com.xiaomu.view.group
 			height = 100-10;
 		}
 		
+		private static var instance:NowJoinGroupInfoView;
+		
+		public static function getInstance():NowJoinGroupInfoView
+		{
+			if(!instance){instance = new NowJoinGroupInfoView()}
+			return instance;
+		}
 		
 		private var _data:Object;
 		
@@ -69,7 +75,6 @@ package com.xiaomu.view.group
 		{
 			super.commitProperties();
 			
-			trace("当前群：",JSON.stringify(data));
 			if(data){
 				groupName.text =  data.groupname;
 				adminName.text = "群主："+data.adminName;

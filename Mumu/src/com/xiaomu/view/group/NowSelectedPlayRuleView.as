@@ -16,6 +16,14 @@ package com.xiaomu.view.group
 			height = 100-10;
 		}
 		
+		private static var instance:NowSelectedPlayRuleView;
+		
+		public static function getInstance():NowSelectedPlayRuleView
+		{
+			if(!instance){instance = new NowSelectedPlayRuleView()}
+			return instance;
+		}
+		
 		private var _data:Object;
 		
 		public function get data():Object
@@ -57,9 +65,8 @@ package com.xiaomu.view.group
 				var peopleNumbeStr :String=data.cc==1?"一人，":(data.cc==2?"二人，":(data.cc==3?"三人，":"四人，"));
 				var huxiNumberStr:String = data.hx+"胡息起胡，";
 				var daNiaoNumberStr :String= data.nf==0?"不打鸟，":"打鸟"+data.nf+"分，";
-				var fenDingNumberStr:String = data.fd+"胡息封顶，";
-				var timesNumberStr :String= data.nf==0?"不翻倍":"翻"+data.nf+"倍";
-				ruleArea.text = ruleNameStr+peopleNumbeStr+huxiNumberStr+daNiaoNumberStr+fenDingNumberStr+timesNumberStr;
+				var fenDingNumberStr:String = data.fd+"胡息封顶。";
+				ruleArea.text = ruleNameStr+peopleNumbeStr+huxiNumberStr+daNiaoNumberStr+fenDingNumberStr;
 			}else{
 				ruleArea.text='无';
 			}
