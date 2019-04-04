@@ -11,6 +11,7 @@ package com.xiaomu.view.hall
 	import com.xiaomu.view.MainView;
 	import com.xiaomu.view.group.GroupView;
 	import com.xiaomu.view.hall.popUpPanel.AddGroupPanel;
+	import com.xiaomu.view.hall.popUpPanel.JoinGroupNoticePanel;
 	import com.xiaomu.view.home.HomeView;
 	import com.xiaomu.view.userBarView.UserInfoView2;
 	
@@ -41,6 +42,7 @@ package com.xiaomu.view.hall
 		private var goback:ImageButton
 		private var userInfoView : UserInfoView2
 		private var createGroupBtn : ImageButton
+		private var joinGroupBtn:ImageButton;
 		
 		private var _groupsData:Array
 		
@@ -99,6 +101,14 @@ package com.xiaomu.view.hall
 			createGroupBtn.downImageSource = 'assets/hall/btn_guild_create_group_p.png';
 			createGroupBtn.addEventListener(MouseEvent.CLICK,createGroupHandler);
 			addChild(createGroupBtn);
+			
+			joinGroupBtn = new ImageButton();
+			joinGroupBtn.width = 196
+			joinGroupBtn.height = 70
+			joinGroupBtn.upImageSource = 'assets/hall/btn_guild_request_n.png';
+			joinGroupBtn.downImageSource = 'assets/hall/btn_guild_request_p.png';
+			joinGroupBtn.addEventListener(MouseEvent.CLICK,joinGroupBtnHandler);
+			addChild(joinGroupBtn);
 		}
 		
 		override protected function commitProperties():void {
@@ -121,8 +131,11 @@ package com.xiaomu.view.hall
 			groupsList.height = groupsList.itemRendererHeight
 			groupsList.y = (height-groupsList.height) / 2 - 20
 			
-			createGroupBtn.x = (width - createGroupBtn.width) / 2
+			createGroupBtn.x = width/2- createGroupBtn.width-20
 			createGroupBtn.y = height - createGroupBtn.height - 30
+			
+			joinGroupBtn.x = width/2+30;
+			joinGroupBtn.y = createGroupBtn.y;
 		}
 		
 		protected function groupsList_changeHandler(event:UIEvent):void
@@ -238,5 +251,12 @@ package com.xiaomu.view.hall
 			}
 		}
 		
+		/**
+		 * 加入亲友圈
+		 */
+		protected function joinGroupBtnHandler(event:MouseEvent):void
+		{
+			JoinGroupNoticePanel.getInstane().open();
+		}
 	}
 }

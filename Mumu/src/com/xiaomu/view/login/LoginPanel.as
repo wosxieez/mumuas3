@@ -20,10 +20,10 @@ package com.xiaomu.view.login
 		public function LoginPanel()
 		{
 			super();
-			width=500;
-			height=280;
+			width=500*scale;
+			height=280*scale;
 		}
-		
+		private var scale:Number=1.4;
 		private var _visible:Boolean;
 		
 		override public function get visible():Boolean
@@ -51,54 +51,54 @@ package com.xiaomu.view.login
 			title = new Label();
 			title.text = '手机登录';
 			title.color = 0xffffff;
-			title.fontSize = 24;
+			title.fontSize = 24*scale;
 			title.width = width;
 			addChild(title);
 			
 			labNum = new Label();
 			labNum.color = 0x55555;
 			labNum.text = '账号:';
-			labNum.fontSize = 24;
-			labNum.width = 80;
-			labNum.height = 40;
+			labNum.fontSize = 24*scale;
+			labNum.width = 80*scale;
+			labNum.height = 40*scale;
 			addChild(labNum);
 			
 			labPsw = new Label();
 			labPsw.color = 0x55555;
 			labPsw.text = '密码:';
-			labPsw.fontSize = 24;
-			labPsw.width = 80;
-			labPsw.height = 40;
+			labPsw.fontSize = 24*scale;
+			labPsw.width = 80*scale;
+			labPsw.height = 40*scale;
 			addChild(labPsw);
 			
 			phoneNumInput =  new TextInput();
 			phoneNumInput.maxChars = 11;
-			phoneNumInput.width = 280;
-			phoneNumInput.height = 40;
+			phoneNumInput.width = 280*scale;
+			phoneNumInput.height = 40*scale;
 			phoneNumInput.radius = 8;
-			phoneNumInput.fontSize = 24;
+			phoneNumInput.fontSize = 24*scale;
 			addChild(phoneNumInput);
 			
 			passwordInput = new TextInput();
 			passwordInput.maxChars = 12;
-			passwordInput.width = 280;
-			passwordInput.height = 40;
+			passwordInput.width = 280*scale;
+			passwordInput.height = 40*scale;
 			passwordInput.radius = 8;
-			passwordInput.fontSize = 24;
+			passwordInput.fontSize = 24*scale;
 			passwordInput.displayAsPassword = true;
 			addChild(passwordInput);
 			
 			loginBtn = new ImageButton();
-			loginBtn.width = 216;
-			loginBtn.height = 49;
+			loginBtn.width = 216*scale;
+			loginBtn.height = 49*scale;
 			loginBtn.upImageSource = 'assets/login/phonedenglu_up.png';
 			loginBtn.downImageSource = 'assets/login/phonedenglu_down.png';
 			loginBtn.addEventListener(MouseEvent.CLICK,loginHandler);
 			addChild(loginBtn);
 			
 			regsiterBtn = new ImageButton();
-			regsiterBtn.width = 118;
-			regsiterBtn.height = 38;
+			regsiterBtn.width = 118*scale;
+			regsiterBtn.height = 38*scale;
 			regsiterBtn.upImageSource = 'assets/login/kuaisuzhuce_up.png';
 			regsiterBtn.downImageSource = 'assets/login/kuaisuzhuce_down.png';
 			addChild(regsiterBtn);
@@ -122,15 +122,15 @@ package com.xiaomu.view.login
 		{
 			super.updateDisplayList();
 			
-			title.y = 6;
+			title.y = 6*scale;
 			
-			labNum.x = 20;
-			labNum.y = 80;
+			labNum.x = 20*scale;
+			labNum.y = 80*scale;
 			phoneNumInput.x = labNum.x+labNum.width+20;
 			phoneNumInput.y = labNum.y-3;
 			
-			labPsw.x = 20;
-			labPsw.y = 152;
+			labPsw.x = 20*scale;
+			labPsw.y = 152*scale;
 			passwordInput.x = phoneNumInput.x;
 			passwordInput.y = labPsw.y-3;
 			
@@ -148,8 +148,8 @@ package com.xiaomu.view.login
 			graphics.clear();
 			graphics.beginFill(0xffffff);
 			graphics.drawRoundRect(0,0,width,height,10,10);
-			graphics.beginFill(0x33CCFF);
-			graphics.drawRoundRectComplex(0,0,width,40,5,5,0,0);
+			graphics.beginFill(0x3982c7);
+			graphics.drawRoundRectComplex(0,0,width,40*scale,5,5,0,0);
 			graphics.endFill();
 		}
 		

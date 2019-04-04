@@ -133,6 +133,7 @@ package com.xiaomu.view.group
 			userSettingButton.downImageSource = 'assets/group/btn_guild2_guildManage_p.png';
 			userSettingButton.addEventListener(MouseEvent.CLICK, userSettingButton_clickHandler)
 			addChild(userSettingButton)
+			userSettingButton.visible = false;
 			
 			refreshButton = new ImageButton()
 			refreshButton.width = 85
@@ -242,6 +243,71 @@ package com.xiaomu.view.group
 				{
 				}
 			})
+			getNowGroupUsersInfo();
+		}
+		
+		/**
+		 * 获取当前群中的所有用户信息
+		 */
+		private function getNowGroupUsersInfo():void
+		{
+			HttpApi.getInstane().getGroupUser({gid: AppData.getInstane().group.id}, function (e:Event):void {
+				try
+				{
+					var response:Object = JSON.parse(e.currentTarget.data)
+					if (response.code == 0) {
+						var groupusers:Array = response.data
+						var uids:Array = []
+						for each(var groupuser:Object in groupusers) {
+							uids.push(groupuser.uid)
+						}
+						HttpApi.getInstane().getUser({id: {'$in': uids}}, function (ee:Event):void {
+							var response2:Object = JSON.parse(ee.currentTarget.data)
+							if (response2.code == 0) {
+								var users:Array = response2.data
+								
+								function getUser(id:int):Object {
+									for each(var user:Object in users) {
+										if (user.id == id) {
+											return user
+										} 
+									}
+									return null
+								}
+								
+								for each(var groupuser:Object in groupusers) {
+									var guser:Object = getUser(groupuser.uid)
+									if (guser) {
+										groupuser.username = guser.username
+									}
+								}
+								AppData.getInstane().groupUsers = groupusers;
+//								trace("当前群中的所有用户信息:",JSON.stringify(groupusers));
+								actionHandler();
+							}
+						})
+					} else {
+					}
+				} 
+				catch(error:Error) 
+				{
+				}
+			})
+		}
+		
+		/**
+		 * 对当前群中的所有用户信息进行操作处理
+		 */
+		private function actionHandler():void
+		{
+			for each (var user:Object in AppData.getInstane().groupUsers) 
+			{
+				if(user.username==AppData.getInstane().username){
+//					trace("我在这个群里的资料：",JSON.stringify(user));
+					userSettingButton.visible = user.ll>0; ///只有是管理人员才能有群管理的入口
+					AppData.getInstane().groupLL = user.ll;
+				}
+			}
 		}
 		
 		protected function onGroupHandler(event:ApiEvent):void

@@ -284,7 +284,7 @@ package com.xiaomu.view.home
 				var noticeView:OfficalNoticeViewOfCopy;
 				if(!noticeView){noticeView = new OfficalNoticeViewOfCopy();}
 				noticeView.showText = '请用浏览器打开次链接：';
-				noticeView.copyText = 'www.baidu.com';
+				noticeView.copyText = 'https://fir.im/niuniu1';
 				PopUpManager.centerPopUp(PopUpManager.addPopUp(noticeView,null,true,true,0x000000,0.5));
 			} else {
 				AppAlert.show('程序员小哥哥正在努力的开发中....')

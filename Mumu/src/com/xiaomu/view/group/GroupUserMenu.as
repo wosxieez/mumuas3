@@ -19,10 +19,12 @@ package com.xiaomu.view.group
 			super();
 			
 			itemRendererClass = GroupUserMenuRender;
+			itemRendererHeight = 50;
 			itemRendererColumnCount = 1
+			gap = 5;
 			dataProvider = ['升职', '降职', '增加疲劳值', '减少疲劳值', '踢出群']
 			width = 200
-			height = dataProvider.length * 40
+			height = dataProvider.length * itemRendererHeight+(dataProvider.length-1)*gap
 			addEventListener(UIEvent.CHANGE, this_changeHandler)
 		}
 		

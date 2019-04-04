@@ -22,8 +22,7 @@ package com.xiaomu.renderer
 			addChild(bgImg);
 			
 			lab = new Label();
-			lab.fontSize = 22;
-			lab.height = 30;
+			lab.fontSize = 26;
 			lab.color = 0x845525;
 			addChild(lab);
 		}
@@ -42,6 +41,7 @@ package com.xiaomu.renderer
 			bgImg.width = width;
 			bgImg.height = height;
 			lab.width = width;
+			lab.height = height;
 			lab.y = (height-lab.height)/2
 		}
 	}
