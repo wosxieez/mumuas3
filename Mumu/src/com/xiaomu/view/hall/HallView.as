@@ -256,7 +256,6 @@ package com.xiaomu.view.hall
 		 */
 		protected function joinGroupBtnHandler(event:MouseEvent):void
 		{
-			TestPanel.getInstane().open();
 			AppAlert.show('程序员小哥哥正在努力的开发中....\r请联系群主手动添加')
 		}
 	}

@@ -52,11 +52,11 @@
 		<content>Mumu.swf</content>
 		<autoOrients>true</autoOrients>
 		<visible>true</visible>
-		<renderMode>direct</renderMode>
+<!-- 		<renderMode>direct</renderMode> -->
 		<aspectRatio>landscape</aspectRatio>
 		<fullScreen>true</fullScreen>
 		<requestedDisplayResolution>high</requestedDisplayResolution>
-		<softKeyboardBehavior>pan</softKeyboardBehavior>
+<!-- 		<softKeyboardBehavior>pan</softKeyboardBehavior> -->
 	</initialWindow>
 
 	<icon>
