@@ -291,13 +291,7 @@ package com.xiaomu.view.room
 				preUserHead.isNiao = preUser.dn
 				preUserHead.isFocus = roomData.pc > 0 && preUserHead.username == roomData.pn
 				preUserHead.huxi = CardUtil.getInstane().getHuXi(preUser.groupCards)
-					
 				preActionUser = getActionUser(preUser.username)
-				if (preActionUser) {
-					if (preActionUser.nd) {
-						preUserHead.isFocus = true
-					}
-				}
 			}
 			
 			if (myUser) {
@@ -308,24 +302,7 @@ package com.xiaomu.view.room
 				myUserHead.isNiao = myUser.dn
 				myUserHead.isFocus = roomData.pc > 0 && myUserHead.username == roomData.pn
 				myUserHead.huxi = CardUtil.getInstane().getHuXi(myUser.groupCards)
-					
 				myActionUser = getActionUser(myUser.username)
-				if (myActionUser) {
-					if (myActionUser.nd) {
-						newCardTip.visible = true
-						updateMyHandCardUIsCanOutTing()
-						myUserHead.isFocus = true
-					}
-					if (myActionUser.hd) {
-						cancelButton.visible = canHuButton.visible = true
-					}
-					if (myActionUser.cd) {
-						cancelButton.visible = canChiButton.visible = true
-					} 
-					if (myActionUser.pd) {
-						cancelButton.visible = canPengButton.visible = true
-					}
-				}
 			}
 			
 			if (nextUser) {
@@ -335,13 +312,7 @@ package com.xiaomu.view.room
 				nextUserHead.isNiao = nextUser.dn
 				nextUserHead.isFocus = roomData.pc > 0 && nextUserHead.username == roomData.pn
 				nextUserHead.huxi = CardUtil.getInstane().getHuXi(nextUser.groupCards)
-					
 				nextActionUser = getActionUser(nextUser.username)
-				if (nextActionUser) {
-					if (nextActionUser.nd) {
-						nextUserHead.isFocus = true
-					}
-				}
 			} 
 			
 			if (roomData.ig) {
@@ -365,6 +336,35 @@ package com.xiaomu.view.room
 				updateNewCard()
 				updateWaitTip()
 				updateCardsCount()
+				
+				if (myActionUser) {
+					if (myActionUser.nd) {
+						newCardTip.visible = true
+						updateMyHandCardUIsCanOutTing()
+						myUserHead.isFocus = true
+					}
+					if (myActionUser.hd) {
+						cancelButton.visible = canHuButton.visible = true
+					}
+					if (myActionUser.cd) {
+						cancelButton.visible = canChiButton.visible = true
+					} 
+					if (myActionUser.pd) {
+						cancelButton.visible = canPengButton.visible = true
+					}
+				}
+				
+				if (nextActionUser) {
+					if (nextActionUser.nd) {
+						nextUserHead.isFocus = true
+					}
+				}
+				
+				if (preActionUser) {
+					if (preActionUser.nd) {
+						preUserHead.isFocus = true
+					}
+				}
 			} else {
 				updateReadyUI()
 			}
