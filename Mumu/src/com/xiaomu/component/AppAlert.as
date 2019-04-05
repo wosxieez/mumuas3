@@ -241,7 +241,10 @@ package com.xiaomu.component
 			
 			if (okButton && cancelButton)
 			{
-				okButton.y = cancelButton.y = height;
+				okButton.y = height - okButton.height - padding;
+				okButton.x = (width - okButton.width - cancelButton.width - padding) / 2
+				cancelButton.y = okButton.y
+				cancelButton.x = okButton.x + okButton.width + padding
 			}
 			else if (okButton)
 			{

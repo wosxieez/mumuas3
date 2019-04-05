@@ -20,8 +20,18 @@ package com.xiaomu.util
 			return instance
 		}
 		
-		//				private static const WEB_URL:String = 'http://192.168.0.169:3008/'
-		private static const WEB_URL:String = 'http://hefeixiaomu.com:3008/'
+		private static const WEB_URL:String = 'http://127.0.0.1:3008/'
+		//		private static const WEB_URL:String = 'http://hefeixiaomu.com:3008/'
+			
+			
+		public function getVersion(resultHandler:Function = null, faultHandler:Function = null):void
+		{
+			var urlrequest:URLRequest = new URLRequest(WEB_URL + 'version_update');
+			urlrequest.method = URLRequestMethod.GET
+			urlrequest.contentType = 'application/json'
+			var urlLoader:CocoURLLoader = new CocoURLLoader(resultHandler, faultHandler, true, 20000);
+			urlLoader.load(urlrequest)
+		}
 		
 		
 		/**

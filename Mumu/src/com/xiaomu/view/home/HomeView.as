@@ -5,10 +5,8 @@ package com.xiaomu.view.home
 	import com.xiaomu.event.ApiEvent;
 	import com.xiaomu.itemRender.HomeBottomBarRender;
 	import com.xiaomu.util.AppData;
-	import com.xiaomu.util.Assets;
 	import com.xiaomu.util.Audio;
 	import com.xiaomu.view.MainView;
-	import com.xiaomu.view.group.GroupUserMenu;
 	import com.xiaomu.view.hall.HallView;
 	import com.xiaomu.view.home.noticeBar.NoticeBar;
 	import com.xiaomu.view.home.popUp1.OfficalNoticeViewOfCopy;
@@ -275,7 +273,6 @@ package com.xiaomu.view.home
 		
 		public function init():void{
 			Audio.getInstane().playBGM()
-			Assets.getInstane().loadAssets('assets/niu.png', 'assets/niu.json')
 			userInfoView.userInfoData = {'userName':AppData.getInstane().username}
 		}
 		

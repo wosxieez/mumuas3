@@ -1001,11 +1001,13 @@ package com.xiaomu.view.room
 					} else {
 						riffleCard()
 						invalidateProperties()
+						invalidateDisplayList()
 					}
 				} else {
 					// 如果不是我出牌的 整理牌
 					riffleCard()
 					invalidateProperties()
+					invalidateDisplayList()
 				}
 			}
 		}
@@ -1167,10 +1169,7 @@ package com.xiaomu.view.room
 				myActionUser.pd.ac = 1
 				var action:Object = { name: Actions.Peng, data: myActionUser }
 				Api.getInstane().sendAction(action)
-				
 				mePeng(myActionUser.pd.dt)
-				roomData.aus = []
-				invalidateProperties()
 			}
 		}
 		
@@ -1207,8 +1206,6 @@ package com.xiaomu.view.room
 				undoActionUser()
 				var action:Object = { name: Actions.Cancel, data: myActionUser }
 				Api.getInstane().sendAction(action)
-				roomData.aus = []
-				invalidateProperties()
 			}
 		}
 		
@@ -1229,8 +1226,6 @@ package com.xiaomu.view.room
 				myActionUser.hd.ac = 1
 				var action:Object = { name: Actions.Hu, data: myActionUser }
 				Api.getInstane().sendAction(action)
-				roomData.aus = []
-				invalidateProperties()
 			}
 		}
 		

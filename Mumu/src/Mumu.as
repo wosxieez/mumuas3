@@ -1,6 +1,9 @@
 package
 {
+	import com.xiaomu.component.AppAlert;
+	import com.xiaomu.util.Assets;
 	import com.xiaomu.util.Audio;
+	import com.xiaomu.util.HttpApi;
 	import com.xiaomu.view.MainView;
 	import com.xiaomu.view.login.LoginView;
 	
@@ -8,12 +11,15 @@ package
 	import flash.desktop.SystemIdleMode;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
-	import flash.events.MouseEvent;
+	import flash.net.URLRequest;
+	import flash.net.navigateToURL;
 	import flash.ui.Keyboard;
 	
+	import coco.component.Alert;
 	import coco.component.Image;
 	import coco.core.Application;
 	import coco.core.coco;
+	import coco.event.UIEvent;
 	import coco.util.CocoUI;
 	
 	public class Mumu extends Application
@@ -40,27 +46,35 @@ package
 			
 			addChild(MainView.getInstane())
 			LoginView(MainView.getInstane().pushView(LoginView)).init()
-				
-//			var button1:Button = new Button()
-//			button1.label = 'disconnect'
-//			button1.addEventListener(MouseEvent.CLICK, button1_clickHandler)
-//			addChild(button1)
-//			
-//			var button2:Button = new Button()
-//			button2.label = 'reconnect'
-//			button2.x = 200
-//			button2.addEventListener(MouseEvent.CLICK, button2_clickHandler)
-//			addChild(button2)
-		}
-		
-		protected function button1_clickHandler(event:MouseEvent):void
-		{	
-//			Api.getInstane().disconnect()
-		}
-		
-		protected function button2_clickHandler(event:MouseEvent):void
-		{
-//			Api.getInstane().reconnect()
+			
+			Assets.getInstane().loadAssets('assets/niu.png', 'assets/niu.json')
+			
+			// 检查版本更新
+			HttpApi.getInstane().getVersion(function (e:Event):void {
+				try
+				{
+					var data:Object = JSON.parse(e.currentTarget.data)
+					var localXML:XML = NativeApplication.nativeApplication.applicationDescriptor;
+					var nss:Namespace = localXML.namespace();
+					var curVersionNumber:String = localXML.nss::versionNumber;
+					var latestVersionNumber:String = data.vn
+					var nowVersion:String = curVersionNumber.split('.').join('');
+					var remoteVersion:String = latestVersionNumber.split('.').join('');
+					if (Number(nowVersion) < Number(remoteVersion)) {
+						var versionAlert:AppAlert = AppAlert.show('发现新版本' + latestVersionNumber + '\r是否立即更新?', '',
+							Alert.OK|Alert.CANCEL)
+						versionAlert.addEventListener(UIEvent.CLOSE, function (e:UIEvent):void {
+							if (e.detail == Alert.OK) {
+								navigateToURL(new URLRequest(data.ul))
+							}
+						})
+					}
+				} 
+				catch(error:Error) 
+				{
+					
+				}
+			})
 		}
 		
 		override protected function measure():void {
@@ -81,7 +95,7 @@ package
 			this.coco::applicationContent.height = this.coco::applicationPopUp.height
 			this.coco::applicationContent.scaleX = this.coco::applicationPopUp.scaleX
 			this.coco::applicationContent.scaleY = this.coco::applicationPopUp.scaleY
-				
+			
 			MainView.getInstane().width = this.coco::applicationPopUp.width
 			MainView.getInstane().height = this.coco::applicationPopUp.height
 		}
