@@ -228,8 +228,8 @@ package com.xiaomu.view.room
 			
 			// 聊天返回 按钮
 			chatButton = new Image()
-			chatButton.width = 84
-			chatButton.height = 81
+			chatButton.width = 60
+			chatButton.height = 60
 			chatButton.source = 'assets/room/btn_chat.png'
 			chatButton.addEventListener(MouseEvent.CLICK, chatButton_clickHandler)
 			iconLayer.addChild(chatButton)
@@ -237,16 +237,14 @@ package com.xiaomu.view.room
 			goback= new ImageButton()
 			goback.upImageSource = 'assets/group/btn_guild2_return_n.png';
 			goback.downImageSource = 'assets/group/btn_guild2_return_p.png';
-			goback.x = 20
-			goback.y = 10
 			goback.width = 85;
 			goback.height = 91;
 			goback.addEventListener(MouseEvent.CLICK, back_clickHandler)
 			addChild(goback)
 			
 			refreshButton = new ImageButton()
-			refreshButton.width = 40
-			refreshButton.height = 44
+			refreshButton.width = 60
+			refreshButton.height = 64
 			refreshButton.upImageSource = 'assets/group/btn_guild2_refresh_n.png';
 			refreshButton.downImageSource = 'assets/group/btn_guild2_refresh_p.png';
 			refreshButton.addEventListener(MouseEvent.CLICK, refreshButton_clickHandler)
@@ -270,10 +268,10 @@ package com.xiaomu.view.room
 					var orderUsers:Array = endUsers.concat(startUsers)
 					this.myUser = orderUsers.shift()
 					if (orderUsers.length > 0) {
-						this.nextUser = orderUsers.shift()
+						this.preUser = orderUsers.shift()
 					}
 					if (orderUsers.length > 0) {
-						this.preUser = orderUsers.pop()
+						this.nextUser = orderUsers.pop()
 					}
 					break
 				}
@@ -333,8 +331,8 @@ package com.xiaomu.view.room
 				
 				if (roomData.aus) {
 					for (var n:int = 0; n < roomData.aus.length; n++) {
-						actionUser = roomData.aus[n]
-						if (actionUser && actionUser.un == AppData.getInstane().user.username) {
+						if (roomData.aus[n] && roomData.aus[n].un == AppData.getInstane().user.username) {
+							actionUser = roomData.aus[n]
 							if (actionUser.nd) {
 								newCardTip.visible = true
 								updateMyHandCardUIsCanOutTing()
@@ -371,29 +369,29 @@ package com.xiaomu.view.room
 			myUserHead.x = 30
 			myUserHead.y = height - myUserHead.height - 30
 			
-			refreshButton.x = myUserHead.x + myUserHead.width + 10
-			refreshButton.y = myUserHead.y + myUserHead.height - refreshButton.height
-			
 			nextUserHead.x = width - nextUserHead.width - 30
 			nextUserHead.y = 30
 			
 			cardsCarrUI.x = (width + cardsCarrUI.height)  / 2
 			cardsLabel.x = (width - cardsLabel.width)  / 2
 			
-			chatButton.x = width - 10 - chatButton.width
-			chatButton.y = (height - chatButton.height) / 2
-			
-			cancelButton.x = chatButton.x - cancelButton.width - 30
+			cancelButton.x = width - cancelButton.width - 10
 			cancelButton.y = (height - cancelButton.height) / 2
+				
+			chatButton.x = width - 10 - chatButton.width
+			chatButton.y = cancelButton.y + cancelButton.height + 10
+				
+			refreshButton.x = chatButton.x
+			refreshButton.y = chatButton.y + chatButton.height + 10
+				
+			canChiButton.x = cancelButton.x - canChiButton.width - 10
+			canChiButton.y = (height - canChiButton.height) / 2
 			
-			canPengButton.x = cancelButton.x - canPengButton.width - 10
-			canPengButton.y = (height - canChiButton.height) / 2
-			
+			canPengButton.x = canChiButton.x - canPengButton.width - 10
+			canPengButton.y = canChiButton.y
+				
 			canHuButton.x = canPengButton.x - canHuButton.width - 10
 			canHuButton.y = canPengButton.y
-			
-			canChiButton.x = canHuButton.x - canChiButton.width - 10
-			canChiButton.y = canHuButton.y
 			
 			newCardTip.x = (width - newCardTip.width) / 2
 			newCardTip.y = (height - newCardTip.height) / 2 + 50
@@ -405,6 +403,9 @@ package com.xiaomu.view.room
 			
 			tingCardsView.x = 30
 			tingCardsView.y = (height - tingCardsView.height) / 2
+				
+			goback.x = width - goback.width - 20
+			goback.y = 10
 		}
 		
 		public function init(rule:Object): void {
@@ -968,12 +969,12 @@ package com.xiaomu.view.room
 				// 告诉服务器出牌了
 				if (actionUser) {
 					// 轮到我出牌
-					if (this.mouseY <= height * 2 / 3) { 
+					if (this.mouseY <= height / 2) { 
 						actionUser.nd.dt = draggingCardUI.card
 						actionUser.nd.ac = 1
 						var action:Object = { name: Actions.NewCard, data: actionUser  }
 						Api.getInstane().sendAction(action)
-							
+						
 						meNewCard(draggingCardUI.card)
 					} else {
 						riffleCard()
@@ -1031,13 +1032,19 @@ package com.xiaomu.view.room
 					Audio.getInstane().playChat(notification.data.data)
 					break
 				}
-				case Notifications.onReady:
-				case Notifications.onGameStart:
 				case Notifications.onNewRound:
-				case Notifications.onGameStart:
+				{
+					needRiffleCard = true // 需要整理手里牌
+					roomData = notification.data
+					if (roomData.zc && roomData.zc > 0) {
+						Audio.getInstane().playCard(roomData.zc)
+					}
+					break
+				}
+				case Notifications.onGameStart: 
+				case Notifications.onReady:
 				case Notifications.onRoomStatus: 
 				{
-					trace(JSON.stringify(notification.data))
 					needRiffleCard = true // 需要整理手里牌
 					roomData = notification.data
 					break
@@ -1138,7 +1145,7 @@ package com.xiaomu.view.room
 				actionUser.pd.ac = 1
 				var action:Object = { name: Actions.Peng, data: actionUser }
 				Api.getInstane().sendAction(action)
-					
+				
 				mePeng(actionUser.pd.dt)
 				roomData.aus = []
 				invalidateProperties()
@@ -1164,10 +1171,7 @@ package com.xiaomu.view.room
 				actionUser.cd.ac = 1
 				var action:Object = { name: Actions.Chi, data:  actionUser}
 				Api.getInstane().sendAction(action)
-					
 				meChi(event.data as Array)
-				roomData.aus = []
-				invalidateProperties()
 			}
 		}
 		
