@@ -98,6 +98,7 @@ package
 			trace('activate')
 			NativeApplication.nativeApplication.systemIdleMode = SystemIdleMode.KEEP_AWAKE;
 			Audio.getInstane().resumeBGM()
+			Audio.getInstane().isActivate = true
 		}
 		
 		protected function this_deactivateHandler(event:Event):void
@@ -105,6 +106,7 @@ package
 			trace('deactivate')
 			NativeApplication.nativeApplication.systemIdleMode = SystemIdleMode.NORMAL;
 			Audio.getInstane().pauseBGM()
+			Audio.getInstane().isActivate = false
 		}
 		
 		protected function handleKeys(event:KeyboardEvent):void

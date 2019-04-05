@@ -24,6 +24,7 @@ package com.xiaomu.view.room
 		private var niaoImage:Image
 		private var usernameDisplay:Label
 		private var huxiDisplay:Label
+		private var focusImage:Image
 		
 		private var _username:String
 		
@@ -89,6 +90,19 @@ package com.xiaomu.view.room
 			_isNiao = value;
 			invalidateProperties()
 		}
+		
+		private var _isFocus:Boolean = false
+
+		public function get isFocus():Boolean
+		{
+			return _isFocus;
+		}
+
+		public function set isFocus(value:Boolean):void
+		{
+			_isFocus = value;
+			invalidateProperties()
+		}
 
 		override protected function createChildren():void {
 			super.createChildren()
@@ -103,6 +117,13 @@ package com.xiaomu.view.room
 			icon.x = icon.y = 4
 			icon.source = 'assets/hall/headIcon.png'
 			addChild(icon)
+			
+			focusImage = new Image()
+			focusImage.visible = false
+			focusImage.width = focusImage.height = 109
+			focusImage.x = focusImage.y = -15
+			focusImage.source = 'assets/room/headLight.png'
+			addChild(focusImage)
 			
 			zhuangImage = new Image()
 			zhuangImage.width = 38
@@ -147,6 +168,8 @@ package com.xiaomu.view.room
 				
 			zhuangImage.visible = isZhuang
 			niaoImage.visible = isNiao
+				
+			focusImage.visible = isFocus
 		}
 		
 	}

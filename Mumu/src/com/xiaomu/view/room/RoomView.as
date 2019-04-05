@@ -63,7 +63,7 @@ package com.xiaomu.view.room
 		private var cancelButton:Image
 		private var newCardTip:Image
 		private var checkWaitTip:Image
-		private var chatButton:Image
+		private var chatButton:ImageButton
 		private var tingCardsView:TingCardsView
 		private var goback:ImageButton
 		private var refreshButton:ImageButton
@@ -227,10 +227,10 @@ package com.xiaomu.view.room
 			iconLayer.addChild(zhunbeiButton2)
 			
 			// 聊天返回 按钮
-			chatButton = new Image()
+			chatButton = new ImageButton()
 			chatButton.width = 60
 			chatButton.height = 60
-			chatButton.source = 'assets/room/btn_chat.png'
+			chatButton.upImageSource = 'assets/room/btn_chat.png'
 			chatButton.addEventListener(MouseEvent.CLICK, chatButton_clickHandler)
 			iconLayer.addChild(chatButton)
 			
@@ -287,6 +287,7 @@ package com.xiaomu.view.room
 				preUserHead.username = preUser.username
 				preUserHead.isZhuang = preUserHead.username == roomData.zn
 				preUserHead.isNiao = preUser.dn
+				preUserHead.isFocus = preUserHead.username == roomData.pn
 				preUserHead.huxi = CardUtil.getInstane().getHuXi(preUser.groupCards)
 			}
 			
@@ -296,6 +297,7 @@ package com.xiaomu.view.room
 				myUserHead.username = myUser.username
 				myUserHead.isZhuang = myUserHead.username == roomData.zn
 				myUserHead.isNiao = myUser.dn
+				myUserHead.isFocus = myUserHead.username == roomData.pn
 				myUserHead.huxi = CardUtil.getInstane().getHuXi(myUser.groupCards)
 			}
 			
@@ -304,6 +306,7 @@ package com.xiaomu.view.room
 				nextUserHead.username = nextUser.username
 				nextUserHead.isZhuang = nextUserHead.username == roomData.zn
 				nextUserHead.isNiao = nextUser.dn
+				nextUserHead.isFocus = nextUserHead.username == roomData.pn
 				nextUserHead.huxi = CardUtil.getInstane().getHuXi(nextUser.groupCards)
 			} 
 			
@@ -336,6 +339,7 @@ package com.xiaomu.view.room
 							if (actionUser.nd) {
 								newCardTip.visible = true
 								updateMyHandCardUIsCanOutTing()
+								myUserHead.isFocus = true
 							}
 							if (actionUser.hd) {
 								cancelButton.visible = canHuButton.visible = true
@@ -348,6 +352,11 @@ package com.xiaomu.view.room
 							}
 						}
 					}
+				}
+				
+				if (roomData.pc && roomData.pc > 0) {
+					// 有人出牌操作 亮头像框
+					
 				}
 			} else {
 				updateReadyUI()
@@ -451,7 +460,10 @@ package com.xiaomu.view.room
 			}
 			
 			tingCardsView.tingCards = null
-			refreshButton.visible = myUserHead.visible = preUserHead.visible = nextUserHead.visible = false
+			refreshButton.visible = false
+			myUserHead.isFocus = myUserHead.isNiao = myUserHead.visible = false
+			preUserHead.isFocus = preUserHead.isNiao = preUserHead.visible = false
+			nextUserHead.isFocus = nextUserHead.isNiao = nextUserHead.visible = false
 			zhunbeiButton2.visible = zhunbeiButton.visible = false
 			dealCardUI.visible = false
 			newCardTip.visible = false
@@ -844,12 +856,15 @@ package com.xiaomu.view.room
 					newCardUI.visible = true
 					newCardUI.width = cardWidth
 					newCardUI.height = cardHeight
-					newCardUI.x = startX + i * (newCardUI.width + horizontalGap)
-					newCardUI.y = 190 - cardHeight
+					newCardUI.x = startX + (i % 6) * (newCardUI.width + horizontalGap)
+					newCardUI.y = 190 - cardHeight + Math.floor(i / 6) * (cardHeight + 1)
 					newCardUI.card = riffleCards[i]
 					newCardUI.type = CardUI.TYPE_SMALL_CARD
 					cardLayer.setChildIndex(newCardUI, 0)
 					prePassCardUIs.push(newCardUI)
+						
+						
+						
 				}
 				
 			}
@@ -928,8 +943,8 @@ package com.xiaomu.view.room
 					newCardUI.visible = true
 					newCardUI.width = cardWidth
 					newCardUI.height = cardHeight
-					newCardUI.x = startX - i * (newCardUI.width + horizontalGap)
-					newCardUI.y = 190 - cardHeight
+					newCardUI.x = startX - (i % 6) * (newCardUI.width + horizontalGap)
+					newCardUI.y = 190 - cardHeight + Math.floor(i / 6)  * (cardHeight + 1)
 					newCardUI.card = riffleCards[i]
 					newCardUI.type = CardUI.TYPE_SMALL_CARD
 					cardLayer.setChildIndex(newCardUI, 0)

@@ -26,6 +26,8 @@ package com.xiaomu.util
 			return instance
 		}
 		
+		public var isActivate:Boolean = true
+		
 		private var bgSoundChannel:SoundChannel
 		private var bgSound:Sound
 		
@@ -83,6 +85,8 @@ package com.xiaomu.util
 		private var ign:Boolean = false
 		
 		public function playCard(card:int, igornNext:Boolean = false):void {
+			if (!isActivate) return
+				
 			if (ign) {
 				ign = false
 				return
@@ -137,6 +141,7 @@ package com.xiaomu.util
 		private var chatSound:Sound
 		
 		public function playChat(name:String):void {
+			if (!isActivate) return
 			if (chatChannel) {
 				try
 				{
@@ -151,6 +156,26 @@ package com.xiaomu.util
 			chatSound = new Sound(new URLRequest('sound/msg/' + name + '.mp3'))
 			chatChannel = chatSound.play()
 			chatChannel.soundTransform = new SoundTransform(int(AppData.getInstane().gameMusicValue) / 100, 0)
+		}
+		
+		
+		
+		private var buttonChannel:SoundChannel
+		private var buttonSound:Sound  = new Sound(new URLRequest('sound/btnClick.mp3'))
+		public function playButton():void {
+			if (!isActivate) return
+			if (buttonChannel) {
+				try
+				{
+					buttonChannel.stop()
+				} 
+				catch(error:Error) 
+				{
+				}
+			}
+			
+			buttonChannel = buttonSound.play()
+			buttonChannel.soundTransform = new SoundTransform(int(AppData.getInstane().gameMusicValue) / 100, 0)
 		}
 		
 	}

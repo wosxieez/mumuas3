@@ -280,6 +280,7 @@ package com.xiaomu.view.home
 			if(!btnGroup.selectedItem){
 				return;
 			}
+			Audio.getInstane().playButton()
 			if(btnGroup.selectedItem.name=='设置'){
 				PopUpManager.centerPopUp(PopUpManager.addPopUp(SettingPanelView.getInstane(),null,true,false,0x000000,0.8));
 			}

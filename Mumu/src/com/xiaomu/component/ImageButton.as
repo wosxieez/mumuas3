@@ -1,5 +1,7 @@
 package com.xiaomu.component
 {
+	import com.xiaomu.util.Audio;
+	
 	import flash.events.MouseEvent;
 	
 	import coco.component.Image;
@@ -26,6 +28,7 @@ package com.xiaomu.component
 		protected function mouseDownHandler(event:MouseEvent):void
 		{
 			mouseDown = true;
+			Audio.getInstane().playButton()
 		}
 		
 		protected function mouseOutHandler(event:MouseEvent):void
