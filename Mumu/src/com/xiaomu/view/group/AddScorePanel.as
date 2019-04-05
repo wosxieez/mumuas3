@@ -9,6 +9,7 @@ package com.xiaomu.view.group
 	import flash.events.MouseEvent;
 	
 	import coco.component.Label;
+	import coco.component.TextAlign;
 	import coco.component.TextInput;
 	
 	public class AddScorePanel extends AppPanelSmall
@@ -39,6 +40,8 @@ package com.xiaomu.view.group
 			addChild(addScoreLab);
 			
 			addScoreInput = new TextInput()
+			addScoreInput.color = 0x845525;
+			addScoreInput.textAlign = TextAlign.CENTER;
 			addScoreInput.restrict = '0-9';
 			addScoreInput.width = 300
 			addScoreInput.maxChars = 5;

@@ -56,7 +56,7 @@ package com.xiaomu.view.group
 		private var userSettingButton:ImageButton
 		private var startButton:ImageButton
 		private var bottomGroup:HGroup
-		private var switchRuleButton:Button;
+		private var switchRuleButton:ImageButton;
 		private var ruleSettingButton:Button;
 		private var createGroupPublic:ImageButton;
 		private var createGroupPrivate:ImageButton;
@@ -126,9 +126,11 @@ package com.xiaomu.view.group
 			bottomGroup.addChild(ruleSettingButton)
 			ruleSettingButton.visible= false;
 			
-			switchRuleButton  = new Button()
-			switchRuleButton.label = '切换玩法'
-			switchRuleButton.height = 24;
+			switchRuleButton  = new ImageButton()
+			switchRuleButton.upImageSource = 'assets/group/btn_guild_floorChoose_n.png';
+			switchRuleButton.downImageSource =  'assets/group/btn_guild_floorChoose_p.png';
+			switchRuleButton.width = 98;
+			switchRuleButton.height = 40;
 			switchRuleButton.addEventListener(MouseEvent.CLICK, switchRuleButton_clickHandler)
 			bottomGroup.addChild(switchRuleButton)
 			
@@ -227,7 +229,7 @@ package com.xiaomu.view.group
 			createGroupPublic.y = createGroupPrivate.y;
 			
 			bottomGroup.width = 300
-			bottomGroup.y = startButton.y-5;
+			bottomGroup.y = startButton.y-10;
 			bottomGroup.x = startButton.x-bottomGroup.width;
 		}
 		

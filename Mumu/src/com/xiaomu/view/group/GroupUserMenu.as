@@ -76,6 +76,11 @@ package com.xiaomu.view.group
 				return
 			}else if(selectedStr == "单独提成值"){
 //				trace("选则了设置单独提成值");
+				
+				var setSpecialTiChengPanel:SetSpecialTiChengPanel = new SetSpecialTiChengPanel()
+				setSpecialTiChengPanel.targetUser = targetUser
+				setSpecialTiChengPanel.open()
+				PopUpManager.removePopUp(this)
 			}
 			
 			// 获取到自己的群信息
