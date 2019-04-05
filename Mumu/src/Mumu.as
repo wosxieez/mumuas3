@@ -1,6 +1,7 @@
 package
 {
 	import com.xiaomu.component.AppAlert;
+	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.Assets;
 	import com.xiaomu.util.Audio;
 	import com.xiaomu.util.HttpApi;
@@ -30,6 +31,10 @@ package
 			
 			CocoUI.fontSize = 20
 			addEventListener(Event.ADDED_TO_STAGE, this_addedToStageHandler)
+			
+			var localXML:XML = NativeApplication.nativeApplication.applicationDescriptor
+			var nss:Namespace = localXML.namespace()
+			AppData.getInstane().versionNum = localXML.nss::versionNumber
 		}
 		
 		
@@ -54,11 +59,8 @@ package
 				try
 				{
 					var data:Object = JSON.parse(e.currentTarget.data)
-					var localXML:XML = NativeApplication.nativeApplication.applicationDescriptor;
-					var nss:Namespace = localXML.namespace();
-					var curVersionNumber:String = localXML.nss::versionNumber;
 					var latestVersionNumber:String = data.vn
-					var nowVersion:String = curVersionNumber.split('.').join('');
+					var nowVersion:String = AppData.getInstane().versionNum.split('.').join('');
 					var remoteVersion:String = latestVersionNumber.split('.').join('');
 					if (Number(nowVersion) < Number(remoteVersion)) {
 						var versionAlert:AppAlert = AppAlert.show('发现新版本' + latestVersionNumber + '\r是否立即更新?', '',

@@ -135,14 +135,17 @@ package com.xiaomu.view.login
 			}
 			HttpApi.getInstane().addUser({username: phoneNumInput.text, password: passwordInput.text},
 				function(e:Event):void{
-					if(JSON.parse(e.currentTarget.data).code==0){
+					var response:Object = JSON.parse(e.currentTarget.data)
+					if(response.code==0){
 						AppAlert.show('注册成功');
 						AppData.getInstane().username = phoneNumInput.text;
 						AppData.getInstane().password = passwordInput.text;
 					} else {
-						AppAlert.show('注册失败');
+						AppAlert.show(response.data);
 					}
-				},null);
+				},function (e:Event):void {
+					AppAlert.show('注册失败, 网络错误')
+				});
 		}	
 	}
 }

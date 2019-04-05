@@ -33,6 +33,22 @@ package com.xiaomu.util
 			urlLoader.load(urlrequest)
 		}
 		
+		/**
+		 * 登录用户 
+		 * @param resultHandler
+		 * @param faultHandler
+		 * 
+		 */			
+		public function login(params:Object, resultHandler:Function = null, faultHandler:Function = null):void
+		{
+			var urlrequest:URLRequest = new URLRequest(WEB_URL + 'login');
+			urlrequest.method = URLRequestMethod.POST
+			urlrequest.contentType = 'application/json'
+			urlrequest.data = JSON.stringify(params)
+			var urlLoader:CocoURLLoader = new CocoURLLoader(resultHandler, faultHandler, true, 20000);
+			urlLoader.load(urlrequest)
+		}
+		
 		
 		/**
 		 * 添加用户 

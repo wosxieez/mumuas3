@@ -161,24 +161,27 @@ package com.xiaomu.view.login
 		public function doLogin():void
 		{
 			PopUpManager.removePopUp(this);
-			HttpApi.getInstane().getUser({username: phoneNumInput.text, password: passwordInput.text}, 
+			HttpApi.getInstane().login({un: phoneNumInput.text, pwd: passwordInput.text, vn: AppData.getInstane().versionNum}, 
 				function (ee:Event):void {
 					try
 					{
 						var response:Object = JSON.parse(ee.currentTarget.data)
-						if (response.code == 0 && response.data.length > 0) {
-							AppData.getInstane().user = response.data[0]
+						if (response.code == 0 && response.ss && response.us && response.us.length > 0) {
+							AppData.getInstane().user = response.us[0]
+							AppData.getInstane().serverHost = response.ss
 							AppData.getInstane().username = phoneNumInput.text
 							AppData.getInstane().password = passwordInput.text
 							HomeView(MainView.getInstane().pushView(HomeView)).init()
 						}  else {
-							AppAlert.show('登录失败 用户名密码错误')
+							AppAlert.show(response.data)
 						}
 					} 
 					catch(error:Error) 
 					{
+						AppAlert.show('登录失败')
 					}
 				}, function (ee:Event):void {
+					AppAlert.show('登录失败, 网络错误')
 				})
 			
 		}
