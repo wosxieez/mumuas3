@@ -58,6 +58,8 @@ package com.xiaomu.view.group
 		private var bottomGroup:HGroup
 		private var switchRuleButton:Button;
 		private var ruleSettingButton:Button;
+		private var createGroupPublic:ImageButton;
+		private var createGroupPrivate:ImageButton;
 		private var _roomsData:Array
 		
 		public function get roomsData():Array
@@ -130,7 +132,7 @@ package com.xiaomu.view.group
 			switchRuleButton.addEventListener(MouseEvent.CLICK, switchRuleButton_clickHandler)
 			bottomGroup.addChild(switchRuleButton)
 			
-			userSettingButton = new ImageButton()
+			userSettingButton = new ImageButton()///群管理
 			userSettingButton.width = 85
 			userSettingButton.height = 91
 			userSettingButton.upImageSource = 'assets/group/btn_guild2_guildManage_n.png';
@@ -165,8 +167,22 @@ package com.xiaomu.view.group
 			startButton.height = 133
 			startButton.upImageSource = 'assets/group/btn_guild2_quick_n.png';
 			startButton.downImageSource = 'assets/group/btn_guild2_quick_p.png';
-			startButton.addEventListener(MouseEvent.CLICK, startButton_clickHandler)
+			startButton.addEventListener(MouseEvent.CLICK, startButton_clickHandler)//快速开始
 			addChild(startButton)
+			
+			createGroupPrivate = new ImageButton();//创建私密
+			createGroupPrivate.width = 89
+			createGroupPrivate.height = 89
+			createGroupPrivate.upImageSource = 'assets/guild/btn_guild2_create_group_n.png';
+			createGroupPrivate.downImageSource = 'assets/guild/btn_guild2_create_group_p.png';
+			addChild(createGroupPrivate);
+			
+			createGroupPublic = new ImageButton();//创建公共
+			createGroupPublic.width = 89
+			createGroupPublic.height = 89
+			createGroupPublic.upImageSource = 'assets/guild/btn_guild2_create_public_n.png';
+			createGroupPublic.downImageSource = 'assets/guild/btn_guild2_create_public_p.png';
+			addChild(createGroupPublic);
 		}
 		
 		override protected function commitProperties():void {
@@ -203,6 +219,12 @@ package com.xiaomu.view.group
 			
 			NowJoinGroupInfoView.getInstance().x = 20;
 			NowJoinGroupInfoView.getInstance().y = NowSelectedPlayRuleView.getInstance().y;
+			
+			createGroupPrivate.x = NowJoinGroupInfoView.getInstance().x+NowJoinGroupInfoView.getInstance().width+20;
+			createGroupPrivate.y = NowJoinGroupInfoView.getInstance().y;
+			
+			createGroupPublic.x = createGroupPrivate.x+createGroupPrivate.width+20;
+			createGroupPublic.y = createGroupPrivate.y;
 			
 			bottomGroup.width = 300
 			bottomGroup.y = startButton.y-5;

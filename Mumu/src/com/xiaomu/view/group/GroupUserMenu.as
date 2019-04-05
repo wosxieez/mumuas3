@@ -19,12 +19,10 @@ package com.xiaomu.view.group
 			super();
 			
 			itemRendererClass = GroupUserMenuRender;
-			itemRendererHeight = 80;
+			itemRendererHeight = 70;
 			itemRendererColumnCount = 1
 			gap = 5;
-			dataProvider = ['升职', '降职', '增加疲劳值', '减少疲劳值', '踢出群']
-			width = 200
-			height = dataProvider.length * itemRendererHeight+(dataProvider.length-1)*gap
+			width = 180
 			addEventListener(UIEvent.CHANGE, this_changeHandler)
 		}
 		
@@ -38,30 +36,46 @@ package com.xiaomu.view.group
 			return instance
 		}
 		
-		public var targetUser:Object
+		private var _targetUser:Object
+		
+		public function get targetUser():Object
+		{
+			return _targetUser;
+		}
+		
+		public function set targetUser(value:Object):void
+		{
+			_targetUser = value;
+			checkDataProvider();
+		}
 		
 		private var action:int 
+		private var selectedStr :String
 		private var fromUser:Object
 		private var toUser:Object
 		
 		protected function this_changeHandler(event:UIEvent):void
 		{
+			trace("选则：",selectedItem); //['升职', '降职', '增加疲劳值', '减少疲劳值', '踢出群','单独提成值']
+			selectedStr = selectedItem as String;
 			action = selectedIndex
 			setTimeout(function ():void {selectedIndex = -1}, 500)
 			if (action == -1) return
 			
-			if (action == 2) {
+			if (selectedStr == "增加疲劳值") {
 				var addScorePanel:AddScorePanel = new AddScorePanel()
 				addScorePanel.targetUser = targetUser
 				addScorePanel.open()
 				PopUpManager.removePopUp(this)
 				return
-			} else if (action == 3) {
+			} else if (selectedStr == "减少疲劳值") {
 				var removeScorePanel:RemoveScorePanel = new RemoveScorePanel()
 				removeScorePanel.targetUser = targetUser
 				removeScorePanel.open()
 				PopUpManager.removePopUp(this)
 				return
+			}else if(selectedStr == "单独提成值"){
+//				trace("选则了设置单独提成值");
 			}
 			
 			// 获取到自己的群信息
@@ -89,91 +103,131 @@ package com.xiaomu.view.group
 		}
 		
 		private function doAction():void {
-			switch(action)
+			if(selectedStr== "升职")
 			{
-				case 0:
-				{
-					if (fromUser.uid == toUser.pid) {
-						if (fromUser.ll > toUser.ll + 1) {
-							HttpApi.getInstane().updateGroupUser({
-								update: {ll: toUser.ll + 1}, 
-								query: {gid: toUser.gid, uid: toUser.uid}
-							},
-								function (e:Event):void {
-									var response:Object = JSON.parse(e.currentTarget.data)
-									if (response.code == 0) {
-										AppAlert.show('升职成功')
-									} else {
-										AppAlert.show('升职失败')
-									}
-								})
-						} else {
-							AppAlert.show('无法再升职了')
-						}
-					} else {
-						AppAlert.show('您没有权限操作')
-					}
-					break;
-				}
-				case 1:
-				{
-					if (fromUser.uid == toUser.pid) {
-						if (toUser.ll > 0) {
-							HttpApi.getInstane().updateGroupUser({
-								update: {ll: toUser.ll - 1}, 
-								query: {gid: toUser.gid, uid: toUser.uid}
-							},
-								function (e:Event):void {
-									var response:Object = JSON.parse(e.currentTarget.data)
-									if (response.code == 0) {
-										AppAlert.show('降职成功')
-									} else {
-										AppAlert.show('降职失败')
-									}
-								})
-						} else {
-							AppAlert.show('无法再降职了')
-						}
-					} else {
-						AppAlert.show('您没有权限操作')
-					}
-					break;
-				}
-				case 4:
-				{
-					// 替人操作
-					if (fromUser.ll == 4) {
+//				if (fromUser.uid == toUser.pid) {
+					if (fromUser.ll > toUser.ll + 1) {
 						HttpApi.getInstane().updateGroupUser({
-							update: {fs: fromUser.fs + toUser.fs}, 
-							query: {gid: fromUser.gid, uid: fromUser.uid}
+//							update: {ll: toUser.ll + 1}, 
+							update: {ll: toUser.ll + 1,pid: AppData.getInstane().user.id}, 
+							query: {gid: toUser.gid, uid: toUser.uid}
 						},
 							function (e:Event):void {
 								var response:Object = JSON.parse(e.currentTarget.data)
 								if (response.code == 0) {
-									HttpApi.getInstane().removeGroupUser({gid: toUser.gid, uid: toUser.uid}, function (ee:Event):void {
-										var response2:Object = JSON.parse(ee.currentTarget.data)
-										if (response2.code == 0) {
-											AppAlert.show('踢出成功')
-										} else {
-											AppAlert.show('踢出失败')
-										}
-									})
+									AppAlert.show('升职成功')
 								} else {
-									AppAlert.show('踢出失败')
+									AppAlert.show('升职失败')
 								}
 							})
 					} else {
-						AppAlert.show('您没有权限操作')
+						AppAlert.show('无法再升职了')
 					}
-					break;
-				}
-				default:
-				{
-					break;
+//				} else {
+//					AppAlert.show('您没有权限操作')
+//				}
+			}
+			else if(selectedStr== "降职")
+			{
+//				if (fromUser.uid == toUser.pid) {
+					if (toUser.ll > 0) {
+						HttpApi.getInstane().updateGroupUser({
+//							update: {ll: toUser.ll - 1}, 
+							update: {ll: toUser.ll - 1,pid: AppData.getInstane().user.id}, 
+							query: {gid: toUser.gid, uid: toUser.uid}
+						},
+							function (e:Event):void {
+								var response:Object = JSON.parse(e.currentTarget.data)
+								if (response.code == 0) {
+									AppAlert.show('降职成功')
+								} else {
+									AppAlert.show('降职失败')
+								}
+							})
+					} else {
+						AppAlert.show('无法再降职了')
+					}
+//				} else {
+//					AppAlert.show('您没有权限操作')
+//				}
+			}
+			else if(selectedStr== "踢出群")
+			{
+				// 替人操作
+				if (fromUser.ll == 4) {
+					HttpApi.getInstane().updateGroupUser({
+						update: {fs: fromUser.fs + toUser.fs}, 
+						query: {gid: fromUser.gid, uid: fromUser.uid}
+					},
+						function (e:Event):void {
+							var response:Object = JSON.parse(e.currentTarget.data)
+							if (response.code == 0) {
+								HttpApi.getInstane().removeGroupUser({gid: toUser.gid, uid: toUser.uid}, function (ee:Event):void {
+									var response2:Object = JSON.parse(ee.currentTarget.data)
+									if (response2.code == 0) {
+										AppAlert.show('踢出成功')
+									} else {
+										AppAlert.show('踢出失败')
+									}
+								})
+							} else {
+								AppAlert.show('踢出失败')
+							}
+						})
+				} else {
+					AppAlert.show('您没有权限操作')
 				}
 			}
 			
 			PopUpManager.removePopUp(this)
+		}
+		
+		/**
+		 * 获取数据，对等级进行判断
+		 */
+		private function checkDataProvider():void
+		{
+			//				trace(JSON.stringify(targetUser));
+			trace("你在这个群的等级：",AppData.getInstane().groupLL,"操作对象等级：",targetUser.ll);
+			if((targetUser.ll==2||targetUser.ll==1)&&(AppData.getInstane().groupLL==4)){
+				trace("你是馆主，且操作对象是一二级管理员，可以设置单独的提成");
+				dataProvider=['升职', '降职', '增加疲劳值', '减少疲劳值', '踢出群','单独提成值']
+			}else if((targetUser.ll==3)&&(AppData.getInstane().groupLL==4)){
+				trace("你是馆主，且操作对象是副馆主");
+				dataProvider=['降职', '增加疲劳值', '减少疲劳值', '踢出群']
+			}
+			else if((targetUser.ll==0)&&(AppData.getInstane().groupLL==4)){
+				trace("你是馆主，且操作对象是普通成员");
+				dataProvider=['升职', '增加疲劳值', '减少疲劳值', '踢出群']
+			}
+			else if((targetUser.ll==0||targetUser.ll==1)&&(AppData.getInstane().groupLL==3)){
+				trace("你是副馆主，且操作对象是普通成员或二级管理员");
+				dataProvider=['升职', '降职', '增加疲劳值', '减少疲劳值']
+			}else if((targetUser.ll==2)&&(AppData.getInstane().groupLL==3)){
+				trace("你是副馆主，且操作对象是一级管理员");
+				dataProvider=['降职', '增加疲劳值', '减少疲劳值']
+			}else if((targetUser.ll>=3)&&(AppData.getInstane().groupLL==3)){
+				trace("你是副馆主，且操作对象等级是大于自身");
+				dataProvider=[]
+			}
+			else if((targetUser.ll==0||targetUser.ll==1)&&(AppData.getInstane().groupLL==2)) {
+				trace("你是一级管理员，且操作对象是普通成员或二级管理员，只可以上下分");
+				dataProvider=['增加疲劳值', '减少疲劳值']
+			}else if((targetUser.ll>=2)&&(AppData.getInstane().groupLL==2)) {
+				trace("你是一级管理员，且操作对象等级是大于自身");
+				dataProvider=[]
+			}
+			else if((targetUser.ll==0)&&(AppData.getInstane().groupLL==1)) {
+				trace("你是二级管理员，且操作对象是普通成员，只可以上下分");
+				dataProvider=['增加疲劳值', '减少疲劳值']
+			}else if((targetUser.ll>=1)&&(AppData.getInstane().groupLL==1)) {
+				trace("你是二级管理员，且操作对象等级是大于自身");
+				dataProvider=[]
+			}
+			else if((targetUser.ll==4)){
+				dataProvider=[]
+			}
+			height = dataProvider.length * itemRendererHeight+(dataProvider.length-1)*gap
 		}
 		
 	}

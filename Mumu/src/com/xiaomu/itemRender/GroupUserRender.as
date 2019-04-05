@@ -138,12 +138,15 @@ package com.xiaomu.itemRender
 			labFen.y = (height-labFen.height)/2;
 		}
 		
+		/**
+		 * 点击管理按钮，对群成员进行设置
+		 */
 		protected function manageButton_clickHandler(event:MouseEvent):void
 		{
 			event.preventDefault()
 			event.stopImmediatePropagation()
 			
-			GroupUserMenu.getInstane().x = width+GroupUserMenu.getInstane().width;
+			GroupUserMenu.getInstane().x = width+GroupUserMenu.getInstane().width+35;
 			GroupUserMenu.getInstane().y = 150;
 			GroupUserMenu.getInstane().targetUser = data
 			PopUpManager.addPopUp(GroupUserMenu.getInstane(), null, false, true)

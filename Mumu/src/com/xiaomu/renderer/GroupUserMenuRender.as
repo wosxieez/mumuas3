@@ -9,6 +9,8 @@ package com.xiaomu.renderer
 		public function GroupUserMenuRender()
 		{
 			super();
+			borderAlpha = 0;
+			backgroundAlpha = 0;
 		}
 		
 		private var bgImg:Image;
@@ -19,9 +21,11 @@ package com.xiaomu.renderer
 			
 			bgImg = new Image();
 			bgImg.source = 'assets/guild/guild_diban02.png';
+			bgImg.radius = 10;
 			addChild(bgImg);
 			
 			lab = new Label();
+			lab.bold = true;
 			lab.fontSize = 26;
 			lab.color = 0x845525;
 			addChild(lab);

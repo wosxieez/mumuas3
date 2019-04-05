@@ -8,15 +8,18 @@ package com.xiaomu.view.home
 	import com.xiaomu.util.Assets;
 	import com.xiaomu.util.Audio;
 	import com.xiaomu.view.MainView;
+	import com.xiaomu.view.group.GroupUserMenu;
 	import com.xiaomu.view.hall.HallView;
 	import com.xiaomu.view.home.noticeBar.NoticeBar;
 	import com.xiaomu.view.home.popUp1.OfficalNoticeViewOfCopy;
 	import com.xiaomu.view.home.setting.SettingPanelView;
+	import com.xiaomu.view.room.RulePanel;
 	import com.xiaomu.view.userBarView.UserInfoView2;
 	
 	import flash.events.MouseEvent;
 	import flash.utils.setTimeout;
 	
+	import coco.component.Button;
 	import coco.component.ButtonGroup;
 	import coco.component.Image;
 	import coco.component.Label;
@@ -30,7 +33,7 @@ package com.xiaomu.view.home
 		{
 			super();
 		}
-		
+		private var testBtn:Button;
 		private var bg : Image;
 		private var myGroup:ImageButton;
 		private var userInfoView:UserInfoView2
@@ -56,6 +59,13 @@ package com.xiaomu.view.home
 			bg = new Image();
 			bg.source = 'assets/home/hallBg.png';
 			addChild(bg);
+			
+			testBtn = new Button();
+			testBtn.label = '测试按钮';
+			testBtn.x = 500;
+			testBtn.addEventListener(MouseEvent.CLICK,testHandler);
+			addChild(testBtn);
+			testBtn.visible= false;
 			
 			userInfoView = new UserInfoView2();
 			addChild(userInfoView);
@@ -388,6 +398,13 @@ package com.xiaomu.view.home
 			return date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
 		}		
 		
+		protected function testHandler(event:MouseEvent):void
+		{
+			RulePanel.getInstane().x = testBtn.x;
+			RulePanel.getInstane().y =  testBtn.y+testBtn.height+20;
+			RulePanel.getInstane().data = {"nf":10,"gid":2,"id":16,"updatedAt":"2019-04-02T05:52:12.000Z","hx":15,"createdAt":"2019-04-02T05:52:12.000Z","tc1":1.8,"__route__":"connector.entryHandler.createRoom","tc2":2,"tf":60,"cc":2,"rulename":"添加玩法001","fd":200,"tc":5,"xf":1}
+			PopUpManager.addPopUp(RulePanel.getInstane(), null,true,true,0,0.1);
+		}
 		
 	}
 }
