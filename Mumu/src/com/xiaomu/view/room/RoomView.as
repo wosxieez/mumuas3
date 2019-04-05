@@ -969,11 +969,12 @@ package com.xiaomu.view.room
 				if (actionUser) {
 					// 轮到我出牌
 					if (this.mouseY <= height * 2 / 3) { 
-						meNewCard(draggingCardUI.card)
 						actionUser.nd.dt = draggingCardUI.card
 						actionUser.nd.ac = 1
 						var action:Object = { name: Actions.NewCard, data: actionUser  }
 						Api.getInstane().sendAction(action)
+							
+						meNewCard(draggingCardUI.card)
 					} else {
 						riffleCard()
 						invalidateProperties()
@@ -1243,15 +1244,12 @@ package com.xiaomu.view.room
 		}
 		
 		private function meNewCard(card:int):void {
-			return
 			if (myUser) {
 				Audio.getInstane().playCard(card, true)
-				roomData.an = null
-				roomData.at = 0
-				roomData.ad = null
 				roomData.pn = myUser.username
 				roomData.pc = card
 				roomData.io = true
+				roomData.aus = []
 				CardUtil.getInstane().deleteCard(myUser.handCards, card)
 				invalidateProperties()
 			}
@@ -1260,9 +1258,6 @@ package com.xiaomu.view.room
 		private function meChi(groups:Array):void {
 			return
 			if (myUser) {
-				roomData.an = null
-				roomData.at = 0
-				roomData.ad = null
 				myUser.handCards.push(roomData.pc)
 				roomData.pc = 0
 				var group:Object
