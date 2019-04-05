@@ -78,6 +78,8 @@ package com.xiaomu.component
 			invalidateProperties()
 		}
 		
+		public var value:Object;
+		
 		private var mouseUpImage:Image;
 		private var mouseDwonImage:Image
 		

@@ -7,6 +7,7 @@ package com.xiaomu.view.home
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.Audio;
 	import com.xiaomu.view.MainView;
+	import com.xiaomu.view.group.KeyboardPanel;
 	import com.xiaomu.view.hall.HallView;
 	import com.xiaomu.view.home.noticeBar.NoticeBar;
 	import com.xiaomu.view.home.popUp1.OfficalNoticeViewOfCopy;
@@ -63,7 +64,7 @@ package com.xiaomu.view.home
 			testBtn.x = 500;
 			testBtn.addEventListener(MouseEvent.CLICK,testHandler);
 			addChild(testBtn);
-			testBtn.visible= false;
+//			testBtn.visible= false;
 			
 			userInfoView = new UserInfoView2();
 			addChild(userInfoView);
@@ -397,10 +398,16 @@ package com.xiaomu.view.home
 		
 		protected function testHandler(event:MouseEvent):void
 		{
-			RulePanel.getInstane().x = testBtn.x;
+			/*RulePanel.getInstane().x = testBtn.x;
 			RulePanel.getInstane().y =  testBtn.y+testBtn.height+20;
 			RulePanel.getInstane().data = {"nf":10,"gid":2,"id":16,"updatedAt":"2019-04-02T05:52:12.000Z","hx":15,"createdAt":"2019-04-02T05:52:12.000Z","tc1":1.8,"__route__":"connector.entryHandler.createRoom","tc2":2,"tf":60,"cc":2,"rulename":"添加玩法001","fd":200,"tc":5,"xf":1}
-			PopUpManager.addPopUp(RulePanel.getInstane(), null,true,true,0,0.1);
+			PopUpManager.addPopUp(RulePanel.getInstane(), null,true,true,0,0.1);*/
+			
+			var keyboradPanel:KeyboardPanel;
+			if(!keyboradPanel){
+				keyboradPanel = new KeyboardPanel();
+			}
+			PopUpManager.centerPopUp(PopUpManager.addPopUp(keyboradPanel,null,true,true,0,0.2));
 		}
 		
 	}
