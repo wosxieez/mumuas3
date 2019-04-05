@@ -1,6 +1,7 @@
 package com.xiaomu.view.group
 {
 	import com.xiaomu.component.ImageButton;
+	import com.xiaomu.renderer.KeyBoardRender;
 	
 	import flash.events.MouseEvent;
 	
@@ -193,9 +194,9 @@ package com.xiaomu.view.group
 			addChild(deleteOne);
 			
 			numberLab = new ButtonGroup();
+			numberLab.itemRendererClass = KeyBoardRender;
 			numberLab.backgroundAlpha = 0;
 			numberLab.borderAlpha = 0;
-//			numberLab.dataProvider = [1,2,3,4];
 			numberLab.itemRendererColumnCount = 4;
 			numberLab.horizontalAlign = HorizontalAlign.JUSTIFY;
 			addChild(numberLab);
@@ -281,7 +282,7 @@ package com.xiaomu.view.group
 				trace("重置");
 			}else{
 				if(numberArr.length<4){
-					numberArr.push(parseInt(event.currentTarget.value))
+					numberArr.push(event.currentTarget.value)
 					trace("数字:",JSON.stringify(numberArr));
 				}
 			}
