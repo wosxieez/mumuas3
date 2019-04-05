@@ -4,9 +4,7 @@ package com.xiaomu.view.group
 	import com.xiaomu.component.ImageButton;
 	import com.xiaomu.itemRender.GroupUserRender;
 	import com.xiaomu.util.AppData;
-	import com.xiaomu.util.HttpApi;
 	
-	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
 	import coco.component.Image;

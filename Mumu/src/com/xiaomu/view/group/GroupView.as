@@ -111,7 +111,7 @@ package com.xiaomu.view.group
 			bottomGroup.horizontalAlign = HorizontalAlign.RIGHT
 			bottomGroup.height = 114
 			addChild(bottomGroup)
-//			bottomGroup.visible = false;
+			//			bottomGroup.visible = false;
 			
 			var addRuleButton:Button = new Button()
 			addRuleButton.label = '添加玩法'
@@ -177,6 +177,18 @@ package com.xiaomu.view.group
 			createGroupPrivate.height = 89
 			createGroupPrivate.upImageSource = 'assets/guild/btn_guild2_create_group_n.png';
 			createGroupPrivate.downImageSource = 'assets/guild/btn_guild2_create_group_p.png';
+			createGroupPrivate.addEventListener(MouseEvent.CLICK, function (e:MouseEvent):void {
+				Loading.getInstance().open() 
+				AppData.getInstane().rule.pub = false // 私密房间
+				Api.getInstane().createRoom(AppData.getInstane().rule, function (response:Object):void {
+					Loading.getInstance().close() 
+					if (response.code == 0) {
+						RoomView(MainView.getInstane().pushView(RoomView)).init(response.data)
+					} else {
+						AppAlert.show(JSON.stringify(response.data))
+					}
+				})
+			})
 			addChild(createGroupPrivate);
 			
 			createGroupPublic = new ImageButton();//创建公共
@@ -184,13 +196,34 @@ package com.xiaomu.view.group
 			createGroupPublic.height = 89
 			createGroupPublic.upImageSource = 'assets/guild/btn_guild2_create_public_n.png';
 			createGroupPublic.downImageSource = 'assets/guild/btn_guild2_create_public_p.png';
+			createGroupPublic.addEventListener(MouseEvent.CLICK, function (e:MouseEvent):void {
+				Loading.getInstance().open() 
+				AppData.getInstane().rule.pub = true // 公共房间
+				Api.getInstane().createRoom(AppData.getInstane().rule, function (response:Object):void {
+					Loading.getInstance().close() 
+					if (response.code == 0) {
+						RoomView(MainView.getInstane().pushView(RoomView)).init(response.data)
+					} else {
+						AppAlert.show(JSON.stringify(response.data))
+					}
+				})
+			})
 			addChild(createGroupPublic);
 		}
 		
 		override protected function commitProperties():void {
 			super.commitProperties()
-			roomsList.dataProvider = roomsData
-//			trace("roomsData:",JSON.stringify(roomsData));
+			if (!roomsData) {
+				roomsList.dataProvider = null
+				return 
+			}
+			roomsList.dataProvider = roomsData.filter(function (item:*, index:int, array:Array):Boolean {
+				if (item.pub) {
+					return true
+				} else {
+					return false
+				}
+			})
 		}
 		
 		override protected function updateDisplayList():void {
@@ -215,7 +248,7 @@ package com.xiaomu.view.group
 			
 			startButton.x = width - startButton.width
 			startButton.y = height - startButton.height
-
+			
 			NowSelectedPlayRuleView.getInstance().x = startButton.x-NowSelectedPlayRuleView.getInstance().width+20;
 			NowSelectedPlayRuleView.getInstance().y = height-NowSelectedPlayRuleView.getInstance().height-5;
 			
@@ -234,9 +267,9 @@ package com.xiaomu.view.group
 		}
 		
 		public function init(rooms:Array): void {
-//			trace('init rooms', JSON.stringify(rooms))
-//			trace("当前群：",JSON.stringify(AppData.getInstane().group));
-//			trace("当前群群主：",AppData.getInstane().group.adminName);
+			//			trace('init rooms', JSON.stringify(rooms))
+			//			trace("当前群：",JSON.stringify(AppData.getInstane().group));
+			//			trace("当前群群主：",AppData.getInstane().group.adminName);
 			NowSelectedPlayRuleView.getInstance().data = null; //先重置当前选中的玩法界面
 			NowJoinGroupInfoView.getInstance().data = AppData.getInstane().group;
 			ruleSettingButton.visible = AppData.getInstane().group.adminName==AppData.getInstane().username
@@ -310,7 +343,7 @@ package com.xiaomu.view.group
 									}
 								}
 								AppData.getInstane().groupUsers = groupusers;
-//								trace("当前群中的所有用户信息:",JSON.stringify(groupusers));
+								//								trace("当前群中的所有用户信息:",JSON.stringify(groupusers));
 								actionHandler();
 							}
 						})
@@ -331,7 +364,7 @@ package com.xiaomu.view.group
 			for each (var user:Object in AppData.getInstane().groupUsers) 
 			{
 				if(user.username==AppData.getInstane().username){
-//					trace("我在这个群里的资料：",JSON.stringify(user));
+					//					trace("我在这个群里的资料：",JSON.stringify(user));
 					userSettingButton.visible = user.ll>0; ///只有是管理人员才能有群管理的入口
 					AppData.getInstane().groupLL = user.ll;
 				}
@@ -340,7 +373,7 @@ package com.xiaomu.view.group
 		
 		protected function onGroupHandler(event:ApiEvent):void
 		{
-//			trace('收到消息', JSON.stringify(event.data))
+			//			trace('收到消息', JSON.stringify(event.data))
 			var notification:Object = event.data
 			switch(notification.name)
 			{
@@ -378,15 +411,6 @@ package com.xiaomu.view.group
 		
 		protected function startButton_clickHandler(event:MouseEvent):void
 		{
-			Loading.getInstance().open() 
-			Api.getInstane().createRoom(AppData.getInstane().rule, function (response:Object):void {
-				Loading.getInstance().close() 
-				if (response.code == 0) {
-					RoomView(MainView.getInstane().pushView(RoomView)).init(response.data)
-				} else {
-					AppAlert.show(JSON.stringify(response.data))
-				}
-			})
 		}
 		
 		protected function roomsList_changeHandler(event:UIEvent):void

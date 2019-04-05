@@ -20,10 +20,10 @@ package com.xiaomu.util
 			return instance
 		}
 		
-		private static const WEB_URL:String = 'http://127.0.0.1:3008/'
-		//		private static const WEB_URL:String = 'http://hefeixiaomu.com:3008/'
-			
-			
+		//		private static const WEB_URL:String = 'http://127.0.0.1:3008/'
+		private static const WEB_URL:String = 'http://hefeixiaomu.com:3008/'
+		
+		
 		public function getVersion(resultHandler:Function = null, faultHandler:Function = null):void
 		{
 			var urlrequest:URLRequest = new URLRequest(WEB_URL + 'version_update');

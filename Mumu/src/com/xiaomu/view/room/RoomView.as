@@ -32,11 +32,13 @@ package com.xiaomu.view.room
 			super();
 		}
 		
-		private var rule:Object
+		private var roomname:String
+		private var roomrule:Object
 		private var oldPoint:Point
 		private var bgLayer: UIComponent
 		private var g1Image:Image
 		private var g2Image:Image
+		private var roomnameDisplay:Label
 		private var preUserHead:RoomUserHead
 		private var myUserHead:RoomUserHead
 		private var nextUserHead:RoomUserHead
@@ -106,6 +108,10 @@ package com.xiaomu.view.room
 			
 			bgLayer = new UIComponent()
 			addChild(bgLayer)
+			
+			roomnameDisplay = new Label()
+			roomnameDisplay.height = 50
+			addChild(roomnameDisplay)
 			
 			g1Image = new Image()
 			g1Image.width = 330
@@ -256,6 +262,15 @@ package com.xiaomu.view.room
 		override protected function commitProperties():void {
 			super.commitProperties()
 			
+			try
+			{
+				roomnameDisplay.text = '房间号: ' + roomname.substr(4)
+			} 
+			catch(error:Error) 
+			{
+				
+			}
+			
 			if (!roomData) return
 			
 			// 隐藏所有
@@ -340,7 +355,9 @@ package com.xiaomu.view.room
 				if (myActionUser) {
 					if (myActionUser.nd) {
 						newCardTip.visible = true
-						updateMyHandCardUIsCanOutTing()
+						if (!tingCardsView.tingCards) {
+							updateMyHandCardUIsCanOutTing()
+						}
 						myUserHead.isFocus = true
 					}
 					if (myActionUser.hd) {
@@ -373,6 +390,8 @@ package com.xiaomu.view.room
 		override protected function updateDisplayList():void {
 			super.updateDisplayList()
 			
+			roomnameDisplay.width = width
+			
 			g1Image.x = (width - g1Image.width) / 2
 			g1Image.y = height / 2 - g1Image.height - 40
 			
@@ -393,19 +412,19 @@ package com.xiaomu.view.room
 			
 			cancelButton.x = width - cancelButton.width - 10
 			cancelButton.y = (height - cancelButton.height) / 2
-				
+			
 			chatButton.x = width - 10 - chatButton.width
 			chatButton.y = cancelButton.y + cancelButton.height + 10
-				
+			
 			refreshButton.x = chatButton.x
 			refreshButton.y = chatButton.y + chatButton.height + 10
-				
+			
 			canChiButton.x = cancelButton.x - canChiButton.width - 10
 			canChiButton.y = (height - canChiButton.height) / 2
 			
 			canPengButton.x = canChiButton.x - canPengButton.width - 10
 			canPengButton.y = canChiButton.y
-				
+			
 			canHuButton.x = canPengButton.x - canHuButton.width - 10
 			canHuButton.y = canPengButton.y
 			
@@ -419,13 +438,14 @@ package com.xiaomu.view.room
 			
 			tingCardsView.x = 30
 			tingCardsView.y = (height - tingCardsView.height) / 2
-				
+			
 			goback.x = width - goback.width - 20
 			goback.y = 10
 		}
 		
-		public function init(rule:Object): void {
-			this.rule = rule
+		public function init(room:Object): void {
+			this.roomname = room.rn
+			this.roomrule = room.ru
 			Api.getInstane().addEventListener(ApiEvent.ON_ROOM, onNotificationHandler)
 			Api.getInstane().queryRoomStatus(function (response:Object):void {
 				if (response.code == 0) {
@@ -688,7 +708,7 @@ package com.xiaomu.view.room
 		
 		private function updateMyHandCardUIsCanOutTing():void {
 			if (myUser) {
-				var outTings:Array = CardUtil.getInstane().outCardCanTing(myUser.groupCards, myUser.handCards, this.rule.hx)
+				var outTings:Array = CardUtil.getInstane().outCardCanTing(myUser.groupCards, myUser.handCards, this.roomrule.hx)
 				if (outTings) {
 					for each(var item:Object in outTings) {
 						for each(var cardUI:CardUI in myHandCardUIs) {
@@ -704,7 +724,7 @@ package com.xiaomu.view.room
 		
 		private function updateMyHandCardUIsCanTing():void {
 			if (myUser) {
-				tingCardsView.tingCards = CardUtil.getInstane().canTing(myUser.groupCards, myUser.handCards, this.rule.hx)
+				tingCardsView.tingCards = CardUtil.getInstane().canTing(myUser.groupCards, myUser.handCards, this.roomrule.hx)
 			}
 		}
 		
@@ -869,9 +889,9 @@ package com.xiaomu.view.room
 					newCardUI.type = CardUI.TYPE_SMALL_CARD
 					cardLayer.setChildIndex(newCardUI, 0)
 					prePassCardUIs.push(newCardUI)
-						
-						
-						
+					
+					
+					
 				}
 				
 			}
