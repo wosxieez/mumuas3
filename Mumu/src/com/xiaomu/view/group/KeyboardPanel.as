@@ -1,7 +1,12 @@
 package com.xiaomu.view.group
 {
+	import com.xiaomu.component.AppAlert;
 	import com.xiaomu.component.ImageButton;
 	import com.xiaomu.renderer.KeyBoardRender;
+	import com.xiaomu.component.Loading;
+	import com.xiaomu.util.Api;
+	import com.xiaomu.view.MainView;
+	import com.xiaomu.view.room.RoomView;
 	
 	import flash.events.MouseEvent;
 	
@@ -9,6 +14,7 @@ package com.xiaomu.view.group
 	import coco.component.HorizontalAlign;
 	import coco.component.Image;
 	import coco.core.UIComponent;
+	import coco.manager.PopUpManager;
 	
 	public class KeyboardPanel extends UIComponent
 	{
@@ -43,7 +49,7 @@ package com.xiaomu.view.group
 		{
 			return _numberArr;
 		}
-
+		
 		public function set numberArr(value:Array):void
 		{
 			_numberArr = value;
@@ -65,6 +71,7 @@ package com.xiaomu.view.group
 			closeBtn.downImageSource ='assets/keyboard/btn_close_press.png';
 			closeBtn.width = 80;
 			closeBtn.height = 80;
+			closeBtn.addEventListener(MouseEvent.CLICK, closeMe)
 			addChild(closeBtn);
 			
 			numberBarBgImg = new Image();
@@ -202,6 +209,11 @@ package com.xiaomu.view.group
 			addChild(numberLab);
 		}
 		
+		protected function closeMe(event:MouseEvent):void
+		{
+			PopUpManager.removePopUp(this)
+		}
+		
 		override protected function commitProperties():void
 		{
 			numberLab.dataProvider = numberArr;
@@ -225,7 +237,7 @@ package com.xiaomu.view.group
 			
 			keyboradBgImg.x = numberBarBgImg.x;
 			keyboradBgImg.y = numberBarBgImg.y+numberBarBgImg.height+10
-				
+			
 			noticeTxtImg.x = (numberBarBgImg.width-noticeTxtImg.width)/2+numberBarBgImg.x;
 			noticeTxtImg.y = (numberBarBgImg.height-noticeTxtImg.height)/2+numberBarBgImg.y;
 			
@@ -272,21 +284,31 @@ package com.xiaomu.view.group
 				//执行删除最后一位
 				if(numberArr.length>0){
 					numberArr.pop();
-					trace("删除最后一位");
 				}else{
 					numberArr = [];
 				}
 			}else if(event.currentTarget.value=='reset'){
 				//重置
 				numberArr = [];
-				trace("重置");
 			}else{
 				if(numberArr.length<4){
 					numberArr.push(event.currentTarget.value)
-					trace("数字:",JSON.stringify(numberArr));
 				}
 			}
-			invalidateProperties();
+			if (numberArr.length == 4) {
+				PopUpManager.removePopUp(this)
+				Loading.getInstance().open()
+				Api.getInstane().joinRoom({roomname: 'room' + numberArr.join('') }, function (response:Object):void {
+					Loading.getInstance().close()
+					if (response.code == 0) {
+						RoomView(MainView.getInstane().pushView(RoomView)).init(response.data)
+					} else {
+						AppAlert.show(JSON.stringify(response.data))
+					}
+				})
+			} else {
+				invalidateProperties();
+			}
 		}
 	}
 }

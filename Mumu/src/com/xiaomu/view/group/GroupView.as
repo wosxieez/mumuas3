@@ -27,6 +27,7 @@ package com.xiaomu.view.group
 	import coco.component.VerticalAlign;
 	import coco.core.UIComponent;
 	import coco.event.UIEvent;
+	import coco.manager.PopUpManager;
 	
 	
 	/**
@@ -411,6 +412,7 @@ package com.xiaomu.view.group
 		
 		protected function startButton_clickHandler(event:MouseEvent):void
 		{
+			PopUpManager.centerPopUp(PopUpManager.addPopUp(new KeyboardPanel(),null,true,true,0,0.2));
 		}
 		
 		protected function roomsList_changeHandler(event:UIEvent):void
