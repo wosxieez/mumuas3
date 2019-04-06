@@ -22,6 +22,7 @@ package com.xiaomu.util
 		
 		public var versionNum:String="0.0.1"
 		public var serverHost:String = '127.0.0.1'
+		public var webUrl:String = 'http://hefeixiaomu.com:3008/'
 			
 		public var user:Object  // 当前用户
 		public var group:Object // 当前群

@@ -20,13 +20,9 @@ package com.xiaomu.util
 			return instance
 		}
 		
-		//		private static const WEB_URL:String = 'http://127.0.0.1:3008/'
-		private static const WEB_URL:String = 'http://hefeixiaomu.com:3008/'
-		
-		
 		public function getVersion(resultHandler:Function = null, faultHandler:Function = null):void
 		{
-			var urlrequest:URLRequest = new URLRequest(WEB_URL + 'version_update');
+			var urlrequest:URLRequest = new URLRequest('http://hefeixiaomu.com:3008/version_update');
 			urlrequest.method = URLRequestMethod.GET
 			urlrequest.contentType = 'application/json'
 			var urlLoader:CocoURLLoader = new CocoURLLoader(resultHandler, faultHandler, true, 20000);
@@ -41,14 +37,13 @@ package com.xiaomu.util
 		 */			
 		public function login(params:Object, resultHandler:Function = null, faultHandler:Function = null):void
 		{
-			var urlrequest:URLRequest = new URLRequest(WEB_URL + 'login');
+			var urlrequest:URLRequest = new URLRequest('http://hefeixiaomu.com:3008/login');
 			urlrequest.method = URLRequestMethod.POST
 			urlrequest.contentType = 'application/json'
 			urlrequest.data = JSON.stringify(params)
 			var urlLoader:CocoURLLoader = new CocoURLLoader(resultHandler, faultHandler, true, 20000);
 			urlLoader.load(urlrequest)
 		}
-		
 		
 		/**
 		 * 添加用户 
@@ -58,7 +53,7 @@ package com.xiaomu.util
 		 */			
 		public function addUser(params:Object, resultHandler:Function = null, faultHandler:Function = null):void
 		{
-			var urlrequest:URLRequest = new URLRequest(WEB_URL + 'insert_user');
+			var urlrequest:URLRequest = new URLRequest(AppData.getInstane().webUrl + 'insert_user');
 			urlrequest.method = URLRequestMethod.POST
 			urlrequest.contentType = 'application/json'
 			urlrequest.data = JSON.stringify(params)
@@ -74,7 +69,7 @@ package com.xiaomu.util
 		 */			
 		public function getUser(params:Object, resultHandler:Function = null, faultHandler:Function = null):void
 		{
-			var urlrequest:URLRequest = new URLRequest(WEB_URL + 'find_user');
+			var urlrequest:URLRequest = new URLRequest(AppData.getInstane().webUrl + 'find_user');
 			urlrequest.method = URLRequestMethod.POST
 			urlrequest.contentType = 'application/json'
 			urlrequest.data = JSON.stringify(params)
@@ -90,7 +85,7 @@ package com.xiaomu.util
 		 */			
 		public function updateUser(params:Object, resultHandler:Function = null, faultHandler:Function = null):void
 		{
-			var urlrequest:URLRequest = new URLRequest(WEB_URL + 'update_user');
+			var urlrequest:URLRequest = new URLRequest(AppData.getInstane().webUrl + 'update_user');
 			urlrequest.method = URLRequestMethod.POST
 			urlrequest.contentType = 'application/json'
 			urlrequest.data = JSON.stringify(params)
@@ -106,7 +101,7 @@ package com.xiaomu.util
 		 */			
 		public function removeUser(params:Object, resultHandler:Function = null, faultHandler:Function = null):void
 		{
-			var urlrequest:URLRequest = new URLRequest(WEB_URL + 'remove_user');
+			var urlrequest:URLRequest = new URLRequest(AppData.getInstane().webUrl + 'remove_user');
 			urlrequest.method = URLRequestMethod.POST
 			urlrequest.contentType = 'application/json'
 			urlrequest.data = JSON.stringify(params)
@@ -122,7 +117,7 @@ package com.xiaomu.util
 		 * @param faultHandler
 		 */		
 		public function addGroup(params:Object, resultHandler:Function = null, faultHandler:Function = null):void {
-			var urlrequest:URLRequest = new URLRequest(WEB_URL + 'insert_group');
+			var urlrequest:URLRequest = new URLRequest(AppData.getInstane().webUrl + 'insert_group');
 			urlrequest.method = URLRequestMethod.POST
 			urlrequest.contentType = 'application/json'
 			urlrequest.data = JSON.stringify(params)
@@ -139,7 +134,7 @@ package com.xiaomu.util
 		 */		
 		public function getGroup(params:Object, resultHandler:Function = null, faultHandler:Function = null):void
 		{
-			var urlrequest:URLRequest = new URLRequest(WEB_URL + 'find_group');
+			var urlrequest:URLRequest = new URLRequest(AppData.getInstane().webUrl + 'find_group');
 			urlrequest.method = URLRequestMethod.POST
 			urlrequest.contentType = 'application/json'
 			urlrequest.data = JSON.stringify(params)
@@ -155,7 +150,7 @@ package com.xiaomu.util
 		 * @param faultHandler
 		 */		
 		public function updateGroup(params:Object, resultHandler:Function = null, faultHandler:Function = null):void {
-			var urlrequest:URLRequest = new URLRequest(WEB_URL + 'update_group');
+			var urlrequest:URLRequest = new URLRequest(AppData.getInstane().webUrl + 'update_group');
 			urlrequest.method = URLRequestMethod.POST
 			urlrequest.contentType = 'application/json'
 			urlrequest.data = JSON.stringify(params)
@@ -171,7 +166,7 @@ package com.xiaomu.util
 		 * @param faultHandler
 		 */		
 		public function removeGroup(params:Object, resultHandler:Function = null, faultHandler:Function = null):void {
-			var urlrequest:URLRequest = new URLRequest(WEB_URL + 'remove_group');
+			var urlrequest:URLRequest = new URLRequest(AppData.getInstane().webUrl + 'remove_group');
 			urlrequest.method = URLRequestMethod.POST
 			urlrequest.contentType = 'application/json'
 			urlrequest.data = JSON.stringify(params)
@@ -187,7 +182,7 @@ package com.xiaomu.util
 		 * @param faultHandler
 		 */		
 		public function addGroupUser(params:Object, resultHandler:Function = null, faultHandler:Function = null):void {
-			var urlrequest:URLRequest = new URLRequest(WEB_URL + 'insert_groupuser');
+			var urlrequest:URLRequest = new URLRequest(AppData.getInstane().webUrl + 'insert_groupuser');
 			urlrequest.method = URLRequestMethod.POST
 			urlrequest.contentType = 'application/json'
 			urlrequest.data = JSON.stringify(params)
@@ -203,7 +198,7 @@ package com.xiaomu.util
 		 * 
 		 */		
 		public function getGroupUser(params:Object, resultHandler:Function = null, faultHandler:Function = null):void {
-			var urlrequest:URLRequest = new URLRequest(WEB_URL + 'find_groupuser');
+			var urlrequest:URLRequest = new URLRequest(AppData.getInstane().webUrl + 'find_groupuser');
 			urlrequest.method = URLRequestMethod.POST
 			urlrequest.contentType = 'application/json'
 			urlrequest.data = JSON.stringify(params)
@@ -218,7 +213,7 @@ package com.xiaomu.util
 		 * @param faultHandler
 		 */		
 		public function updateGroupUser(params:Object, resultHandler:Function = null, faultHandler:Function = null):void {
-			var urlrequest:URLRequest = new URLRequest(WEB_URL + 'update_groupuser');
+			var urlrequest:URLRequest = new URLRequest(AppData.getInstane().webUrl + 'update_groupuser');
 			urlrequest.method = URLRequestMethod.POST
 			urlrequest.contentType = 'application/json'
 			urlrequest.data = JSON.stringify(params)
@@ -233,7 +228,7 @@ package com.xiaomu.util
 		 * @param faultHandler
 		 */		
 		public function removeGroupUser(params:Object, resultHandler:Function = null, faultHandler:Function = null):void {
-			var urlrequest:URLRequest = new URLRequest(WEB_URL + 'remove_groupuser');
+			var urlrequest:URLRequest = new URLRequest(AppData.getInstane().webUrl + 'remove_groupuser');
 			urlrequest.method = URLRequestMethod.POST
 			urlrequest.contentType = 'application/json'
 			urlrequest.data = JSON.stringify(params)
@@ -249,7 +244,7 @@ package com.xiaomu.util
 		 * @param faultHandler
 		 */			
 		public function addRule(params:Object, resultHandler:Function = null, faultHandler:Function = null):void {
-			var urlrequest:URLRequest = new URLRequest(WEB_URL + 'insert_rule');
+			var urlrequest:URLRequest = new URLRequest(AppData.getInstane().webUrl + 'insert_rule');
 			urlrequest.method = URLRequestMethod.POST
 			urlrequest.contentType = 'application/json'
 			urlrequest.data = JSON.stringify(params)
@@ -264,7 +259,7 @@ package com.xiaomu.util
 		 * @param faultHandler
 		 */			
 		public function getRule(params:Object, resultHandler:Function = null, faultHandler:Function = null):void {
-			var urlrequest:URLRequest = new URLRequest(WEB_URL + 'find_rule');
+			var urlrequest:URLRequest = new URLRequest(AppData.getInstane().webUrl + 'find_rule');
 			urlrequest.method = URLRequestMethod.POST
 			urlrequest.contentType = 'application/json'
 			urlrequest.data = JSON.stringify(params)
@@ -280,7 +275,7 @@ package com.xiaomu.util
 		 * @param faultHandler
 		 */			
 		public function updateRule(params:Object, resultHandler:Function = null, faultHandler:Function = null):void {
-			var urlrequest:URLRequest = new URLRequest(WEB_URL + 'update_rule');
+			var urlrequest:URLRequest = new URLRequest(AppData.getInstane().webUrl + 'update_rule');
 			urlrequest.method = URLRequestMethod.POST
 			urlrequest.contentType = 'application/json'
 			urlrequest.data = JSON.stringify(params)
@@ -296,7 +291,7 @@ package com.xiaomu.util
 		 * @param faultHandler
 		 */			
 		public function removeRule(params:Object, resultHandler:Function = null, faultHandler:Function = null):void {
-			var urlrequest:URLRequest = new URLRequest(WEB_URL + 'remove_rule');
+			var urlrequest:URLRequest = new URLRequest(AppData.getInstane().webUrl + 'remove_rule');
 			urlrequest.method = URLRequestMethod.POST
 			urlrequest.contentType = 'application/json'
 			urlrequest.data = JSON.stringify(params)

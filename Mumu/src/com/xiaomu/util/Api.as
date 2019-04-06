@@ -49,6 +49,7 @@ package com.xiaomu.util
 			pomelo = new Pomelo()
 //			pomelo.init(AppData.getInstane().serverHost, 3014)
 			pomelo.init('127.0.0.1', 3014)
+//			pomelo.init('114.115.165.189', 3014)	
 			pomelo.addEventListener(PomeloEvent.HANDSHAKE, onConnectHandler);
 			pomelo.addEventListener(PomeloEvent.ERROR, pomeloErrorHandler);
 		}

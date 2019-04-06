@@ -168,7 +168,8 @@ package com.xiaomu.view.login
 						var response:Object = JSON.parse(ee.currentTarget.data)
 						if (response.code == 0 && response.ss && response.us && response.us.length > 0) {
 							AppData.getInstane().user = response.us[0]
-							AppData.getInstane().serverHost = response.ss
+							if (response.hasOwnProperty('ss')) AppData.getInstane().serverHost = response.ss
+							if (response.hasOwnProperty('hs')) AppData.getInstane().webUrl = response.hs
 							AppData.getInstane().username = phoneNumInput.text
 							AppData.getInstane().password = passwordInput.text
 							HomeView(MainView.getInstane().pushView(HomeView)).init()
