@@ -1011,8 +1011,6 @@ package com.xiaomu.view.room
 			this.removeEventListener(MouseEvent.MOUSE_UP, this_mouseUpHandler)
 			if (draggingCardUI) {
 				draggingCardUI.stopDrag()
-				draggingCardUI.visible = false
-				
 				if (myActionUser && myActionUser.nd) {
 					// 在需要我出牌的情况下
 					if (this.mouseY <= height / 2) { 
@@ -1020,6 +1018,7 @@ package com.xiaomu.view.room
 						myActionUser.nd.ac = 1
 						var action:Object = { name: Actions.NewCard, data: myActionUser  }
 						Api.getInstane().sendAction(action)
+						draggingCardUI.visible = false
 						meNewCard(draggingCardUI.card)
 					} else {
 						riffleCard()
