@@ -6,16 +6,19 @@ package com.xiaomu.view.home
 	import com.xiaomu.itemRender.HomeBottomBarRender;
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.Audio;
+	import com.xiaomu.util.CardUtil;
 	import com.xiaomu.view.MainView;
 	import com.xiaomu.view.hall.HallView;
 	import com.xiaomu.view.home.noticeBar.NoticeBar;
 	import com.xiaomu.view.home.popUp1.OfficalNoticeViewOfCopy;
 	import com.xiaomu.view.home.setting.SettingPanelView;
+	import com.xiaomu.view.room.WinView;
 	import com.xiaomu.view.userBarView.UserInfoView2;
 	
 	import flash.events.MouseEvent;
 	import flash.utils.setTimeout;
 	
+	import coco.component.Button;
 	import coco.component.ButtonGroup;
 	import coco.component.Image;
 	import coco.component.Label;
@@ -54,6 +57,13 @@ package com.xiaomu.view.home
 			bg = new Image();
 			bg.source = 'assets/home/hallBg.png';
 			addChild(bg);
+			
+			var testBtn:Button = new Button();
+			testBtn.label = 'test';
+			testBtn.addEventListener(MouseEvent.CLICK,testHandler);
+			testBtn.x = 300;
+			addChild(testBtn);
+			testBtn.visible = false;
 			
 			userInfoView = new UserInfoView2();
 			addChild(userInfoView);
@@ -383,7 +393,23 @@ package com.xiaomu.view.home
 		{
 			var date:Date = new Date();
 			return date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
-		}		
+		}
+		
+		protected function testHandler(event:MouseEvent):void
+		{
+			var winView:WinView = new WinView();
+			winView.data = AppData.getInstane().testDataHu2;
+			PopUpManager.centerPopUp(PopUpManager.addPopUp(winView,null,false,true));
+//			var arr:Array = CardUtil.getInstane().riffle([10, 10, 19, 10, 19, 15, 19])
+//			var newArr:Array = [];
+//			for each (var item:Array in arr) 
+//			{
+//				newArr.push({"name":"no","cards":item})
+//			}
+//			
+//			trace(JSON.stringify(arr));
+//			trace(JSON.stringify(newArr));
+		}
 		
 	}
 }

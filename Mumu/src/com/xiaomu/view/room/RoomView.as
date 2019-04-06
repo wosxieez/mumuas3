@@ -1113,15 +1113,20 @@ package com.xiaomu.view.room
 					Audio.getInstane().playHandle('hu')
 					AppAlert.show('玩家赢牌')
 					roomData = notification.data
-					trace("玩家赢牌:",JSON.stringify(roomData));
+					trace("玩家赢牌1:",JSON.stringify(roomData));
+					var winView1:WinView = new WinView();
+					winView1.data = roomData;
+					PopUpManager.centerPopUp(PopUpManager.addPopUp(winView1,null,true,false));
 					break
 				}
 				case Notifications.onRoundEnd://荒庄
 				{
-					AppAlert.show('一盘结束') ///一把结束，可以准备下一把
+//					AppAlert.show('一把结束') ///一把结束，可以准备下一把
 					roomData = notification.data
-					trace("一盘结束:",JSON.stringify(roomData));
-					//roomData: {"pn":"wosxieez3","us":[{"username":"wosxieez3","groupCards":[{"name":"wei","cards":[17,17,17]},{"name":"wei","cards":[14,14,14]},{"name":"chi","cards":[1,2,3]},{"name":"wei","cards":[15,15,15]}],"dn":false,"isReady":false,"hx":0,"ucCards":[16,12,20,1,10,18,19],"upCards":[16,12,10,18,19],"passCards":[16,9,19,18,19,8,12,20,12,2,16,10,1,1,6,10,16,18,19,12],"handCards":[11,11,13,5,13,13,6,4]}],"ad":null,"zn":"wosxieez3","pc":0,"og":true,"io":false,"ig":false,"an":null,"at":0,"cc":0,"zc":0}
+					trace("一把结束1:");
+					var winView:WinView = new WinView();
+					winView.data = roomData;
+					PopUpManager.centerPopUp(PopUpManager.addPopUp(winView,null,true,false));
 					break
 				}
 				case Notifications.onGameOver: 
