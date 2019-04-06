@@ -305,6 +305,7 @@ package com.xiaomu.view.room
 				preUserHead.isZhuang = preUserHead.username == roomData.zn
 				preUserHead.isNiao = preUser.dn
 				preUserHead.isFocus = roomData.pc > 0 && preUserHead.username == roomData.pn
+				preUserHead.thx = preUser.thx
 				preUserHead.huxi = CardUtil.getInstane().getHuXi(preUser.groupCards)
 				preActionUser = getActionUser(preUser.username)
 			}
@@ -316,6 +317,7 @@ package com.xiaomu.view.room
 				myUserHead.isZhuang = myUserHead.username == roomData.zn
 				myUserHead.isNiao = myUser.dn
 				myUserHead.isFocus = roomData.pc > 0 && myUserHead.username == roomData.pn
+				myUserHead.thx = myUser.thx
 				myUserHead.huxi = CardUtil.getInstane().getHuXi(myUser.groupCards)
 				myActionUser = getActionUser(myUser.username)
 			}
@@ -327,6 +329,7 @@ package com.xiaomu.view.room
 				nextUserHead.isNiao = nextUser.dn
 				nextUserHead.isFocus = roomData.pc > 0 && nextUserHead.username == roomData.pn
 				nextUserHead.huxi = CardUtil.getInstane().getHuXi(nextUser.groupCards)
+				nextUserHead.thx = nextUser.thx
 				nextActionUser = getActionUser(nextUser.username)
 			} 
 			
@@ -1008,15 +1011,13 @@ package com.xiaomu.view.room
 				draggingCardUI.stopDrag()
 				draggingCardUI.visible = false
 				
-				// 告诉服务器出牌了
-				if (myActionUser) {
-					// 轮到我出牌
+				if (myActionUser && myActionUser.nd) {
+					// 在需要我出牌的情况下
 					if (this.mouseY <= height / 2) { 
 						myActionUser.nd.dt = draggingCardUI.card
 						myActionUser.nd.ac = 1
 						var action:Object = { name: Actions.NewCard, data: myActionUser  }
 						Api.getInstane().sendAction(action)
-						
 						meNewCard(draggingCardUI.card)
 					} else {
 						riffleCard()
@@ -1107,6 +1108,7 @@ package com.xiaomu.view.room
 				}
 				case Notifications.onWin:///赢家界面 //一把
 				{
+					Audio.getInstane().playHandle('hu')
 					AppAlert.show('玩家赢牌')
 					roomData = notification.data
 					trace("玩家赢牌:",JSON.stringify(roomData));

@@ -23,6 +23,7 @@ package com.xiaomu.view.room
 		private var zhuangImage:Image
 		private var niaoImage:Image
 		private var usernameDisplay:Label
+		private var totalhuxiDisplay:Label
 		private var huxiDisplay:Label
 		private var focusImage:Image
 		
@@ -144,19 +145,27 @@ package com.xiaomu.view.room
 			addChild(niaoImage)
 			
 			usernameDisplay = new Label()
-			usernameDisplay.y = 80
+			usernameDisplay.y = 85
 			usernameDisplay.color = 0xFFFFFF
 			usernameDisplay.fontSize = 15
 			usernameDisplay.width = 80
-			usernameDisplay.height = 40
+			usernameDisplay.height = 25
 			addChild(usernameDisplay)
 			
+			totalhuxiDisplay = new Label()
+			totalhuxiDisplay.y = 110
+			totalhuxiDisplay.color = 0xFFFFFF
+			totalhuxiDisplay.fontSize = 15
+			totalhuxiDisplay.width = 80
+			totalhuxiDisplay.height = 25
+			addChild(totalhuxiDisplay)
+			
 			huxiDisplay = new Label()
-			huxiDisplay.y = 120
+			huxiDisplay.y = 135
 			huxiDisplay.color = 0xFFFFFF
 			huxiDisplay.fontSize = 15
 			huxiDisplay.width = 80
-			huxiDisplay.height = 40
+			huxiDisplay.height = 25
 			addChild(huxiDisplay)
 		}
 		
@@ -164,6 +173,7 @@ package com.xiaomu.view.room
 			super.commitProperties()
 				
 			usernameDisplay.text = username
+			totalhuxiDisplay.text = '总息:' + thx
 			huxiDisplay.text = '胡息:' + huxi
 				
 			zhuangImage.visible = isZhuang

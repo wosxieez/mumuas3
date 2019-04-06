@@ -187,7 +187,6 @@ package com.xiaomu.util
 					var gtx:int = getHuXi(canHuData)
 					if (gtx >= huXi) {
 						tingCards.push(i)
-						trace('听牌', i, '胡息', gtx)
 					}
 				}
 			}
@@ -199,12 +198,22 @@ package com.xiaomu.util
 			}
 		}
 		
-		
-		public function canHu(handCards:Array, groupCards:Array, currntCard:int):Array {
-			var totalHandCards:Array = handCards.concat([currntCard])
-			var onHand:Array = shouShun(totalHandCards)
+		public function canHu(handCards:Array, groupCards:Array, currentCard:int):Array {
+			var copyedHandCards:Array = JSON.parse(JSON.stringify(handCards)) as Array
+			var copyedGroupCards:Array = JSON.parse(JSON.stringify(groupCards)) as Array
+			if (currentCard !== 0) {
+				// 看组合牌中能不能跑起
+				var paoGroup:Object = canTi2(copyedGroupCards, currentCard)
+				if (paoGroup) {
+					paoGroup.name = Actions.Pao
+					paoGroup.cards.push(currentCard)
+				} else {
+					copyedHandCards.push(currentCard)
+				}
+			}
+			var onHand:Array = shouShun(copyedHandCards)
 			if (onHand) {
-				return groupCards.concat(onHand)
+				return copyedGroupCards.concat(onHand)
 			} else {
 				return null		
 			}
@@ -221,7 +230,7 @@ package com.xiaomu.util
 			// 处理四张 三张
 			for (var key:int in countedCards) {
 				if (countedCards[key] == 4) {
-					results.push({ name: Actions.Pao, cards: [key, key, key, key] });
+					results.push({ name: Actions.Ti, cards: [key, key, key, key] });
 				} else if (countedCards[key] === 3) {
 					results.push({ name: Actions.Kan, cards: [key, key, key] });
 					delete countedCards[key];
@@ -440,6 +449,38 @@ package com.xiaomu.util
 					break
 				}
 			}
+		}
+		
+		/**
+		 * 看组合牌中能不能 跑 / 提
+		 *
+		 * @param {*} cardsOnGroup
+		 * @param {*} currentCard
+		 * @returns
+		 */
+		public function canTi2(cardsOnGroup:Array, currentCard:int):Object {
+			var group:Object
+			var can:Boolean = false
+			for (var i:int = 0; i < cardsOnGroup.length; i++) {
+				group = cardsOnGroup[i]
+				if (group.cards.length == 3) {
+					can = true
+					for (var j:int = 0; j < group.cards.length; j++) {
+						if (group.cards[j] != currentCard) {
+							can = false
+							break
+						}
+					}
+				} else {
+					can = false
+				}
+				
+				if (can) {
+					return group
+				}
+			}
+			
+			return null
 		}
 		
 	}
