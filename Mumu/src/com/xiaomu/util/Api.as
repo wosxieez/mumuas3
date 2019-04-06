@@ -1,5 +1,6 @@
 package com.xiaomu.util
 {
+	import com.xiaomu.component.AppAlert;
 	import com.xiaomu.component.Loading;
 	import com.xiaomu.event.ApiEvent;
 	
@@ -46,8 +47,8 @@ package com.xiaomu.util
 			this.groupid = groupid
 			this.cb = cb
 			pomelo = new Pomelo()
-			pomelo.init(AppData.getInstane().serverHost, 3014)
-//			pomelo.init('127.0.0.1', 3014)
+//			pomelo.init(AppData.getInstane().serverHost, 3014)
+			pomelo.init('127.0.0.1', 3014)
 			pomelo.addEventListener(PomeloEvent.HANDSHAKE, onConnectHandler);
 			pomelo.addEventListener(PomeloEvent.ERROR, pomeloErrorHandler);
 		}
@@ -103,7 +104,10 @@ package com.xiaomu.util
 		 * 
 		 */		
 		public function queryGroupStatus(cb:Function):void  {
-			if (!pomelo) return
+			if (!pomelo) {
+				cb({code:404, data: '服务已断开，请重新登录'})
+				return
+			}
 			pomelo.request('connector.entryHandler.queryGroupStatus', {}, function(response:Object):void {
 				cb(response)
 			})
@@ -128,7 +132,10 @@ package com.xiaomu.util
 		 * @param cb
 		 */		
 		public function createRoom(rule:Object, cb:Function):void {
-			if (!pomelo) return
+			if (!pomelo) {
+				cb({code:404, data: '服务已断开，请重新登录'})
+				return
+			}
 			pomelo.request('connector.entryHandler.createRoom', rule,
 				function(response:Object):void {
 					cb(response)
@@ -141,7 +148,10 @@ package com.xiaomu.util
 		 * @param cb
 		 */		
 		public function joinRoom(room:Object, cb:Function):void {
-			if (!pomelo) return
+			if (!pomelo) {
+				cb({code:404, data: '服务已断开，请重新登录'})
+				return
+			}
 			pomelo.request('connector.entryHandler.joinRoom', room,
 				function(response:Object):void {
 					cb(response)
@@ -153,7 +163,10 @@ package com.xiaomu.util
 		 * @param cb
 		 */		
 		public function leaveRoom(cb:Function):void {
-			if (!pomelo) return
+			if (!pomelo) {
+				cb({code:404, data: '服务已断开，请重新登录'})
+				return
+			}
 			pomelo.request('connector.entryHandler.leaveRoom', {},
 				function(response:Object):void {
 					cb(response)
@@ -166,7 +179,10 @@ package com.xiaomu.util
 		 * 
 		 */		
 		public function queryRoomStatus(cb:Function):void  {
-			if (!pomelo) return
+			if (!pomelo) {
+				cb({code:404, data: '服务已断开，请重新登录'})
+				return
+			}
 			pomelo.request('connector.entryHandler.queryRoomStatus', {}, function(response:Object):void {
 				cb(response)
 			})
@@ -188,7 +204,10 @@ package com.xiaomu.util
 		 * @param action
 		 */		
 		public function sendAction(action):void  {
-			if (!pomelo) return
+			if (!pomelo) {
+				AppAlert.show('服务已断开，请重新登录')
+				return
+			}
 			pomelo.request('chat.roomHandler.sendAction', action, function(response:Object):void {
 			})
 		}
@@ -200,7 +219,10 @@ package com.xiaomu.util
 		 * 
 		 */		
 		public function sendRoomMessage(data:Object, cb:Function):void  {
-			if (!pomelo) return
+			if (!pomelo) {
+				cb({code:404, data: '服务已断开，请重新登录'})
+				return
+			}
 			pomelo.request('chat.roomHandler.pushMessage', data, function(response:Object):void {
 				cb(response)
 			})

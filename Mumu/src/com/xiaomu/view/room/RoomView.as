@@ -1120,6 +1120,15 @@ package com.xiaomu.view.room
 					//roomData: {"pn":"wosxieez3","us":[{"username":"wosxieez3","groupCards":[{"name":"wei","cards":[17,17,17]},{"name":"wei","cards":[14,14,14]},{"name":"chi","cards":[1,2,3]},{"name":"wei","cards":[15,15,15]}],"dn":false,"isReady":false,"hx":0,"ucCards":[16,12,20,1,10,18,19],"upCards":[16,12,10,18,19],"passCards":[16,9,19,18,19,8,12,20,12,2,16,10,1,1,6,10,16,18,19,12],"handCards":[11,11,13,5,13,13,6,4]}],"ad":null,"zn":"wosxieez3","pc":0,"og":true,"io":false,"ig":false,"an":null,"at":0,"cc":0,"zc":0}
 					break
 				}
+				case Notifications.onGameOver: 
+				{
+					Audio.getInstane().playHandle('hu')
+					roomData = notification.data
+					AppAlert.show('一局游戏结束') ///游戏结束房卡消耗。人自动退出到游戏的群界面
+					trace("一局游戏结束:",JSON.stringify(roomData));
+					close()
+					break
+				}
 				case Notifications.onNewCard: 
 				{
 					roomData = notification.data
@@ -1160,14 +1169,6 @@ package com.xiaomu.view.room
 				{
 					Audio.getInstane().playHandle('bi')
 					roomData = notification.data
-					break
-				}
-				case Notifications.onGameOver: 
-				{
-					Audio.getInstane().playHandle('hu')
-					AppAlert.show('一局游戏结束') ///游戏结束房卡消耗。人自动退出到游戏的群界面
-					trace("一局游戏结束:",JSON.stringify(roomData));
-					close()
 					break
 				}
 				case Notifications.onAction: 
