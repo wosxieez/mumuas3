@@ -223,12 +223,14 @@ package com.xiaomu.view.room
 			// 准备按钮
 			zhunbeiButton = new ImageButton()
 			zhunbeiButton.upImageSource = 'assets/room/zhunbeih_up.png'
+			zhunbeiButton.downImageSource = 'assets/room/zhunbeih_down.png'
 			zhunbeiButton.width = 191
 			zhunbeiButton.height = 68
 			zhunbeiButton.addEventListener(MouseEvent.CLICK, zhunbeiButton_clickHandler)
 			iconLayer.addChild(zhunbeiButton)
 			zhunbeiButton2 = new ImageButton()
-			zhunbeiButton2.upImageSource = 'assets/room/jbc_cancle_p.png'
+			zhunbeiButton2.upImageSource = 'assets/room/jbc_cancle_n.png'
+			zhunbeiButton2.downImageSource = 'assets/room/jbc_cancle_p.png'
 			zhunbeiButton2.width = 191
 			zhunbeiButton2.height = 68
 			zhunbeiButton2.addEventListener(MouseEvent.CLICK, zhunbeiButton2_clickHandler)
