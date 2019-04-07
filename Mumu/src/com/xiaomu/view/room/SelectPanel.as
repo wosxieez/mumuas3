@@ -44,6 +44,7 @@ package com.xiaomu.view.room
 			super.createChildren()
 			
 			selectList = new List()
+			selectList.verticalScrollEnabled = selectList.horizontalScrollEnabled = false
 			selectList.addEventListener(UIEvent.CHANGE, selectList_changeHandler)
 			selectList.itemRendererWidth = Size.CHI_CARD_WIDTH + 4
 			selectList.itemRendererHeight = Size.CHI_CARD_HEIGHT * 3  - Size.CHI_CARD_HEIGHT * 2 * (1 - Size.GAP_RADIO) + 4

@@ -211,7 +211,7 @@ package com.xiaomu.util
 					copyedHandCards.push(currentCard)
 				}
 			}
-			var onHand:Array = shouShun(copyedHandCards)
+			var onHand:Array = shouShun(copyedHandCards, currentCard)
 			if (onHand) {
 				return copyedGroupCards.concat(onHand)
 			} else {
@@ -223,7 +223,7 @@ package com.xiaomu.util
 		 * 玩家的牌是否无单牌。
 		 * @param cards: 手中的牌，或者手中的牌加新翻开的底牌。
 		 */
-		public function shouShun(cards):Array {
+		public function shouShun(cards, currentCard:int):Array {
 			var countedCards:Dictionary = countBy(cards)
 			var results:Array = [];
 			
@@ -232,7 +232,11 @@ package com.xiaomu.util
 				if (countedCards[key] == 4) {
 					results.push({ name: Actions.Ti, cards: [key, key, key, key] });
 				} else if (countedCards[key] === 3) {
-					results.push({ name: Actions.Kan, cards: [key, key, key] });
+					if (key == currentCard) {
+						results.push({ name: Actions.Peng, cards: [key, key, key] });
+					} else {
+						results.push({ name: Actions.Kan, cards: [key, key, key] });
+					}
 					delete countedCards[key];
 				}
 			}
