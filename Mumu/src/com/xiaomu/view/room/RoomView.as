@@ -374,6 +374,7 @@ package com.xiaomu.view.room
 					if (myActionUser.pd) {
 						cancelButton.visible = canPengButton.visible = true
 					}
+					invalidateDisplayList()
 				}
 				
 				if (nextActionUser) {
@@ -1122,7 +1123,7 @@ package com.xiaomu.view.room
 				}
 				case Notifications.onRoundEnd://荒庄
 				{
-					//					AppAlert.show('一把结束') ///一把结束，可以准备下一把
+					Audio.getInstane().playHandle('hz')
 					roomData = notification.data
 					trace("roomView一把荒庄1:",JSON.stringify(roomData));
 					var winView2:WinView = new WinView();
