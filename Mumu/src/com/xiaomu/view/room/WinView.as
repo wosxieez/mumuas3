@@ -170,6 +170,7 @@ package com.xiaomu.view.room
 				{
 					data.us[0].groupCards.push({"name":"no","cards":item})///
 				}
+				data.us[0].handCards = [];
 			}
 			cardGroup1.dataProvider = (data.us[0].groupCards as Array);
 			cardGroup1.width = cardGroup1.dataProvider.length*40;
@@ -203,6 +204,7 @@ package com.xiaomu.view.room
 					{
 						data.us[1].groupCards.push({"name":"no","cards":item1})///
 					}
+					data.us[1].handCards = [];
 				}
 				cardGroup2.dataProvider = (data.us[1].groupCards as Array);
 				cardGroup2.width = cardGroup2.dataProvider.length*40;

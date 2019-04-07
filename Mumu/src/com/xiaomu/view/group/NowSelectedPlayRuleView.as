@@ -1,6 +1,10 @@
 package com.xiaomu.view.group
 {
+	import flash.events.MouseEvent;
+	
+	import coco.component.Button;
 	import coco.component.Image;
+	import coco.component.SkinComponent;
 	import coco.component.TextArea;
 	import coco.core.UIComponent;
 	
@@ -14,6 +18,11 @@ package com.xiaomu.view.group
 			super();
 			width = 453;
 			height = 100-10;
+		}
+		
+		protected function clickHandler(event:MouseEvent):void
+		{
+			new SwitchRulePanel().open()///玩法选则
 		}
 		
 		private static var instance:NowSelectedPlayRuleView;
@@ -39,6 +48,7 @@ package com.xiaomu.view.group
 		
 		private var bgImg:Image;
 		private var ruleArea:TextArea;
+		private var skin:SkinComponent;
 		override protected function createChildren():void
 		{
 			super.createChildren();
@@ -55,6 +65,11 @@ package com.xiaomu.view.group
 			ruleArea.fontSize = 18;
 			ruleArea.leading = 8;
 			addChild(ruleArea);
+			
+			skin = new SkinComponent();
+			skin.alpha = 0;
+			skin.addEventListener(MouseEvent.CLICK,clickHandler);
+			addChild(skin);
 		}
 		
 		override protected function commitProperties():void
@@ -78,6 +93,9 @@ package com.xiaomu.view.group
 			
 			bgImg.width = width;
 			bgImg.height = height;
+			
+			skin.width = width;
+			skin.height = height;
 			
 			ruleArea.width = bgImg.width-20;
 			ruleArea.height = bgImg.height;

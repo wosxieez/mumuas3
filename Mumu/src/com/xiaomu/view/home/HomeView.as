@@ -12,6 +12,7 @@ package com.xiaomu.view.home
 	import com.xiaomu.view.home.noticeBar.NoticeBar;
 	import com.xiaomu.view.home.popUp1.OfficalNoticeViewOfCopy;
 	import com.xiaomu.view.home.setting.SettingPanelView;
+	import com.xiaomu.view.room.EndResultView;
 	import com.xiaomu.view.room.WinView;
 	import com.xiaomu.view.userBarView.UserInfoView2;
 	
@@ -63,7 +64,7 @@ package com.xiaomu.view.home
 			testBtn.addEventListener(MouseEvent.CLICK,testHandler);
 			testBtn.x = 300;
 			addChild(testBtn);
-//			testBtn.visible = false;
+			testBtn.visible = false;
 			
 			userInfoView = new UserInfoView2();
 			addChild(userInfoView);
@@ -399,18 +400,23 @@ package com.xiaomu.view.home
 		
 		protected function testHandler(event:MouseEvent):void
 		{
-			var winView:WinView = new WinView();
-			winView.data = AppData.getInstane().testDataDiHu;
-			PopUpManager.centerPopUp(PopUpManager.addPopUp(winView,null,false,true));
 //			var arr:Array = CardUtil.getInstane().riffle([20, 4, 14, 12, 15, 2, 16, 2, 7, 2, 14, 4, 17])
 //			var newArr:Array = [];
 //			for each (var item:Array in arr) 
 //			{
 //				newArr.push({"name":"no","cards":item})
 //			}
-//			
 //			trace(JSON.stringify(arr));
 //			trace(JSON.stringify(newArr));
+			
+			
+//			var endView:EndResultView = new EndResultView();
+//			endView.data = AppData.getInstane().testDataDiHu;
+//			PopUpManager.centerPopUp(PopUpManager.addPopUp(endView,null,true,false,0,0.8));
+//			
+//			var winView3:WinView = new WinView();
+//			winView3.data = AppData.getInstane().testDataDiHu;
+//			PopUpManager.centerPopUp(PopUpManager.addPopUp(winView3,null,true,false));
 		}
 		
 	}

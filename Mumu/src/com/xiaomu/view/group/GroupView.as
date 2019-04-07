@@ -110,7 +110,7 @@ package com.xiaomu.view.group
 			bottomGroup = new HGroup()
 			bottomGroup.verticalAlign = VerticalAlign.MIDDLE
 			bottomGroup.horizontalAlign = HorizontalAlign.RIGHT
-			bottomGroup.height = 114
+			bottomGroup.height = 30
 			addChild(bottomGroup)
 			//			bottomGroup.visible = false;
 			
@@ -122,18 +122,18 @@ package com.xiaomu.view.group
 			
 			ruleSettingButton = new Button()
 			ruleSettingButton.label = '玩法管理'
-			ruleSettingButton.height = 24;
+			ruleSettingButton.height = 30;
 			ruleSettingButton.addEventListener(MouseEvent.CLICK, ruleSettingButton_clickHandler)
 			bottomGroup.addChild(ruleSettingButton)
 			ruleSettingButton.visible= false;
 			
-			switchRuleButton  = new ImageButton()
+			/*switchRuleButton  = new ImageButton()
 			switchRuleButton.upImageSource = 'assets/group/btn_guild_floorChoose_n.png';
 			switchRuleButton.downImageSource =  'assets/group/btn_guild_floorChoose_p.png';
 			switchRuleButton.width = 98;
 			switchRuleButton.height = 40;
 			switchRuleButton.addEventListener(MouseEvent.CLICK, switchRuleButton_clickHandler)
-			bottomGroup.addChild(switchRuleButton)
+			bottomGroup.addChild(switchRuleButton)*/
 			
 			userSettingButton = new ImageButton()///群管理
 			userSettingButton.width = 85
@@ -263,7 +263,7 @@ package com.xiaomu.view.group
 			createGroupPublic.y = createGroupPrivate.y;
 			
 			bottomGroup.width = 300
-			bottomGroup.y = startButton.y-10;
+			bottomGroup.y = startButton.y;
 			bottomGroup.x = startButton.x-bottomGroup.width;
 		}
 		
@@ -395,10 +395,10 @@ package com.xiaomu.view.group
 			new AddRulePanel().open()
 		}
 		
-		protected function switchRuleButton_clickHandler(event:MouseEvent):void
+		/*protected function switchRuleButton_clickHandler(event:MouseEvent):void
 		{
 			new SwitchRulePanel().open()
-		}
+		}*/
 		
 		protected function userSettingButton_clickHandler(event:MouseEvent):void
 		{
