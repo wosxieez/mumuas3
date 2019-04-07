@@ -427,10 +427,13 @@ package com.xiaomu.view.room
 			canChiButton.x = cancelButton.x - canChiButton.width - 10
 			canChiButton.y = (height - canChiButton.height) / 2
 			
-			canPengButton.x = canChiButton.x - canPengButton.width - 10
+			canPengButton.x = cancelButton.x - canPengButton.width - 10 - 
+				(canChiButton.visible ? (canChiButton.width + 10) : 0)
 			canPengButton.y = canChiButton.y
 			
-			canHuButton.x = canPengButton.x - canHuButton.width - 10
+			canHuButton.x = cancelButton.x - canPengButton.width - 10 - 
+				(canChiButton.visible ? (canChiButton.width + 10) : 0) -
+				(canPengButton.visible ? (canPengButton.width + 10) : 0)
 			canHuButton.y = canPengButton.y
 			
 			newCardTip.x = (width - newCardTip.width) / 2
@@ -1142,7 +1145,11 @@ package com.xiaomu.view.room
 				case Notifications.onNewCard: 
 				{
 					roomData = notification.data
-					Audio.getInstane().playCard(roomData.pc)
+					if (roomData.io && roomData.pc > 0 && roomData.pn == AppData.getInstane().user.username) {
+						// // 如果是自己出的牌 就不播报了
+					} else {
+						Audio.getInstane().playCard(roomData.pc)
+					}
 					break
 				}
 				case Notifications.onTi : 
@@ -1200,7 +1207,7 @@ package com.xiaomu.view.room
 				myActionUser.pd.ac = 1
 				var action:Object = { name: Actions.Peng, data: myActionUser }
 				Api.getInstane().sendAction(action)
-				mePeng(myActionUser.pd.dt)
+//				mePeng(myActionUser.pd.dt)
 			}
 		}
 		
@@ -1223,7 +1230,7 @@ package com.xiaomu.view.room
 				myActionUser.cd.ac = 1
 				var action:Object = { name: Actions.Chi, data: myActionUser}
 				Api.getInstane().sendAction(action)
-				meChi(event.data as Array)
+//				meChi(event.data as Array)
 			}
 		}
 		
@@ -1297,7 +1304,7 @@ package com.xiaomu.view.room
 		
 		private function meNewCard(card:int):void {
 			if (myUser) {
-				Audio.getInstane().playCard(card, true)
+				Audio.getInstane().playCard(card)
 				roomData.pn = myUser.username
 				roomData.pc = card
 				roomData.io = true
@@ -1307,41 +1314,41 @@ package com.xiaomu.view.room
 			}
 		}
 		
-		private function meChi(groups:Array):void {
-			return
-			if (myUser) {
-				myUser.handCards.push(roomData.pc)
-				roomData.pc = 0
-				var group:Object
-				for (var i:int = 0; i < groups.length; i++) {
-					group = groups[i]
-					for (var j:int = 0; j < group.cards.length; j++) {
-						CardUtil.getInstane().deleteCard(myUser.handCards, group.cards[j])
-					}
-					myUser.groupCards.push(group)
-				}
-				if (groups.length > 1) {
-					Audio.getInstane().playHandle('bi', true)
-				} else {
-					Audio.getInstane().playHandle('chi', true)
-				}
-				invalidateProperties()
-			}
-		}
-		
-		private function mePeng(cards:Array):void {
-			return
-			if (myUser) {
-				for (var i:int = 0; i < cards.length; i++) {
-					CardUtil.getInstane().deleteCard(myUser.handCards, cards[i])
-				}
-				cards.push(roomData.pc)
-				roomData.pc = 0
-				myUser.groupCards.push({name: Actions.Peng, cards: cards})
-				Audio.getInstane().playHandle('peng', true)
-				invalidateProperties()
-			}
-		}
+//		private function meChi(groups:Array):void {
+//			return
+//			if (myUser) {
+//				myUser.handCards.push(roomData.pc)
+//				roomData.pc = 0
+//				var group:Object
+//				for (var i:int = 0; i < groups.length; i++) {
+//					group = groups[i]
+//					for (var j:int = 0; j < group.cards.length; j++) {
+//						CardUtil.getInstane().deleteCard(myUser.handCards, group.cards[j])
+//					}
+//					myUser.groupCards.push(group)
+//				}
+//				if (groups.length > 1) {
+//					Audio.getInstane().playHandle('bi')
+//				} else {
+//					Audio.getInstane().playHandle('chi')
+//				}
+//				invalidateProperties()
+//			}
+//		}
+//		
+//		private function mePeng(cards:Array):void {
+//			return
+//			if (myUser) {
+//				for (var i:int = 0; i < cards.length; i++) {
+//					CardUtil.getInstane().deleteCard(myUser.handCards, cards[i])
+//				}
+//				cards.push(roomData.pc)
+//				roomData.pc = 0
+//				myUser.groupCards.push({name: Actions.Peng, cards: cards})
+//				Audio.getInstane().playHandle('peng', true)
+//				invalidateProperties()
+//			}
+//		}
 		
 		private function getActionUser(username:String):Object {
 			if (roomData.aus) {

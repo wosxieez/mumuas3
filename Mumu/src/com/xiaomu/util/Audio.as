@@ -82,18 +82,9 @@ package com.xiaomu.util
 		
 		private var cardChannel:SoundChannel
 		private var cardSound:Sound
-		private var ign:Boolean = false
 		
-		public function playCard(card:int, igornNext:Boolean = false):void {
+		public function playCard(card:int):void {
 			if (!isActivate) return
-				
-			if (ign) {
-				ign = false
-				return
-			}
-			
-			ign = igornNext
-			
 			if (cardChannel) {
 				try
 				{
@@ -113,14 +104,7 @@ package com.xiaomu.util
 		private var handleChannel:SoundChannel
 		private var handleSound:Sound
 		
-		public function playHandle(name:String, igornNext:Boolean = false):void {
-			if (ign) {
-				ign = false
-				return
-			}
-			
-			ign = igornNext
-			
+		public function playHandle(name:String):void {
 			if (handleChannel) {
 				try
 				{
