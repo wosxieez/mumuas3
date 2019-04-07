@@ -1110,9 +1110,8 @@ package com.xiaomu.view.room
 				case Notifications.onWin:///赢家界面 //一把
 				{
 					Audio.getInstane().playHandle('hu')
-					AppAlert.show('玩家赢牌')
 					roomData = notification.data
-					trace("玩家赢牌1:",JSON.stringify(roomData));
+					trace("roomView一把玩家赢牌1:",JSON.stringify(roomData));
 					var winView1:WinView = new WinView();
 					winView1.data = roomData;
 					PopUpManager.centerPopUp(PopUpManager.addPopUp(winView1,null,true,false));
@@ -1120,20 +1119,23 @@ package com.xiaomu.view.room
 				}
 				case Notifications.onRoundEnd://荒庄
 				{
-//					AppAlert.show('一把结束') ///一把结束，可以准备下一把
+					//					AppAlert.show('一把结束') ///一把结束，可以准备下一把
 					roomData = notification.data
-					trace("一把结束1:");
-					var winView:WinView = new WinView();
-					winView.data = roomData;
-					PopUpManager.centerPopUp(PopUpManager.addPopUp(winView,null,true,false));
+					trace("roomView一把荒庄1:",JSON.stringify(roomData));
+					var winView2:WinView = new WinView();
+					winView2.data = roomData;
+					PopUpManager.centerPopUp(PopUpManager.addPopUp(winView2,null,true,false));
 					break
 				}
 				case Notifications.onGameOver: 
 				{
 					Audio.getInstane().playHandle('hu')
 					roomData = notification.data
-					AppAlert.show('一局游戏结束') ///游戏结束房卡消耗。人自动退出到游戏的群界面
-					trace("一局游戏结束:",JSON.stringify(roomData));
+					AppAlert.show('一局游戏结束，胡息满一百') ///游戏结束房卡消耗。人自动退出到游戏的群界面
+					trace("roomView一局游戏结束:",JSON.stringify(roomData));
+					var winView3:WinView = new WinView();
+					winView3.data = roomData;
+					PopUpManager.centerPopUp(PopUpManager.addPopUp(winView3,null,true,false));
 					close()
 					break
 				}

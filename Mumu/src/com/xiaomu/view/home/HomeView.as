@@ -63,7 +63,7 @@ package com.xiaomu.view.home
 			testBtn.addEventListener(MouseEvent.CLICK,testHandler);
 			testBtn.x = 300;
 			addChild(testBtn);
-			testBtn.visible = false;
+//			testBtn.visible = false;
 			
 			userInfoView = new UserInfoView2();
 			addChild(userInfoView);
@@ -398,9 +398,9 @@ package com.xiaomu.view.home
 		protected function testHandler(event:MouseEvent):void
 		{
 			var winView:WinView = new WinView();
-			winView.data = AppData.getInstane().testDataHu2;
+			winView.data = AppData.getInstane().testDataDiHu;
 			PopUpManager.centerPopUp(PopUpManager.addPopUp(winView,null,false,true));
-//			var arr:Array = CardUtil.getInstane().riffle([10, 10, 19, 10, 19, 15, 19])
+//			var arr:Array = CardUtil.getInstane().riffle([20, 4, 14, 12, 15, 2, 16, 2, 7, 2, 14, 4, 17])
 //			var newArr:Array = [];
 //			for each (var item:Array in arr) 
 //			{

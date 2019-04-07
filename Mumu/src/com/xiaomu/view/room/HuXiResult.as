@@ -125,11 +125,12 @@ package com.xiaomu.view.room
 			
 			huxiImg.width= width ;
 			huxiImg.height=(huxiImg.width-3*huxiImg.gap)/4;
-			huxiImg.y = 50;
+			huxiImg.y = 70;
 			
 			jiaJianLab.x = 180;
 			
 			huImg.x = 210;
+			huImg.y = 10;
 		}
 		
 		override protected function commitProperties():void

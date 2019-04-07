@@ -42,6 +42,10 @@ package com.xiaomu.renderer
 			super.createChildren();
 			
 			if(data){
+				cardIcon4.visible = true;
+				cardIcon3.visible = true;
+				cardIcon2.visible = true;
+				cardIcon1.visible = true;
 				typeIcon.source = "assets/cards/type_"+data.name+".png";
 				if(data.name=='pao'){
 					cardIcon4.visible = true;
@@ -80,6 +84,11 @@ package com.xiaomu.renderer
 						cardIcon4.visible = false;
 						cardIcon3.visible = false;
 						cardIcon2.source = 'assets/cards/Card_half_'+data.cards[1]+".png"
+						cardIcon1.source = 'assets/cards/Card_half_'+data.cards[0]+".png"
+					}else if(data.cards.length==1){
+						cardIcon4.visible = false;
+						cardIcon3.visible = false;
+						cardIcon2.visible = false;
 						cardIcon1.source = 'assets/cards/Card_half_'+data.cards[0]+".png"
 					}
 				}

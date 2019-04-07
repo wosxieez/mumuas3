@@ -153,7 +153,7 @@ package com.xiaomu.view.room
 			if(data.hasOwnProperty("hn")){
 				if(data.us.length>1){
 					if(data.us[1].username==data.hn){
-						///数据位置对调
+						///数据位置对调,把胡的人放在前面
 						var newArr:Array = [];
 						newArr[0]=data.us[1];
 						newArr[1]=data.us[0];
@@ -162,10 +162,10 @@ package com.xiaomu.view.room
 					}
 				}
 			}
-			
 			///玩家1
 			if(data.us[0].handCards.length>0){
 				var arrs:Array = CardUtil.getInstane().riffle(data.us[0].handCards)///手里牌进行排序
+				trace("胡的人手里的牌1：",JSON.stringify(arrs));
 				for each (var item:Array in arrs) 
 				{
 					data.us[0].groupCards.push({"name":"no","cards":item})///
@@ -175,6 +175,7 @@ package com.xiaomu.view.room
 			cardGroup1.width = cardGroup1.dataProvider.length*40;
 			headView1.isZhuang = data.zn==data.us[0].username;
 			headView1.username = data.us[0].username;
+			
 			if(data.hasOwnProperty("hts")){ ///荒庄
 				huxiResult1.data = data.hts;
 			}else{
@@ -182,13 +183,12 @@ package com.xiaomu.view.room
 				trace("荒庄");
 				huxiResult1.isHuangzhuang = true;
 				if(data.zn==data.us[0].username){
-					trace("又是庄1");
+					trace("第一位又是庄");
 					huxiResult1.isZhuang = true;
 				}else{
 					huxiResult1.isZhuang = false;
 				}
 			}
-			
 			huxiResult1.huxi = data.us[0].hx;
 			huxiResult1.isHu = data.hn==data.us[0].username;
 			///玩家2
@@ -198,6 +198,7 @@ package com.xiaomu.view.room
 				huxiResult2.visible = true;
 				if(data.us[1].handCards.length>0){
 					var arrs1:Array = CardUtil.getInstane().riffle(data.us[1].handCards)///手里牌进行排序
+					trace("手里的牌2：",JSON.stringify(arrs1));
 					for each (var item1:Array in arrs1) 
 					{
 						data.us[1].groupCards.push({"name":"no","cards":item1})///
