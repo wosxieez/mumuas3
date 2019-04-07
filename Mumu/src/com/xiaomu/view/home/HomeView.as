@@ -2,11 +2,11 @@ package com.xiaomu.view.home
 {
 	import com.xiaomu.component.AppAlert;
 	import com.xiaomu.component.ImageButton;
-	import com.xiaomu.event.ApiEvent;
+	import com.xiaomu.component.Loading;
 	import com.xiaomu.itemRender.HomeBottomBarRender;
+	import com.xiaomu.util.Api;
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.Audio;
-	import com.xiaomu.util.CardUtil;
 	import com.xiaomu.view.MainView;
 	import com.xiaomu.view.hall.HallView;
 	import com.xiaomu.view.home.noticeBar.NoticeBar;
@@ -198,20 +198,21 @@ package com.xiaomu.view.home
 		
 		protected function ziPaiImg_clickHandler(event:MouseEvent):void
 		{
-			AppAlert.show('程序员小哥哥正在努力的开发中....')
-		}
-		
-		protected function createGroupRoomFaultHandler(event:ApiEvent):void
-		{
-			//			Api.getInstane().removeEventListener(ApiEvent.CREATE_GROUP_ROOM_SUCCESS, createGroupRoomSuccessHandler)
-			//			Api.getInstane().removeEventListener(ApiEvent.CREATE_GROUP_ROOM_FAULT, createGroupRoomFaultHandler)
-		}
-		
-		protected function createGroupRoomSuccessHandler(event:ApiEvent):void
-		{
-			//			Api.getInstane().removeEventListener(ApiEvent.CREATE_GROUP_ROOM_SUCCESS, createGroupRoomSuccessHandler)
-			//			Api.getInstane().removeEventListener(ApiEvent.CREATE_GROUP_ROOM_FAULT, createGroupRoomFaultHandler)
-			//			GroupRoomView(MainView.getInstane().pushView(GroupRoomView)).init({huxi: 15})
+			Loading.getInstance().open()
+			Api.getInstane().joinGroup(AppData.getInstane().user.username, 0, function (response:Object):void {
+				if (response.code == 0) {
+				 	Api.getInstane().createRoom({cc: 2, hx: 15, id: 0}, function (response:Object):void {
+						Loading.getInstance().close()
+						if (response.code == 0) {
+							TempRoomView(MainView.getInstane().pushView(TempRoomView)).init(response.data)
+						} else {
+							AppAlert.show(response.data)
+						}
+					})
+				} else {
+					Loading.getInstance().close()
+				}
+			})
 		}
 		
 		override protected function updateDisplayList():void{
@@ -313,7 +314,8 @@ package com.xiaomu.view.home
 		
 		protected function joinRoomClickHandler(event:MouseEvent):void
 		{
-			AppAlert.show('程序员小哥哥正在努力的开发中....')		}
+			PopUpManager.centerPopUp(PopUpManager.addPopUp(new TempKeyboardPanel(),null,true,true,0,0.2))
+		}
 		
 		/**
 		 * 商场

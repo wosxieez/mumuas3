@@ -43,6 +43,7 @@ package com.xiaomu.util
 		 * @param password
 		 */		
 		public function joinGroup(username:String, groupid:int, cb:Function):void {
+			disconnect()
 			this.username = username
 			this.groupid = groupid
 			this.cb = cb
