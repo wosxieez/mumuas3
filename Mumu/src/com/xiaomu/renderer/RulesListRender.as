@@ -63,7 +63,7 @@ package com.xiaomu.renderer
 			
 			ruleDetail = new TextArea();
 			ruleDetail.editable = false;
-			ruleDetail.fontSize = 15;
+			ruleDetail.fontSize = 24;
 			ruleDetail.leading = 5;
 			ruleDetail.color = 0x845525;
 			ruleDetail.backgroundAlpha = 0;
@@ -101,7 +101,7 @@ package com.xiaomu.renderer
 			ruleName.y = (height-ruleName.height)/2;
 			
 			ruleDetail.width = width*0.55;
-			ruleDetail.height = height*0.7;
+			ruleDetail.height = height;
 			ruleDetail.x = selectBtn.x-ruleDetail.width-20;
 			ruleDetail.y = (height-ruleDetail.height)/2
 			//AppData.getInstane().rule为null

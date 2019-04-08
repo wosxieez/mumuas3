@@ -25,14 +25,14 @@ package com.xiaomu.itemRender
 		
 		override protected function createChildren():void {
 			super.createChildren()
-				
+			
 			bgImg = new Image();
 			bgImg.source = 'assets/guild/guild_diban02.png';
 			addChild(bgImg);
 			
 			lab = new TextArea();
 			lab.borderAlpha = lab.backgroundAlpha = 0;
-			lab.fontSize = 20;
+			lab.fontSize = 24;
 			lab.editable = false;
 			lab.color = 0x845525;
 			lab.leading = 5;
@@ -49,15 +49,15 @@ package com.xiaomu.itemRender
 			super.commitProperties()
 			
 			if (data) {
-				lab.text = data.rulename + ' ，人数:' + data.cc + ' ，胡息:' + data.hx + 
-					' ，息分:' + data.xf + ' ，鸟分:' + data.nf + '， 封顶:' + data.fd + ' ，一级提成:' + data.tc2 + 
-					' ，二级提成:' + data.tc1+ ' ，提成线:' + data.tf + ' ，提成值:' + data.tc 
+				lab.text = data.rulename + '  人数:' + data.cc + ', 胡息:' + data.hx + 
+					', 息分:' + data.xf + ', 鸟分:' + data.nf + ', 封顶:' + data.fd  + ', 提成线:' + data.tf + ', 提成值:' + data.tc+ ', 一级提成:' + data.tc2 + 
+					', 二级提成:' + data.tc1
 			}
 		}
 		
 		override protected function updateDisplayList():void {
 			super.updateDisplayList()
-				
+			
 			bgImg.width = width;
 			bgImg.height = height;
 			
@@ -65,7 +65,7 @@ package com.xiaomu.itemRender
 			lab.height = height;
 			lab.x = 20;
 			lab.y = (height-lab.height)/2;
-				
+			
 			manageButton.height =  51
 			manageButton.width = 132
 			manageButton.x = width - manageButton.width-20
@@ -76,7 +76,7 @@ package com.xiaomu.itemRender
 		{
 			event.preventDefault()
 			event.stopImmediatePropagation()
-				
+			
 			GroupRuleMenu.getInstane().x = width
 			GroupRuleMenu.getInstane().ruleData = data
 			PopUpManager.addPopUp(GroupRuleMenu.getInstane(), this, false, true)

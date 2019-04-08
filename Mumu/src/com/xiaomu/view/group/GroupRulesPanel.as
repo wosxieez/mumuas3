@@ -56,6 +56,8 @@ package com.xiaomu.view.group
 			addUserButton.width = 132;
 			addUserButton.height = 51;
 			addUserButton.label = '添加玩法'
+			addUserButton.bold = true;
+			addUserButton.fontSize = 24;
 			addUserButton.radius = 10;
 			addUserButton.color = 0x845525;
 			addUserButton.backgroundColor = 0xeadab0;

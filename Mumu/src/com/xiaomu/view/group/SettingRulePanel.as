@@ -308,7 +308,7 @@ package com.xiaomu.view.group
 				fd: Number(ruleFDBtnGroup.selectedItem.value),
 				tc2: Number(ruleTC2Tool.value),
 				tc1: Number(ruleTC1Tool.value),
-				tc: Number(ruleTC1Tool.value),
+				tc: Number(ruleTCTool.value),
 				tf: Number(ruleTFTool.value)}, query: {id: ruleData.id}},  
 				function (e:Event):void {
 					try

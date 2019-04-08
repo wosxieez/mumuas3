@@ -59,7 +59,7 @@ package com.xiaomu.view.group
 			introduceLab.text = '';
 			introduceLab.fontSize = 24;
 			introduceLab.color = 0x845525;
-			introduceLab.text = '以下是群主设定的本群玩法，请选择一种作为【快速开始】的玩法';
+			introduceLab.text = '以下是群主设定的本群玩法，请选择一种作为【创建房间】的玩法';
 			addChild(introduceLab);
 			
 			rulesList = new List()
