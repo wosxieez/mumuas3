@@ -86,18 +86,18 @@ package com.xiaomu.view.group
 		}
 		
 		private var _isNowGroupHost:Boolean;  ///是不是当前群的群主
-
+		
 		public function get isNowGroupHost():Boolean
 		{
 			return _isNowGroupHost;
 		}
-
+		
 		public function set isNowGroupHost(value:Boolean):void
 		{
 			_isNowGroupHost = value;
 			invalidateDisplayList();
 		}
-
+		
 		override protected function createChildren():void {
 			super.createChildren()
 			
@@ -391,7 +391,7 @@ package com.xiaomu.view.group
 									}
 								}
 								AppData.getInstane().groupUsers = groupusers;
-								trace("当前群中的所有用户信息:",JSON.stringify(groupusers));
+								//trace("当前群中的所有用户信息:",JSON.stringify(groupusers));
 								actionHandler();
 							}
 						})
@@ -417,7 +417,7 @@ package com.xiaomu.view.group
 					userSettingButton.visible = user.ll>0; ///只有是管理人员才能有群管理的入口
 					AppData.getInstane().groupLL = user.ll;
 					fenBar.count = user.fs;
-//					trace("这个群中你的分数：",user.fs);
+					//					trace("这个群中你的分数：",user.fs);
 				}
 			}
 		}

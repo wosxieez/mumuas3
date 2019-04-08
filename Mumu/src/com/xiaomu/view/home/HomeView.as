@@ -7,15 +7,17 @@ package com.xiaomu.view.home
 	import com.xiaomu.util.Api;
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.Audio;
+	import com.xiaomu.util.HttpApi;
 	import com.xiaomu.view.MainView;
 	import com.xiaomu.view.hall.HallView;
 	import com.xiaomu.view.home.noticeBar.NoticeBar;
+	import com.xiaomu.view.home.popUp1.OfficalNoticeView;
 	import com.xiaomu.view.home.popUp1.OfficalNoticeViewOfCopy;
 	import com.xiaomu.view.home.setting.SettingPanelView;
-	import com.xiaomu.view.room.EndResultView;
 	import com.xiaomu.view.room.RoomView;
 	import com.xiaomu.view.userBarView.UserInfoView;
 	
+	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.utils.setTimeout;
 	
@@ -202,7 +204,7 @@ package com.xiaomu.view.home
 			Loading.getInstance().open()
 			Api.getInstane().joinGroup(AppData.getInstane().user.username, 0, function (response:Object):void {
 				if (response.code == 0) {
-				 	Api.getInstane().createRoom({cc: 2, hx: 15, id: 0}, function (response:Object):void {
+					Api.getInstane().createRoom({cc: 2, hx: 15, id: 0}, function (response:Object):void {
 						Loading.getInstance().close()
 						if (response.code == 0) {
 							RoomView(MainView.getInstane().pushView(RoomView)).init(response.data)
@@ -276,8 +278,6 @@ package com.xiaomu.view.home
 		public function init():void{
 			Audio.getInstane().playBGM()
 			userInfoView.userInfoData = AppData.getInstane().user
-			trace('user id ',AppData.getInstane().user.id);
-			trace('user:',JSON.stringify(AppData.getInstane().user));
 		}
 		
 		protected function clickHandler(event:MouseEvent):void{
@@ -360,39 +360,27 @@ package com.xiaomu.view.home
 		 */
 		protected function checkInBtnHandler(event:MouseEvent):void
 		{
-			AppAlert.show('程序员小哥哥正在努力的开发中....')
-			return;
-			//			var noticePanel:OfficalNoticeView;
-			//			if(!noticePanel){noticePanel = new OfficalNoticeView()}
-			//			var todayDate:String = getTodayDate();
-			//			//			trace("今日日期:",todayDate);
-			//			var user_id:int = parseInt(AppData.getInstane().user.userId);
-			//			HttpApi.getInstane().getUserInfoById(user_id,function(e:Event):void{
-			//				var oldDate:String = JSON.parse(e.currentTarget.data).message[0].checkin_date;
-			//				var oldRoomCardNumber:int = JSON.parse(e.currentTarget.data).message[0].room_card;
-			//				//				trace('房卡数：',JSON.parse(e.currentTarget.data).message[0].room_card);
-			//				if(todayDate!=oldDate){
-			//					HttpApi.getInstane().updateUserCheckIn(todayDate,user_id,function(e:Event):void{
-			//						if(JSON.parse(e.currentTarget.data).result==0){
-			//							//							trace('签到成功');
-			//							var str:String = '签到成功，赠送您2张房卡。祝您游戏愉快！';
-			//							noticePanel.showText = str;
-			//							PopUpManager.centerPopUp(PopUpManager.addPopUp(noticePanel,null,true,false,0,0.6));
-			//							HttpApi.getInstane().updateUserRoomCard(oldRoomCardNumber+2,user_id,function(e:Event):void{
-			//								if(JSON.parse(e.currentTarget.data).result==0){
-			//									//									trace('房卡增加成功');
-			//									userInfoView.userInfoData = {"roomCard":oldRoomCardNumber+2,'userName':AppData.getInstane().username}
-			//								}
-			//							},null);
-			//						}
-			//					},null);
-			//				}else{
-			//					trace('今日已经签到');
-			//					var str:String = '今日已经签到过了哦，明天再来吧。亲！';
-			//					noticePanel.showText = str;
-			//					PopUpManager.centerPopUp(PopUpManager.addPopUp(noticePanel,null,true,false,0,0.6));
-			//				}
-			//			},null);
+			var todayDate:String = getTodayDate();
+			var user_id:int = parseInt(AppData.getInstane().user.id);
+			HttpApi.getInstane().getUser({"id":user_id},function(e:Event):void{
+				var oldDate:String = JSON.parse(e.currentTarget.data).data[0].qd;
+				var oldfc:int = JSON.parse(e.currentTarget.data).data[0].fc;
+				if(todayDate!=oldDate){
+					HttpApi.getInstane().updateUser({
+						update: {qd: todayDate,fc:oldfc+2}, 
+						query: {id: user_id}
+					},function(e:Event):void{
+						AppAlert.show("签到成功！\r牛牛送您两张房卡。祝您游戏愉快！")
+						///刷新界面上的房卡显示
+						HttpApi.getInstane().getUser({"id":user_id},function(e:Event):void{
+							AppData.getInstane().user = JSON.parse(e.currentTarget.data).data[0]
+							userInfoView.userInfoData = JSON.parse(e.currentTarget.data).data[0]
+						},null);
+					},null);
+				}else{
+					AppAlert.show("今日已签到。\r请明日再来哦亲！")
+				}
+			},null);
 		}
 		
 		private function getTodayDate():String
@@ -403,22 +391,22 @@ package com.xiaomu.view.home
 		
 		protected function testHandler(event:MouseEvent):void
 		{
-//			var arr:Array = CardUtil.getInstane().riffle([20, 4, 14, 12, 15, 2, 16, 2, 7, 2, 14, 4, 17])
-//			var newArr:Array = [];
-//			for each (var item:Array in arr) 
-//			{
-//				newArr.push({"name":"no","cards":item})
-//			}
-//			trace(JSON.stringify(arr));
-//			trace(JSON.stringify(newArr));
+			//			var arr:Array = CardUtil.getInstane().riffle([20, 4, 14, 12, 15, 2, 16, 2, 7, 2, 14, 4, 17])
+			//			var newArr:Array = [];
+			//			for each (var item:Array in arr)
+			//			{
+			//				newArr.push({"name":"no","cards":item})
+			//			}
+			//			trace(JSON.stringify(arr));
+			//			trace(JSON.stringify(newArr));
 			
-//			var endView:EndResultView = new EndResultView();
-//			endView.data = AppData.getInstane().testDataDiHu;
-//			PopUpManager.centerPopUp(PopUpManager.addPopUp(endView,null,true,false,0,0.8));
+			//			var endView:EndResultView = new EndResultView();
+			//			endView.data = AppData.getInstane().testDataDiHu;
+			//			PopUpManager.centerPopUp(PopUpManager.addPopUp(endView,null,true,false,0,0.8));
 			
-//			var winView3:WinView = new WinView();
-//			winView3.data = AppData.getInstane().testDataDiHu;
-//			PopUpManager.centerPopUp(PopUpManager.addPopUp(winView3,null,true,false));
+			//			var winView3:WinView = new WinView();
+			//			winView3.data = AppData.getInstane().testDataDiHu;
+			//			PopUpManager.centerPopUp(PopUpManager.addPopUp(winView3,null,true,false));
 		}
 		
 	}
