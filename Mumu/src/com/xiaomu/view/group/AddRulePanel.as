@@ -3,13 +3,11 @@ package com.xiaomu.view.group
 	import com.xiaomu.component.AppAlert;
 	import com.xiaomu.component.AppPanelBig;
 	import com.xiaomu.component.CountTool;
-	import com.xiaomu.component.Loading;
+	import com.xiaomu.event.AppManagerEvent;
+	import com.xiaomu.manager.AppManager;
 	import com.xiaomu.renderer.AddRuleRender;
-	import com.xiaomu.util.Api;
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.HttpApi;
-	import com.xiaomu.view.MainView;
-	import com.xiaomu.view.room.RoomView;
 	
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -214,7 +212,7 @@ package com.xiaomu.view.group
 			ruleTC1Tool = new CountTool();
 			ruleTC1Tool.width = 300;
 			ruleTC1Tool.height = 40;
-			ruleTC1Tool.value = 2;
+			ruleTC1Tool.value = 1.8;
 			ruleTC1Tool.stepSize = 0.1;
 			addChild(ruleTC1Tool);
 			
@@ -230,7 +228,7 @@ package com.xiaomu.view.group
 			ruleTC2Tool = new CountTool();
 			ruleTC2Tool.width = 300;
 			ruleTC2Tool.height = 40;
-			ruleTC2Tool.value = 1.8;
+			ruleTC2Tool.value = 2;
 			ruleTC2Tool.stepSize = 0.1;
 			addChild(ruleTC2Tool);
 		}
@@ -304,6 +302,7 @@ package com.xiaomu.view.group
 							if(AppData.getInstane().rule==null){
 								getFirstResultHandler();
 							}
+							AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.UPDATE_GROUP_RULES_SUCCESS));
 							close()
 						} else {
 							AppAlert.show('添加玩法失败')
@@ -318,6 +317,7 @@ package com.xiaomu.view.group
 		
 		/**
 		 * 如果是第一次创建某个玩法
+		 * 将玩法选中区，自动赋值上这个玩法。
 		 */
 		private function getFirstResultHandler():void
 		{

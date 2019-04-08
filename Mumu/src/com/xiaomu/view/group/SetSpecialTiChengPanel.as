@@ -1,6 +1,9 @@
 package com.xiaomu.view.group
 {
+	import com.xiaomu.component.AppAlert;
 	import com.xiaomu.component.AppPanelSmall;
+	import com.xiaomu.event.AppManagerEvent;
+	import com.xiaomu.manager.AppManager;
 	import com.xiaomu.util.HttpApi;
 	
 	import flash.events.Event;
@@ -92,7 +95,8 @@ package com.xiaomu.view.group
 				var response:Object = JSON.parse(e.currentTarget.data)
 				if (response.code == 0) {
 					close();
-					Alert.show('更新成功');
+					AppAlert.show('特殊提成，设置成功')
+					AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.UPDATE_MEMBER_INFO_SUCCESS));
 				}
 			},null)
 		}

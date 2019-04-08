@@ -2,9 +2,13 @@ package com.xiaomu.view.group
 {
 	import com.xiaomu.component.AppPanelBig;
 	import com.xiaomu.component.ImageButton;
+	import com.xiaomu.event.AppManagerEvent;
 	import com.xiaomu.itemRender.GroupUserRender;
+	import com.xiaomu.manager.AppManager;
 	import com.xiaomu.util.AppData;
+	import com.xiaomu.util.HttpApi;
 	
+	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
 	import coco.component.Image;
@@ -18,6 +22,8 @@ package com.xiaomu.view.group
 			
 			//			title = '成员管理'
 			commitEnabled = false;
+			AppManager.getInstance().addEventListener(AppManagerEvent.CHANGE_MEMBER_SUCCESS,changeMemberHandler);
+			AppManager.getInstance().addEventListener(AppManagerEvent.UPDATE_MEMBER_INFO_SUCCESS,changeMemberHandler);
 		}
 		
 		private var titleImg:Image;
@@ -96,10 +102,65 @@ package com.xiaomu.view.group
 		
 		override public function open():void {
 			super.open()
+			refreshData();
+		}
+		
+		/**
+		 * 添加或踢出了成员
+		 * 或是给成员上下分
+		 */
+		protected function changeMemberHandler(event:AppManagerEvent):void
+		{
+			HttpApi.getInstane().getGroupUser({gid: AppData.getInstane().group.id}, function (e:Event):void {
+				try
+				{
+					var response:Object = JSON.parse(e.currentTarget.data)
+					if (response.code == 0) {
+						var groupusers:Array = response.data
+						var uids:Array = []
+						for each(var groupuser:Object in groupusers) {
+							uids.push(groupuser.uid)
+						}
+						HttpApi.getInstane().getUser({id: {'$in': uids}}, function (ee:Event):void {
+							var response2:Object = JSON.parse(ee.currentTarget.data)
+							if (response2.code == 0) {
+								var users:Array = response2.data
+								
+								function getUser(id:int):Object {
+									for each(var user:Object in users) {
+										if (user.id == id) {
+											return user
+										} 
+									}
+									return null
+								}
+								
+								for each(var groupuser:Object in groupusers) {
+									var guser:Object = getUser(groupuser.uid)
+									if (guser) {
+										groupuser.username = guser.username
+									}
+								}
+								AppData.getInstane().groupUsers = groupusers;
+								//								trace("当前群中的所有用户信息:",JSON.stringify(groupusers));
+								refreshData();
+							}
+						})
+					} else {
+					}
+				} 
+				catch(error:Error) 
+				{
+				}
+			})
+		}
+		
+		private function refreshData():void
+		{
 			trace("当前群中的成员信息：",AppData.getInstane().groupUsers);
 			trace("你在这个群中的等级：",AppData.getInstane().groupLL);
 			trace("你的id",AppData.getInstane().user.id);
-//			usersData = AppData.getInstane().groupUsers;
+			//			usersData = AppData.getInstane().groupUsers;
 			if(AppData.getInstane().groupLL==4||AppData.getInstane().groupLL==3){
 				trace("你是馆主或是副馆主");
 				usersData =  AppData.getInstane().groupUsers; ///如果是馆主，副馆主则显示所有人

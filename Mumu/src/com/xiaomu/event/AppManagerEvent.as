@@ -32,12 +32,27 @@ package com.xiaomu.event
 		/**
 		 *添加或移除成员成功
 		 */
-		public static const CHANGE_MEMBER_SUCCESS:String = 'changeMemberSuccess'	
+		public static const CHANGE_MEMBER_SUCCESS:String = 'changeMemberSuccess'
+			
+		/**
+		 *添加或修改 群里的玩法成功 
+		 */
+		public static const UPDATE_GROUP_RULES_SUCCESS:String = 'updateGroupRulesSuccess';
 			
 		/**
 		 *改变了当前选择的玩法
 		 */
 		public static const CHANGE_SELECTED_RULE:String = 'changeSelectedRule'	
+			
+		/**
+		 *修改房间桌布 
+		 */
+		public static const CHANGE_ROOM_TABLE_IMG:String = 'changeRoomTableImg';
+		
+		/**
+		 *离开房间
+		 */
+		public static const LEAVE_ROOM:String = 'leaveRoom';
 		
 		/** Message用户事件信息存储*/
 		public var message:Object;

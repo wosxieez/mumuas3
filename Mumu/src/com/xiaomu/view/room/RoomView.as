@@ -5,7 +5,9 @@ package com.xiaomu.view.room
 	import com.xiaomu.component.CardUI;
 	import com.xiaomu.component.ImageButton;
 	import com.xiaomu.event.ApiEvent;
+	import com.xiaomu.event.AppManagerEvent;
 	import com.xiaomu.event.SelectEvent;
+	import com.xiaomu.manager.AppManager;
 	import com.xiaomu.util.Actions;
 	import com.xiaomu.util.Api;
 	import com.xiaomu.util.AppData;
@@ -30,6 +32,18 @@ package com.xiaomu.view.room
 		public function RoomView()
 		{
 			super();
+			AppManager.getInstance().addEventListener(AppManagerEvent.CHANGE_ROOM_TABLE_IMG,changeRoomTableImgHandler);
+			AppManager.getInstance().addEventListener(AppManagerEvent.LEAVE_ROOM,leaveRoomHandler);
+		}
+		
+		protected function leaveRoomHandler(event:AppManagerEvent):void
+		{
+			close();
+		}
+		
+		protected function changeRoomTableImgHandler(event:AppManagerEvent):void
+		{
+			bg.source = 'assets/room/'+AppData.getInstane().roomTableImgsArr[parseInt(AppData.getInstane().roomTableIndex)];
 		}
 		
 		private var bg:Image;
@@ -74,6 +88,8 @@ package com.xiaomu.view.room
 		private var preActionUser:Object
 		private var nextActionUser:Object
 		
+		private var showSettingPanelBtn:ImageButton;
+		
 		private var _roomData:Object
 		
 		public function get roomData():Object
@@ -106,11 +122,11 @@ package com.xiaomu.view.room
 		
 		override protected function createChildren():void {
 			super.createChildren()
-				
+			
 			bg = new Image();
-			bg.source = 'assets/roombg.png';
+			bg.source = 'assets/room/'+AppData.getInstane().roomTableImgsArr[parseInt(AppData.getInstane().roomTableIndex)];
 			addChild(bg);
-				
+			
 			bgLayer = new UIComponent()
 			addChild(bgLayer)
 			
@@ -248,6 +264,15 @@ package com.xiaomu.view.room
 			chatButton.upImageSource = 'assets/room/btn_chat.png'
 			chatButton.addEventListener(MouseEvent.CLICK, chatButton_clickHandler)
 			iconLayer.addChild(chatButton)
+			
+			///设置按钮--点击
+			showSettingPanelBtn = new ImageButton();
+			showSettingPanelBtn.upImageSource='assets/room/btn_zk_normal.png';
+			showSettingPanelBtn.downImageSource='assets/room/btn_zk_press.png';
+			showSettingPanelBtn.width = 69;
+			showSettingPanelBtn.height = 68;
+			showSettingPanelBtn.addEventListener(MouseEvent.CLICK,showSettingPanelBtnHandler);
+			addChild(showSettingPanelBtn);
 			
 			goback= new ImageButton()
 			goback.upImageSource = 'assets/group/btn_guild2_return_n.png';
@@ -400,11 +425,14 @@ package com.xiaomu.view.room
 		
 		override protected function updateDisplayList():void {
 			super.updateDisplayList()
-				
+			
 			bg.width = width;
 			bg.height = height;
-				
+			
 			roomnameDisplay.width = width
+				
+			showSettingPanelBtn.x = width-showSettingPanelBtn.width-20;
+			showSettingPanelBtn..y = 10;
 			
 			g1Image.x = (width - g1Image.width) / 2
 			g1Image.y = height / 2 - g1Image.height - 40
@@ -456,7 +484,7 @@ package com.xiaomu.view.room
 			tingCardsView.x = 30
 			tingCardsView.y = (height - tingCardsView.height) / 2
 			
-			goback.x = width - goback.width - 20
+			goback.x = width - goback.width - 200
 			goback.y = 10
 		}
 		
@@ -1221,7 +1249,7 @@ package com.xiaomu.view.room
 				myActionUser.pd.ac = 1
 				var action:Object = { name: Actions.Peng, data: myActionUser }
 				Api.getInstane().sendAction(action)
-//				mePeng(myActionUser.pd.dt)
+				//				mePeng(myActionUser.pd.dt)
 			}
 		}
 		
@@ -1244,7 +1272,7 @@ package com.xiaomu.view.room
 				myActionUser.cd.ac = 1
 				var action:Object = { name: Actions.Chi, data: myActionUser}
 				Api.getInstane().sendAction(action)
-//				meChi(event.data as Array)
+				//				meChi(event.data as Array)
 			}
 		}
 		
@@ -1328,41 +1356,41 @@ package com.xiaomu.view.room
 			}
 		}
 		
-//		private function meChi(groups:Array):void {
-//			return
-//			if (myUser) {
-//				myUser.handCards.push(roomData.pc)
-//				roomData.pc = 0
-//				var group:Object
-//				for (var i:int = 0; i < groups.length; i++) {
-//					group = groups[i]
-//					for (var j:int = 0; j < group.cards.length; j++) {
-//						CardUtil.getInstane().deleteCard(myUser.handCards, group.cards[j])
-//					}
-//					myUser.groupCards.push(group)
-//				}
-//				if (groups.length > 1) {
-//					Audio.getInstane().playHandle('bi')
-//				} else {
-//					Audio.getInstane().playHandle('chi')
-//				}
-//				invalidateProperties()
-//			}
-//		}
-//		
-//		private function mePeng(cards:Array):void {
-//			return
-//			if (myUser) {
-//				for (var i:int = 0; i < cards.length; i++) {
-//					CardUtil.getInstane().deleteCard(myUser.handCards, cards[i])
-//				}
-//				cards.push(roomData.pc)
-//				roomData.pc = 0
-//				myUser.groupCards.push({name: Actions.Peng, cards: cards})
-//				Audio.getInstane().playHandle('peng', true)
-//				invalidateProperties()
-//			}
-//		}
+		//		private function meChi(groups:Array):void {
+		//			return
+		//			if (myUser) {
+		//				myUser.handCards.push(roomData.pc)
+		//				roomData.pc = 0
+		//				var group:Object
+		//				for (var i:int = 0; i < groups.length; i++) {
+		//					group = groups[i]
+		//					for (var j:int = 0; j < group.cards.length; j++) {
+		//						CardUtil.getInstane().deleteCard(myUser.handCards, group.cards[j])
+		//					}
+		//					myUser.groupCards.push(group)
+		//				}
+		//				if (groups.length > 1) {
+		//					Audio.getInstane().playHandle('bi')
+		//				} else {
+		//					Audio.getInstane().playHandle('chi')
+		//				}
+		//				invalidateProperties()
+		//			}
+		//		}
+		//		
+		//		private function mePeng(cards:Array):void {
+		//			return
+		//			if (myUser) {
+		//				for (var i:int = 0; i < cards.length; i++) {
+		//					CardUtil.getInstane().deleteCard(myUser.handCards, cards[i])
+		//				}
+		//				cards.push(roomData.pc)
+		//				roomData.pc = 0
+		//				myUser.groupCards.push({name: Actions.Peng, cards: cards})
+		//				Audio.getInstane().playHandle('peng', true)
+		//				invalidateProperties()
+		//			}
+		//		}
 		
 		private function getActionUser(username:String):Object {
 			if (roomData.aus) {
@@ -1373,6 +1401,14 @@ package com.xiaomu.view.room
 				}
 			} 
 			return null
+		}
+		
+		/**
+		 * 显示设置选项界面
+		 */
+		protected function showSettingPanelBtnHandler(event:MouseEvent):void
+		{
+			PopUpManager.centerPopUp(PopUpManager.addPopUp(new RoomSettingPanel(),null,true,true));
 		}
 		
 	}

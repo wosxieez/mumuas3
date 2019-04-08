@@ -9,6 +9,12 @@ package com.xiaomu.manager
 	[Event(name="updateAdminGoldSuccess", type="com.xiaomu.event.AppManagerEvent")]
 	[Event(name="changeMemberSuccess", type="com.xiaomu.event.AppManagerEvent")]
 	[Event(name="changeSelectedRule", type="com.xiaomu.event.AppManagerEvent")]
+	[Event(name="changeRoomTableImg", type="com.xiaomu.event.AppManagerEvent")]
+	[Event(name="leaveRoom", type="com.xiaomu.event.AppManagerEvent")]
+	[Event(name="updateGroupRulesSuccess", type="com.xiaomu.event.AppManagerEvent")]
+	[Event(name="createGroupSuccess", type="com.xiaomu.event.AppManagerEvent")]
+	
+	
 	public class AppManager extends EventDispatcher
 	{
 		public function AppManager(target:IEventDispatcher=null)

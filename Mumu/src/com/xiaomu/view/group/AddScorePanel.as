@@ -2,6 +2,8 @@ package com.xiaomu.view.group
 {
 	import com.xiaomu.component.AppAlert;
 	import com.xiaomu.component.AppPanelSmall;
+	import com.xiaomu.event.AppManagerEvent;
+	import com.xiaomu.manager.AppManager;
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.HttpApi;
 	
@@ -109,6 +111,7 @@ package com.xiaomu.view.group
 									var response2:Object = JSON.parse(ee.currentTarget.data)
 									if (response2.code == 0) {
 										AppAlert.show('上分成功')
+										AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.UPDATE_MEMBER_INFO_SUCCESS));
 										close()
 									} else {
 										AppAlert.show('上分失败')

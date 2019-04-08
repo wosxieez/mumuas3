@@ -1,7 +1,7 @@
 package com.xiaomu.util
 {
 	import flash.net.SharedObject;
-
+	
 	public class AppData
 	{
 		public function AppData()
@@ -25,11 +25,11 @@ package com.xiaomu.util
 		public var testDataHuang2:Object =  {"cc":0,"io":false,"zc":0,"og":true,"pc":0,"zn":"wosxieez3","ig":false,"pn":"xzh","us":[{"handCards":[14,17,18,14,10,20,4,10,18,5,2,13,8,12],"groupCards":[{"cards":[7,7,7],"name":"wei"},{"cards":[19,19,19],"name":"wei"}],"isReady":false,"passCards":[15,6,8,20,16,13,1,12,15,17],"upCards":[15,6,20,10],"username":"wosxieez3","thx":64,"hx":-10,"dn":false,"ucCards":[15,6,12,8,8,20,16,4]},{"handCards":[9,6,18,11,9,3,5,3,13,16,2,15,18,11,14,16,8,6,4,9],"groupCards":[],"isReady":false,"passCards":[5,12,1,15,4,17,13,4,10,1],"upCards":[6,16],"username":"xzh","thx":30,"hx":0,"dn":false,"ucCards":[15,5,6,12,12,8,1,16,4,4,13,17]}],"aus":[]}
 		public var testDataHuang3:Object = {"og":true,"pc":0,"io":false,"cc":0,"zc":0,"zn":"wosxieez3","pn":"wosxieez3","us":[{"ucCards":[15,3,6,5,13,13,3,17,20],"username":"wosxieez3","thx":-10,"upCards":[15,3,20],"isReady":false,"handCards":[18,18,14,19,6,5,12,18,19,19,4,13,4,11],"dn":false,"hx":-10,"passCards":[15,6,13,7,20,3,5,20,10,10,3],"groupCards":[{"name":"chi","cards":[10,2,7]},{"name":"wei","cards":[8,8,8]}]},{"ucCards":[3,13,7,17],"username":"fangchao","thx":0,"upCards":[3],"isReady":false,"handCards":[20,4,14,12,15,2,16,2,7,2,14,4,17],"dn":false,"hx":0,"passCards":[3,5,16,11,17,12,17,6],"groupCards":[{"name":"ti","cards":[1,1,1,1]},{"name":"ti","cards":[9,9,9,9]}]}],"aus":[],"ig":false}
 		public var testDataDiHu:Object = {"cc":19,"zn":"wosxieez3","hn":"fangchao","hts":[1],"io":true,"og":false,"pc":5,"ig":false,"pn":"wosxieez3","aus":[],"us":[{"username":"wosxieez3","thx":-3,"handCards":[20,17,18,16,8,19,1,2,17,12,4,1,15,9,17,14,8,2,10,4],"upCards":[5],"hx":15,"isReady":false,"ucCards":[5],"dn":true,"groupCards":[],"passCards":[]},{"username":"fangchao","thx":183,"handCards":[],"upCards":[],"hx":100,"isReady":false,"ucCards":[],"dn":false,"groupCards":[{"name":"ti","cards":[13,13,13,13]},{"name":"chi","cards":[1,11,11]},{"name":"chi","cards":[2,7,10]},{"name":"chi","cards":[8,9,10]},{"name":"chi","cards":[12,17,20]},{"name":"chi","cards":[15,5,5]},{"name":"jiang","cards":[6,6]}],"passCards":[]}],"zc":0}
-			
+		
 		public var versionNum:String="0.0.1"
 		public var serverHost:String = '127.0.0.1'
 		public var webUrl:String = 'http://hefeixiaomu.com:3008/'
-			
+		public var roomTableImgsArr:Array = ["pz_cl_bk_0.jpg","pz_cl_bk_1.jpg","pz_cl_bk_2.jpg","pz_cl_bk_3.jpg"]///桌布图片数据
 		public var user:Object  // 当前用户
 		public var group:Object // 当前群
 		public var groupLL:int;//你在当前群中的等级 0普通，1二级管理员，2一级管理员，3副馆主，4馆主
@@ -64,6 +64,20 @@ package com.xiaomu.util
 		public function set bgmValue(value:String):void
 		{
 			setShareObjectValue("bgmValue", value);
+		}
+		
+		public function get roomTableIndex():String
+		{
+			if(getShareObjectValue("roomTableIndex")){
+				return getShareObjectValue("roomTableIndex");
+			}else{
+				return "0"
+			}
+		}
+		
+		public function set roomTableIndex(value:String):void
+		{
+			setShareObjectValue("roomTableIndex", value);
 		}
 		
 		public function get username():String

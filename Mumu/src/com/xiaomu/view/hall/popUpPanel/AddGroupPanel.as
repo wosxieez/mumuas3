@@ -2,6 +2,8 @@ package com.xiaomu.view.hall.popUpPanel
 {
 	import com.xiaomu.component.AppAlert;
 	import com.xiaomu.component.AppPanelSmall;
+	import com.xiaomu.event.AppManagerEvent;
+	import com.xiaomu.manager.AppManager;
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.HttpApi;
 	
@@ -78,6 +80,7 @@ package com.xiaomu.view.hall.popUpPanel
 									var response2:Object = JSON.parse(ee.currentTarget.data)
 									if (response2.code == 0) { 
 										AppAlert.show('创建群成功')
+										AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.CREATE_GROUP_SUCCESS));
 										close()
 									} else {
 										AppAlert.show('创建群失败')

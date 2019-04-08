@@ -1,7 +1,9 @@
 package com.xiaomu.view.group
 {
 	import com.xiaomu.component.AppPanelBig;
+	import com.xiaomu.event.AppManagerEvent;
 	import com.xiaomu.itemRender.GroupRuleRenderer;
+	import com.xiaomu.manager.AppManager;
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.HttpApi;
 	
@@ -20,6 +22,7 @@ package com.xiaomu.view.group
 			
 			title = '玩法管理'
 			commitEnabled = false
+			AppManager.getInstance().addEventListener(AppManagerEvent.UPDATE_GROUP_RULES_SUCCESS,updateGroupRulesHandler);
 		}
 		
 		private var bgImg:Image;
@@ -93,6 +96,11 @@ package com.xiaomu.view.group
 		override public function open():void {
 			super.open()
 				
+			getRuleData();
+		}
+		
+		private function getRuleData():void
+		{
 			HttpApi.getInstane().getRule({gid: AppData.getInstane().group.id}, function (e:Event):void {
 				try
 				{
@@ -106,6 +114,11 @@ package com.xiaomu.view.group
 				{
 				}
 			})
+		}
+		
+		protected function updateGroupRulesHandler(event:AppManagerEvent):void
+		{
+			getRuleData();
 		}
 		
 	}

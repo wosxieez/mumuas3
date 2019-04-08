@@ -1,6 +1,8 @@
 package com.xiaomu.view.group
 {
 	import com.xiaomu.component.AppAlert;
+	import com.xiaomu.event.AppManagerEvent;
+	import com.xiaomu.manager.AppManager;
 	import com.xiaomu.renderer.GroupUserMenuRender;
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.HttpApi;
@@ -121,6 +123,7 @@ package com.xiaomu.view.group
 								var response:Object = JSON.parse(e.currentTarget.data)
 								if (response.code == 0) {
 									AppAlert.show('升职成功')
+									AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.UPDATE_MEMBER_INFO_SUCCESS));
 								} else {
 									AppAlert.show('升职失败')
 								}
@@ -145,6 +148,7 @@ package com.xiaomu.view.group
 								var response:Object = JSON.parse(e.currentTarget.data)
 								if (response.code == 0) {
 									AppAlert.show('降职成功')
+									AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.UPDATE_MEMBER_INFO_SUCCESS));
 								} else {
 									AppAlert.show('降职失败')
 								}
@@ -171,6 +175,7 @@ package com.xiaomu.view.group
 									var response2:Object = JSON.parse(ee.currentTarget.data)
 									if (response2.code == 0) {
 										AppAlert.show('踢出成功')
+										AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.CHANGE_MEMBER_SUCCESS));
 									} else {
 										AppAlert.show('踢出失败')
 									}

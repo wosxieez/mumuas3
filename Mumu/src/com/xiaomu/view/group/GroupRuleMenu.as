@@ -1,6 +1,8 @@
 package com.xiaomu.view.group
 {
 	import com.xiaomu.component.AppAlert;
+	import com.xiaomu.event.AppManagerEvent;
+	import com.xiaomu.manager.AppManager;
 	import com.xiaomu.renderer.GroupRuleMenuRender;
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.HttpApi;
@@ -66,6 +68,7 @@ package com.xiaomu.view.group
 										var response2:Object = JSON.parse(ee.currentTarget.data)
 										if (response2.code == 0) {
 											AppAlert.show('删除成功')
+											AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.UPDATE_GROUP_RULES_SUCCESS));
 										} else {
 											AppAlert.show('删除失败')
 										}

@@ -3,6 +3,8 @@ package com.xiaomu.view.hall
 	import com.xiaomu.component.AppAlert;
 	import com.xiaomu.component.ImageButton;
 	import com.xiaomu.component.Loading;
+	import com.xiaomu.event.AppManagerEvent;
+	import com.xiaomu.manager.AppManager;
 	import com.xiaomu.renderer.GroupRenderer;
 	import com.xiaomu.util.Api;
 	import com.xiaomu.util.AppData;
@@ -32,6 +34,12 @@ package com.xiaomu.view.hall
 		public function HallView()
 		{
 			super();
+			AppManager.getInstance().addEventListener(AppManagerEvent.CREATE_GROUP_SUCCESS,createGroupSuccessHandler);
+		}
+		
+		protected function createGroupSuccessHandler(event:AppManagerEvent):void
+		{
+			init();
 		}
 		
 		private var bg:Image
@@ -164,73 +172,73 @@ package com.xiaomu.view.hall
 			HttpApi.getInstane().getGroupUser({},function(e:Event):void{
 				var response3:Object = JSON.parse(e.currentTarget.data)
 				allGroupUsersArr = response3.data;///当前群里的用户信息
-			},null);
-			
-			////查询出所有的User数据
-			var allUsersArr:Array = [];
-			HttpApi.getInstane().getUser({},function(e:Event):void{
-				var response4:Object = JSON.parse(e.currentTarget.data)
-				if(response4.code==0){
-					allUsersArr = response4.data; ///获取到所有用户的信息
-					// 加载群信息
-					HttpApi.getInstane().getGroupUser({uid: AppData.getInstane().user.id}, 
-						function (e:Event):void {
-							try
-							{
-								var response:Object = JSON.parse(e.currentTarget.data)
-								if (response.code == 0) {
-									var groupusers:Array = response.data
-									var gids:Array = []
-									for each(var groupuser:Object in groupusers) {
-										gids.push(groupuser.gid)
-										//trace("加入过哪些群：",JSON.stringify(gids));
-									}
-									HttpApi.getInstane().getGroup({id: {'$in': gids}}, 
-										function (ee:Event):void {
-											var response2:Object = JSON.parse(ee.currentTarget.data)
-											if (response2.code == 0) {
-												for each (var j:Object in response2.data) 
-												{
-													j.userArr=[];///这个群里有哪些成员，包含群主
-													j.adminId=null;
-													//trace("我有这些群::",JSON.stringify(j));
-													for each (var i:Object in allGroupUsersArr) 
+				////查询出所有的User数据
+				var allUsersArr:Array = [];
+				HttpApi.getInstane().getUser({},function(e:Event):void{
+					var response4:Object = JSON.parse(e.currentTarget.data)
+					if(response4.code==0){
+						allUsersArr = response4.data; ///获取到所有用户的信息
+						// 加载群信息
+						HttpApi.getInstane().getGroupUser({uid: AppData.getInstane().user.id}, 
+							function (e:Event):void {
+								try
+								{
+									var response:Object = JSON.parse(e.currentTarget.data)
+									if (response.code == 0) {
+										var groupusers:Array = response.data
+										var gids:Array = []
+										for each(var groupuser:Object in groupusers) {
+											gids.push(groupuser.gid)
+											//trace("加入过哪些群：",JSON.stringify(gids));
+										}
+										HttpApi.getInstane().getGroup({id: {'$in': gids}}, 
+											function (ee:Event):void {
+												var response2:Object = JSON.parse(ee.currentTarget.data)
+												if (response2.code == 0) {
+													for each (var j:Object in response2.data) 
 													{
-														if(j.id==i.gid){
-															j.userArr.push(i.uid)
-															//trace("群",j.id,"人",i.uid,"等级",i.ll);
-															if(i.ll==4){
-																j.adminId = i.uid;
+														j.userArr=[];///这个群里有哪些成员，包含群主
+														j.adminId=null;
+														//trace("我有这些群::",JSON.stringify(j));
+														for each (var i:Object in allGroupUsersArr) 
+														{
+															if(j.id==i.gid){
+																j.userArr.push(i.uid)
+																//trace("群",j.id,"人",i.uid,"等级",i.ll);
+																if(i.ll==4){
+																	j.adminId = i.uid;
+																}
 															}
 														}
 													}
-												}
-												for each (var k:Object in response2.data) 
-												{
-													k.adminName='/';
-													for each (var userObj:Object in allUsersArr) 
+													for each (var k:Object in response2.data) 
 													{
-														if(userObj.id==k.adminId){
-															k.adminName=userObj.username
+														k.adminName='/';
+														for each (var userObj:Object in allUsersArr) 
+														{
+															if(userObj.id==k.adminId){
+																k.adminName=userObj.username
+															}
 														}
 													}
+													groupsData = response2.data
+													//trace("groupsData:",JSON.stringify(response2.data));
+												} else {
+													groupsData = null
 												}
-												groupsData = response2.data
-												//trace("groupsData:",JSON.stringify(response2.data));
-											} else {
-												groupsData = null
-											}
-										})
-								} else {
+											})
+									} else {
+										groupsData = null
+									}
+								} 
+								catch(error:Error) 
+								{
 									groupsData = null
 								}
-							} 
-							catch(error:Error) 
-							{
-								groupsData = null
-							}
-						})
-				}
+							})
+					}
+				},null);
+				
 			},null);
 		}
 		

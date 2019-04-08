@@ -3,6 +3,8 @@ package com.xiaomu.view.group
 	import com.xiaomu.component.AppAlert;
 	import com.xiaomu.component.AppPanelBig;
 	import com.xiaomu.component.CountTool;
+	import com.xiaomu.event.AppManagerEvent;
+	import com.xiaomu.manager.AppManager;
 	import com.xiaomu.renderer.AddRuleRender;
 	import com.xiaomu.util.HttpApi;
 	
@@ -317,6 +319,7 @@ package com.xiaomu.view.group
 						if (response.code == 0) {
 							AppAlert.show('更新玩法成功')
 							close()
+							AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.UPDATE_GROUP_RULES_SUCCESS));
 						} else {
 							AppAlert.show('更新玩法失败')
 						}

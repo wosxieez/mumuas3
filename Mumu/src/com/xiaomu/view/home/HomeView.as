@@ -291,6 +291,7 @@ package com.xiaomu.view.home
 			}
 			Audio.getInstane().playButton()
 			if(btnGroup.selectedItem.name=='设置'){
+				SettingPanelView.getInstane().hideSignOutBtn = false;
 				PopUpManager.centerPopUp(PopUpManager.addPopUp(SettingPanelView.getInstane(),null,true,false,0x000000,0.8));
 			}
 				/*else if(btnGroup.selectedItem.name=='公告'){

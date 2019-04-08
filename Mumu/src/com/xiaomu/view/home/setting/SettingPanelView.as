@@ -34,6 +34,19 @@ package com.xiaomu.view.home.setting
 			return instance
 		}
 		
+		private var _hideSignOutBtn:Boolean;
+
+		public function get hideSignOutBtn():Boolean
+		{
+			return _hideSignOutBtn;
+		}
+
+		public function set hideSignOutBtn(value:Boolean):void
+		{
+			_hideSignOutBtn = value;
+			invalidateProperties();
+		}
+		
 		private var bgImg:Image;
 		private var titleImg:Image;
 		private var setType:ButtonGroup;
@@ -85,6 +98,7 @@ package com.xiaomu.view.home.setting
 			signOutBtn.height = 82
 			signOutBtn.addEventListener(MouseEvent.CLICK,signOutBtnHandler);
 			addChild(signOutBtn);
+			signOutBtn.visible = false;
 			
 			closeBtn = new ImageButton();
 			closeBtn.upImageSource = 'assets/home/settingPanel/btn_close_normal.png';
@@ -93,6 +107,13 @@ package com.xiaomu.view.home.setting
 			closeBtn.height = 156
 			closeBtn.addEventListener(MouseEvent.CLICK,closeBtnHandler);
 			addChild(closeBtn);
+		}
+		
+		override protected function commitProperties():void
+		{
+			super.commitProperties();
+			
+			signOutBtn.visible = !hideSignOutBtn
 		}
 		
 		override protected function updateDisplayList():void
