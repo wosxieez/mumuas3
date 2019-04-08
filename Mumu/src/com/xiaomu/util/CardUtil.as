@@ -241,6 +241,33 @@ package com.xiaomu.util
 				}
 			}
 			
+			// 去掉2，7 10
+			if (countedCards[2] >= 1 && countedCards[7] >= 1 && countedCards[10] >= 1) {
+				results.push({ name: Actions.Chi, cards: [2, 7, 10] });
+				countedCards[2]--
+				countedCards[7]--
+				countedCards[10]--
+			}
+			if (countedCards[2] >= 1 && countedCards[7] >= 1 && countedCards[10] >= 1) {
+				results.push({ name: Actions.Chi, cards: [2, 7, 10] });
+				countedCards[2]--
+				countedCards[7]--
+				countedCards[10]--
+			}
+			// 去掉12，17 20
+			if (countedCards[12] >= 1 && countedCards[17] >= 1 && countedCards[20] >= 1) {
+				results.push({ name: Actions.Chi, cards: [12, 17, 20] });
+				countedCards[12]--
+				countedCards[17]--
+				countedCards[20]--
+			}
+			if (countedCards[12] >= 1 && countedCards[17] >= 1 && countedCards[20] >= 1) {
+				results.push({ name: Actions.Chi, cards: [12, 17, 20] });
+				countedCards[12]--
+				countedCards[17]--
+				countedCards[20]--
+			}
+			
 			var findShunzi:Function = function (singleCard:int):Array {
 				// 贰柒拾
 				if (singleCard == 2) {
