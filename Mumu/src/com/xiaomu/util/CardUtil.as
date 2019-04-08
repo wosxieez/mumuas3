@@ -164,9 +164,9 @@ package com.xiaomu.util
 			}
 			
 			function sortGroup(a:Object, b:Object):Number {
-				if(a[0]%10 > b[0]%10) {
+				if((a[0] - 1)%10 > (b[0] - 1)%10) {
 					return 1
-				} else if(a[0]%10 < b[0]%10) {
+				} else if((a[0] - 1)%10 < (b[0] - 1)%10) {
 					return -1
 				} else  {
 					return 0;
