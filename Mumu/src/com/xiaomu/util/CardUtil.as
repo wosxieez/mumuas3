@@ -182,10 +182,14 @@ package com.xiaomu.util
 		public function canTing(groupCards:Array, handCards:Array, huXi:int):Array {
 			var tingCards:Array = []
 			for (var i:int = 1; i <= 20; i++) {
-				var canHuData:Array = canHu(handCards, groupCards, i)
-				if (canHuData) {
-					var gtx:int = getHuXi(canHuData)
-					if (gtx >= huXi) {
+				var canHuDatas:Array = canHu(handCards, groupCards, i)
+				trace('能胡的组合', JSON.stringify(canHuDatas))
+				if (canHuDatas) {
+					var maxhx:int = 0
+					for each(var canHuData:Array in canHuDatas) {
+						maxhx = Math.max(getHuXi(canHuData), maxhx)
+					}
+					if (maxhx >= huXi) {
 						tingCards.push(i)
 					}
 				}
@@ -198,24 +202,73 @@ package com.xiaomu.util
 			}
 		}
 		
-		public function canHu(handCards:Array, groupCards:Array, currentCard:int):Array {
-			var copyedHandCards:Array = JSON.parse(JSON.stringify(handCards)) as Array
-			var copyedGroupCards:Array = JSON.parse(JSON.stringify(groupCards)) as Array
+		public function canHu(cardsOnHand:Array, cardsOnGroup:Array, currentCard:int):Array {
+			var copyedHandCards:Array = JSON.parse(JSON.stringify(cardsOnHand)) as Array // 深度拷贝
+			var copyedGroupCards:Array = JSON.parse(JSON.stringify(cardsOnGroup)) as Array // 深度拷贝
+			var allHandCards:Array = []
+			var canChiPaoPeng:Boolean = false
 			if (currentCard !== 0) {
 				// 看组合牌中能不能跑起
 				var paoGroup:Object = canTi2(copyedGroupCards, currentCard)
 				if (paoGroup) {
+					canChiPaoPeng = true
 					paoGroup.name = Actions.Pao
 					paoGroup.cards.push(currentCard)
+					allHandCards.push(copyedHandCards)
 				} else {
-					copyedHandCards.push(currentCard)
+					// 看手里牌能不能跑
+					var canPaoCards:Array = canTi(copyedHandCards, currentCard)
+					if (canPaoCards) {
+						canChiPaoPeng = true
+						var ccHandCards:Array = JSON.parse(JSON.stringify(copyedHandCards)) as Array
+						for each(var card:int in canPaoCards) {
+							deleteCard(ccHandCards, card)
+						}
+						copyedGroupCards.push({ name: Actions.Pao, cards: [currentCard, currentCard, currentCard, currentCard] })
+						allHandCards.push(ccHandCards)
+					}
+					var canPengCards:Array = canPeng(copyedHandCards, currentCard)
+					if (canPengCards) {
+						canChiPaoPeng = true
+						var cccHandCards:Array = JSON.parse(JSON.stringify(copyedHandCards)) as Array
+						for each (var card2:int in canPengCards) {
+							deleteCard(cccHandCards, card2)
+						}
+						copyedGroupCards.push({ name: Actions.Peng, cards: [currentCard, currentCard, currentCard] })
+						allHandCards.push(cccHandCards)
+					}
+					var canChiGroups:Array = canChi(copyedHandCards, currentCard)
+					if (canChiGroups) {
+						canChiPaoPeng = true
+						for each(var chiGroup:Object in canChiGroups) {
+							var ccccHandCards:Array = JSON.parse(JSON.stringify(copyedHandCards)) as Array
+							for each(var card3:int in chiGroup.cards) {
+								deleteCard(ccccHandCards, card3)
+							}
+							chiGroup.cards.push(currentCard)
+							copyedGroupCards.push({ name: Actions.Chi, cards: chiGroup.cards })
+							allHandCards.push(ccccHandCards)
+						}
+					}
 				}
 			}
-			var onHand:Array = shouShun(copyedHandCards, currentCard)
-			if (onHand) {
-				return copyedGroupCards.concat(onHand)
+			
+			if (!canChiPaoPeng) {
+				allHandCards.push(copyedHandCards.concat([currentCard]))
+			}
+			
+			var allHuGroups:Array = []
+			for each(var newHandCards:Array in allHandCards) {
+				var shunGroups:Array = shouShun(newHandCards)
+				if (shunGroups) {
+					allHuGroups.push(copyedGroupCards.concat(shunGroups))
+				}
+			}
+			
+			if (allHuGroups.length >= 1) {
+				return allHuGroups
 			} else {
-				return null		
+				return null
 			}
 		}
 		
@@ -223,7 +276,7 @@ package com.xiaomu.util
 		 * 玩家的牌是否无单牌。
 		 * @param cards: 手中的牌，或者手中的牌加新翻开的底牌。
 		 */
-		public function shouShun(cards, currentCard:int):Array {
+		public function shouShun(cards):Array {
 			var countedCards:Dictionary = countBy(cards)
 			var results:Array = [];
 			
@@ -231,12 +284,9 @@ package com.xiaomu.util
 			for (var key:int in countedCards) {
 				if (countedCards[key] == 4) {
 					results.push({ name: Actions.Ti, cards: [key, key, key, key] });
+					delete countedCards[key];
 				} else if (countedCards[key] === 3) {
-					if (key == currentCard) {
-						results.push({ name: Actions.Peng, cards: [key, key, key] });
-					} else {
-						results.push({ name: Actions.Kan, cards: [key, key, key] });
-					}
+					results.push({ name: Actions.Kan, cards: [key, key, key] });
 					delete countedCards[key];
 				}
 			}
@@ -269,51 +319,6 @@ package com.xiaomu.util
 			}
 			
 			var findShunzi:Function = function (singleCard:int):Array {
-				// 贰柒拾
-				if (singleCard == 2) {
-					if (countedCards[7] && countedCards[10]) {
-						countedCards[2]--
-						countedCards[7]--
-						countedCards[10]--
-						return [2, 7, 10]
-					}
-				} else if (singleCard == 7) {
-					if (countedCards[2] && countedCards[10]) {
-						countedCards[2]--
-						countedCards[7]--
-						countedCards[10]--
-						return [2, 7, 10]
-					}
-				} else if (singleCard == 10) {
-					if (countedCards[2] && countedCards[7]) {
-						countedCards[2]--
-						countedCards[7]--
-						countedCards[10]--
-						return [2, 7, 10]
-					}
-				} else if (singleCard == 12) {
-					if (countedCards[17] && countedCards[20]) {
-						countedCards[12]--
-						countedCards[17]--
-						countedCards[20]--
-						return [12, 17, 20]
-					}
-				} else if (singleCard == 17) {
-					if (countedCards[12] && countedCards[20]) {
-						countedCards[12]--
-						countedCards[17]--
-						countedCards[20]--
-						return [12, 17, 20]
-					}
-				} else  if (singleCard == 20) {
-					if (countedCards[12] && countedCards[17]) {
-						countedCards[12]--
-						countedCards[17]--
-						countedCards[20]--
-						return [12, 17, 20]
-					}
-				}
-				
 				// 顺子
 				if (countedCards[singleCard + 1] && countedCards[singleCard + 2] && singleCard != 9 && singleCard != 10) {
 					countedCards[singleCard]--;
@@ -482,6 +487,15 @@ package com.xiaomu.util
 			}
 		}
 		
+		public function canTi(cardsOnHand, currentCard):Array {
+			var countedCards:Dictionary = countBy(cardsOnHand)
+			var canTiCards:Array = null
+			if (countedCards[currentCard] === 3) {
+				canTiCards = [currentCard, currentCard, currentCard]
+			}
+			return canTiCards
+		}
+		
 		/**
 		 * 看组合牌中能不能 跑 / 提
 		 *
@@ -512,6 +526,208 @@ package com.xiaomu.util
 			}
 			
 			return null
+		}
+		
+		
+		public function canPeng(cardsOnHand, currentCard):Array {
+			var canPeng:Array = null;
+			var countedCards:Dictionary = countBy(cardsOnHand);
+			if (countedCards[currentCard] == 2) {
+				canPeng = [currentCard, currentCard];
+			}
+			return canPeng;
+		}
+		
+		
+		public function canChi(cards, currentCard):Array {
+			var canChiDatas:Array = []
+			var countedCards:Dictionary = countBy(cards);
+			var card:int
+			for (card in countedCards) {
+				if (countedCards[card] == 3) {
+					delete countedCards[card]
+				}
+			}
+			
+			// 比方 currentCard = 8
+			if (countedCards[currentCard - 1]) {
+				if (countedCards[currentCard - 2] && currentCard !== 11 && currentCard !== 12) {
+					canChiDatas.push({ name: Actions.Chi, cards: [currentCard - 1, currentCard - 2] }) // 判断8在尾部 查询 6 7 '8'  尾牌不能等于 11 12
+				}
+				if (countedCards[currentCard + 1] && currentCard !== 10 && currentCard !== 11) {
+					canChiDatas.push({ name: Actions.Chi, cards: [currentCard - 1, currentCard + 1] }) // 判断8在中部 查询 7 '8' 9  中牌不能等于 10 11
+				}
+			}
+			
+			if (countedCards[currentCard + 1]) {
+				if (countedCards[currentCard + 2] && currentCard !== 9 && currentCard !== 10) {
+					canChiDatas.push({ name: Actions.Chi, cards: [currentCard + 1, currentCard + 2] }) // 判断8在首部 查询 '8' 9 10 首牌不能等于 9 10
+				}
+			}
+			
+			if (currentCard < 11) {
+				// 8
+				if (countedCards[currentCard] && countedCards[currentCard + 10]) {
+					canChiDatas.push({ name: Actions.Chi, cards: [currentCard, currentCard + 10] }) // 判断 8 8 18
+				}
+				if (countedCards[currentCard + 10] >= 2) {
+					canChiDatas.push({ name: Actions.Chi, cards: [currentCard + 10, currentCard + 10] }) // 判断 8 18 18
+				}
+				
+				if (currentCard == 2) {
+					if (countedCards[7] && countedCards[10]) {
+						canChiDatas.push({ name: Actions.Chi, cards: [7, 10] })
+					}
+				} else if (currentCard == 7) {
+					if (countedCards[2] && countedCards[10]) {
+						canChiDatas.push({ name: Actions.Chi, cards: [2, 10] })
+					}
+				} else if (currentCard == 10) {
+					if (countedCards[2] && countedCards[7]) {
+						canChiDatas.push({ name: Actions.Chi, cards: [2, 7] })
+					}
+				}
+			} else {
+				// 18
+				if (countedCards[currentCard] && countedCards[currentCard - 10]) {
+					canChiDatas.push({ name: Actions.Chi, cards: [currentCard, currentCard - 10] }) // 判断 18 18 8
+				}
+				if (countedCards[currentCard - 10] >= 2) {
+					canChiDatas.push({ name: Actions.Chi, cards: [currentCard - 10, currentCard - 10] }) // 判断 18 8 8
+				}
+				
+				if (currentCard == 12) {
+					if (countedCards[17] && countedCards[20]) {
+						canChiDatas.push({ name: Actions.Chi, cards: [ 17, 20] }) // 判断 18 8 8
+					}
+				} else if (currentCard == 17) {
+					if (countedCards[12] && countedCards[20]) {
+						canChiDatas.push({ name: Actions.Chi, cards: [ 12, 20] }) // 判断 18 8 8
+					}
+				} else  if (currentCard == 20) {
+					if (countedCards[12] && countedCards[17]) {
+						canChiDatas.push({ name: Actions.Chi, cards: [ 12, 17] }) // 判断 18 8 8
+					}
+				}
+			}
+			
+			var validChiDatas:Array = [] // 有效的吃数据
+			for each (var chiData:Object in canChiDatas) {
+				var subBi:Array = canBi(JSON.parse(JSON.stringify(cards)), chiData.cards, currentCard)
+				if (subBi) {
+					if (subBi.length > 0) {
+						chiData.bi = subBi
+						validChiDatas.push(chiData) // 有效吃
+					}
+				} else {
+					validChiDatas.push(chiData) // 有效吃
+				}
+			}
+			
+			if (validChiDatas.length > 0) {
+				return validChiDatas
+			} else {
+				return null
+			}
+		}
+		
+		
+		public function canBi(cards, needDeleteCards, currentCard):Array {
+			// 删除要删除的卡牌
+			for each(var card:int in needDeleteCards) {
+				deleteCard(cards, card)
+			}
+			
+			var countedCards:Dictionary = countBy(cards)
+			var card2:int
+			for (card2 in countedCards) {
+				if (countedCards[card2] == 3) {
+					delete countedCards[card2]
+				}
+			}
+			
+			// 如果没有2 返回null
+			if (!countedCards[currentCard]) {
+				return null
+			}
+			
+			var biDatas:Array = []
+			
+			// 比方 currentCard = 8
+			if (countedCards[currentCard - 1]) {
+				if (countedCards[currentCard - 2] && currentCard !== 11 && currentCard !== 12) {
+					biDatas.push({ name: Actions.Chi, cards: [currentCard, currentCard - 1, currentCard - 2] }) // 判断8在尾部 查询 6 7 '8'  尾牌不能等于 11 12
+				}
+				if (countedCards[currentCard + 1] && currentCard !== 10 && currentCard !== 11) {
+					biDatas.push({ name: Actions.Chi, cards: [currentCard - 1, currentCard, currentCard + 1] }) // 判断8在中部 查询 7 '8' 9  中牌不能等于 10 11
+				}
+			}
+			
+			if (countedCards[currentCard + 1]) {
+				if (countedCards[currentCard + 2] && currentCard !== 9 && currentCard !== 10) {
+					biDatas.push({ name: Actions.Chi, cards: [currentCard, currentCard + 1, currentCard + 2] }) // 判断8在首部 查询 '8' 9 10 首牌不能等于 9 10
+				}
+			}
+			
+			if (currentCard < 11) {
+				// 8
+				if (countedCards[currentCard] >= 2 && countedCards[currentCard + 10]) {
+					biDatas.push({ name: Actions.Chi, cards: [currentCard, currentCard, currentCard + 10] }) // 判断 8 8 18
+				}
+				if (countedCards[currentCard + 10] >= 2) {
+					biDatas.push({ name: Actions.Chi, cards: [currentCard, currentCard + 10, currentCard + 10] }) // 判断 8 18 18
+				}
+				
+				if (currentCard == 2) {
+					if (countedCards[7] && countedCards[10]) {
+						biDatas.push({ name: Actions.Chi, cards: [2, 7, 10] })
+					}
+				} else if (currentCard == 7) {
+					if (countedCards[2] && countedCards[10]) {
+						biDatas.push({ name: Actions.Chi, cards: [2, 7, 10] })
+					}
+				} else if (currentCard == 10) {
+					if (countedCards[2] && countedCards[7]) {
+						biDatas.push({ name: Actions.Chi, cards: [2, 7, 10] })
+					}
+				}
+			} else {
+				// 18
+				if (countedCards[currentCard] >= 2 && countedCards[currentCard - 10]) {
+					biDatas.push({ name: Actions.Chi, cards: [currentCard, currentCard, currentCard - 10] })
+				}
+				if (countedCards[currentCard - 10] >= 2) {
+					biDatas.push({ name: Actions.Chi, cards: [currentCard, currentCard - 10, currentCard - 10] })
+				}
+				
+				if (currentCard == 12) {
+					if (countedCards[17] && countedCards[20]) {
+						biDatas.push({ name: Actions.Chi, cards: [12, 17, 20] }) 
+					}
+				} else if (currentCard == 17) {
+					if (countedCards[12] && countedCards[20]) {
+						biDatas.push({ name: Actions.Chi, cards: [12, 17, 20] })
+					}
+				} else  if (currentCard == 20) {
+					if (countedCards[12] && countedCards[17]) {
+						biDatas.push({ name: Actions.Chi, cards: [12, 17, 20] })
+					}
+				}
+			}
+			
+			var validBiDatas:Array = []
+			for each(var biData:Object in biDatas) {
+				var subBi:Array = canBi(JSON.parse(JSON.stringify(cards)), biData.cards, currentCard)
+				if (subBi) {
+					if (subBi.length > 0) {
+						biData.bi = subBi
+						validBiDatas.push(biData) // 返回的长度大于0 为有效比
+					}
+				} else {
+					validBiDatas.push(biData) // 返回false 为有效比 没有子比了
+				}
+			}
+			return validBiDatas
 		}
 		
 	}
