@@ -27,6 +27,20 @@ package com.xiaomu.view.room
 		private var changeTableBtn:ImageButton;
 //		private var fixBtn:ImageButton;
 		private var leaveRoomBtn:ImageButton;
+		
+		private var _isInGroupRoom:Boolean=true;
+
+		public function get isInGroupRoom():Boolean
+		{
+			return _isInGroupRoom;
+		}
+
+		public function set isInGroupRoom(value:Boolean):void
+		{
+			_isInGroupRoom = value;
+		}
+
+		
 		override protected function createChildren():void
 		{
 			super.createChildren();
@@ -128,7 +142,7 @@ package com.xiaomu.view.room
 		
 		protected function leaveRoomBtnHandler(event:MouseEvent):void
 		{
-			AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.LEAVE_ROOM));
+			AppManager.getInstance().dispatchEvent(new AppManagerEvent(isInGroupRoom?AppManagerEvent.LEAVE_GROUP_ROOM:AppManagerEvent.LEAVE_TEMP_ROOM));
 			PopUpManager.removePopUp(this);
 		}
 	}

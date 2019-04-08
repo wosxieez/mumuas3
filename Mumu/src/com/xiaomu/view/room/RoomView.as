@@ -33,11 +33,12 @@ package com.xiaomu.view.room
 		{
 			super();
 			AppManager.getInstance().addEventListener(AppManagerEvent.CHANGE_ROOM_TABLE_IMG,changeRoomTableImgHandler);
-			AppManager.getInstance().addEventListener(AppManagerEvent.LEAVE_ROOM,leaveRoomHandler);
+			AppManager.getInstance().addEventListener(AppManagerEvent.LEAVE_GROUP_ROOM,leaveGroupRoomHandler);
 		}
 		
-		protected function leaveRoomHandler(event:AppManagerEvent):void
+		protected function leaveGroupRoomHandler(event:AppManagerEvent):void
 		{
+			trace("离开群房间");
 			close();
 		}
 		
@@ -281,6 +282,7 @@ package com.xiaomu.view.room
 			goback.height = 91;
 			goback.addEventListener(MouseEvent.CLICK, back_clickHandler)
 			addChild(goback)
+			goback.visible = false;
 			
 			refreshButton = new ImageButton()
 			refreshButton.width = 60
@@ -432,7 +434,7 @@ package com.xiaomu.view.room
 			roomnameDisplay.width = width
 				
 			showSettingPanelBtn.x = width-showSettingPanelBtn.width-20;
-			showSettingPanelBtn..y = 10;
+			showSettingPanelBtn.y = 10;
 			
 			g1Image.x = (width - g1Image.width) / 2
 			g1Image.y = height / 2 - g1Image.height - 40
@@ -1403,12 +1405,15 @@ package com.xiaomu.view.room
 			return null
 		}
 		
+		private var roomSettingPanel:RoomSettingPanel;
 		/**
 		 * 显示设置选项界面
 		 */
 		protected function showSettingPanelBtnHandler(event:MouseEvent):void
 		{
-			PopUpManager.centerPopUp(PopUpManager.addPopUp(new RoomSettingPanel(),null,true,true));
+			roomSettingPanel = new RoomSettingPanel();
+			roomSettingPanel.isInGroupRoom = true;
+			PopUpManager.centerPopUp(PopUpManager.addPopUp(roomSettingPanel,null,true,true));
 		}
 		
 	}

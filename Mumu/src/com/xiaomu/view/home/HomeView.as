@@ -12,8 +12,6 @@ package com.xiaomu.view.home
 	import com.xiaomu.view.home.noticeBar.NoticeBar;
 	import com.xiaomu.view.home.popUp1.OfficalNoticeViewOfCopy;
 	import com.xiaomu.view.home.setting.SettingPanelView;
-	import com.xiaomu.view.room.EndResultView;
-	import com.xiaomu.view.room.WinView;
 	import com.xiaomu.view.userBarView.UserInfoView2;
 	
 	import flash.events.MouseEvent;

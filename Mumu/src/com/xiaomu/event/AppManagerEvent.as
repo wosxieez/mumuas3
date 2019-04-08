@@ -50,9 +50,14 @@ package com.xiaomu.event
 		public static const CHANGE_ROOM_TABLE_IMG:String = 'changeRoomTableImg';
 		
 		/**
-		 *离开房间
+		 *离开群房间
 		 */
-		public static const LEAVE_ROOM:String = 'leaveRoom';
+		public static const LEAVE_GROUP_ROOM:String = 'leaveGroupRoom';
+		
+		/**
+		 *离开临时房间
+		 */
+		public static const LEAVE_TEMP_ROOM:String = 'leaveTempRoom';
 		
 		/** Message用户事件信息存储*/
 		public var message:Object;

@@ -5,7 +5,9 @@ package com.xiaomu.view.home
 	import com.xiaomu.component.CardUI;
 	import com.xiaomu.component.ImageButton;
 	import com.xiaomu.event.ApiEvent;
+	import com.xiaomu.event.AppManagerEvent;
 	import com.xiaomu.event.SelectEvent;
+	import com.xiaomu.manager.AppManager;
 	import com.xiaomu.util.Actions;
 	import com.xiaomu.util.Api;
 	import com.xiaomu.util.AppData;
@@ -17,6 +19,7 @@ package com.xiaomu.view.home
 	import com.xiaomu.view.MainView;
 	import com.xiaomu.view.room.ChiSelectView;
 	import com.xiaomu.view.room.RoomChatView;
+	import com.xiaomu.view.room.RoomSettingPanel;
 	import com.xiaomu.view.room.RoomUserHead;
 	import com.xiaomu.view.room.TingCardsView;
 	import com.xiaomu.view.room.WinView;
@@ -34,8 +37,22 @@ package com.xiaomu.view.home
 		public function TempRoomView()
 		{
 			super();
+			AppManager.getInstance().addEventListener(AppManagerEvent.CHANGE_ROOM_TABLE_IMG,changeRoomTableImgHandler);
+			AppManager.getInstance().addEventListener(AppManagerEvent.LEAVE_TEMP_ROOM,leaveTempRoomHandler);
 		}
 		
+		protected function changeRoomTableImgHandler(event:AppManagerEvent):void
+		{
+			bg.source = 'assets/room/'+AppData.getInstane().roomTableImgsArr[parseInt(AppData.getInstane().roomTableIndex)];
+		}
+		
+		protected function leaveTempRoomHandler(event:AppManagerEvent):void
+		{
+			trace("离开临时房间");
+			close();
+		}
+		
+		private var bg:Image;
 		private var roomname:String
 		private var roomrule:Object
 		private var oldPoint:Point
@@ -77,6 +94,8 @@ package com.xiaomu.view.home
 		private var preActionUser:Object
 		private var nextActionUser:Object
 		
+		private var showSettingPanelBtn:ImageButton;
+		
 		private var _roomData:Object
 		
 		public function get roomData():Object
@@ -109,6 +128,10 @@ package com.xiaomu.view.home
 		
 		override protected function createChildren():void {
 			super.createChildren()
+				
+			bg = new Image();
+			bg.source = 'assets/room/'+AppData.getInstane().roomTableImgsArr[parseInt(AppData.getInstane().roomTableIndex)];
+			addChild(bg);
 			
 			bgLayer = new UIComponent()
 			addChild(bgLayer)
@@ -247,6 +270,15 @@ package com.xiaomu.view.home
 			chatButton.upImageSource = 'assets/room/btn_chat.png'
 			chatButton.addEventListener(MouseEvent.CLICK, chatButton_clickHandler)
 			iconLayer.addChild(chatButton)
+				
+			///设置按钮--点击
+			showSettingPanelBtn = new ImageButton();
+			showSettingPanelBtn.upImageSource='assets/room/btn_zk_normal.png';
+			showSettingPanelBtn.downImageSource='assets/room/btn_zk_press.png';
+			showSettingPanelBtn.width = 69;
+			showSettingPanelBtn.height = 68;
+			showSettingPanelBtn.addEventListener(MouseEvent.CLICK,showSettingPanelBtnHandler);
+			addChild(showSettingPanelBtn);
 			
 			goback= new ImageButton()
 			goback.upImageSource = 'assets/group/btn_guild2_return_n.png';
@@ -255,6 +287,7 @@ package com.xiaomu.view.home
 			goback.height = 91;
 			goback.addEventListener(MouseEvent.CLICK, back_clickHandler)
 			addChild(goback)
+			goback.visible = false;
 			
 			refreshButton = new ImageButton()
 			refreshButton.width = 60
@@ -399,6 +432,12 @@ package com.xiaomu.view.home
 		
 		override protected function updateDisplayList():void {
 			super.updateDisplayList()
+				
+			bg.width = width;
+			bg.height = height;
+				
+			showSettingPanelBtn.x = width-showSettingPanelBtn.width-20;
+			showSettingPanelBtn.y = 10;
 			
 			roomnameDisplay.width = width
 			
@@ -1364,6 +1403,17 @@ package com.xiaomu.view.home
 				}
 			} 
 			return null
+		}
+		
+		private var roomSettingPanel:RoomSettingPanel;
+		/**
+		 * 显示设置选项界面
+		 */
+		protected function showSettingPanelBtnHandler(event:MouseEvent):void
+		{
+			roomSettingPanel = new RoomSettingPanel();
+			roomSettingPanel.isInGroupRoom = false;
+			PopUpManager.centerPopUp(PopUpManager.addPopUp(roomSettingPanel,null,true,true));
 		}
 		
 	}

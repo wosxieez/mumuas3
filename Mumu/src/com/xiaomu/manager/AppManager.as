@@ -10,7 +10,8 @@ package com.xiaomu.manager
 	[Event(name="changeMemberSuccess", type="com.xiaomu.event.AppManagerEvent")]
 	[Event(name="changeSelectedRule", type="com.xiaomu.event.AppManagerEvent")]
 	[Event(name="changeRoomTableImg", type="com.xiaomu.event.AppManagerEvent")]
-	[Event(name="leaveRoom", type="com.xiaomu.event.AppManagerEvent")]
+	[Event(name="leaveGroupRoom", type="com.xiaomu.event.AppManagerEvent")]
+	[Event(name="leaveTempRoom", type="com.xiaomu.event.AppManagerEvent")]
 	[Event(name="updateGroupRulesSuccess", type="com.xiaomu.event.AppManagerEvent")]
 	[Event(name="createGroupSuccess", type="com.xiaomu.event.AppManagerEvent")]
 	
