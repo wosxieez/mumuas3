@@ -12,12 +12,8 @@ package com.xiaomu.view.home
 	import com.xiaomu.view.home.noticeBar.NoticeBar;
 	import com.xiaomu.view.home.popUp1.OfficalNoticeViewOfCopy;
 	import com.xiaomu.view.home.setting.SettingPanelView;
-<<<<<<< Updated upstream
-	import com.xiaomu.view.userBarView.UserInfoView;
-=======
 	import com.xiaomu.view.room.RoomView;
-	import com.xiaomu.view.userBarView.UserInfoView2;
->>>>>>> Stashed changes
+	import com.xiaomu.view.userBarView.UserInfoView;
 	
 	import flash.events.MouseEvent;
 	import flash.utils.setTimeout;
