@@ -123,6 +123,9 @@ package com.xiaomu.view.group
 			ruleSettingButton = new Button()
 			ruleSettingButton.label = '玩法管理'
 			ruleSettingButton.height = 30;
+			ruleSettingButton.radius = 5;
+			ruleSettingButton.color = 0x845525;
+			ruleSettingButton.backgroundColor = 0xeadab0;
 			ruleSettingButton.addEventListener(MouseEvent.CLICK, ruleSettingButton_clickHandler)
 			bottomGroup.addChild(ruleSettingButton)
 			ruleSettingButton.visible= false;
