@@ -15,5 +15,7 @@ package com.xiaomu.util
 		public static const Idle:String = "idle"      // 无操作
 		public static const Ready:String = 'ready'   // 准备
 		public static const Dn:String = 'dn'   // 打鸟
+		public static const Ae:String = 'ae'   // 请求退出
+		public static const Dae:String = 'dae'  
 	}
 }

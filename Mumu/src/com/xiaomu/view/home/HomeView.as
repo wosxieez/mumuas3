@@ -12,7 +12,12 @@ package com.xiaomu.view.home
 	import com.xiaomu.view.home.noticeBar.NoticeBar;
 	import com.xiaomu.view.home.popUp1.OfficalNoticeViewOfCopy;
 	import com.xiaomu.view.home.setting.SettingPanelView;
+<<<<<<< Updated upstream
 	import com.xiaomu.view.userBarView.UserInfoView;
+=======
+	import com.xiaomu.view.room.RoomView;
+	import com.xiaomu.view.userBarView.UserInfoView2;
+>>>>>>> Stashed changes
 	
 	import flash.events.MouseEvent;
 	import flash.utils.setTimeout;
@@ -203,7 +208,7 @@ package com.xiaomu.view.home
 				 	Api.getInstane().createRoom({cc: 2, hx: 15, id: 0}, function (response:Object):void {
 						Loading.getInstance().close()
 						if (response.code == 0) {
-							TempRoomView(MainView.getInstane().pushView(TempRoomView)).init(response.data)
+							RoomView(MainView.getInstane().pushView(RoomView)).init(response.data)
 						} else {
 							AppAlert.show(response.data)
 						}

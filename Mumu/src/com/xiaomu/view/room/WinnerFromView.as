@@ -113,6 +113,7 @@ package com.xiaomu.view.room
 			
 			bgImg.source = 'assets/endAll/'+(isWinner?'floor_zjs04':'bac_02')+'.png';
 			
+			if (!data) return
 			zongHuxiLab.text = data.thx+"";
 			winnerHeadView.data = data;
 			gaoShouImg.visible = isWinner;

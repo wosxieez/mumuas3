@@ -22,9 +22,11 @@ package com.xiaomu.view.room
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	
+	import coco.component.Alert;
 	import coco.component.Image;
 	import coco.component.Label;
 	import coco.core.UIComponent;
+	import coco.event.UIEvent;
 	import coco.manager.PopUpManager;
 	
 	public class RoomView extends UIComponent
@@ -38,8 +40,18 @@ package com.xiaomu.view.room
 		
 		protected function leaveGroupRoomHandler(event:AppManagerEvent):void
 		{
-			trace("离开群房间");
-			close();
+			if (roomData && roomData.og) {
+				AppAlert.show('确定要申请退出吗?', '',Alert.OK|Alert.CANCEL, function (e:UIEvent):void {
+					if (e.detail == Alert.OK) {
+						var action:Object = { name: Actions.Ae, data: ''  }
+						Api.getInstane().sendAction(action)
+					} else {
+						
+					}
+				})
+			} else {
+				close()
+			}
 		}
 		
 		protected function changeRoomTableImgHandler(event:AppManagerEvent):void
@@ -133,6 +145,7 @@ package com.xiaomu.view.room
 			
 			roomnameDisplay = new Label()
 			roomnameDisplay.height = 50
+			roomnameDisplay.color = 0xFFFFFF
 			addChild(roomnameDisplay)
 			
 			g1Image = new Image()
@@ -280,9 +293,9 @@ package com.xiaomu.view.room
 			goback.downImageSource = 'assets/group/btn_guild2_return_p.png';
 			goback.width = 85;
 			goback.height = 91;
+			goback.visible = false
 			goback.addEventListener(MouseEvent.CLICK, back_clickHandler)
 			addChild(goback)
-			goback.visible = false;
 			
 			refreshButton = new ImageButton()
 			refreshButton.width = 60
@@ -298,7 +311,7 @@ package com.xiaomu.view.room
 			
 			try
 			{
-				roomnameDisplay.text = '房间号: ' + roomname.substr(4)
+				roomnameDisplay.text = '房间号:' + roomname.substr(4)
 			} 
 			catch(error:Error) 
 			{
@@ -306,6 +319,10 @@ package com.xiaomu.view.room
 			}
 			
 			if (!roomData) return
+				
+			if (roomData.ic && roomData.ic > 0) {
+				roomnameDisplay.text = roomnameDisplay.text + '	第' + roomData.ic + '盘'
+			}
 			
 			// 隐藏所有
 			hideAllUI()
@@ -432,9 +449,9 @@ package com.xiaomu.view.room
 			bg.height = height;
 			
 			roomnameDisplay.width = width
-				
+			
 			showSettingPanelBtn.x = width-showSettingPanelBtn.width-20;
-			showSettingPanelBtn.y = 10;
+			showSettingPanelBtn..y = 10;
 			
 			g1Image.x = (width - g1Image.width) / 2
 			g1Image.y = height / 2 - g1Image.height - 40
@@ -498,7 +515,7 @@ package com.xiaomu.view.room
 				if (response.code == 0) {
 					roomData = response.data
 					needRiffleCard = true
-					if (!roomData.og) {
+					if (room.ru.id > 0 && !roomData.og) {
 						new DaNiaoNoticePanel().open()
 					}
 				} else {
@@ -1120,6 +1137,21 @@ package com.xiaomu.view.room
 					Audio.getInstane().playChat(notification.data.data)
 					break
 				}
+				case Notifications.onAskExit: 
+				{
+					if (notification.data.an != AppData.getInstane().user.username) {
+						AppAlert.show(notification.data.an + '玩家申请退出，是否同意退出', '',Alert.OK|Alert.CANCEL, function (e:UIEvent):void {
+							if (e.detail == Alert.OK) {
+								var action:Object = { name: Actions.Dae, data: 1  }
+								Api.getInstane().sendAction(action)
+							} else {
+								var action2:Object = { name: Actions.Dae, data: 0  }
+								Api.getInstane().sendAction(action2)
+							}
+						})
+					}
+					break
+				}
 				case Notifications.onNewRound:
 				{
 					needRiffleCard = true // 需要整理手里牌
@@ -1173,9 +1205,8 @@ package com.xiaomu.view.room
 				{
 					Audio.getInstane().playHandle('hu')
 					roomData = notification.data
-					AppAlert.show('一局游戏结束，胡息满一百') ///游戏结束房卡消耗。人自动退出到游戏的群界面
+//					AppAlert.show('一局游戏结束，胡息满一百') ///游戏结束房卡消耗。人自动退出到游戏的群界面
 					trace("roomView一局游戏结束:",JSON.stringify(roomData));
-					
 					var endView:EndResultView = new EndResultView();
 					endView.data = roomData;
 					PopUpManager.centerPopUp(PopUpManager.addPopUp(endView,null,true,false,0,0.8));
@@ -1317,10 +1348,19 @@ package com.xiaomu.view.room
 		}
 		
 		public function close():void {
-			Api.getInstane().removeEventListener(ApiEvent.ON_ROOM, onNotificationHandler)
-			Api.getInstane().leaveRoom(function (response:Object):void {})
-			hideAllUI()
-			MainView.getInstane().popView(GroupView)
+			if (this.roomrule.id > 0) {
+				Api.getInstane().removeEventListener(ApiEvent.ON_ROOM, onNotificationHandler)
+				Api.getInstane().leaveRoom(function (response:Object):void {})
+				hideAllUI()
+				MainView.getInstane().popView(GroupView)
+			} else {
+				Api.getInstane().removeEventListener(ApiEvent.ON_ROOM, onNotificationHandler)
+				Api.getInstane().leaveRoom(function (response:Object):void {})
+				Api.getInstane().leaveGroup()
+				hideAllUI()
+				MainView.getInstane().popView()
+
+			}
 		}
 		
 		protected function refreshButton_clickHandler(event:MouseEvent):void
@@ -1405,15 +1445,12 @@ package com.xiaomu.view.room
 			return null
 		}
 		
-		private var roomSettingPanel:RoomSettingPanel;
 		/**
 		 * 显示设置选项界面
 		 */
 		protected function showSettingPanelBtnHandler(event:MouseEvent):void
 		{
-			roomSettingPanel = new RoomSettingPanel();
-			roomSettingPanel.isInGroupRoom = true;
-			PopUpManager.centerPopUp(PopUpManager.addPopUp(roomSettingPanel,null,true,true));
+			PopUpManager.centerPopUp(PopUpManager.addPopUp(new RoomSettingPanel(),null,true,true));
 		}
 		
 	}

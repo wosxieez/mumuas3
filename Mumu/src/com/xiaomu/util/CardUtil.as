@@ -94,11 +94,19 @@ package com.xiaomu.util
 				countedCards[3]--;
 			}
 			
-			// 6. 对子
+			// 大小混搭
 			for (card in countedCards) {
-				if (countedCards[card] == 2) {
-					riffledCards.push([card, card])
-					delete countedCards[card]
+				// 大小混搭
+				if (card > 10 && (countedCards[card - 10] > 1)) {
+					countedCards[card]--;
+					countedCards[card - 10] -= 2;
+					riffledCards.push([card, card - 10, card - 10]);
+					
+				}
+				if (card < 11 && (countedCards[card + 10] > 1)) {
+					countedCards[card]--;
+					countedCards[card + 10] -= 2;
+					riffledCards.push([card, card + 10, card + 10]);
 				}
 			}
 			
@@ -109,9 +117,14 @@ package com.xiaomu.util
 					countedCards[card]--;
 					countedCards[card+1]--;
 					countedCards[card+2]--;
-					
-				} else if (!countedCards[card]){
-					delete countedCards[card];
+				}
+			}
+			
+			// 6. 对子
+			for (card in countedCards) {
+				if (countedCards[card] == 2) {
+					riffledCards.push([card, card])
+					delete countedCards[card]
 				}
 			}
 			
@@ -121,8 +134,15 @@ package com.xiaomu.util
 					riffledCards.push([card, card+1]);
 					countedCards[card]--;
 					countedCards[card+1]--;
-				} else if (!countedCards[card]){
-					delete countedCards[card];
+				}
+			}
+			
+			// 8. 大小牌
+			for (card in countedCards) {
+				if(countedCards[card] && countedCards[card+10]){
+					riffledCards.push([card, card+10]);
+					countedCards[card]--;
+					countedCards[card+10]--;
 				}
 			}
 			
@@ -143,6 +163,16 @@ package com.xiaomu.util
 				riffledCards.push(countedCardsArray);
 			}
 			
+			function sortGroup(a:Object, b:Object):Number {
+				if(a[0]%10 > b[0]%10) {
+					return 1
+				} else if(a[0]%10 < b[0]%10) {
+					return -1
+				} else  {
+					return 0;
+				}
+			}
+			riffledCards.sort(sortGroup)
 			return riffledCards;
 		}
 		
@@ -206,9 +236,9 @@ package com.xiaomu.util
 			var copyedHandCards:Array = JSON.parse(JSON.stringify(cardsOnHand)) as Array // 深度拷贝
 			var copyedGroupCards:Array = JSON.parse(JSON.stringify(cardsOnGroup)) as Array // 深度拷贝
 			var allHandCards:Array = []
-			var canChiPaoPeng:Boolean = false
-			if (currentCard !== 0) {
+			if (currentCard != 0) {
 				// 看组合牌中能不能跑起
+				var canChiPaoPeng:Boolean = false
 				var paoGroup:Object = canTi2(copyedGroupCards, currentCard)
 				if (paoGroup) {
 					canChiPaoPeng = true
@@ -251,10 +281,12 @@ package com.xiaomu.util
 						}
 					}
 				}
-			}
-			
-			if (!canChiPaoPeng) {
-				allHandCards.push(copyedHandCards.concat([currentCard]))
+				
+				if (!canChiPaoPeng) {
+					allHandCards.push(copyedHandCards.concat([currentCard]))
+				}
+			} else {
+				allHandCards.push(copyedHandCards)
 			}
 			
 			var allHuGroups:Array = []

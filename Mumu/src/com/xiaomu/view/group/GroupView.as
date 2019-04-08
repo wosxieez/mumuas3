@@ -226,15 +226,19 @@ package com.xiaomu.view.group
 			createGroupPublic.downImageSource = 'assets/guild/btn_guild2_create_public_p.png';
 			createGroupPublic.addEventListener(MouseEvent.CLICK, function (e:MouseEvent):void {
 				Loading.getInstance().open() 
-				AppData.getInstane().rule.pub = true // 公共房间
-				Api.getInstane().createRoom(AppData.getInstane().rule, function (response:Object):void {
-					Loading.getInstance().close() 
-					if (response.code == 0) {
-						RoomView(MainView.getInstane().pushView(RoomView)).init(response.data)
-					} else {
-						AppAlert.show(JSON.stringify(response.data))
-					}
-				})
+				if (AppData.getInstane().rule) {
+					AppData.getInstane().rule.pub = true // 公共房间
+					Api.getInstane().createRoom(AppData.getInstane().rule, function (response:Object):void {
+						Loading.getInstance().close() 
+						if (response.code == 0) {
+							RoomView(MainView.getInstane().pushView(RoomView)).init(response.data)
+						} else {
+							AppAlert.show(JSON.stringify(response.data))
+						}
+					})
+				} else {
+					AppAlert.show('请选择玩法')
+				}
 			})
 			addChild(createGroupPublic);
 		}

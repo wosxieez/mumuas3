@@ -7,6 +7,7 @@ package com.xiaomu.view.home
 	import com.xiaomu.util.Api;
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.view.MainView;
+	import com.xiaomu.view.room.RoomView;
 	
 	import flash.events.MouseEvent;
 	
@@ -303,7 +304,7 @@ package com.xiaomu.view.home
 						Api.getInstane().joinRoom({roomname: 'room' + numberArr.join('') }, function (response:Object):void {
 							Loading.getInstance().close()
 							if (response.code == 0) {
-								TempRoomView(MainView.getInstane().pushView(TempRoomView)).init(response.data)
+								RoomView(MainView.getInstane().pushView(RoomView)).init(response.data)
 							} else {
 								AppAlert.show(JSON.stringify(response.data))
 							}

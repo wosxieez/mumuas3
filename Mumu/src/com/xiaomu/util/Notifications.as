@@ -26,5 +26,6 @@ package com.xiaomu.util
 		public static const onRoomMessage:int = 26
 		public static const onGameOver:int = 27
 		public static const onAction:int = 28
+		public static const onAskExit:int = 29
 	}
 }
