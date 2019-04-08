@@ -123,7 +123,7 @@ package com.xiaomu.view.group
 			ruleXFTool.value = 1;
 			ruleXFTool.maximum = 100;
 			ruleXFTool.minimum =0;
-			ruleXFTool.stepSize = 1;
+			ruleXFTool.stepSize = 0.1;
 			ruleXFTool.width = 300;
 			ruleXFTool.height = 40;
 			addChild(ruleXFTool);
@@ -140,8 +140,6 @@ package com.xiaomu.view.group
 			ruleNFTool = new CountTool();
 			ruleNFTool.value = 0;
 			ruleNFTool.stepSize = 10;
-			ruleNFTool.maximum = 1000;
-			ruleXFTool.minimum = 0;
 			ruleNFTool.width = 300;
 			ruleNFTool.height = 40;
 			addChild(ruleNFTool);

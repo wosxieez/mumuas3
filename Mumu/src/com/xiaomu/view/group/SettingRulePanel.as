@@ -134,8 +134,8 @@ package com.xiaomu.view.group
 			ruleXFTool = new CountTool();
 			ruleXFTool.value = 1;
 			ruleXFTool.maximum = 100;
-			ruleXFTool.minimum =1;
-			ruleXFTool.stepSize = 1;
+			ruleXFTool.minimum =0;
+			ruleXFTool.stepSize = 0.1;
 			ruleXFTool.width = 300;
 			ruleXFTool.height = 40;
 			addChild(ruleXFTool);

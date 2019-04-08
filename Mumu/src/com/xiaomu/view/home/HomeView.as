@@ -12,7 +12,7 @@ package com.xiaomu.view.home
 	import com.xiaomu.view.home.noticeBar.NoticeBar;
 	import com.xiaomu.view.home.popUp1.OfficalNoticeViewOfCopy;
 	import com.xiaomu.view.home.setting.SettingPanelView;
-	import com.xiaomu.view.userBarView.UserInfoView2;
+	import com.xiaomu.view.userBarView.UserInfoView;
 	
 	import flash.events.MouseEvent;
 	import flash.utils.setTimeout;
@@ -33,7 +33,7 @@ package com.xiaomu.view.home
 		}
 		private var bg : Image;
 		private var myGroup:ImageButton;
-		private var userInfoView:UserInfoView2
+		private var userInfoView:UserInfoView
 		private var shoppingBtn:ImageButton;
 		private var btnGroup:ButtonGroup;
 		private var proxyBtn:ImageButton;
@@ -64,7 +64,7 @@ package com.xiaomu.view.home
 			addChild(testBtn);
 			testBtn.visible = false;
 			
-			userInfoView = new UserInfoView2();
+			userInfoView = new UserInfoView();
 			addChild(userInfoView);
 			
 			versionLab = new Label();
@@ -273,7 +273,9 @@ package com.xiaomu.view.home
 		
 		public function init():void{
 			Audio.getInstane().playBGM()
-			userInfoView.userInfoData = {'userName':AppData.getInstane().username}
+			userInfoView.userInfoData = AppData.getInstane().user
+			trace('user id ',AppData.getInstane().user.id);
+			trace('user:',JSON.stringify(AppData.getInstane().user));
 		}
 		
 		protected function clickHandler(event:MouseEvent):void{

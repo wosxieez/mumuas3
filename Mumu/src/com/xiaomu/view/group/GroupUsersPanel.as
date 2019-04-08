@@ -58,7 +58,7 @@ package com.xiaomu.view.group
 			addChild(bgImg);
 			
 			usersList = new List()
-			usersList.itemRendererHeight = 70;
+			usersList.itemRendererHeight = 80;
 			usersList.gap = 10;
 			usersList.itemRendererClass = GroupUserRender
 			addChild(usersList)

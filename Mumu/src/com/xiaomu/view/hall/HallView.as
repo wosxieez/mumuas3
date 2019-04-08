@@ -14,7 +14,7 @@ package com.xiaomu.view.hall
 	import com.xiaomu.view.group.GroupView;
 	import com.xiaomu.view.hall.popUpPanel.AddGroupPanel;
 	import com.xiaomu.view.home.HomeView;
-	import com.xiaomu.view.userBarView.UserInfoView2;
+	import com.xiaomu.view.userBarView.UserInfoView;
 	
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -47,7 +47,7 @@ package com.xiaomu.view.hall
 		private var groupsList:List
 		private var signoutBtn:Image
 		private var goback:ImageButton
-		private var userInfoView : UserInfoView2
+		private var userInfoView : UserInfoView
 		private var createGroupBtn : ImageButton
 		private var joinGroupBtn:ImageButton;
 		

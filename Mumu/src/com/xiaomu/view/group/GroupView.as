@@ -13,8 +13,8 @@ package com.xiaomu.view.group
 	import com.xiaomu.util.Notifications;
 	import com.xiaomu.view.MainView;
 	import com.xiaomu.view.hall.HallView;
-	import com.xiaomu.view.hall.popUpPanel.TestPanel;
 	import com.xiaomu.view.room.RoomView;
+	import com.xiaomu.view.userBarView.GoldOrCardShowBar;
 	
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -61,6 +61,10 @@ package com.xiaomu.view.group
 		private var ruleSettingButton:Button;
 		private var createGroupPublic:ImageButton;
 		private var createGroupPrivate:ImageButton;
+		
+		private var roomCardBar : GoldOrCardShowBar;
+		private var fenBar:GoldOrCardShowBar;
+		
 		private var _roomsData:Array
 		
 		public function get roomsData():Array
@@ -74,6 +78,19 @@ package com.xiaomu.view.group
 			invalidateProperties()
 		}
 		
+		private var _isNowGroupHost:Boolean;  ///是不是当前群的群主
+
+		public function get isNowGroupHost():Boolean
+		{
+			return _isNowGroupHost;
+		}
+
+		public function set isNowGroupHost(value:Boolean):void
+		{
+			_isNowGroupHost = value;
+			invalidateDisplayList();
+		}
+
 		override protected function createChildren():void {
 			super.createChildren()
 			
@@ -81,12 +98,19 @@ package com.xiaomu.view.group
 			bg.source = 'assets/group/guild2_bg.png'
 			addChild(bg)
 			
-			var testBtn:Button = new Button();
-			testBtn.label = '测试按钮';
-			testBtn.x = 200;
-			testBtn.addEventListener(MouseEvent.CLICK,clickHandler);
-			addChild(testBtn);
-			testBtn.visible= false;
+			roomCardBar = new GoldOrCardShowBar();
+			roomCardBar.width = 200;
+			roomCardBar.height = 50;
+			roomCardBar.iconWidthHeight = [roomCardBar.height,roomCardBar.height];
+			roomCardBar.typeSource = 'assets/user/icon_yuanbao_01.png';
+			addChild(roomCardBar);
+			
+			fenBar = new GoldOrCardShowBar();
+			fenBar.width = 200;
+			fenBar.height = 50;
+			fenBar.iconWidthHeight = [fenBar.height,fenBar.height];
+			fenBar.typeSource = 'assets/user/zuanshi.png';
+			addChild(fenBar);
 			
 			roomsList = new List()
 			roomsList.itemRendererColumnCount = 4
@@ -228,6 +252,8 @@ package com.xiaomu.view.group
 					return false
 				}
 			})
+			
+			roomCardBar.count = AppData.getInstane().user.fc?AppData.getInstane().user.fc:"0";
 		}
 		
 		override protected function updateDisplayList():void {
@@ -238,6 +264,13 @@ package com.xiaomu.view.group
 			
 			bg1.width = width
 			bg1.y = height - bg1.height
+			
+			roomCardBar.x = 150;
+			roomCardBar.y = 20;
+			roomCardBar.visible = isNowGroupHost;
+			
+			fenBar.x = isNowGroupHost?roomCardBar.x+roomCardBar.width+20:roomCardBar.x
+			fenBar.y = roomCardBar.y;
 			
 			roomsList.y = roomsList.paddingTop;
 			roomsList.height = height - roomsList.y-bg1.height;
@@ -312,7 +345,7 @@ package com.xiaomu.view.group
 		}
 		
 		/**
-		 * 获取当前群中的所有用户信息
+		 * 获取当前群中的所有用户信息,
 		 */
 		private function getNowGroupUsersInfo():void
 		{
@@ -347,7 +380,7 @@ package com.xiaomu.view.group
 									}
 								}
 								AppData.getInstane().groupUsers = groupusers;
-								//								trace("当前群中的所有用户信息:",JSON.stringify(groupusers));
+								trace("当前群中的所有用户信息:",JSON.stringify(groupusers));
 								actionHandler();
 							}
 						})
@@ -368,9 +401,12 @@ package com.xiaomu.view.group
 			for each (var user:Object in AppData.getInstane().groupUsers) 
 			{
 				if(user.username==AppData.getInstane().username){
-					//					trace("我在这个群里的资料：",JSON.stringify(user));
+					//trace("我在这个群里的资料：",JSON.stringify(user));
+					isNowGroupHost = user.ll==4 ///是不是当前群的群主
 					userSettingButton.visible = user.ll>0; ///只有是管理人员才能有群管理的入口
 					AppData.getInstane().groupLL = user.ll;
+					fenBar.count = user.fs;
+//					trace("这个群中你的分数：",user.fs);
 				}
 			}
 		}
@@ -400,7 +436,7 @@ package com.xiaomu.view.group
 		
 		/*protected function switchRuleButton_clickHandler(event:MouseEvent):void
 		{
-			new SwitchRulePanel().open()
+		new SwitchRulePanel().open()
 		}*/
 		
 		protected function userSettingButton_clickHandler(event:MouseEvent):void
@@ -442,13 +478,5 @@ package com.xiaomu.view.group
 			})
 		}
 		
-		/**
-		 * 测试按钮，测试显示一盘游戏结果界面
-		 */
-		protected function clickHandler(event:MouseEvent):void
-		{
-			TestPanel.getInstane().open();
-			TestPanel.getInstane().data = AppData.getInstane().testData;
-		}
 	}
 }

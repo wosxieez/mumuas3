@@ -64,7 +64,7 @@ package com.xiaomu.view.group
 			
 			rulesList = new List()
 			rulesList.labelField = 'rulename'
-			rulesList.itemRendererHeight = 70;
+			rulesList.itemRendererHeight = 80;
 			rulesList.gap = 10;
 			rulesList.itemRendererClass = RulesListRender;
 			rulesList.addEventListener(UIEvent.CHANGE, rulesList_changeHandler)
