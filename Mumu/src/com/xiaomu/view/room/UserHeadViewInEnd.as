@@ -72,7 +72,7 @@ package com.xiaomu.view.room
 			daNiaoImg.y = userHeadIcon.y-daNiaoImg.height/4;
 			
 			userNameLab.x = userHeadIcon.x+userHeadIcon.width+10;
-			userNameLab.y = 15;
+			userNameLab.y = 18;
 		}
 	}
 }
