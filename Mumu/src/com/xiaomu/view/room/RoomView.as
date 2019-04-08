@@ -32,6 +32,7 @@ package com.xiaomu.view.room
 			super();
 		}
 		
+		private var bg:Image;
 		private var roomname:String
 		private var roomrule:Object
 		private var oldPoint:Point
@@ -105,7 +106,11 @@ package com.xiaomu.view.room
 		
 		override protected function createChildren():void {
 			super.createChildren()
-			
+				
+			bg = new Image();
+			bg.source = 'assets/roombg.png';
+			addChild(bg);
+				
 			bgLayer = new UIComponent()
 			addChild(bgLayer)
 			
@@ -395,7 +400,10 @@ package com.xiaomu.view.room
 		
 		override protected function updateDisplayList():void {
 			super.updateDisplayList()
-			
+				
+			bg.width = width;
+			bg.height = height;
+				
 			roomnameDisplay.width = width
 			
 			g1Image.x = (width - g1Image.width) / 2

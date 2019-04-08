@@ -48,6 +48,7 @@ package
 			bg = new Image()
 			bg.source = new BgClass().bitmapData
 			addChild(bg)
+			bg.visible = false;
 			
 			addChild(MainView.getInstane())
 			LoginView(MainView.getInstane().pushView(LoginView)).init()

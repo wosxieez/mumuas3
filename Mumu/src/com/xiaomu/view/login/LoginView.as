@@ -6,6 +6,7 @@ package com.xiaomu.view.login
 	import flash.utils.setTimeout;
 	
 	import coco.component.Button;
+	import coco.component.Image;
 	import coco.component.Label;
 	import coco.component.TextAlign;
 	import coco.component.TextArea;
@@ -23,6 +24,7 @@ package com.xiaomu.view.login
 		
 		private var _isloginFlag : Boolean;
 		
+		private var bg:Image;
 		private var loginPanel : LoginPanel;
 		private var registerPanel : RegisterPanel;
 		private var	loginBtn : Button;
@@ -42,6 +44,10 @@ package com.xiaomu.view.login
 		
 		override protected function createChildren():void{
 			super.createChildren();
+			
+			bg = new Image();
+			bg.source = 'assets/home/hallBg.png';
+			addChild(bg);
 			
 			loginPanel = new LoginPanel()
 			addChild(loginPanel)
@@ -78,6 +84,8 @@ package com.xiaomu.view.login
 			versionLab.x = 0;
 			versionLab.y = 0;
 			
+			bg.width = width;
+			bg.height = height;
 			
 			loginPanel.x = (width - loginPanel.width) / 2
 			loginPanel.y = (height - loginPanel.height) / 2
