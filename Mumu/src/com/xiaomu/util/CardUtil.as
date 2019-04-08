@@ -94,6 +94,16 @@ package com.xiaomu.util
 				countedCards[3]--;
 			}
 			
+			// 7. 一句话
+			for (card in countedCards) {
+				if(countedCards[card] && countedCards[card+1] && countedCards[card+2] && (card!==10) && (card!==9)){
+					riffledCards.push([card, card+1, card+2]);
+					countedCards[card]--;
+					countedCards[card+1]--;
+					countedCards[card+2]--;
+				}
+			}
+			
 			// 大小混搭
 			for (card in countedCards) {
 				// 大小混搭
@@ -107,16 +117,6 @@ package com.xiaomu.util
 					countedCards[card]--;
 					countedCards[card + 10] -= 2;
 					riffledCards.push([card, card + 10, card + 10]);
-				}
-			}
-			
-			// 7. 一句话
-			for (card in countedCards) {
-				if(countedCards[card] && countedCards[card+1] && countedCards[card+2] && (card!==10) && (card!==9)){
-					riffledCards.push([card, card+1, card+2]);
-					countedCards[card]--;
-					countedCards[card+1]--;
-					countedCards[card+2]--;
 				}
 			}
 			
