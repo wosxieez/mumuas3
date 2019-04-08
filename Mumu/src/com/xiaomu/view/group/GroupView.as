@@ -41,6 +41,13 @@ package com.xiaomu.view.group
 			
 			Api.getInstane().addEventListener(ApiEvent.ON_GROUP, onGroupHandler)
 			AppManager.getInstance().addEventListener(AppManagerEvent.CHANGE_SELECTED_RULE,changSelectedRuleHandler);
+			AppManager.getInstance().addEventListener(AppManagerEvent.UPDATE_MEMBER_INFO_SUCCESS,updateMemberHander);
+		}
+		
+		protected function updateMemberHander(event:AppManagerEvent):void
+		{
+			trace("更新了会员信息9999");///这里要刷新顶部的分显示
+			getNowGroupUsersInfo();
 		}
 		
 		protected function changSelectedRuleHandler(event:AppManagerEvent):void
