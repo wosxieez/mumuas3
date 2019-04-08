@@ -46,7 +46,7 @@ package com.xiaomu.view.group
 		
 		protected function updateMemberHander(event:AppManagerEvent):void
 		{
-			trace("更新了会员信息9999");///这里要刷新顶部的分显示
+			trace("更新了会员信息，刷新顶部的分显示");///这里要刷新顶部的分显示
 			getNowGroupUsersInfo();
 		}
 		
