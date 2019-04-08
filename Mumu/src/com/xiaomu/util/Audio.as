@@ -4,6 +4,8 @@ package com.xiaomu.util
 	import flash.media.SoundChannel;
 	import flash.media.SoundTransform;
 	import flash.net.URLRequest;
+	import flash.utils.clearTimeout;
+	import flash.utils.setTimeout;
 	
 	/**
 	 * 音频管理器 
@@ -29,7 +31,7 @@ package com.xiaomu.util
 		public var isActivate:Boolean = true
 		
 		private var bgSoundChannel:SoundChannel
-		private var bgSound:Sound
+		private var bgSound:Sound = new Sound(new URLRequest('assets/bgm.mp3'))
 		
 		public function playBGM():void {
 			if (bgSoundChannel) {
@@ -43,7 +45,6 @@ package com.xiaomu.util
 				}
 			}
 			
-			bgSound = new Sound(new URLRequest('assets/bgm.mp3'))
 			bgSoundChannel = bgSound.play(0, 1000000)
 			bgSoundChannel.soundTransform = new SoundTransform(int(AppData.getInstane().bgmValue) / 100, 0)
 		}
@@ -61,7 +62,6 @@ package com.xiaomu.util
 			}
 			
 			bgSoundChannel = null
-			bgSound = null
 		}
 		
 		public function pauseBGM():void {
@@ -160,6 +160,46 @@ package com.xiaomu.util
 			
 			buttonChannel = buttonSound.play()
 			buttonChannel.soundTransform = new SoundTransform(int(AppData.getInstane().gameMusicValue) / 100, 0)
+		}
+		
+		
+		private var timeoutSoundChannel:SoundChannel
+		private var timeoutSound:Sound = new Sound(new URLRequest('sound/timeup_alarm.mp3'))
+		private var timeID:uint
+			
+		public function playTimeout():void {
+			trace('播放音乐')
+			if (timeoutSoundChannel) {
+				try
+				{
+					timeoutSoundChannel.stop()
+				} 
+				catch(error:Error) 
+				{
+				}
+			}
+			clearTimeout(timeID)
+			timeID = setTimeout(function ():void {
+				trace('播放音乐')
+				timeoutSoundChannel = timeoutSound.play()
+				timeoutSoundChannel.soundTransform = new SoundTransform(int(AppData.getInstane().gameMusicValue) / 100, 0)
+			}, 7000)
+		}
+		
+		public function stopTimeout():void {
+			clearTimeout(timeID)
+			if (timeoutSoundChannel) {
+				try
+				{
+					timeoutSoundChannel.stop()
+				} 
+				catch(error:Error) 
+				{
+					
+				}
+			}
+			
+			timeoutSoundChannel = null
 		}
 		
 	}

@@ -319,7 +319,7 @@ package com.xiaomu.view.room
 			}
 			
 			if (!roomData) return
-				
+			
 			if (roomData.ic && roomData.ic > 0) {
 				roomnameDisplay.text = roomnameDisplay.text + '	第' + roomData.ic + '盘'
 			}
@@ -409,6 +409,7 @@ package com.xiaomu.view.room
 				if (myActionUser) {
 					if (myActionUser.nd) {
 						newCardTip.visible = true
+						Audio.getInstane().playTimeout()
 						if (!tingCardsView.tingCards) {
 							updateMyHandCardUIsCanOutTing()
 						}
@@ -1078,6 +1079,7 @@ package com.xiaomu.view.room
 						var action:Object = { name: Actions.NewCard, data: myActionUser  }
 						Api.getInstane().sendAction(action)
 						draggingCardUI.visible = false
+						Audio.getInstane().stopTimeout()
 						meNewCard(draggingCardUI.card)
 					} else {
 						riffleCard()
@@ -1205,7 +1207,7 @@ package com.xiaomu.view.room
 				{
 					Audio.getInstane().playHandle('hu')
 					roomData = notification.data
-//					AppAlert.show('一局游戏结束，胡息满一百') ///游戏结束房卡消耗。人自动退出到游戏的群界面
+					//					AppAlert.show('一局游戏结束，胡息满一百') ///游戏结束房卡消耗。人自动退出到游戏的群界面
 					trace("roomView一局游戏结束:",JSON.stringify(roomData));
 					var endView:EndResultView = new EndResultView();
 					endView.data = roomData;
@@ -1359,7 +1361,7 @@ package com.xiaomu.view.room
 				Api.getInstane().leaveGroup()
 				hideAllUI()
 				MainView.getInstane().popView()
-
+				
 			}
 		}
 		
