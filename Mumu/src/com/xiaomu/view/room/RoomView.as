@@ -1319,6 +1319,7 @@ package com.xiaomu.view.room
 				ChiSelectView.getInstane().close()
 			}
 			canHuButton.visible = canPengButton.visible = canChiButton.visible = cancelButton.visible = false
+			Audio.getInstane().playHandle('pass')
 			if (myActionUser) {
 				undoActionUser()
 				var action:Object = { name: Actions.Cancel, data: myActionUser }
