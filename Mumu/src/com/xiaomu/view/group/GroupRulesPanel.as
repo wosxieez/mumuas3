@@ -50,7 +50,7 @@ package com.xiaomu.view.group
 			addChild(bgImg);
 			
 			rulesList = new List()
-			rulesList.itemRendererHeight = 80;
+			rulesList.itemRendererHeight = 100;
 			rulesList.gap = 10;
 			rulesList.itemRendererClass = GroupRuleRenderer
 			addChild(rulesList)

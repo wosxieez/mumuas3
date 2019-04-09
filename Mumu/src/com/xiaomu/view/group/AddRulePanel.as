@@ -14,8 +14,10 @@ package com.xiaomu.view.group
 	
 	import coco.component.ButtonGroup;
 	import coco.component.Label;
+	import coco.component.Scroller;
 	import coco.component.TextAlign;
 	import coco.component.TextInput;
+	import coco.core.UIComponent;
 	import coco.event.UIEvent;
 	
 	public class AddRulePanel extends AppPanelBig
@@ -27,6 +29,8 @@ package com.xiaomu.view.group
 			title = '添加玩法'
 		}
 		
+		private var bgUI:UIComponent;//底部UI
+		private var scroller:Scroller;
 		private var ruleNameLab:Label//玩法名称
 		private var ruleNameInput:TextInput//玩法名称
 		private var ruleCountLab:Label//人数
@@ -47,9 +51,20 @@ package com.xiaomu.view.group
 		private var ruleTC2Tool:CountTool;
 		private var ruleTC1Lab:Label//C1  二级管理员
 		private var ruleTC1Tool:CountTool;
+		private var minPlzLab:Label;
+		private var minPlzTool:CountTool;///最低疲劳值
 		
 		override protected function createChildren():void {
 			super.createChildren()
+				
+			scroller = new Scroller();
+			scroller.autoDrawSkin = true;
+			scroller.verticalScrollEnabled = true;
+			scroller.horizontalScrollEnabled = false;
+			addChild(scroller);
+			
+			bgUI = new UIComponent();
+			scroller.addChild(bgUI);
 			
 			ruleNameLab = new Label();
 			ruleNameLab.textAlign = TextAlign.RIGHT;
@@ -58,7 +73,7 @@ package com.xiaomu.view.group
 			ruleNameLab.width = 200;
 			ruleNameLab.height = 40;
 			ruleNameLab.text = '玩法名:';
-			addChild(ruleNameLab);
+			bgUI.addChild(ruleNameLab);
 			
 			ruleNameInput = new TextInput();
 			ruleNameInput.maxChars = 10;
@@ -68,7 +83,7 @@ package com.xiaomu.view.group
 			ruleNameInput.fontSize = 24;
 			ruleNameInput.color = 0x6f1614;
 			ruleNameInput.radius = 10;
-			addChild(ruleNameInput);
+			bgUI.addChild(ruleNameInput);
 			
 			ruleCountLab = new Label();
 			ruleCountLab.textAlign = TextAlign.RIGHT;
@@ -77,7 +92,7 @@ package com.xiaomu.view.group
 			ruleCountLab.width = 200;
 			ruleCountLab.height = 40;
 			ruleCountLab.text = '人数:';
-			addChild(ruleCountLab);
+			bgUI.addChild(ruleCountLab);
 			
 			ruleCountBtnGroup = new ButtonGroup();
 			ruleCountBtnGroup.dataProvider = [{"name":"二人","value":"2"},{"name":"三人","value":"3"}];
@@ -87,7 +102,7 @@ package com.xiaomu.view.group
 			ruleCountBtnGroup.gap = 20;
 			ruleCountBtnGroup.width = 200*2+10
 			ruleCountBtnGroup.addEventListener(UIEvent.CHANGE,ruleCountBtnGroupHandler);
-			addChild(ruleCountBtnGroup);
+			bgUI.addChild(ruleCountBtnGroup);
 			ruleCountBtnGroup.selectedIndex = 0;
 			
 			ruleHXLab = new Label();
@@ -97,7 +112,7 @@ package com.xiaomu.view.group
 			ruleHXLab.width = 200;
 			ruleHXLab.height = 40;
 			ruleHXLab.text = '胡息:';
-			addChild(ruleHXLab);
+			bgUI.addChild(ruleHXLab);
 			
 			ruleHXBtnGroup = new ButtonGroup();
 			ruleHXBtnGroup.dataProvider = [{"name":"十胡起胡","value":"10"},{"name":"十五胡起胡","value":"15"}];
@@ -107,7 +122,7 @@ package com.xiaomu.view.group
 			ruleHXBtnGroup.gap = 20;
 			ruleHXBtnGroup.width = 200*2+10
 			ruleHXBtnGroup.addEventListener(UIEvent.CHANGE,ruleHXBtnGroupHandler);
-			addChild(ruleHXBtnGroup);
+			bgUI.addChild(ruleHXBtnGroup);
 			ruleHXBtnGroup.selectedIndex = 1;
 			
 			ruleXFLab = new Label();
@@ -117,7 +132,7 @@ package com.xiaomu.view.group
 			ruleXFLab.width = 200;
 			ruleXFLab.height = 40;
 			ruleXFLab.text = '息分:';
-			addChild(ruleXFLab);
+			bgUI.addChild(ruleXFLab);
 			
 			ruleXFTool = new CountTool();
 			ruleXFTool.value = 1;
@@ -126,7 +141,7 @@ package com.xiaomu.view.group
 			ruleXFTool.stepSize = 0.1;
 			ruleXFTool.width = 300;
 			ruleXFTool.height = 40;
-			addChild(ruleXFTool);
+			bgUI.addChild(ruleXFTool);
 			
 			ruleNFLab = new Label();
 			ruleNFLab.textAlign = TextAlign.RIGHT;
@@ -135,14 +150,14 @@ package com.xiaomu.view.group
 			ruleNFLab.width = 200;
 			ruleNFLab.height = 40;
 			ruleNFLab.text = '鸟分:';
-			addChild(ruleNFLab);
+			bgUI.addChild(ruleNFLab);
 			
 			ruleNFTool = new CountTool();
 			ruleNFTool.value = 0;
 			ruleNFTool.stepSize = 10;
 			ruleNFTool.width = 300;
 			ruleNFTool.height = 40;
-			addChild(ruleNFTool);
+			bgUI.addChild(ruleNFTool);
 			
 			ruleFDLab = new Label();
 			ruleFDLab.textAlign = TextAlign.RIGHT;
@@ -151,7 +166,7 @@ package com.xiaomu.view.group
 			ruleFDLab.width = 200;
 			ruleFDLab.height = 40;
 			ruleFDLab.text = '封顶:';
-			addChild(ruleFDLab);
+			bgUI.addChild(ruleFDLab);
 			
 			ruleFDBtnGroup = new ButtonGroup();
 			ruleFDBtnGroup.dataProvider = [{"name":"200息","value":"200"},{"name":"400息","value":"400"}];
@@ -161,7 +176,7 @@ package com.xiaomu.view.group
 			ruleFDBtnGroup.gap = 20;
 			ruleFDBtnGroup.width = 200*2+10
 			ruleFDBtnGroup.addEventListener(UIEvent.CHANGE,ruleFDBtnGroupHandler);
-			addChild(ruleFDBtnGroup);
+			bgUI.addChild(ruleFDBtnGroup);
 			ruleFDBtnGroup.selectedIndex = 0;
 			
 			ruleTFLab = new Label();
@@ -171,7 +186,7 @@ package com.xiaomu.view.group
 			ruleTFLab.width = 200;
 			ruleTFLab.height = 40;
 			ruleTFLab.text = '提成线:';
-			addChild(ruleTFLab);
+			bgUI.addChild(ruleTFLab);
 			
 			ruleTFTool = new CountTool();
 			ruleTFTool.value = 60;
@@ -180,7 +195,7 @@ package com.xiaomu.view.group
 			ruleTFTool.minimum = 0;
 			ruleTFTool.maximum = 10000;
 			ruleTFTool.stepSize = 10;
-			addChild(ruleTFTool);
+			bgUI.addChild(ruleTFTool);
 			
 			ruleTCLab = new Label();
 			ruleTCLab.textAlign = TextAlign.RIGHT;
@@ -189,14 +204,14 @@ package com.xiaomu.view.group
 			ruleTCLab.width = 200;
 			ruleTCLab.height = 40;
 			ruleTCLab.text = '提成值:';
-			addChild(ruleTCLab);
+			bgUI.addChild(ruleTCLab);
 			
 			ruleTCTool = new CountTool();
 			ruleTCTool.width = 300;
 			ruleTCTool.height = 40;
 			ruleTCTool.value = 5;
 			ruleTCTool.stepSize = 1;
-			addChild(ruleTCTool);
+			bgUI.addChild(ruleTCTool);
 			
 			ruleTC1Lab = new Label();
 			ruleTC1Lab.textAlign = TextAlign.RIGHT;
@@ -204,15 +219,15 @@ package com.xiaomu.view.group
 			ruleTC1Lab.color = 0x6f1614;
 			ruleTC1Lab.width = 200;
 			ruleTC1Lab.height = 40;
-			ruleTC1Lab.text = '二级管理员提成:';
-			addChild(ruleTC1Lab);
+			ruleTC1Lab.text = '二级管理提成:';
+			bgUI.addChild(ruleTC1Lab);
 			
 			ruleTC1Tool = new CountTool();
 			ruleTC1Tool.width = 300;
 			ruleTC1Tool.height = 40;
 			ruleTC1Tool.value = 1.8;
 			ruleTC1Tool.stepSize = 0.1;
-			addChild(ruleTC1Tool);
+			bgUI.addChild(ruleTC1Tool);
 			
 			ruleTC2Lab = new Label();
 			ruleTC2Lab.textAlign = TextAlign.RIGHT;
@@ -220,24 +235,52 @@ package com.xiaomu.view.group
 			ruleTC2Lab.color = 0x6f1614;
 			ruleTC2Lab.width = 200;
 			ruleTC2Lab.height = 40;
-			ruleTC2Lab.text = '一级管理员提成:';
-			addChild(ruleTC2Lab);
+			ruleTC2Lab.text = '一级管理提成:';
+			bgUI.addChild(ruleTC2Lab);
 			
 			ruleTC2Tool = new CountTool();
 			ruleTC2Tool.width = 300;
 			ruleTC2Tool.height = 40;
 			ruleTC2Tool.value = 2;
 			ruleTC2Tool.stepSize = 0.1;
-			addChild(ruleTC2Tool);
+			bgUI.addChild(ruleTC2Tool);
+			
+			minPlzLab = new Label();
+			minPlzLab.textAlign = TextAlign.RIGHT;
+			minPlzLab.fontSize = 24;
+			minPlzLab.color = 0x6f1614;
+			minPlzLab.width = 200;
+			minPlzLab.height = 40;
+			minPlzLab.text = '最低疲劳值:';
+			bgUI.addChild(minPlzLab);
+			
+			minPlzTool = new CountTool();
+			minPlzTool.width = 300;
+			minPlzTool.height = 40;
+			minPlzTool.value = 0;
+			minPlzTool.stepSize = 10;
+			minPlzTool.maximum = 1000;
+			bgUI.addChild(minPlzTool);
 		}
 		
 		override protected function updateDisplayList():void
 		{
 			super.updateDisplayList();
 			
-			var gap:int = 45;
+			scroller.y = 10;
+			scroller.width = contentWidth;
+			scroller.height = contentHeight+10;
+			scroller.verticalScrollPosition = contentHeight
+			
+			bgUI.width = contentWidth;
+			bgUI.height = contentHeight+150;
+			
+			trace("contentWidth",contentWidth);
+			trace("contentHeight",contentHeight);
+			
+			var gap:int = 50;
 			var topPadding:int = 35;
-			ruleNameLab.x=ruleCountLab.x=ruleHXLab.x=ruleXFLab.x=ruleNFLab.x=ruleFDLab.x=ruleTFLab.x=ruleTCLab.x=ruleTC2Lab.x=ruleTC1Lab.x=100
+			ruleNameLab.x=ruleCountLab.x=ruleHXLab.x=ruleXFLab.x=ruleNFLab.x=ruleFDLab.x=ruleTFLab.x=ruleTCLab.x=ruleTC2Lab.x=ruleTC1Lab.x=minPlzLab.x=100
 			
 			ruleNameLab.y= ruleNameInput.y=topPadding
 			ruleCountLab.y= ruleCountBtnGroup.y=topPadding+gap*1
@@ -249,14 +292,16 @@ package com.xiaomu.view.group
 			ruleTCLab.y= ruleTCTool.y=topPadding+gap*7
 			ruleTC2Lab.y= ruleTC2Tool.y=topPadding+gap*8
 			ruleTC1Lab.y= ruleTC1Tool.y=topPadding+gap*9
+			minPlzLab.y = minPlzTool.y = topPadding+gap*10;
 			
-			ruleNameInput.x =ruleCountBtnGroup.x= ruleHXBtnGroup.x=ruleXFTool.x=ruleNFTool.x=ruleFDBtnGroup.x=ruleTFTool.x=ruleTCTool.x=ruleTC1Tool.x=ruleTC2Tool.x=320;
+			ruleNameInput.x =ruleCountBtnGroup.x= ruleHXBtnGroup.x=ruleXFTool.x=ruleNFTool.x=ruleFDBtnGroup.x=ruleTFTool.x=ruleTCTool.x=ruleTC1Tool.x=ruleTC2Tool.x=minPlzTool.x=320;
 			
 		}
 		
 		override protected function commitProperties():void {
 			super.commitProperties()
 		}
+		
 		
 		/**
 		 * 人数
@@ -289,7 +334,8 @@ package com.xiaomu.view.group
 				tc2: Number(ruleTC2Tool.value),
 				tc1: Number(ruleTC1Tool.value),
 				tc: Number(ruleTCTool.value),
-				tf: Number(ruleTFTool.value)},  
+				tf: Number(ruleTFTool.value),
+				plz:Number(minPlzTool.value)},
 				function (e:Event):void {
 					try
 					{
@@ -338,5 +384,3 @@ package com.xiaomu.view.group
 		
 	}
 }
-
-

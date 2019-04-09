@@ -25,7 +25,7 @@ package com.xiaomu.view.room
 		private var closeBtn:ImageButton;
 		private var gameSetBtn:ImageButton;
 		private var changeTableBtn:ImageButton;
-//		private var fixBtn:ImageButton;
+		private var fixBtn:ImageButton;
 		private var leaveRoomBtn:ImageButton;
 		
 		private var _isInGroupRoom:Boolean=true;
@@ -74,12 +74,12 @@ package com.xiaomu.view.room
 			changeTableBtn.addEventListener(MouseEvent.CLICK,changeTableBtnHandler);
 			addChild(changeTableBtn);
 			
-			/*fixBtn = new ImageButton();
+			fixBtn = new ImageButton();
 			fixBtn.upImageSource = 'assets/room/btn_yjxf_normal.png';
 			fixBtn.downImageSource = 'assets/room/btn_yjxf_press.png';
 			fixBtn.width = 168;
 			fixBtn.height = 68;
-			addChild(fixBtn);*/
+			addChild(fixBtn);
 			
 			leaveRoomBtn = new ImageButton();
 			leaveRoomBtn.upImageSource = 'assets/room/btn_tcfj5_normal.png';
@@ -106,11 +106,11 @@ package com.xiaomu.view.room
 			changeTableBtn.x = width-changeTableBtn.width-20;
 			changeTableBtn.y = gameSetBtn.y+gameSetBtn.height+30;
 			
-			/*fixBtn.x = width-fixBtn.width-20;
-			fixBtn.y = changeTableBtn.y+changeTableBtn.height+30;*/
-			
 			leaveRoomBtn.x = width-leaveRoomBtn.width-20;
 			leaveRoomBtn.y = changeTableBtn.y+changeTableBtn.height+30;
+			
+			fixBtn.x = width-fixBtn.width-20;
+			fixBtn.y = leaveRoomBtn.y+leaveRoomBtn.height+30;
 		}
 		
 		protected function closeBtnHandler(event:MouseEvent):void

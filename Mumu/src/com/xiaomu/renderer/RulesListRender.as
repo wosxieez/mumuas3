@@ -31,6 +31,7 @@ package com.xiaomu.renderer
 		private var huxiNumberStr:String; //胡息
 		private var fenDingNumberStr:String;//封顶
 		private var daNiaoNumberStr:String;//打鸟
+		private var minPlzNumberStr:String;///最低疲劳值
 		override protected function createChildren():void
 		{
 			super.createChildren();
@@ -79,9 +80,10 @@ package com.xiaomu.renderer
 				peopleNumbeStr =data.cc==1?"一人，":(data.cc==2?"二人，":(data.cc==3?"三人，":"四人，"));
 				huxiNumberStr = data.hx+"胡息起胡，";
 				daNiaoNumberStr = data.nf==0?"不打鸟，":"打鸟"+data.nf+"分，";
-				fenDingNumberStr = data.fd+"胡息封顶。";
+				fenDingNumberStr = data.fd+"胡息封顶，";
+				minPlzNumberStr = "最低"+(data.plz?data.plz:0)+"疲劳值。"
 			}
-			ruleDetail.text = peopleNumbeStr+huxiNumberStr+daNiaoNumberStr+fenDingNumberStr;
+			ruleDetail.text = peopleNumbeStr+huxiNumberStr+daNiaoNumberStr+fenDingNumberStr+minPlzNumberStr;
 		}
 		
 		override protected function updateDisplayList():void
@@ -105,7 +107,7 @@ package com.xiaomu.renderer
 			ruleDetail.x = selectBtn.x-ruleDetail.width-20;
 			ruleDetail.y = (height-ruleDetail.height)/2
 			//AppData.getInstane().rule为null
-			if(AppData.getInstane().rule.id==data.id){
+			if(AppData.getInstane().rule&&AppData.getInstane().rule.id==data.id){
 				selectBtn.visible = false;
 				selectedLab.visible = true;
 			}else{

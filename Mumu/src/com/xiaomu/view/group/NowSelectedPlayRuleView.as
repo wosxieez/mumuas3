@@ -2,7 +2,6 @@ package com.xiaomu.view.group
 {
 	import flash.events.MouseEvent;
 	
-	import coco.component.Button;
 	import coco.component.Image;
 	import coco.component.SkinComponent;
 	import coco.component.TextArea;
@@ -63,7 +62,7 @@ package com.xiaomu.view.group
 			ruleArea.editable = false;
 			ruleArea.color = 0xffffff;
 			ruleArea.fontSize = 18;
-			ruleArea.leading = 8;
+			ruleArea.leading = 6;
 			addChild(ruleArea);
 			
 			skin = new SkinComponent();
@@ -80,8 +79,9 @@ package com.xiaomu.view.group
 				var peopleNumbeStr :String=data.cc==1?"一人，":(data.cc==2?"二人，":(data.cc==3?"三人，":"四人，"));
 				var huxiNumberStr:String = data.hx+"胡息起胡，";
 				var daNiaoNumberStr :String= data.nf==0?"不打鸟，":"打鸟"+data.nf+"分，";
-				var fenDingNumberStr:String = data.fd+"胡息封顶。";
-				ruleArea.text = ruleNameStr+peopleNumbeStr+huxiNumberStr+daNiaoNumberStr+fenDingNumberStr;
+				var fenDingNumberStr:String = data.fd+"胡息封顶，";
+				var plzNumberStr:String = "最低疲劳值:"+(data.plz?data.plz:0);
+				ruleArea.text = ruleNameStr+peopleNumbeStr+huxiNumberStr+daNiaoNumberStr+fenDingNumberStr+plzNumberStr;
 			}else{
 				ruleArea.text='无';
 			}
@@ -97,8 +97,8 @@ package com.xiaomu.view.group
 			skin.width = width;
 			skin.height = height;
 			
-			ruleArea.width = bgImg.width-20;
-			ruleArea.height = bgImg.height;
+			ruleArea.width = bgImg.width-60;
+			ruleArea.height = bgImg.height+5;
 			ruleArea.x = (width-ruleArea.width)/2;
 			ruleArea.y = (height-ruleArea.height)/2;
 		}

@@ -18,6 +18,7 @@ package com.xiaomu.view.group
 	
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.utils.setTimeout;
 	
 	import coco.component.Button;
 	import coco.component.HGroup;
@@ -213,6 +214,10 @@ package com.xiaomu.view.group
 			createGroupPrivate.upImageSource = 'assets/guild/btn_guild2_create_group_n.png';
 			createGroupPrivate.downImageSource = 'assets/guild/btn_guild2_create_group_p.png';
 			createGroupPrivate.addEventListener(MouseEvent.CLICK, function (e:MouseEvent):void {
+				if(AppData.getInstane().rule.plz&&fenBar.count<AppData.getInstane().rule.plz){
+					AppAlert.show("很遗憾，您的疲劳值不够开始此玩法")
+					return
+				}
 				Loading.getInstance().open() 
 				AppData.getInstane().rule.pub = false // 私密房间
 				Api.getInstane().createRoom(AppData.getInstane().rule, function (response:Object):void {
@@ -232,6 +237,11 @@ package com.xiaomu.view.group
 			createGroupPublic.upImageSource = 'assets/guild/btn_guild2_create_public_n.png';
 			createGroupPublic.downImageSource = 'assets/guild/btn_guild2_create_public_p.png';
 			createGroupPublic.addEventListener(MouseEvent.CLICK, function (e:MouseEvent):void {
+				if(AppData.getInstane().rule.plz&&fenBar.count<AppData.getInstane().rule.plz){
+					AppAlert.show("很遗憾，您的疲劳值不够开始此玩法")
+					return
+				}
+
 				if (AppData.getInstane().rule) {
 					Loading.getInstance().open() 
 					AppData.getInstane().rule.pub = true // 公共房间
@@ -462,11 +472,26 @@ package com.xiaomu.view.group
 		
 		protected function startButton_clickHandler(event:MouseEvent):void
 		{
+			trace("allRules,",JSON.stringify(AppData.getInstane().allRules));
+			if(AppData.getInstane().rule.plz&&fenBar.count<AppData.getInstane().rule.plz){
+				AppAlert.show("很遗憾，您的疲劳值不够开始此玩法")
+				return
+			}
 			PopUpManager.centerPopUp(PopUpManager.addPopUp(new KeyboardPanel(),null,true,true,0,0.2));
 		}
 		
 		protected function roomsList_changeHandler(event:UIEvent):void
 		{
+			for each (var itemRule:Object in AppData.getInstane().allRules) 
+			{
+				if(itemRule.id==roomsList.selectedItem.rid){
+					if(AppData.getInstane().rule.plz&&fenBar.count<itemRule.plz){
+						AppAlert.show("很遗憾，您的疲劳值不够进入此桌的玩法")
+						roomsList.selectedIndex = -1
+						return
+					}
+				}
+			}
 			Loading.getInstance().open()
 			Api.getInstane().joinRoom({roomname: roomsList.selectedItem.name}, function (response:Object):void {
 				Loading.getInstance().close()

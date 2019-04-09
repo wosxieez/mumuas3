@@ -49,9 +49,9 @@ package com.xiaomu.itemRender
 			super.commitProperties()
 			
 			if (data) {
-				lab.text = data.rulename + '  人数:' + data.cc + ', 胡息:' + data.hx + 
+				lab.text = '玩法名:'+data.rulename + '。人数:' + data.cc + ', 胡息:' + data.hx + 
 					', 息分:' + data.xf + ', 鸟分:' + data.nf + ', 封顶:' + data.fd  + ', 提成线:' + data.tf + ', 提成值:' + data.tc+ ', 一级提成:' + data.tc2 + 
-					', 二级提成:' + data.tc1
+					', 二级提成:' + data.tc1+',最低疲劳值:'+(data.plz?data.plz:0);
 			}
 		}
 		
