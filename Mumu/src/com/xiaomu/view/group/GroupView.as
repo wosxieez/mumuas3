@@ -232,8 +232,8 @@ package com.xiaomu.view.group
 			createGroupPublic.upImageSource = 'assets/guild/btn_guild2_create_public_n.png';
 			createGroupPublic.downImageSource = 'assets/guild/btn_guild2_create_public_p.png';
 			createGroupPublic.addEventListener(MouseEvent.CLICK, function (e:MouseEvent):void {
-				Loading.getInstance().open() 
 				if (AppData.getInstane().rule) {
+					Loading.getInstance().open() 
 					AppData.getInstane().rule.pub = true // 公共房间
 					Api.getInstane().createRoom(AppData.getInstane().rule, function (response:Object):void {
 						Loading.getInstance().close() 

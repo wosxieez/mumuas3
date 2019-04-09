@@ -38,6 +38,22 @@ package com.xiaomu.util
 				}
 			}
 			
+			// 6. 对子
+			for (card in countedCards) {
+				if (countedCards[card] == 2) {
+					if (countedCards[card + 10] == 1) {
+						riffledCards.push([card, card, card + 10])
+						delete(countedCards[card + 10])
+					} else if (countedCards[card - 10] == 1) {
+						riffledCards.push([card, card, card - 10])
+						delete(countedCards[card - 10])
+					} else {
+						riffledCards.push([card, card])
+					}
+					delete countedCards[card]
+				}
+			}
+			
 			// 贰柒拾
 			if (countedCards[12] && countedCards[17] && countedCards[20]){
 				riffledCards.push([12, 17, 20]);
@@ -117,14 +133,6 @@ package com.xiaomu.util
 					countedCards[card]--;
 					countedCards[card + 10] -= 2;
 					riffledCards.push([card, card + 10, card + 10]);
-				}
-			}
-			
-			// 6. 对子
-			for (card in countedCards) {
-				if (countedCards[card] == 2) {
-					riffledCards.push([card, card])
-					delete countedCards[card]
 				}
 			}
 			
@@ -257,7 +265,7 @@ package com.xiaomu.util
 						deleteCard(aHandCards, card)
 					}
 					aGroupCards.push({ name: Actions.Pao, cards: [currentCard, currentCard, currentCard, currentCard] })
-					var shun = shouShun(aHandCards)
+					var shun:Array = shouShun(aHandCards)
 					if (shun) {
 						allGroups.push(aGroupCards.concat(shun))
 					}
