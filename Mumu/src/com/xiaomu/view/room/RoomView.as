@@ -412,9 +412,8 @@ package com.xiaomu.view.room
 					if (myActionUser.nd) {
 						newCardTip.visible = true
 						Audio.getInstane().playTimeout()
-						if (!tingCardsView.tingCards) {
-							updateMyHandCardUIsCanOutTing()
-						}
+						tingCardsView.tingCards = null
+						updateMyHandCardUIsCanOutTing()
 						myUserHead.isFocus = true
 					}
 					if (myActionUser.hd) {
