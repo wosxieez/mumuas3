@@ -1,6 +1,9 @@
 package com.xiaomu.view.room
 {
+	import com.xiaomu.component.ImageButton;
 	import com.xiaomu.renderer.CardGroupRender;
+	import com.xiaomu.util.Actions;
+	import com.xiaomu.util.Api;
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.CardUtil;
 	
@@ -18,7 +21,7 @@ package com.xiaomu.view.room
 			super();
 			
 			width = 960
-			height = 540
+			height = 540+80;
 		}
 		
 		private static var instance:WinView
@@ -45,6 +48,7 @@ package com.xiaomu.view.room
 		private var huxiResult2:HuXiResult;
 		private var titleImage:Image
 		private var closeImage:Image
+		private var readyImage:ImageButton;
 		
 		private var _data:Object
 		
@@ -129,11 +133,14 @@ package com.xiaomu.view.room
 			closeImage.source = 'assets/room/pdk_btn_close.png'
 			closeImage.addEventListener(MouseEvent.CLICK, closeImage_clickHandler)
 			addChild(closeImage)
-		}
-		
-		protected function closeImage_clickHandler(event:MouseEvent):void
-		{
-			PopUpManager.removePopUp(this)
+			
+			readyImage = new ImageButton();
+			readyImage.upImageSource = 'assets/room/Z_zhunbei2.png';
+			readyImage.downImageSource = 'assets/room/Z_zhunbei2dianji.png';
+			readyImage.width = 196;
+			readyImage.height = 70;
+			readyImage.addEventListener(MouseEvent.CLICK,readyImageHandler);
+			addChild(readyImage);
 		}
 		
 		override protected function commitProperties():void {
@@ -291,10 +298,27 @@ package com.xiaomu.view.room
 			huxiResult2.height = 200;
 			
 			closeImage.x = width - closeImage.width - 55
+				
+			readyImage.x = (width-readyImage.width)/2;
+			readyImage.y = height - readyImage.height - 20;
 		}
 		
 		override protected function drawSkin():void {
 			super.drawSkin()
+		}
+		
+		protected function readyImageHandler(event:MouseEvent):void
+		{
+			var action:Object = { name: Actions.Ready, data: true }
+			Api.getInstane().sendAction(action)
+			PopUpManager.removePopUp(this)
+		}
+		
+		protected function closeImage_clickHandler(event:MouseEvent):void
+		{
+			var action:Object = { name: Actions.Ready, data: true }
+			Api.getInstane().sendAction(action)
+			PopUpManager.removePopUp(this)
 		}
 		
 		
