@@ -105,6 +105,7 @@ package com.xiaomu.util
 		private var handleSound:Sound
 		
 		public function playHandle(name:String):void {
+			if (!isActivate) return
 			if (handleChannel) {
 				try
 				{
