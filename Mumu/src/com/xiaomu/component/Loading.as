@@ -113,7 +113,7 @@ package com.xiaomu.component
 		
 		public function open():void
 		{
-			PopUpManager.addPopUp(this, null, true, false, 0, 0);
+			PopUpManager.addPopUp(this, null, true, true, 0, 0);
 			PopUpManager.centerPopUp(this);
 		}
 		

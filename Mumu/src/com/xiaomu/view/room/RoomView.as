@@ -518,7 +518,7 @@ package com.xiaomu.view.room
 				if (response.code == 0) {
 					roomData = response.data
 					needRiffleCard = true
-					if (room.ru.id > 0 && room.hasOwnProperty('nf') && room.ru.nf > 0 && !roomData.og) {
+					if (room.ru && room.ru.id > 0 && room.ru.hasOwnProperty('nf') && room.ru.nf > 0 && !roomData.og) {
 						new DaNiaoNoticePanel().open()
 					}
 				} else {
