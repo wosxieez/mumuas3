@@ -1,11 +1,10 @@
 package com.xiaomu.view.group
 {
 	import com.xiaomu.component.AppAlert;
+	import com.xiaomu.component.AppSmallAlert;
 	import com.xiaomu.event.AppManagerEvent;
 	import com.xiaomu.manager.AppManager;
 	import com.xiaomu.renderer.GroupUserMenuRender;
-	import com.xiaomu.util.Actions;
-	import com.xiaomu.util.Api;
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.HttpApi;
 	
@@ -125,14 +124,14 @@ package com.xiaomu.view.group
 							function (e:Event):void {
 								var response:Object = JSON.parse(e.currentTarget.data)
 								if (response.code == 0) {
-									AppAlert.show('升职成功')
+									AppSmallAlert.show('升职成功',3.5)
 									AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.UPDATE_MEMBER_INFO_SUCCESS));
 								} else {
-									AppAlert.show('升职失败')
+									AppSmallAlert.show('升职失败',3.5)
 								}
 							})
 					} else {
-						AppAlert.show('无法再升职了')
+						AppSmallAlert.show('无法再升职了',3.5)
 					}
 //				} else {
 //					AppAlert.show('您没有权限操作')
@@ -150,14 +149,14 @@ package com.xiaomu.view.group
 							function (e:Event):void {
 								var response:Object = JSON.parse(e.currentTarget.data)
 								if (response.code == 0) {
-									AppAlert.show('降职成功')
+									AppSmallAlert.show('降职成功',3.5)
 									AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.UPDATE_MEMBER_INFO_SUCCESS));
 								} else {
-									AppAlert.show('降职失败')
+									AppSmallAlert.show('降职失败',3.5)
 								}
 							})
 					} else {
-						AppAlert.show('无法再降职了')
+						AppSmallAlert.show('无法再降职了',3.5)
 					}
 //				} else {
 //					AppAlert.show('您没有权限操作')
@@ -180,18 +179,18 @@ package com.xiaomu.view.group
 										HttpApi.getInstane().removeGroupUser({gid: toUser.gid, uid: toUser.uid}, function (ee:Event):void {
 											var response2:Object = JSON.parse(ee.currentTarget.data)
 											if (response2.code == 0) {
-												AppAlert.show('踢出成功')
+												AppSmallAlert.show('踢出成功',3.5)
 												AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.CHANGE_MEMBER_SUCCESS));
 											} else {
-												AppAlert.show('踢出失败')
+												AppSmallAlert.show('踢出失败',3.5)
 											}
 										})
 									} else {
-										AppAlert.show('踢出失败')
+										AppSmallAlert.show('踢出失败',3.5)
 									}
 								})
 						} else {
-							AppAlert.show('您没有权限操作')
+							AppSmallAlert.show('您没有权限操作',3.5)
 						}
 						trace('ok');
 					} else {

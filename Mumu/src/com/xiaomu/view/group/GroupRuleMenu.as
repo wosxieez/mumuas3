@@ -1,6 +1,7 @@
 package com.xiaomu.view.group
 {
 	import com.xiaomu.component.AppAlert;
+	import com.xiaomu.component.AppSmallAlert;
 	import com.xiaomu.event.AppManagerEvent;
 	import com.xiaomu.manager.AppManager;
 	import com.xiaomu.renderer.GroupRuleMenuRender;
@@ -49,6 +50,7 @@ package com.xiaomu.view.group
 		
 		protected function this_changeHandler(event:UIEvent):void
 		{
+			PopUpManager.removePopUp(this)
 			action = selectedIndex
 			setTimeout(function ():void {selectedIndex = -1}, 500)
 			if (action == -1) return
@@ -72,14 +74,14 @@ package com.xiaomu.view.group
 											HttpApi.getInstane().removeRule({id: ruleData.id}, function (ee:Event):void {
 												var response2:Object = JSON.parse(ee.currentTarget.data)
 												if (response2.code == 0) {
-													AppAlert.show('删除成功')
+													AppSmallAlert.show("删除成功",3.5);
 													AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.UPDATE_GROUP_RULES_SUCCESS));
 												} else {
-													AppAlert.show('删除失败')
+													AppSmallAlert.show("删除成功",3.5);
 												}
 											})
 										} else {
-											AppAlert.show('您没有权限操作')
+											AppSmallAlert.show("您没有权限操作",3.5);
 										}
 									}
 								} 
@@ -91,10 +93,7 @@ package com.xiaomu.view.group
 						trace('cancel');
 					}
 				})
-				return;
-				// 获取到自己的群信息
 			}
-			PopUpManager.removePopUp(this)
 		}
 		
 		override protected function drawSkin():void

@@ -106,14 +106,14 @@ package com.xiaomu.view.group
 			addChild(bg)
 			
 			roomCardBar = new GoldOrCardShowBar();
-			roomCardBar.width = 200;
+			roomCardBar.width = 240;
 			roomCardBar.height = 50;
 			roomCardBar.iconWidthHeight = [roomCardBar.height,roomCardBar.height];
 			roomCardBar.typeSource = 'assets/user/icon_yuanbao_01.png';
 			addChild(roomCardBar);
 			
 			fenBar = new GoldOrCardShowBar();
-			fenBar.width = 200;
+			fenBar.width = 240;
 			fenBar.height = 50;
 			fenBar.iconWidthHeight = [fenBar.height,fenBar.height];
 			fenBar.typeSource = 'assets/user/zuanshi.png';
@@ -289,7 +289,7 @@ package com.xiaomu.view.group
 			roomCardBar.y = 20;
 			roomCardBar.visible = isNowGroupHost;
 			
-			fenBar.x = isNowGroupHost?roomCardBar.x+roomCardBar.width+20:roomCardBar.x
+			fenBar.x = isNowGroupHost?roomCardBar.x+roomCardBar.width+60:roomCardBar.x
 			fenBar.y = roomCardBar.y;
 			
 			roomsList.y = roomsList.paddingTop;

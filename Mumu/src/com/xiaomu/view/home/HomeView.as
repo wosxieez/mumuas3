@@ -1,6 +1,7 @@
 package com.xiaomu.view.home
 {
 	import com.xiaomu.component.AppAlert;
+	import com.xiaomu.component.AppSmallAlert;
 	import com.xiaomu.component.ImageButton;
 	import com.xiaomu.component.Loading;
 	import com.xiaomu.itemRender.HomeBottomBarRender;
@@ -18,8 +19,10 @@ package com.xiaomu.view.home
 	
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.system.System;
 	import flash.utils.setTimeout;
 	
+	import coco.component.Alert;
 	import coco.component.Button;
 	import coco.component.ButtonGroup;
 	import coco.component.Image;
@@ -304,11 +307,11 @@ package com.xiaomu.view.home
 				}
 				}*/
 			else if(btnGroup.selectedItem.name=='分享'){
-				var noticeView:OfficalNoticeViewOfCopy;
-				if(!noticeView){noticeView = new OfficalNoticeViewOfCopy();}
-				noticeView.showText = '请用浏览器打开次链接：';
-				noticeView.copyText = 'https://fir.im/niuniu1';
-				PopUpManager.centerPopUp(PopUpManager.addPopUp(noticeView,null,true,true,0x000000,0.5));
+				AppAlert.show("请用浏览器打开此链接\rhttps://fir.im/niuniu1","",Alert.OK, function (e:UIEvent):void {
+					if (e.detail == Alert.OK) {
+						System.setClipboard("https://fir.im/niuniu1");
+						AppSmallAlert.show("复制成功",3.5)
+					}})
 			} else if (btnGroup.selectedItem.name == '公告') {
 				AppAlert.show(
 					'\r一、游戏的结算积分仅为记录，且仅限本人使\r' +
@@ -347,7 +350,11 @@ package com.xiaomu.view.home
 		 */
 		protected function waiterBtnHandler(event:MouseEvent):void
 		{
-			AppAlert.show('请联系客服为您处理\r\n微信号: wxniuniu007')
+			AppAlert.show('请联系客服为您处理\r\n微信号: wxniuniu007',"",Alert.OK, function (e:UIEvent):void {
+				if (e.detail == Alert.OK) {
+					System.setClipboard(" wxniuniu007");
+					AppSmallAlert.show("复制成功",3.5)
+				}})
 		}
 		
 		/**
@@ -355,7 +362,11 @@ package com.xiaomu.view.home
 		 */
 		protected function proxyBtnBtnHandler(event:MouseEvent):void
 		{
-			AppAlert.show('请联系客服为您开通\r\n微信号: wxniuniu007')
+			AppAlert.show('请联系客服为您处理\r\n微信号: wxniuniu007',"",Alert.OK, function (e:UIEvent):void {
+				if (e.detail == Alert.OK) {
+					System.setClipboard(" wxniuniu007");
+					AppSmallAlert.show("复制成功",3.5)
+				}})
 		}
 		
 		private function popUpHandler(text:String):void

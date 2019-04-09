@@ -1,13 +1,13 @@
 package com.xiaomu.view.home.popUp1
 {
 	import com.xiaomu.component.AppPanelSmall;
+	import com.xiaomu.component.AppSmallAlert;
 	
 	import flash.events.MouseEvent;
 	import flash.system.System;
 	
 	import coco.component.Image;
 	import coco.component.TextArea;
-	import coco.manager.PopUpManager;
 	import coco.util.FontFamily;
 	
 	/**
@@ -18,17 +18,17 @@ package com.xiaomu.view.home.popUp1
 		public function OfficalNoticeViewOfCopy()
 		{
 			super();
-//			width = 915;
-//			height = 518;
+			//			width = 915;
+			//			height = 518;
 		}
 		
 		private var _showText:String="测试数据。测试数据。测试数据。测试数据。测试数据。测试数据。测试数据。测试数据。测试数据。测试数据。测试数据。测试数据。vv";
-
+		
 		public function get showText():String
 		{
 			return _showText;
 		}
-
+		
 		public function set showText(value:String):void
 		{
 			_showText = value;
@@ -36,31 +36,31 @@ package com.xiaomu.view.home.popUp1
 		}
 		
 		private var _normalStyle:Boolean=true;
-
+		
 		public function get normalStyle():Boolean
 		{
 			return _normalStyle;
 		}
-
+		
 		public function set normalStyle(value:Boolean):void
 		{
 			_normalStyle = value;
 			invalidateDisplayList();
 		}
-
+		
 		private var _copyText:String = 'wxniuniu007';
-
+		
 		public function get copyText():String
 		{
 			return _copyText;
 		}
-
+		
 		public function set copyText(value:String):void
 		{
 			_copyText = value;
 			invalidateDisplayList();
 		}
-
+		
 		private var titleImg:Image;
 		private var lab:TextArea;
 		
@@ -102,6 +102,8 @@ package com.xiaomu.view.home.popUp1
 		
 		override protected function commitButton_clickHandler(event:MouseEvent):void {
 			System.setClipboard(copyText);
+			AppSmallAlert.show("复制成功",3.5)
+			close();
 		}
 		
 	}

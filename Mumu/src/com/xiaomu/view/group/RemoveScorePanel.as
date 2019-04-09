@@ -2,6 +2,7 @@ package com.xiaomu.view.group
 {
 	import com.xiaomu.component.AppAlert;
 	import com.xiaomu.component.AppPanelSmall;
+	import com.xiaomu.component.AppSmallAlert;
 	import com.xiaomu.event.AppManagerEvent;
 	import com.xiaomu.manager.AppManager;
 	import com.xiaomu.util.AppData;
@@ -110,19 +111,19 @@ package com.xiaomu.view.group
 								function (ee:Event):void {
 									var response2:Object = JSON.parse(ee.currentTarget.data)
 									if (response2.code == 0) {
-										AppAlert.show('下分成功')
+										AppSmallAlert.show('下分成功',3.5)
 										AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.UPDATE_MEMBER_INFO_SUCCESS));
 										close()
 									} else {
-										AppAlert.show('下分失败')
+										AppSmallAlert.show('下分失败',3.5)
 									}
 								})
 						} else {
-							AppAlert.show('下分失败')
+							AppSmallAlert.show('下分失败',3.5)
 						}
 					})
 			} else {
-				AppAlert.show('对方积分不足，下分失败')
+				AppSmallAlert.show('对方积分不足，下分失败',3.5)
 			}
 		}
 		

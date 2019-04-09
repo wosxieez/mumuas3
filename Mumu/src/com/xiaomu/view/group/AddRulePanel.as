@@ -2,6 +2,7 @@ package com.xiaomu.view.group
 {
 	import com.xiaomu.component.AppAlert;
 	import com.xiaomu.component.AppPanelBig;
+	import com.xiaomu.component.AppSmallAlert;
 	import com.xiaomu.component.CountTool;
 	import com.xiaomu.event.AppManagerEvent;
 	import com.xiaomu.manager.AppManager;
@@ -341,7 +342,7 @@ package com.xiaomu.view.group
 					{
 						var response:Object = JSON.parse(e.currentTarget.data)
 						if (response.code == 0) {
-							AppAlert.show('添加玩法成功')
+							AppSmallAlert.show('添加玩法成功',3.5);
 							///这里要重新去获取
 							if(AppData.getInstane().rule==null){
 								getFirstResultHandler();
@@ -349,12 +350,12 @@ package com.xiaomu.view.group
 							AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.UPDATE_GROUP_RULES_SUCCESS));
 							close()
 						} else {
-							AppAlert.show('添加玩法失败')
+							AppSmallAlert.show('添加玩法失败',3.5);
 						}
 					} 
 					catch(error:Error) 
 					{
-						AppAlert.show('添加玩法失败')
+						AppSmallAlert.show('添加玩法失败',3.5);
 					}
 				})
 		}

@@ -38,7 +38,7 @@ package com.xiaomu.view.userBarView
 			addChild(userinfoBar);
 			
 			goldBar = new GoldOrCardShowBar();
-			goldBar.width = 200;
+			goldBar.width = 240;
 			goldBar.height = 50;
 			goldBar.iconWidthHeight = [goldBar.height,goldBar.height];
 			goldBar.typeSource = 'assets/user/icon_jinbi_01.png';
@@ -46,7 +46,7 @@ package com.xiaomu.view.userBarView
 			addChild(goldBar);
 			
 			roomCardBar = new GoldOrCardShowBar();
-			roomCardBar.width = 200;
+			roomCardBar.width = 240;
 			roomCardBar.height = 50;
 			roomCardBar.iconWidthHeight = [roomCardBar.height,roomCardBar.height];
 			roomCardBar.typeSource = 'assets/user/icon_yuanbao_01.png';
@@ -61,7 +61,7 @@ package com.xiaomu.view.userBarView
 			goldBar.y = roomCardBar.y = 20;
 			goldBar.visible = roomCardBar.visible = true;
 			roomCardBar.x = userinfoBar.x+userinfoBar.width+20
-			goldBar.x = roomCardBar.x+roomCardBar.width+30
+			goldBar.x = roomCardBar.x+roomCardBar.width+60
 		}
 		
 		override protected function commitProperties():void
