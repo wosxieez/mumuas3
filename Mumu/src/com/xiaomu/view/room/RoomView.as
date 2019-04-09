@@ -4,6 +4,7 @@ package com.xiaomu.view.room
 	import com.xiaomu.component.BigCardUI;
 	import com.xiaomu.component.CardUI;
 	import com.xiaomu.component.ImageButton;
+	import com.xiaomu.component.Loading;
 	import com.xiaomu.event.ApiEvent;
 	import com.xiaomu.event.AppManagerEvent;
 	import com.xiaomu.event.SelectEvent;
@@ -36,6 +37,7 @@ package com.xiaomu.view.room
 			super();
 			AppManager.getInstance().addEventListener(AppManagerEvent.CHANGE_ROOM_TABLE_IMG,changeRoomTableImgHandler);
 			AppManager.getInstance().addEventListener(AppManagerEvent.LEAVE_GROUP_ROOM,leaveGroupRoomHandler);
+			AppManager.getInstance().addEventListener(AppManagerEvent.FIX_ROOM,fixRoomHandler);
 		}
 		
 		protected function leaveGroupRoomHandler(event:AppManagerEvent):void
@@ -1454,6 +1456,38 @@ package com.xiaomu.view.room
 		protected function showSettingPanelBtnHandler(event:MouseEvent):void
 		{
 			PopUpManager.centerPopUp(PopUpManager.addPopUp(new RoomSettingPanel(),null,true,true));
+		}
+		
+		protected function fixRoomHandler(event:AppManagerEvent):void
+		{
+			var gid:int
+			if (AppData.getInstane().group) {
+				gid = AppData.getInstane().group.id
+			} else {
+				gid = 0
+			}
+			
+			trace('修复房间', gid, this.roomname)
+			Loading.getInstance().open()
+			Api.getInstane().joinGroup(AppData.getInstane().user.username, gid, 
+				function (response:Object):void {
+					if (response.code == 0) {
+						Api.getInstane().joinRoom({roomname: this.roomname}, function (reponse2:Object):void {
+							Loading.getInstance().close()
+							if (reponse2.code == 0) {
+								trace('修复成功...')
+								init(reponse2.data)
+							} else {
+								AppAlert.show('修复失败 ' + response.data)
+								close()
+							}
+						})
+					} else {
+						Loading.getInstance().close()
+						AppAlert.show('修复失败 ' + response.data)
+						this.close()
+					}
+				})
 		}
 		
 	}

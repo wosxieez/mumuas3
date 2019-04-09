@@ -18,7 +18,6 @@ package com.xiaomu.view.group
 	
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-	import flash.utils.setTimeout;
 	
 	import coco.component.Button;
 	import coco.component.HGroup;
@@ -241,7 +240,7 @@ package com.xiaomu.view.group
 					AppAlert.show("很遗憾，您的疲劳值不够开始此玩法")
 					return
 				}
-
+				
 				if (AppData.getInstane().rule) {
 					Loading.getInstance().open() 
 					AppData.getInstane().rule.pub = true // 公共房间

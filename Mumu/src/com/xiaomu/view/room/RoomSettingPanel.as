@@ -28,19 +28,6 @@ package com.xiaomu.view.room
 		private var fixBtn:ImageButton;
 		private var leaveRoomBtn:ImageButton;
 		
-		private var _isInGroupRoom:Boolean=true;
-
-		public function get isInGroupRoom():Boolean
-		{
-			return _isInGroupRoom;
-		}
-
-		public function set isInGroupRoom(value:Boolean):void
-		{
-			_isInGroupRoom = value;
-		}
-
-		
 		override protected function createChildren():void
 		{
 			super.createChildren();
@@ -79,6 +66,7 @@ package com.xiaomu.view.room
 			fixBtn.downImageSource = 'assets/room/btn_yjxf_press.png';
 			fixBtn.width = 168;
 			fixBtn.height = 68;
+			fixBtn.addEventListener(MouseEvent.CLICK, fixBtn_clickHandler)
 			addChild(fixBtn);
 			
 			leaveRoomBtn = new ImageButton();
@@ -106,11 +94,11 @@ package com.xiaomu.view.room
 			changeTableBtn.x = width-changeTableBtn.width-20;
 			changeTableBtn.y = gameSetBtn.y+gameSetBtn.height+30;
 			
-			leaveRoomBtn.x = width-leaveRoomBtn.width-20;
-			leaveRoomBtn.y = changeTableBtn.y+changeTableBtn.height+30;
-			
 			fixBtn.x = width-fixBtn.width-20;
-			fixBtn.y = leaveRoomBtn.y+leaveRoomBtn.height+30;
+			fixBtn.y = changeTableBtn.y+changeTableBtn.height+30;
+			
+			leaveRoomBtn.x = width-leaveRoomBtn.width-20;
+			leaveRoomBtn.y = fixBtn.y+fixBtn.height+30;
 		}
 		
 		protected function closeBtnHandler(event:MouseEvent):void
@@ -142,7 +130,13 @@ package com.xiaomu.view.room
 		
 		protected function leaveRoomBtnHandler(event:MouseEvent):void
 		{
-			AppManager.getInstance().dispatchEvent(new AppManagerEvent(isInGroupRoom?AppManagerEvent.LEAVE_GROUP_ROOM:AppManagerEvent.LEAVE_TEMP_ROOM));
+			AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.LEAVE_GROUP_ROOM));
+			PopUpManager.removePopUp(this);
+		}
+		
+		protected function fixBtn_clickHandler(event:MouseEvent):void
+		{
+			AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.FIX_ROOM));
 			PopUpManager.removePopUp(this);
 		}
 	}
