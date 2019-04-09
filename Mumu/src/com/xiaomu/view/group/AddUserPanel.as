@@ -87,11 +87,15 @@ package com.xiaomu.view.group
 										AppSmallAlert.show("添加成员成功",3.5);
 										AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.CHANGE_MEMBER_SUCCESS));
 										close()
+									} else {
+										AppAlert.show(response2.data);
 									}
 								})
 						} else {
+							AppAlert.show('添加群成员失败失败');
 						}
 					} catch(error:Error) {
+						AppAlert.show('添加群成员失败失败');
 					}
 				})
 		}
