@@ -14,7 +14,6 @@ package com.xiaomu.view.home
 	import com.xiaomu.view.home.popUp1.OfficalNoticeViewOfCopy;
 	import com.xiaomu.view.home.setting.SettingPanelView;
 	import com.xiaomu.view.room.RoomView;
-	import com.xiaomu.view.room.WinView;
 	import com.xiaomu.view.userBarView.UserInfoView;
 	
 	import flash.events.Event;
@@ -25,6 +24,7 @@ package com.xiaomu.view.home
 	import coco.component.ButtonGroup;
 	import coco.component.Image;
 	import coco.component.Label;
+	import coco.component.TextAlign;
 	import coco.core.UIComponent;
 	import coco.event.UIEvent;
 	import coco.manager.PopUpManager;
@@ -309,8 +309,21 @@ package com.xiaomu.view.home
 				noticeView.showText = '请用浏览器打开次链接：';
 				noticeView.copyText = 'https://fir.im/niuniu1';
 				PopUpManager.centerPopUp(PopUpManager.addPopUp(noticeView,null,true,true,0x000000,0.5));
+			} else if (btnGroup.selectedItem.name == '公告') {
+				AppAlert.show(
+					'\r一、游戏的结算积分仅为记录，且仅限本人使\r' +
+					'用。在游戏结束时清零，不具有任何货币价值；\r' +
+					'二、游戏中的钻石/元宝/金币为游戏内道具 \r' +
+					'仅作为开设游戏房间使用；\r' +
+					'三、游戏内不提供任何形式的官方回购、相互\r' +
+					'赠予转让等服务及相关功能，游戏内道具不具\r' +
+					'有任何财产性功能。棋牌文化作为中国传统文\r' +
+					'化的组成部分之一，已成为国民生活中不可或\r' +
+					'缺的娱乐休闲活动。牛牛游戏专注于为玩家提\r' +
+					'供地方特色棋牌游戏服务，提倡玩家健康游戏\r' +
+					'远离赌博。').textAlign = TextAlign.LEFT
 			} else {
-				AppAlert.show('程序员小哥哥正在努力的开发中....')
+				AppAlert.show('')
 			}
 			
 			btnGroup.selectedIndex = -1
@@ -326,7 +339,7 @@ package com.xiaomu.view.home
 		 */
 		protected function shoppingBtnHandler(event:MouseEvent):void
 		{
-			AppAlert.show('程序员小哥哥正在努力的开发中....')
+			AppAlert.show('')
 		}
 		
 		/**
@@ -334,7 +347,7 @@ package com.xiaomu.view.home
 		 */
 		protected function waiterBtnHandler(event:MouseEvent):void
 		{
-			AppAlert.show('程序员小哥哥正在努力的开发中....')
+			AppAlert.show('请联系客服为您处理\r\n微信号: wxniuniu007')
 		}
 		
 		/**
@@ -342,7 +355,7 @@ package com.xiaomu.view.home
 		 */
 		protected function proxyBtnBtnHandler(event:MouseEvent):void
 		{
-			AppAlert.show('程序员小哥哥正在努力的开发中....')
+			AppAlert.show('请联系客服为您开通\r\n微信号: wxniuniu007')
 		}
 		
 		private function popUpHandler(text:String):void

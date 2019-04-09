@@ -77,6 +77,7 @@ package com.xiaomu.util
 		{
 			cb({code: 401, data:'连接服务器失败'})
 			pomelo = null
+			Loading.getInstance().close()
 		}
 		
 		private function onQueryHandler(event:Event):void {

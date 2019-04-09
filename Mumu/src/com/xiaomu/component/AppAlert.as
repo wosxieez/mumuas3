@@ -210,7 +210,7 @@ package com.xiaomu.component
 			var realWidth:Number = 0;
 			var realHeight:Number = titleImage.height + padding
 			
-			realWidth = Math.max(realWidth, textDisplay.width + 20);
+			realWidth = Math.max(realWidth, textDisplay.width + 300);
 			realHeight += textDisplay.height + padding;
 			
 			if (okButton || cancelButton)
@@ -231,8 +231,9 @@ package com.xiaomu.component
 				
 			titleImage.x = (width - titleImage.width)  / 2
 			
-			textDisplay.x = padding;
-			textDisplay.y = titleImage.y + titleImage.height + padding;
+			textDisplay.setSizeWithoutDispatchResizeEvent(width - 280)
+			textDisplay.x = 140
+			textDisplay.y = titleImage.y + titleImage.height + 50 + padding;
 			
 			if (okButton || cancelButton)
 				textDisplay.setmeasuredSizeWithoutDispatchResizeEvent(width - padding * 2, height - okButton.height - padding * 2 - textDisplay.y);
