@@ -4,12 +4,15 @@ package com.xiaomu.view.group
 	import com.xiaomu.event.AppManagerEvent;
 	import com.xiaomu.manager.AppManager;
 	import com.xiaomu.renderer.GroupRuleMenuRender;
+	import com.xiaomu.util.Actions;
+	import com.xiaomu.util.Api;
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.HttpApi;
 	
 	import flash.events.Event;
 	import flash.utils.setTimeout;
 	
+	import coco.component.Alert;
 	import coco.component.ButtonGroup;
 	import coco.event.UIEvent;
 	import coco.manager.PopUpManager;
@@ -55,35 +58,42 @@ package com.xiaomu.view.group
 				settingRulePanel.ruleData = ruleData
 				settingRulePanel.open()
 			} else if (action == 1) {
-				// 获取到自己的群信息
-				HttpApi.getInstane().getGroupUser({gid: AppData.getInstane().group.id, uid: AppData.getInstane().user.id}, 
-					function (e:Event):void {
-						try
-						{
-							var response:Object = JSON.parse(e.currentTarget.data)
-							if (response.code == 0) {
-								var me:Object = response.data[0]
-								if (me && me.ll == 4) { // 只有馆长才能删除
-									HttpApi.getInstane().removeRule({id: ruleData.id}, function (ee:Event):void {
-										var response2:Object = JSON.parse(ee.currentTarget.data)
-										if (response2.code == 0) {
-											AppAlert.show('删除成功')
-											AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.UPDATE_GROUP_RULES_SUCCESS));
+				///选则来删除
+				AppAlert.show('确认删除此玩法吗？', '',Alert.OK|Alert.CANCEL, function (e:UIEvent):void {
+					if (e.detail == Alert.OK) {
+						HttpApi.getInstane().getGroupUser({gid: AppData.getInstane().group.id, uid: AppData.getInstane().user.id}, 
+							function (e:Event):void {
+								try
+								{
+									var response:Object = JSON.parse(e.currentTarget.data)
+									if (response.code == 0) {
+										var me:Object = response.data[0]
+										if (me && me.ll == 4) { // 只有馆长才能删除
+											HttpApi.getInstane().removeRule({id: ruleData.id}, function (ee:Event):void {
+												var response2:Object = JSON.parse(ee.currentTarget.data)
+												if (response2.code == 0) {
+													AppAlert.show('删除成功')
+													AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.UPDATE_GROUP_RULES_SUCCESS));
+												} else {
+													AppAlert.show('删除失败')
+												}
+											})
 										} else {
-											AppAlert.show('删除失败')
+											AppAlert.show('您没有权限操作')
 										}
-									})
-								} else {
-									AppAlert.show('您没有权限操作')
+									}
+								} 
+								catch(error:Error) 
+								{
 								}
-							}
-						} 
-						catch(error:Error) 
-						{
-						}
-					})
+							})
+					} else {
+						trace('cancel');
+					}
+				})
+				return;
+				// 获取到自己的群信息
 			}
-			
 			PopUpManager.removePopUp(this)
 		}
 		

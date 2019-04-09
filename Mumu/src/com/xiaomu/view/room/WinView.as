@@ -34,6 +34,19 @@ package com.xiaomu.view.room
 			return instance
 		}
 		
+		private var _allOver:Boolean;
+		
+		public function get allOver():Boolean
+		{
+			return _allOver;
+		}
+		
+		public function set allOver(value:Boolean):void
+		{
+			_allOver = value;
+			invalidateDisplayList();
+		}
+		
 		private var background:Image
 		private var diban:Image
 		private var diban1:Image
@@ -298,9 +311,12 @@ package com.xiaomu.view.room
 			huxiResult2.height = 200;
 			
 			closeImage.x = width - closeImage.width - 55
-				
+			
 			readyImage.x = (width-readyImage.width)/2;
 			readyImage.y = height - readyImage.height - 20;
+			
+			height = allOver?540:620;
+			readyImage.visible = !allOver;
 		}
 		
 		override protected function drawSkin():void {
@@ -316,8 +332,10 @@ package com.xiaomu.view.room
 		
 		protected function closeImage_clickHandler(event:MouseEvent):void
 		{
-			var action:Object = { name: Actions.Ready, data: true }
-			Api.getInstane().sendAction(action)
+			if(!allOver){
+				var action:Object = { name: Actions.Ready, data: true }
+				Api.getInstane().sendAction(action)
+			}
 			PopUpManager.removePopUp(this)
 		}
 		

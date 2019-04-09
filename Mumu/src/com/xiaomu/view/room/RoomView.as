@@ -1215,6 +1215,7 @@ package com.xiaomu.view.room
 					
 					var winView3:WinView = new WinView();
 					winView3.data = roomData;
+					winView3.allOver = true;
 					PopUpManager.centerPopUp(PopUpManager.addPopUp(winView3,null,true,false));
 					close()
 					break

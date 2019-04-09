@@ -4,12 +4,15 @@ package com.xiaomu.view.group
 	import com.xiaomu.event.AppManagerEvent;
 	import com.xiaomu.manager.AppManager;
 	import com.xiaomu.renderer.GroupUserMenuRender;
+	import com.xiaomu.util.Actions;
+	import com.xiaomu.util.Api;
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.HttpApi;
 	
 	import flash.events.Event;
 	import flash.utils.setTimeout;
 	
+	import coco.component.Alert;
 	import coco.component.ButtonGroup;
 	import coco.event.UIEvent;
 	import coco.manager.PopUpManager;
@@ -162,31 +165,40 @@ package com.xiaomu.view.group
 			}
 			else if(selectedStr== "踢出群")
 			{
-				// 替人操作
-				if (fromUser.ll == 4) {
-					HttpApi.getInstane().updateGroupUser({
-						update: {fs: fromUser.fs + toUser.fs}, 
-						query: {gid: fromUser.gid, uid: fromUser.uid}
-					},
-						function (e:Event):void {
-							var response:Object = JSON.parse(e.currentTarget.data)
-							if (response.code == 0) {
-								HttpApi.getInstane().removeGroupUser({gid: toUser.gid, uid: toUser.uid}, function (ee:Event):void {
-									var response2:Object = JSON.parse(ee.currentTarget.data)
-									if (response2.code == 0) {
-										AppAlert.show('踢出成功')
-										AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.CHANGE_MEMBER_SUCCESS));
+				
+				AppAlert.show('是否确定将此玩家提出群', '',Alert.OK|Alert.CANCEL, function (e:UIEvent):void {
+					if (e.detail == Alert.OK) {
+//						// 替人操作
+						if (fromUser.ll == 4) {
+							HttpApi.getInstane().updateGroupUser({
+								update: {fs: fromUser.fs + toUser.fs}, 
+								query: {gid: fromUser.gid, uid: fromUser.uid}
+							},
+								function (e:Event):void {
+									var response:Object = JSON.parse(e.currentTarget.data)
+									if (response.code == 0) {
+										HttpApi.getInstane().removeGroupUser({gid: toUser.gid, uid: toUser.uid}, function (ee:Event):void {
+											var response2:Object = JSON.parse(ee.currentTarget.data)
+											if (response2.code == 0) {
+												AppAlert.show('踢出成功')
+												AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.CHANGE_MEMBER_SUCCESS));
+											} else {
+												AppAlert.show('踢出失败')
+											}
+										})
 									} else {
 										AppAlert.show('踢出失败')
 									}
 								})
-							} else {
-								AppAlert.show('踢出失败')
-							}
-						})
-				} else {
-					AppAlert.show('您没有权限操作')
-				}
+						} else {
+							AppAlert.show('您没有权限操作')
+						}
+						trace('ok');
+					} else {
+						trace('cancel');
+					}
+				})
+					
 			}
 			
 			PopUpManager.removePopUp(this)
