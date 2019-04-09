@@ -231,10 +231,15 @@ package com.xiaomu.view.group
 				trace("你是副馆主，且操作对象等级是大于自身");
 				dataProvider=[]
 			}
-			else if((targetUser.ll==0||targetUser.ll==1)&&(AppData.getInstane().groupLL==2)) {
-				trace("你是一级管理员，且操作对象是普通成员或二级管理员，只可以上下分");
-				dataProvider=['增加疲劳值', '减少疲劳值']
-			}else if((targetUser.ll>=2)&&(AppData.getInstane().groupLL==2)) {
+			else if((targetUser.ll==0)&&(AppData.getInstane().groupLL==2)) {
+				trace("你是一级管理员，且操作对象是普通成员，只可以上下分,升职");
+				dataProvider=['升职', '增加疲劳值', '减少疲劳值']
+			}
+			else if((targetUser.ll==1)&&(AppData.getInstane().groupLL==2)) {
+				trace("你是一级管理员，且操作对象二级管理员，只可以上下分,降职");
+				dataProvider=['降职', '增加疲劳值', '减少疲劳值']
+			}
+			else if((targetUser.ll>=2)&&(AppData.getInstane().groupLL==2)) {
 				trace("你是一级管理员，且操作对象等级是大于自身");
 				dataProvider=[]
 			}

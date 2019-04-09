@@ -92,10 +92,10 @@ package com.xiaomu.view.group
 									}
 								})
 						} else {
-							AppAlert.show('添加群成员失败失败');
+							AppAlert.show('添加群成员失败');
 						}
 					} catch(error:Error) {
-						AppAlert.show('添加群成员失败失败');
+						AppAlert.show('添加群成员失败');
 					}
 				})
 		}
