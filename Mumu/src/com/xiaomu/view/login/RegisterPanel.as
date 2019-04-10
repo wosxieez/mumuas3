@@ -1,6 +1,7 @@
 package com.xiaomu.view.login
 {
 	import com.xiaomu.component.AppAlert;
+	import com.xiaomu.component.AppSmallAlert;
 	import com.xiaomu.component.ImageButton;
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.HttpApi;
@@ -130,7 +131,8 @@ package com.xiaomu.view.login
 		
 		protected function registerHandler(event:MouseEvent):void
 		{
-			if(!phoneNumInput.text&&!passwordInput.text){
+			if(!phoneNumInput.text||!passwordInput.text){
+				AppSmallAlert.show("请完善账号和密码")
 				return
 			}
 			HttpApi.getInstane().addUser({username: phoneNumInput.text, password: passwordInput.text},

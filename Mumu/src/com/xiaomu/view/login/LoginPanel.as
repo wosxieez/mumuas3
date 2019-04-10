@@ -1,6 +1,7 @@
 package com.xiaomu.view.login
 {
 	import com.xiaomu.component.AppAlert;
+	import com.xiaomu.component.AppSmallAlert;
 	import com.xiaomu.component.ImageButton;
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.HttpApi;
@@ -10,6 +11,7 @@ package com.xiaomu.view.login
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
+	import coco.component.Alert;
 	import coco.component.Label;
 	import coco.component.TextInput;
 	import coco.core.UIComponent;
@@ -155,6 +157,10 @@ package com.xiaomu.view.login
 		
 		protected function loginHandler(event:MouseEvent):void
 		{
+//			if(!phoneNumInput.text||!passwordInput.text){
+//				AppSmallAlert.show("请完善账号和密码");
+//				return;
+//			}
 			doLogin();
 		}	
 		
