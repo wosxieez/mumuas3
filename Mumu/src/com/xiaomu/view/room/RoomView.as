@@ -1212,6 +1212,7 @@ package com.xiaomu.view.room
 					trace("roomView一局游戏结束:",JSON.stringify(roomData));
 					var endView:EndResultView = new EndResultView();
 					endView.data = roomData;
+					endView.ruleData = this.roomrule;
 					PopUpManager.centerPopUp(PopUpManager.addPopUp(endView,null,true,false,0,0.8));
 					
 					var winView3:WinView = new WinView();

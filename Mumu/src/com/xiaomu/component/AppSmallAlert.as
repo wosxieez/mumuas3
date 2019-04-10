@@ -13,7 +13,7 @@ package com.xiaomu.component
 			super();
 		}
 		
-		public  static function show(title:String='',time:Number=1):void{
+		public  static function show(title:String='',time:Number=1.5):void{
 			var sv:AppSmallAlertView = new AppSmallAlertView();
 			sv.text = title;
 			sv.time = time;

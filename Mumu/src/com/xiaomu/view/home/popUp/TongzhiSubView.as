@@ -1,4 +1,4 @@
-package com.xiaomu.view.home.popUp1
+package com.xiaomu.view.home.popUp
 {
 	import coco.component.Image;
 	import coco.core.UIComponent;

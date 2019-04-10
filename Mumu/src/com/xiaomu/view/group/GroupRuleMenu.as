@@ -74,14 +74,14 @@ package com.xiaomu.view.group
 											HttpApi.getInstane().removeRule({id: ruleData.id}, function (ee:Event):void {
 												var response2:Object = JSON.parse(ee.currentTarget.data)
 												if (response2.code == 0) {
-													AppSmallAlert.show("删除成功",3.5);
+													AppSmallAlert.show("删除成功");
 													AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.UPDATE_GROUP_RULES_SUCCESS));
 												} else {
-													AppSmallAlert.show("删除成功",3.5);
+													AppSmallAlert.show("删除成功");
 												}
 											})
 										} else {
-											AppSmallAlert.show("您没有权限操作",3.5);
+											AppSmallAlert.show("您没有权限操作");
 										}
 									}
 								} 

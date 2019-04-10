@@ -1,4 +1,4 @@
-package com.xiaomu.view.home.popUp1
+package com.xiaomu.view.home.popUp
 {
 	import com.xiaomu.component.ImageButton;
 	import com.xiaomu.view.MainView;

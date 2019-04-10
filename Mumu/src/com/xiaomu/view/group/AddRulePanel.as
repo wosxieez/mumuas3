@@ -57,7 +57,7 @@ package com.xiaomu.view.group
 		
 		override protected function createChildren():void {
 			super.createChildren()
-				
+			
 			scroller = new Scroller();
 			scroller.autoDrawSkin = true;
 			scroller.verticalScrollEnabled = true;
@@ -75,6 +75,7 @@ package com.xiaomu.view.group
 			ruleNameLab.height = 40;
 			ruleNameLab.text = '玩法名:';
 			bgUI.addChild(ruleNameLab);
+			ruleNameLab.visible = false;
 			
 			ruleNameInput = new TextInput();
 			ruleNameInput.maxChars = 10;
@@ -85,6 +86,7 @@ package com.xiaomu.view.group
 			ruleNameInput.color = 0x6f1614;
 			ruleNameInput.radius = 10;
 			bgUI.addChild(ruleNameInput);
+			ruleNameInput.visible = false;
 			
 			ruleCountLab = new Label();
 			ruleCountLab.textAlign = TextAlign.RIGHT;
@@ -280,7 +282,7 @@ package com.xiaomu.view.group
 			trace("contentHeight",contentHeight);
 			
 			var gap:int = 50;
-			var topPadding:int = 35;
+			var topPadding:int = -35//35;
 			ruleNameLab.x=ruleCountLab.x=ruleHXLab.x=ruleXFLab.x=ruleNFLab.x=ruleFDLab.x=ruleTFLab.x=ruleTCLab.x=ruleTC2Lab.x=ruleTC1Lab.x=minPlzLab.x=100
 			
 			ruleNameLab.y= ruleNameInput.y=topPadding
@@ -322,7 +324,12 @@ package com.xiaomu.view.group
 			ruleHXBtnGroup.selectedIndex = 1;
 		}
 		
+		/**
+		 * 点击确定按钮
+		 */
 		override protected function commitButton_clickHandler(event:MouseEvent):void {
+			
+			autoCreateRuleNameByXiFen();///根据息分自动生成玩法名。前提是用户自己不输入玩法
 			
 			HttpApi.getInstane().addRule({
 				gid: AppData.getInstane().group.id,
@@ -342,7 +349,7 @@ package com.xiaomu.view.group
 					{
 						var response:Object = JSON.parse(e.currentTarget.data)
 						if (response.code == 0) {
-							AppSmallAlert.show('添加玩法成功',3.5);
+							AppSmallAlert.show('添加玩法成功');
 							///这里要重新去获取
 							if(AppData.getInstane().rule==null){
 								getFirstResultHandler();
@@ -350,14 +357,25 @@ package com.xiaomu.view.group
 							AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.UPDATE_GROUP_RULES_SUCCESS));
 							close()
 						} else {
-							AppSmallAlert.show('添加玩法失败',3.5);
+							AppSmallAlert.show('添加玩法失败');
 						}
 					} 
 					catch(error:Error) 
 					{
-						AppSmallAlert.show('添加玩法失败',3.5);
+						AppSmallAlert.show('添加玩法失败');
 					}
 				})
+		}
+		
+		private function autoCreateRuleNameByXiFen():void
+		{
+			var newName:String;
+			if(Number(ruleXFTool.value)<1&&Number(ruleXFTool.value)>0){
+				newName  = Number(ruleXFTool.value)*10+"毛放炮罚";
+			}else{
+				newName  = Number(ruleXFTool.value)+"元放炮罚";
+			}
+			ruleNameInput.text = newName;
 		}
 		
 		/**

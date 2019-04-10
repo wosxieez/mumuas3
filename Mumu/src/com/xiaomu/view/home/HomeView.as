@@ -12,8 +12,8 @@ package com.xiaomu.view.home
 	import com.xiaomu.view.MainView;
 	import com.xiaomu.view.hall.HallView;
 	import com.xiaomu.view.home.noticeBar.NoticeBar;
-	import com.xiaomu.view.home.popUp1.OfficalNoticeViewOfCopy;
 	import com.xiaomu.view.home.setting.SettingPanelView;
+	import com.xiaomu.view.room.EndResultView;
 	import com.xiaomu.view.room.RoomView;
 	import com.xiaomu.view.userBarView.UserInfoView;
 	
@@ -307,10 +307,10 @@ package com.xiaomu.view.home
 				}
 				}*/
 			else if(btnGroup.selectedItem.name=='分享'){
-				AppAlert.show("请用浏览器打开此链接\rhttps://fir.im/niuniu1","",Alert.OK, function (e:UIEvent):void {
+				AppAlert.show("请用浏览器打开此链接\r\nhttps://fir.im/niuniu1","",Alert.OK, function (e:UIEvent):void {
 					if (e.detail == Alert.OK) {
 						System.setClipboard("https://fir.im/niuniu1");
-						AppSmallAlert.show("复制成功",3.5)
+						AppSmallAlert.show("复制成功")
 					}})
 			} else if (btnGroup.selectedItem.name == '公告') {
 				AppAlert.show(
@@ -353,7 +353,7 @@ package com.xiaomu.view.home
 			AppAlert.show('请联系客服为您处理\r\n微信号: wxniuniu007',"",Alert.OK, function (e:UIEvent):void {
 				if (e.detail == Alert.OK) {
 					System.setClipboard(" wxniuniu007");
-					AppSmallAlert.show("复制成功",3.5)
+					AppSmallAlert.show("复制成功")
 				}})
 		}
 		
@@ -365,18 +365,8 @@ package com.xiaomu.view.home
 			AppAlert.show('请联系客服为您处理\r\n微信号: wxniuniu007',"",Alert.OK, function (e:UIEvent):void {
 				if (e.detail == Alert.OK) {
 					System.setClipboard(" wxniuniu007");
-					AppSmallAlert.show("复制成功",3.5)
+					AppSmallAlert.show("复制成功")
 				}})
-		}
-		
-		private function popUpHandler(text:String):void
-		{
-			var noticePanel:OfficalNoticeViewOfCopy;
-			if(!noticePanel){
-				noticePanel = new OfficalNoticeViewOfCopy();
-			}
-			noticePanel.showText = text;
-			PopUpManager.centerPopUp(PopUpManager.addPopUp(noticePanel,null,true,false,0,0.6));
 		}
 		
 		/**
@@ -394,7 +384,7 @@ package com.xiaomu.view.home
 						update: {qd: todayDate,fc:oldfc+2}, 
 						query: {id: user_id}
 					},function(e:Event):void{
-						AppAlert.show("签到成功！\r牛牛送您两张房卡。祝您游戏愉快！")
+						AppAlert.show("签到成功！\r\n牛牛送您两张房卡。祝您游戏愉快！")
 						///刷新界面上的房卡显示
 						HttpApi.getInstane().getUser({"id":user_id},function(e:Event):void{
 							AppData.getInstane().user = JSON.parse(e.currentTarget.data).data[0]
@@ -402,7 +392,7 @@ package com.xiaomu.view.home
 						},null);
 					},null);
 				}else{
-					AppAlert.show("今日已签到。\r请明日再来哦亲！")
+					AppAlert.show("今日已签到。\r\n请明日再来哦亲！")
 				}
 			},null);
 		}
@@ -424,9 +414,9 @@ package com.xiaomu.view.home
 			//			trace(JSON.stringify(arr));
 			//			trace(JSON.stringify(newArr));
 			
-			//			var endView:EndResultView = new EndResultView();
-			//			endView.data = AppData.getInstane().testDataDiHu;
-			//			PopUpManager.centerPopUp(PopUpManager.addPopUp(endView,null,true,false,0,0.8));
+			//						var endView:EndResultView = new EndResultView();
+			//						endView.data = AppData.getInstane().testDataDiHu;
+			//						PopUpManager.centerPopUp(PopUpManager.addPopUp(endView,null,true,false,0,0.8));
 			
 			//			var winView3:WinView = new WinView();
 			//			winView3.data = AppData.getInstane().testDataDiHu;

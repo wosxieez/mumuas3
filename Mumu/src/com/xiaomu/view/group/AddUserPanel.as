@@ -84,7 +84,7 @@ package com.xiaomu.view.group
 								function (ee:Event):void {
 									var response2:Object = JSON.parse(ee.currentTarget.data)
 									if (response2.code == 0) {
-										AppSmallAlert.show("添加成员成功",3.5);
+										AppSmallAlert.show("添加成员成功");
 										AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.CHANGE_MEMBER_SUCCESS));
 										close()
 									} else {
@@ -92,10 +92,10 @@ package com.xiaomu.view.group
 									}
 								})
 						} else {
-							AppAlert.show('添加群成员失败');
+							AppSmallAlert.show('添加群成员失败');
 						}
 					} catch(error:Error) {
-						AppAlert.show('添加群成员失败');
+						AppSmallAlert.show('添加群成员失败');
 					}
 				})
 		}

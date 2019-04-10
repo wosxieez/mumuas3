@@ -91,7 +91,7 @@ package com.xiaomu.view.group
 		
 		private function doAction():void {
 			if (fromUser.ll != 4 && fromUser.ll != 3 && fromUser.uid != toUser.pid) {
-				AppSmallAlert.show('您没有权限操作',3.5);
+				AppSmallAlert.show('您没有权限操作');
 				return
 			}
 			var score:Number = Number(addScoreInput.text)
@@ -111,19 +111,19 @@ package com.xiaomu.view.group
 								function (ee:Event):void {
 									var response2:Object = JSON.parse(ee.currentTarget.data)
 									if (response2.code == 0) {
-										AppSmallAlert.show('上分成功',3.5);
+										AppSmallAlert.show('上分成功');
 										AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.UPDATE_MEMBER_INFO_SUCCESS));
 										close()
 									} else {
-										AppSmallAlert.show('上分失败',3.5);
+										AppSmallAlert.show('上分失败');
 									}
 								})
 						} else {
-							AppSmallAlert.show('上分失败',3.5);
+							AppSmallAlert.show('上分失败');
 						}
 					})
 			} else {
-				AppSmallAlert.show('您的积分不足，无法上分',3.5);
+				AppSmallAlert.show('您的积分不足，无法上分');
 			}
 		}
 		

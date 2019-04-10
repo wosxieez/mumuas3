@@ -1,7 +1,6 @@
 package com.xiaomu.view.room
 {
 	import com.xiaomu.component.ImageButton;
-	import com.xiaomu.component.ImgBtn;
 	
 	import flash.events.MouseEvent;
 	
@@ -9,6 +8,9 @@ package com.xiaomu.view.room
 	import coco.core.UIComponent;
 	import coco.manager.PopUpManager;
 	
+	/**
+	 * 一局游戏结束后的总结算界面
+	 */
 	public class EndResultView extends UIComponent
 	{
 		public function EndResultView()
@@ -30,6 +32,19 @@ package com.xiaomu.view.room
 			invalidateProperties();
 		}
 		
+		private var _ruleData:Object;
+
+		public function get ruleData():Object
+		{
+			return _ruleData;
+		}
+
+		public function set ruleData(value:Object):void
+		{
+			_ruleData = value;
+			invalidateProperties();
+		}
+		
 		private var bgImg:Image;
 		private var closeImg:ImageButton;
 		private var titleImg:Image;
@@ -37,6 +52,7 @@ package com.xiaomu.view.room
 		private var otherFrom:WinnerFromView;
 		private var winnerHeadView:UserHeadViewInEnd;
 		private var otherHeadView:UserHeadViewInEnd;
+		private var niaoFenView:NiaoFenViewInEndResult;
 		
 		override protected function createChildren():void
 		{
@@ -69,6 +85,11 @@ package com.xiaomu.view.room
 			otherFrom = new WinnerFromView();
 			otherFrom.isWinner = false;
 			addChild(otherFrom);
+			
+			niaoFenView = new NiaoFenViewInEndResult();
+			niaoFenView.width = 280;
+			niaoFenView.height = 80;
+			addChild(niaoFenView);
 		}
 		
 		override protected function updateDisplayList():void
@@ -88,6 +109,9 @@ package com.xiaomu.view.room
 			
 			otherFrom.x = width/2+20;
 			otherFrom.y = winnerFrom.y;
+			
+			niaoFenView.x = (width-niaoFenView.width)/2;
+			niaoFenView.y = height-niaoFenView.height-10;
 		}
 		
 		override protected function commitProperties():void
@@ -102,6 +126,10 @@ package com.xiaomu.view.room
 					winnerFrom.data = data.us[1];
 					otherFrom.data = data.us[0];
 				}
+			}
+			
+			if(ruleData){
+				niaoFenView.data = ruleData;
 			}
 		}
 		

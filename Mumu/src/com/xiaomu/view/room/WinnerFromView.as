@@ -45,6 +45,7 @@ package com.xiaomu.view.room
 		private var rankBgImg:Image;
 		private var zongHuxiImg:Image;
 		private var zongHuxiLab:Label;
+		private var zongFenLab:Label;
 		private var gaoShouImg:Image;
 		override protected function createChildren():void
 		{
@@ -82,6 +83,12 @@ package com.xiaomu.view.room
 			gaoShouImg.height = 81;
 			rankBgImg.addChild(gaoShouImg);
 			gaoShouImg.visible = false;
+			
+			zongFenLab = new Label();
+			zongFenLab.fontSize = 40;
+			zongFenLab.textAlign= TextAlign.CENTER;
+			zongFenLab.color = 0x89755c;
+			bgImg.addChild(zongFenLab);
 		}
 		
 		override protected function updateDisplayList():void
@@ -105,6 +112,11 @@ package com.xiaomu.view.room
 				
 			gaoShouImg.x = 60;
 			gaoShouImg.y = 80;
+			
+			zongFenLab.width = bgImg.width;
+			zongFenLab.height = 45;
+			zongFenLab.x = 0;
+			zongFenLab.y = bgImg.x+bgImg.height-zongFenLab.height-20;
 		}
 		
 		override protected function commitProperties():void
@@ -114,7 +126,10 @@ package com.xiaomu.view.room
 			bgImg.source = 'assets/endAll/'+(isWinner?'floor_zjs04':'bac_02')+'.png';
 			
 			if (!data) return
+			trace('data:',JSON.stringify(data),data.tjs);
 			zongHuxiLab.text = data.thx+"";
+			zongFenLab.text = isWinner?"+ "+data.tjs:"- "+data.tjs
+			zongFenLab.color = isWinner?0xed5330:0x459ad7;
 			winnerHeadView.data = data;
 			gaoShouImg.visible = isWinner;
 		}
