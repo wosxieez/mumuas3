@@ -19,6 +19,7 @@ package com.xiaomu.view.room
 	import com.xiaomu.util.Size;
 	import com.xiaomu.view.MainView;
 	import com.xiaomu.view.group.GroupView;
+	import com.xiaomu.view.home.HomeView;
 	
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
@@ -1359,13 +1360,14 @@ package com.xiaomu.view.room
 				Api.getInstane().leaveRoom(function (response:Object):void {})
 				hideAllUI()
 				MainView.getInstane().popView(GroupView)
+				Audio.getInstane().stopTimeout()
 			} else {
 				Api.getInstane().removeEventListener(ApiEvent.ON_ROOM, onNotificationHandler)
 				Api.getInstane().leaveRoom(function (response:Object):void {})
 				Api.getInstane().leaveGroup()
 				hideAllUI()
-				MainView.getInstane().popView()
-				
+				MainView.getInstane().popView(HomeView)
+				Audio.getInstane().stopTimeout()
 			}
 		}
 		
