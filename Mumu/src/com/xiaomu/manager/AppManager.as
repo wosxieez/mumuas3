@@ -14,7 +14,7 @@ package com.xiaomu.manager
 	[Event(name="fixRoom", type="com.xiaomu.event.AppManagerEvent")]
 	[Event(name="updateGroupRulesSuccess", type="com.xiaomu.event.AppManagerEvent")]
 	[Event(name="createGroupSuccess", type="com.xiaomu.event.AppManagerEvent")]
-	
+	[Event(name="refreshGroupData", type="com.xiaomu.event.AppManagerEvent")]
 	
 	public class AppManager extends EventDispatcher
 	{

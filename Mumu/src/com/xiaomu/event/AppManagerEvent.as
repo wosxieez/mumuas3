@@ -58,6 +58,8 @@ package com.xiaomu.event
 		 */
 		public static const FIX_ROOM:String = 'fixRoom';
 		
+		public static const REFRESH_GROUP_DATA:String = 'refreshGroupData'
+		
 		/** Message用户事件信息存储*/
 		public var message:Object;
 	}

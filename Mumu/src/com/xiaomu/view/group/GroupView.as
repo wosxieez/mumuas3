@@ -42,18 +42,7 @@ package com.xiaomu.view.group
 			Api.getInstane().addEventListener(ApiEvent.ON_GROUP, onGroupHandler)
 			AppManager.getInstance().addEventListener(AppManagerEvent.CHANGE_SELECTED_RULE,changSelectedRuleHandler);
 			AppManager.getInstance().addEventListener(AppManagerEvent.UPDATE_MEMBER_INFO_SUCCESS,updateMemberHander);
-		}
-		
-		protected function updateMemberHander(event:AppManagerEvent):void
-		{
-			trace("更新了会员信息，刷新顶部的分显示");///这里要刷新顶部的分显示
-			getNowGroupUsersInfo();
-		}
-		
-		protected function changSelectedRuleHandler(event:AppManagerEvent):void
-		{
-			trace("改变的玩法：",JSON.stringify(AppData.getInstane().rule));
-			NowSelectedPlayRuleView.getInstance().data = AppData.getInstane().rule;
+			AppManager.getInstance().addEventListener(AppManagerEvent.REFRESH_GROUP_DATA,refrshGroupDataHandler);
 		}
 		
 		private var bg:Image
@@ -512,6 +501,26 @@ package com.xiaomu.view.group
 					roomsData = response.data
 				}
 			})
+			this.getNowGroupUsersInfo()
+		}
+		
+		
+		protected function refrshGroupDataHandler(event:AppManagerEvent):void
+		{
+			trace('刷新数据')
+			refreshButton_clickHandler(null)
+		}
+		
+		protected function updateMemberHander(event:AppManagerEvent):void
+		{
+			trace("更新了会员信息，刷新顶部的分显示");///这里要刷新顶部的分显示
+			getNowGroupUsersInfo();
+		}
+		
+		protected function changSelectedRuleHandler(event:AppManagerEvent):void
+		{
+			trace("改变的玩法：",JSON.stringify(AppData.getInstane().rule));
+			NowSelectedPlayRuleView.getInstance().data = AppData.getInstane().rule;
 		}
 		
 	}
