@@ -314,5 +314,21 @@ package com.xiaomu.util
 			var urlLoader:CocoURLLoader = new CocoURLLoader(resultHandler, faultHandler, true, 20000);
 			urlLoader.load(urlrequest)
 		}
+		
+		/**
+		 * 查询战绩记录（和上下分记录）
+		 * @param resultHandler
+		 * @param faultHandler
+		 * 
+		 */			
+		public function getfight(params:Object, resultHandler:Function = null, faultHandler:Function = null):void
+		{
+			var urlrequest:URLRequest = new URLRequest(AppData.getInstane().webUrl + 'find_fight');
+			urlrequest.method = URLRequestMethod.POST
+			urlrequest.contentType = 'application/json'
+			urlrequest.data = JSON.stringify(params)
+			var urlLoader:CocoURLLoader = new CocoURLLoader(resultHandler, faultHandler, true, 20000);
+			urlLoader.load(urlrequest)
+		}
 	}
 }

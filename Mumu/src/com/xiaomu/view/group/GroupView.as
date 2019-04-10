@@ -61,6 +61,8 @@ package com.xiaomu.view.group
 		private var roomCardBar : GoldOrCardShowBar;
 		private var fenBar:GoldOrCardShowBar;
 		
+		private var scorehistoryBtn:ImageButton;
+		
 		private var _roomsData:Array
 		
 		public function get roomsData():Array
@@ -247,6 +249,14 @@ package com.xiaomu.view.group
 				}
 			})
 			addChild(createGroupPublic);
+			
+			scorehistoryBtn = new ImageButton();
+			scorehistoryBtn.width = 80
+			scorehistoryBtn.height = 80
+			scorehistoryBtn.upImageSource = 'assets/group/scorehistory_n.png';
+			scorehistoryBtn.downImageSource = 'assets/group/scorehistory_p.png';
+			scorehistoryBtn.addEventListener(MouseEvent.CLICK, scorehistoryBtn_clickHandler)
+			addChild(scorehistoryBtn)
 		}
 		
 		override protected function commitProperties():void {
@@ -292,6 +302,9 @@ package com.xiaomu.view.group
 			
 			refreshButton.x = userSettingButton.x - 20 - refreshButton.width
 			refreshButton.y  = 10
+				
+			scorehistoryBtn.x = refreshButton.x - scorehistoryBtn.width - 30;
+			scorehistoryBtn.y = refreshButton.y;
 			
 			startButton.x = width - startButton.width
 			startButton.y = height - startButton.height
@@ -523,5 +536,13 @@ package com.xiaomu.view.group
 			NowSelectedPlayRuleView.getInstance().data = AppData.getInstane().rule;
 		}
 		
+		/**
+		 * 查询积分变动情况界面
+		 */
+		protected function scorehistoryBtn_clickHandler(event:MouseEvent):void
+		{
+			new ScoreHistoryPanel().open();
+//			new GroupRulesPanel().open();
+		}
 	}
 }
