@@ -28,7 +28,7 @@ package com.xiaomu.util
 		
 		public var versionNum:String="0.0.1"
 		public var serverHost:String = '127.0.0.1'
-		public var webUrl:String = 'http://hefeixiaomu.com:3008/'
+		public var webUrl:String = 'http://127.0.0.1:3008/'
 		public var roomTableImgsArr:Array = ["pz_cl_bk_0.jpg","pz_cl_bk_1.jpg","pz_cl_bk_2.jpg","pz_cl_bk_3.jpg"]///桌布图片数据
 		public var user:Object  // 当前用户
 		public var group:Object // 当前群

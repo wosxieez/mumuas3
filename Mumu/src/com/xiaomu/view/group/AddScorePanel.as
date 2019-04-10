@@ -96,31 +96,19 @@ package com.xiaomu.view.group
 			}
 			var score:Number = Number(addScoreInput.text)
 			if (fromUser.fs >= score) {
-				HttpApi.getInstane().updateGroupUser({
-					update: {fs: toUser.fs + score}, 
-					query: {gid: toUser.gid, uid: toUser.uid}
-				},
+				HttpApi.getInstane().addGroupUserScore(toUser.gid, toUser.uid, '', fromUser.uid, '', score, 
 					function (e:Event):void {
 						var response:Object = JSON.parse(e.currentTarget.data)
 						if (response.code == 0) {
-							
-							HttpApi.getInstane().updateGroupUser({
-								update: {fs: fromUser.fs - score}, 
-								query: {gid: fromUser.gid, uid: fromUser.uid}
-							},
-								function (ee:Event):void {
-									var response2:Object = JSON.parse(ee.currentTarget.data)
-									if (response2.code == 0) {
-										AppSmallAlert.show('上分成功');
-										AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.UPDATE_MEMBER_INFO_SUCCESS));
-										close()
-									} else {
-										AppSmallAlert.show('上分失败');
-									}
-								})
+							AppSmallAlert.show('上分成功');
+							AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.UPDATE_MEMBER_INFO_SUCCESS));
+							close()
 						} else {
 							AppSmallAlert.show('上分失败');
 						}
+					},
+					function (e:Event):void {
+						AppSmallAlert.show('上分失败');
 					})
 			} else {
 				AppSmallAlert.show('您的积分不足，无法上分');

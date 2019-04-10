@@ -222,6 +222,22 @@ package com.xiaomu.util
 		}
 		
 		/**
+		 * 上分操作
+		 * @param gid
+		 * @param resultHandler
+		 * @param faultHandler
+		 */		
+		public function addGroupUserScore(gid:int, tid:int, tn:String, fid:int, fn:String, ss:Number,
+										  resultHandler:Function = null, faultHandler:Function = null):void {
+			var urlrequest:URLRequest = new URLRequest(AppData.getInstane().webUrl + 'update_gus');
+			urlrequest.method = URLRequestMethod.POST
+			urlrequest.contentType = 'application/json'
+			urlrequest.data = JSON.stringify({gid: gid, tid: tid, tn: tn, fid: fid, fn: fn, ss: ss})
+			var urlLoader:CocoURLLoader = new CocoURLLoader(resultHandler, faultHandler, true, 20000);
+			urlLoader.load(urlrequest)
+		}
+		
+		/**
 		 * 删除群成员
 		 * @param gid
 		 * @param resultHandler

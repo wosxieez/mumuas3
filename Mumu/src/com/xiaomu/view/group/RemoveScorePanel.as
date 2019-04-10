@@ -1,6 +1,5 @@
 package com.xiaomu.view.group
 {
-	import com.xiaomu.component.AppAlert;
 	import com.xiaomu.component.AppPanelSmall;
 	import com.xiaomu.component.AppSmallAlert;
 	import com.xiaomu.event.AppManagerEvent;
@@ -96,31 +95,19 @@ package com.xiaomu.view.group
 			}
 			var score:Number = Number(addScoreInput.text)
 			if (toUser.fs >= score) {
-				HttpApi.getInstane().updateGroupUser({
-					update: {fs: toUser.fs - score}, 
-					query: {gid: toUser.gid, uid: toUser.uid}
-				},
+				HttpApi.getInstane().addGroupUserScore(fromUser.gid, fromUser.uid, '', toUser.uid, '', score, 
 					function (e:Event):void {
 						var response:Object = JSON.parse(e.currentTarget.data)
 						if (response.code == 0) {
-							
-							HttpApi.getInstane().updateGroupUser({
-								update: {fs: fromUser.fs + score}, 
-								query: {gid: fromUser.gid, uid: fromUser.uid}
-							},
-								function (ee:Event):void {
-									var response2:Object = JSON.parse(ee.currentTarget.data)
-									if (response2.code == 0) {
-										AppSmallAlert.show('下分成功')
-										AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.UPDATE_MEMBER_INFO_SUCCESS));
-										close()
-									} else {
-										AppSmallAlert.show('下分失败')
-									}
-								})
+							AppSmallAlert.show('下分成功');
+							AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.UPDATE_MEMBER_INFO_SUCCESS));
+							close()
 						} else {
-							AppSmallAlert.show('下分失败')
+							AppSmallAlert.show('下分失败');
 						}
+					},
+					function (e:Event):void {
+						AppSmallAlert.show('下分失败');
 					})
 			} else {
 				AppSmallAlert.show('对方积分不足，下分失败')
