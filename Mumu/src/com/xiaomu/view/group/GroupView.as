@@ -194,7 +194,8 @@ package com.xiaomu.view.group
 			goback.width = 85;
 			goback.height = 91;
 			goback.addEventListener(MouseEvent.CLICK, function(e:MouseEvent):void {
-				Api.getInstane().leaveGroup()			
+				Api.getInstane().leaveGroup()	
+				AppData.getInstane().group = null
 				MainView.getInstane().popView(HallView)
 			})
 			addChild(goback)

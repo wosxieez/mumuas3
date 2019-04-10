@@ -167,9 +167,9 @@ package com.xiaomu.util
 		private var timeoutSoundChannel:SoundChannel
 		private var timeoutSound:Sound = new Sound(new URLRequest('sound/timeup_alarm.mp3'))
 		private var timeID:uint
-			
+		
 		public function playTimeout():void {
-			trace('播放音乐')
+			if (!isActivate) return
 			if (timeoutSoundChannel) {
 				try
 				{

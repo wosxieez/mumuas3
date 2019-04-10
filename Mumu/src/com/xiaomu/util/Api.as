@@ -48,9 +48,15 @@ package com.xiaomu.util
 			this.groupid = groupid
 			this.cb = cb
 			pomelo = new Pomelo()
-			pomelo.init(AppData.getInstane().serverHost, 3014)
-//			pomelo.init('127.0.0.1', 3014)
-//			pomelo.init('114.115.165.189', 3014)	
+			// 如果群有独立的服务器进入独立的服务器
+			var server:String 
+			if (AppData.getInstane().group && AppData.getInstane().group.ss && AppData.getInstane().group.ss.length > 0) {
+				server = AppData.getInstane().group.ss
+			} else {
+				server = AppData.getInstane().serverHost
+			}
+			trace('战斗服务器地址...', server)
+			pomelo.init(server, 3014)
 			pomelo.addEventListener(PomeloEvent.HANDSHAKE, onConnectHandler);
 			pomelo.addEventListener(PomeloEvent.ERROR, pomeloErrorHandler);
 		}

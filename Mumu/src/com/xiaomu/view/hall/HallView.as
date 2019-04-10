@@ -160,6 +160,7 @@ package com.xiaomu.view.hall
 						Loading.getInstance().close()
 						GroupView(MainView.getInstane().pushView(GroupView)).init(rooms)
 					} else {
+						AppData.getInstane().group = null
 						AppAlert.show(JSON.stringify(response.data))
 					}
 				})
