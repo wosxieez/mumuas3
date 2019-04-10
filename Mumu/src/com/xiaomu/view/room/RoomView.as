@@ -1195,7 +1195,7 @@ package com.xiaomu.view.room
 					// 娱乐房一局就结束了
 					if (this.roomrule.id == 0) {
 						close()
-						winView1.allOver = false
+						winView1.allOver = true;
 					}
 					PopUpManager.centerPopUp(PopUpManager.addPopUp(winView1,null,true,false));
 					break
