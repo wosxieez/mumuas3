@@ -128,7 +128,7 @@ package com.xiaomu.view.room
 			if (!data) return
 			trace('data:',JSON.stringify(data),data.tjs);
 			zongHuxiLab.text = data.thx+"";
-			zongFenLab.text = isWinner?"+ "+data.tjs:"- "+data.tjs
+			zongFenLab.text = isWinner?"+ "+data.tjs:data.tjs
 			zongFenLab.color = isWinner?0xed5330:0x459ad7;
 			winnerHeadView.data = data;
 			gaoShouImg.visible = isWinner;
