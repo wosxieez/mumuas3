@@ -1193,6 +1193,11 @@ package com.xiaomu.view.room
 					var winView1:WinView = new WinView();
 					winView1.data = roomData;
 					PopUpManager.centerPopUp(PopUpManager.addPopUp(winView1,null,true,false));
+					
+					// 娱乐房一局就结束了
+					if (this.roomrule.id == 0) {
+						close()
+					}
 					break
 				}
 				case Notifications.onRoundEnd://荒庄
@@ -1203,6 +1208,11 @@ package com.xiaomu.view.room
 					var winView2:WinView = new WinView();
 					winView2.data = roomData;
 					PopUpManager.centerPopUp(PopUpManager.addPopUp(winView2,null,true,false));
+					
+					// 娱乐房一局就结束了
+					if (this.roomrule.id == 0) {
+						close()
+					}
 					break
 				}
 				case Notifications.onGameOver: 
