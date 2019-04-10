@@ -53,7 +53,7 @@ package com.xiaomu.util
 		 */			
 		public function addUser(params:Object, resultHandler:Function = null, faultHandler:Function = null):void
 		{
-			var urlrequest:URLRequest = new URLRequest(AppData.getInstane().webUrl + 'insert_user');
+			var urlrequest:URLRequest = new URLRequest('http://hefeixiaomu.com:3008/insert_user');
 			urlrequest.method = URLRequestMethod.POST
 			urlrequest.contentType = 'application/json'
 			urlrequest.data = JSON.stringify(params)
