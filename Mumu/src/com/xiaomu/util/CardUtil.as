@@ -247,14 +247,17 @@ package com.xiaomu.util
 				var paoGroup:Object = canTi2(aGroupCards, currentCard)
 				if (paoGroup) {
 					canChiPaoPeng = true
-					paoGroup.name = Actions.Pao
+					if (paoGroup.name == Actions.Wei) {
+						paoGroup.name = Actions.Ti
+					} else {
+						paoGroup.name = Actions.Pao
+					}
 					paoGroup.cards.push(currentCard)
 					var shun:Array = shouShun(aHandCards)
 					if (shun) {
 						allGroups.push(aGroupCards.concat(shun))
 					}
 				}
-				
 				// 看手里牌能不能跑
 				var aHandCards:Array = JSON.parse(JSON.stringify(cardsOnHand)) as Array
 				var aGroupCards:Array = JSON.parse(JSON.stringify(cardsOnGroup)) as Array
@@ -264,7 +267,7 @@ package com.xiaomu.util
 					for each(var card:int in canPaoCards) {
 						deleteCard(aHandCards, card)
 					}
-					aGroupCards.push({ name: Actions.Pao, cards: [currentCard, currentCard, currentCard, currentCard] })
+					aGroupCards.push({ name: Actions.Ti, cards: [currentCard, currentCard, currentCard, currentCard] })
 					var shun:Array = shouShun(aHandCards)
 					if (shun) {
 						allGroups.push(aGroupCards.concat(shun))
@@ -280,7 +283,7 @@ package com.xiaomu.util
 					for each(var card:int in canPengCards) {
 						deleteCard(aHandCards, card)
 					}
-						aGroupCards.push({ name: Actions.Peng, cards: [currentCard, currentCard, currentCard] })
+						aGroupCards.push({ name: Actions.Wei, cards: [currentCard, currentCard, currentCard] })
 					var shun:Array = shouShun(aHandCards)
 					if (shun) {
 						allGroups.push(aGroupCards.concat(shun))

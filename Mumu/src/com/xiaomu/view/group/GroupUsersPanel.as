@@ -77,7 +77,18 @@ package com.xiaomu.view.group
 		override protected function commitProperties():void {
 			super.commitProperties()
 			
+			usersData.sort(sortUser)
 			usersList.dataProvider = usersData
+		}
+		
+		private function sortUser(a:Object, b:Object):Number {
+			if(a.ll > b.ll) {
+				return -1	
+			} else if(a.ll < b.ll) {
+				return 1
+			} else  {
+				return 0;
+			}
 		}
 		
 		override protected function updateDisplayList():void {
