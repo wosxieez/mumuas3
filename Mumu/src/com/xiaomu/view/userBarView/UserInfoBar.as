@@ -2,6 +2,7 @@ package com.xiaomu.view.userBarView
 {
 	import coco.component.Image;
 	import coco.component.Label;
+	import coco.component.TextAlign;
 	import coco.core.UIComponent;
 	import coco.util.FontFamily;
 	
@@ -57,6 +58,8 @@ package com.xiaomu.view.userBarView
 			addChild(userIcon);
 			
 			userNameLab = new Label()
+			userNameLab.textAlign = TextAlign.LEFT;
+			userNameLab.leading = 5;
 			userNameLab.x = headBg.x+headBg.width+5
 			userNameLab.height = 94*0.9
 			userNameLab.fontSize = 24
@@ -69,7 +72,8 @@ package com.xiaomu.view.userBarView
 		{
 			super.commitProperties();
 			
-			userNameLab.text = "ID: "+userName
+			userNameLab.text = userName
+			userNameLab.y = 12;
 		}
 		
 		override protected function drawSkin():void

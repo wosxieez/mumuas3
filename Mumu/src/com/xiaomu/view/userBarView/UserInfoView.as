@@ -70,7 +70,8 @@ package com.xiaomu.view.userBarView
 			
 			goldBar.count = userInfoData?(userInfoData.jb?userInfoData.jb:"0"):"0"
 			roomCardBar.count = userInfoData?(userInfoData.fc?userInfoData.fc:"0"):"0"
-			userinfoBar.userName = userInfoData?userInfoData.username:"/"
+			userinfoBar.userName = userInfoData?userInfoData.username+"\rid:"+userInfoData.id:"/"
+			trace(JSON.stringify(userInfoData));
 		}
 		
 		override protected function drawSkin():void
