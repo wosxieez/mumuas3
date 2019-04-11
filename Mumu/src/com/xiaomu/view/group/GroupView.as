@@ -302,7 +302,7 @@ package com.xiaomu.view.group
 			
 			refreshButton.x = userSettingButton.x - 20 - refreshButton.width
 			refreshButton.y  = 10
-				
+			
 			scorehistoryBtn.x = refreshButton.x - scorehistoryBtn.width - 30;
 			scorehistoryBtn.y = refreshButton.y;
 			
@@ -349,7 +349,7 @@ package com.xiaomu.view.group
 									// 用户已经在游戏中了
 									Loading.getInstance().open()
 									Loading.getInstance().text = '游戏恢复中...'
-									Api.getInstane().joinRoom({roomname: room.name}, function (response:Object):void {
+									Api.getInstane().joinRoom(room.name, function (response:Object):void {
 										Loading.getInstance().close()
 										if (response.code == 0) {
 											RoomView(MainView.getInstane().pushView(RoomView)).init(response.data)
@@ -495,7 +495,7 @@ package com.xiaomu.view.group
 				}
 			}
 			Loading.getInstance().open()
-			Api.getInstane().joinRoom({roomname: roomsList.selectedItem.name}, function (response:Object):void {
+			Api.getInstane().joinRoom(roomsList.selectedItem.name, function (response:Object):void {
 				Loading.getInstance().close()
 				if (response.code == 0) {
 					RoomView(MainView.getInstane().pushView(RoomView)).init(response.data)
@@ -542,7 +542,7 @@ package com.xiaomu.view.group
 		protected function scorehistoryBtn_clickHandler(event:MouseEvent):void
 		{
 			new ScoreHistoryPanel().open();
-//			new GroupRulesPanel().open();
+			//			new GroupRulesPanel().open();
 		}
 	}
 }

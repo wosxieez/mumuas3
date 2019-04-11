@@ -4,7 +4,6 @@ package com.xiaomu.view.room
 	import com.xiaomu.component.BigCardUI;
 	import com.xiaomu.component.CardUI;
 	import com.xiaomu.component.ImageButton;
-	import com.xiaomu.component.Loading;
 	import com.xiaomu.event.ApiEvent;
 	import com.xiaomu.event.AppManagerEvent;
 	import com.xiaomu.event.SelectEvent;
@@ -90,10 +89,10 @@ package com.xiaomu.view.room
 		private var nextPassCardUIs:Array = []
 		private var zhunbeiButton:ImageButton
 		private var zhunbeiButton2:ImageButton
-		private var canHuButton:Image
-		private var canPengButton:Image
-		private var canChiButton:Image
-		private var cancelButton:Image
+		private var canHuButton:ImageButton
+		private var canPengButton:ImageButton
+		private var canChiButton:ImageButton
+		private var cancelButton:ImageButton
 		private var newCardTip:Image
 		private var checkWaitTip:Image
 		private var chatButton:ImageButton
@@ -226,32 +225,32 @@ package com.xiaomu.view.room
 			iconLayer = new UIComponent()
 			addChild(iconLayer)
 			
-			canPengButton = new Image()
-			canPengButton.source = Assets.getInstane().getAssets('oprate_peng0.png')
+			canPengButton = new ImageButton()
+			canPengButton.upImageSource = Assets.getInstane().getAssets('oprate_peng0.png')
 			canPengButton.width = 154
 			canPengButton.height = 159
 			canPengButton.visible = false
 			canPengButton.addEventListener(MouseEvent.CLICK, canPengButton_clickHandler)
 			iconLayer.addChild(canPengButton)
 			
-			canChiButton = new Image()
-			canChiButton.source = Assets.getInstane().getAssets('oprate_chi0.png')
+			canChiButton = new ImageButton()
+			canChiButton.upImageSource = Assets.getInstane().getAssets('oprate_chi0.png')
 			canChiButton.width = 154
 			canChiButton.height = 159
 			canChiButton.visible = false
 			canChiButton.addEventListener(MouseEvent.CLICK, canChiButton_clickHandler)
 			iconLayer.addChild(canChiButton)
 			
-			cancelButton = new Image()
-			cancelButton.source = Assets.getInstane().getAssets('oprate_close0.png')
+			cancelButton = new ImageButton()
+			cancelButton.upImageSource = Assets.getInstane().getAssets('oprate_close0.png')
 			cancelButton.width = 100
 			cancelButton.height = 103
 			cancelButton.visible = false
 			cancelButton.addEventListener(MouseEvent.CLICK, cancelButton_clickHandler)
 			iconLayer.addChild(cancelButton)
 			
-			canHuButton = new Image()
-			canHuButton.source = Assets.getInstane().getAssets('oprate_hu0.png')
+			canHuButton = new ImageButton()
+			canHuButton.upImageSource = Assets.getInstane().getAssets('oprate_hu0.png')
 			canHuButton.width = 154
 			canHuButton.height = 159
 			canHuButton.visible = false
@@ -816,7 +815,6 @@ package com.xiaomu.view.room
 				for (var i:int = 0; i < riffleCards.length; i++) {
 					var group:Object = riffleCards[i]
 					var groupCards:Array = group.cards
-					groupCards.sort()
 					var cardsLength:int = groupCards.length
 					for (var j:int = 0; j < cardsLength; j++) {
 						newCardUI = oldMyGroupCardUIs.pop()
@@ -1305,10 +1303,18 @@ package com.xiaomu.view.room
 		protected function canChiButton_clickHandler(event:MouseEvent):void
 		{
 			if (myActionUser) {
-				ChiSelectView.getInstane().addEventListener(SelectEvent.SELECTED, chi_selectHandler)
-				ChiSelectView.getInstane().y = 50
-				ChiSelectView.getInstane().width = width
-				ChiSelectView.getInstane().open(myActionUser.cd.dt)
+				if (myActionUser.cd.dt.length == 1) {
+					undoActionUser()
+					myActionUser.cd.dt = [myActionUser.cd.dt[0]]
+					myActionUser.cd.ac = 1
+					var action:Object = { name: Actions.Chi, data: myActionUser}
+					Api.getInstane().sendAction(action)
+				} else {
+					ChiSelectView.getInstane().addEventListener(SelectEvent.SELECTED, chi_selectHandler)
+					ChiSelectView.getInstane().y = 50
+					ChiSelectView.getInstane().width = width
+					ChiSelectView.getInstane().open(myActionUser.cd.dt)
+				}
 			}
 		}
 		
@@ -1321,7 +1327,6 @@ package com.xiaomu.view.room
 				myActionUser.cd.ac = 1
 				var action:Object = { name: Actions.Chi, data: myActionUser}
 				Api.getInstane().sendAction(action)
-				//				meChi(event.data as Array)
 			}
 		}
 		
@@ -1416,42 +1421,6 @@ package com.xiaomu.view.room
 			}
 		}
 		
-		//		private function meChi(groups:Array):void {
-		//			return
-		//			if (myUser) {
-		//				myUser.handCards.push(roomData.pc)
-		//				roomData.pc = 0
-		//				var group:Object
-		//				for (var i:int = 0; i < groups.length; i++) {
-		//					group = groups[i]
-		//					for (var j:int = 0; j < group.cards.length; j++) {
-		//						CardUtil.getInstane().deleteCard(myUser.handCards, group.cards[j])
-		//					}
-		//					myUser.groupCards.push(group)
-		//				}
-		//				if (groups.length > 1) {
-		//					Audio.getInstane().playHandle('bi')
-		//				} else {
-		//					Audio.getInstane().playHandle('chi')
-		//				}
-		//				invalidateProperties()
-		//			}
-		//		}
-		//		
-		//		private function mePeng(cards:Array):void {
-		//			return
-		//			if (myUser) {
-		//				for (var i:int = 0; i < cards.length; i++) {
-		//					CardUtil.getInstane().deleteCard(myUser.handCards, cards[i])
-		//				}
-		//				cards.push(roomData.pc)
-		//				roomData.pc = 0
-		//				myUser.groupCards.push({name: Actions.Peng, cards: cards})
-		//				Audio.getInstane().playHandle('peng', true)
-		//				invalidateProperties()
-		//			}
-		//		}
-		
 		private function getActionUser(username:String):Object {
 			if (roomData.aus) {
 				for (var n:int = 0; n < roomData.aus.length; n++) {
@@ -1473,34 +1442,7 @@ package com.xiaomu.view.room
 		
 		protected function fixRoomHandler(event:AppManagerEvent):void
 		{
-			var gid:int
-			if (AppData.getInstane().group) {
-				gid = AppData.getInstane().group.id
-			} else {
-				gid = 0
-			}
-			
-			trace('修复房间', gid, this.roomname)
-			Loading.getInstance().open()
-			Api.getInstane().joinGroup(AppData.getInstane().user.username, gid, 
-				function (response:Object):void {
-					if (response.code == 0) {
-						Api.getInstane().joinRoom({roomname: this.roomname}, function (reponse2:Object):void {
-							Loading.getInstance().close()
-							if (reponse2.code == 0) {
-								trace('修复成功...')
-								init(reponse2.data)
-							} else {
-								AppAlert.show('修复失败 ' + response.data)
-								close()
-							}
-						})
-					} else {
-						Loading.getInstance().close()
-						AppAlert.show('修复失败 ' + response.data)
-						this.close()
-					}
-				})
+			Api.getInstane().reconnect()
 		}
 		
 	}

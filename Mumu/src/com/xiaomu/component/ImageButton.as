@@ -49,22 +49,22 @@ package com.xiaomu.component
 			invalidateSkin()
 		}
 		
-		private var _upImageSource:String = null
+		private var _upImageSource:Object = null
 		
-		public function get upImageSource():String
+		public function get upImageSource():Object
 		{
 			return _upImageSource;
 		}
 		
-		public function set upImageSource(value:String):void
+		public function set upImageSource(value:Object):void
 		{
 			_upImageSource = value;
 			invalidateProperties()
 		}
 		
-		private var _downImageSource:String = null
+		private var _downImageSource:Object = null
 		
-		public function get downImageSource():String
+		public function get downImageSource():Object
 		{
 			if (!_downImageSource) {
 				return _upImageSource
@@ -72,7 +72,7 @@ package com.xiaomu.component
 			return _downImageSource;
 		}
 		
-		public function set downImageSource(value:String):void
+		public function set downImageSource(value:Object):void
 		{
 			_downImageSource = value;
 			invalidateProperties()

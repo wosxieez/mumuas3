@@ -1,6 +1,5 @@
 package com.xiaomu.util
 {
-	import com.xiaomu.component.AppAlert;
 	import com.xiaomu.component.Loading;
 	import com.xiaomu.event.ApiEvent;
 	
@@ -32,9 +31,13 @@ package com.xiaomu.util
 		}
 		
 		private var pomelo:Pomelo
-		private var username:String = null
-		private var groupid:int = -1
-		private var cb:Function
+		private var savedUsername:String = null
+		private var savedGroupid:int = -1
+		private var savedRoomname:String = null
+		private var savedCallback:Function
+		
+		private var isReconnect:Boolean = false
+		private var reconnectAction:Object = null
 		
 		/**
 		 * 用户登录 
@@ -43,10 +46,37 @@ package com.xiaomu.util
 		 * @param password
 		 */		
 		public function joinGroup(username:String, groupid:int, cb:Function):void {
+			trace('手动连接服务器...')
 			disconnect()
-			this.username = username
-			this.groupid = groupid
-			this.cb = cb
+			isReconnect = false
+			savedUsername = username
+			savedGroupid = groupid
+			savedCallback = cb
+			pomelo = new Pomelo()
+			// 如果群有独立的服务器进入独立的服务器
+			var server:String 
+			if (AppData.getInstane().group && AppData.getInstane().group.ss && AppData.getInstane().group.ss.length > 0) {
+				server = AppData.getInstane().group.ss
+			} else {
+				server = AppData.getInstane().serverHost
+			}
+			trace('战斗服务器地址...', server)
+			pomelo.init(server, 3014)
+			pomelo.addEventListener(PomeloEvent.HANDSHAKE, onConnectHandler);
+			pomelo.addEventListener(PomeloEvent.ERROR, pomeloErrorHandler);
+		}
+		
+		
+		/**
+		 * 重连
+		 *  
+		 * @param username
+		 * @param password
+		 */		
+		public function reJoinGroup():void {
+			disconnect()
+			isReconnect = true
+			trace('正在重连服务器...')
 			pomelo = new Pomelo()
 			// 如果群有独立的服务器进入独立的服务器
 			var server:String 
@@ -62,8 +92,7 @@ package com.xiaomu.util
 		}
 		
 		private function onConnectHandler(event:Event):void {
-			if (!pomelo) return
-			pomelo.request("gate.gateHandler.queryEntry", {username: this.username}, function(response:Object):void {
+			pomelo.request("gate.gateHandler.queryEntry", {username: savedUsername}, function(response:Object):void {
 				pomelo.disconnect()
 				pomelo.removeEventListener('handshake', onConnectHandler)
 				pomelo.addEventListener('handshake', onQueryHandler)
@@ -81,17 +110,18 @@ package com.xiaomu.util
 		
 		protected function pomeloErrorHandler(event:PomeloEvent):void
 		{
-			cb({code: 401, data:'连接服务器失败'})
+			if (isReconnect) trace('正在重连...失败')
+			if (savedCallback != null && !isReconnect) {
+				savedCallback({code: 401, data:'连接服务器失败'})
+			}
 			pomelo = null
 			Loading.getInstance().close()
 		}
 		
 		private function onQueryHandler(event:Event):void {
-			if (!pomelo) return
-			pomelo.request('connector.entryHandler.joinGroup', {username: this.username, groupid: this.groupid},
+			pomelo.request('connector.entryHandler.joinGroup', {username: savedUsername, groupid: savedGroupid},
 				function(response:Object):void {
-					cb(response)
-					
+					if (!isReconnect && savedCallback != null) { savedCallback(response) }
 					if (response.code == 0) {
 						pomelo.on('onGroup', function (e: PomeloEvent): void {
 							var apiEvent: ApiEvent = new ApiEvent(ApiEvent.ON_GROUP)
@@ -103,6 +133,16 @@ package com.xiaomu.util
 							apiEvent.data = e.message
 							dispatchEvent(apiEvent)
 						})
+						
+						// 看是不是重连 如果是重连切有房间号 自动加入房间
+						if (isReconnect) trace('正在重连...加入群成功')
+						else trace('手动连接...加入群成功')
+						if (isReconnect && savedRoomname) {
+							reJoinRoom(savedRoomname)
+						}
+					} else {
+						if (isReconnect) trace('正在重连...加入群失败')
+						else trace('手动连接...加入群失败')
 					}
 				})
 		}
@@ -113,8 +153,9 @@ package com.xiaomu.util
 		 * 
 		 */		
 		public function queryGroupStatus(cb:Function):void  {
-			if (!pomelo) {
-				cb({code:404, data: '服务已断开，请重新登录'})
+			if (!pomelo) { 
+				reconnect()
+				cb({code: 404, data: '服务已断开，正在重连中...'})
 				return
 			}
 			pomelo.request('connector.entryHandler.queryGroupStatus', {}, function(response:Object):void {
@@ -127,9 +168,8 @@ package com.xiaomu.util
 		 * 
 		 */		
 		public function leaveGroup():void {
-			this.username = null
-			this.groupid = -1
-			this.cb = null
+			this.savedUsername = null
+			this.savedGroupid = -1
 			if (!pomelo) return
 			pomelo.disconnect()
 			pomelo = null
@@ -142,12 +182,20 @@ package com.xiaomu.util
 		 */		
 		public function createRoom(rule:Object, cb:Function):void {
 			if (!pomelo) {
-				cb({code:404, data: '服务已断开，请重新登录'})
+				reconnect()
+				cb({code: 404, data: '服务已断开，正在重连中...'})
 				return
 			}
 			pomelo.request('connector.entryHandler.createRoom', rule,
 				function(response:Object):void {
 					cb(response)
+					
+					// 记录加入的房间号
+					if (response.code == 0) {
+						savedRoomname = response.data.rn
+					} else {
+						savedRoomname = null
+					}
 				})
 		}
 		
@@ -156,14 +204,40 @@ package com.xiaomu.util
 		 * @param room
 		 * @param cb
 		 */		
-		public function joinRoom(room:Object, cb:Function):void {
+		public function joinRoom(roomname:String, cb:Function):void {
 			if (!pomelo) {
-				cb({code:404, data: '服务已断开，请重新登录'})
+				reconnect()
+				cb({code: 404, data: '服务已断开，正在重连中...'})
 				return
 			}
-			pomelo.request('connector.entryHandler.joinRoom', room,
+			pomelo.request('connector.entryHandler.joinRoom', {roomname: roomname},
 				function(response:Object):void {
 					cb(response)
+					// 记录加入的房间号
+					if (response.code == 0) {
+						trace('手动连接...加入房间成功')
+						roomname = response.data.rn
+					} else {
+						roomname = null
+						trace('手动连接...加入房间失败')
+					}
+				})
+		}
+		
+		/**
+		 * 重连房间
+		 * @param room
+		 * @param cb
+		 */		
+		public function reJoinRoom(roomname:String):void {
+			pomelo.request('connector.entryHandler.joinRoom', {roomname: roomname},
+				function(response:Object):void {
+					if (response.code == 0) {
+						trace('正在重连...加入房间成功')
+						if (reconnectAction) sendAction(reconnectAction)
+					} else {
+						trace('正在重连...加入房间失败')
+					}
 				})
 		}
 		
@@ -172,10 +246,7 @@ package com.xiaomu.util
 		 * @param cb
 		 */		
 		public function leaveRoom(cb:Function):void {
-			if (!pomelo) {
-				cb({code:404, data: '服务已断开，请重新登录'})
-				return
-			}
+			savedRoomname = null
 			pomelo.request('connector.entryHandler.leaveRoom', {},
 				function(response:Object):void {
 					cb(response)
@@ -188,10 +259,7 @@ package com.xiaomu.util
 		 * 
 		 */		
 		public function queryRoomStatus(cb:Function):void  {
-			if (!pomelo) {
-				cb({code:404, data: '服务已断开，请重新登录'})
-				return
-			}
+			if (!pomelo) { reconnect(); return }
 			pomelo.request('connector.entryHandler.queryRoomStatus', {}, function(response:Object):void {
 				cb(response)
 			})
@@ -205,18 +273,15 @@ package com.xiaomu.util
 			if (!pomelo) return
 			pomelo.disconnect()
 			pomelo = null
-			trace('已断开服务连接')
+			trace('手动断开服务器连接')
 		}
 		
 		/**
 		 * 发送动作 
 		 * @param action
 		 */		
-		public function sendAction(action):void  {
-			if (!pomelo) {
-				AppAlert.show('服务已断开，请重新登录')
-				return
-			}
+		public function sendAction(action:Object):void  {
+			if (!pomelo) { reconnect(action); return }
 			pomelo.request('chat.roomHandler.sendAction', action, function(response:Object):void {
 			})
 		}
@@ -228,13 +293,18 @@ package com.xiaomu.util
 		 * 
 		 */		
 		public function sendRoomMessage(data:Object, cb:Function):void  {
-			if (!pomelo) {
-				cb({code:404, data: '服务已断开，请重新登录'})
-				return
-			}
+			if (!pomelo) { reconnect(); return }
 			pomelo.request('chat.roomHandler.pushMessage', data, function(response:Object):void {
 				cb(response)
 			})
+		}
+		
+		public function reconnect(action:Object = null):void {
+			reconnectAction = action
+			if (savedGroupid >= 0 && savedUsername) {
+				// 可以重连
+				reJoinGroup()
+			}
 		}
 		
 	}
