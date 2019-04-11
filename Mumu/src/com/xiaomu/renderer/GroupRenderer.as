@@ -113,14 +113,14 @@ package com.xiaomu.renderer
 			adminTitleImg.y = bgImg.y-20;
 			
 			nameLab.width = width;
-			nameLab.height = 35;
+			nameLab.height = 40;
 			nameLab.fontSize = 30;
-			nameLab.y = bgImg.y+45;
+			nameLab.y = bgImg.y+35;
 			
 			headBg.width = headBg.height =  width/4;
 			headImg.width = headImg.height = headBg.width*0.8;
 			headBg.x = (width-headBg.width)/2;
-			headBg.y = 140
+			headBg.y = 140-10
 			headImg.x = headBg.x+(headBg.width-headImg.width)/2;
 			headImg.y = headBg.y+(headBg.height-headImg.height)/2;
 			

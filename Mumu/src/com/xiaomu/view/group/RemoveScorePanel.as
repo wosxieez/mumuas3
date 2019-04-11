@@ -20,7 +20,7 @@ package com.xiaomu.view.group
 		{
 			super();
 			
-			title = '玩家下分'
+			title = '减少玩家疲劳值'
 		}
 		
 		public var targetUser:Object
@@ -34,11 +34,11 @@ package com.xiaomu.view.group
 			super.createChildren()
 			
 			addScoreLab = new Label();
-			addScoreLab.text = '减少分数';
+			addScoreLab.text = '减少疲劳值';
 			addScoreLab.fontSize = 24;
 			addScoreLab.color = 0x845525;
 			addScoreLab.height = 40;
-			addScoreLab.width = 120;
+			addScoreLab.width = 150;
 			addChild(addScoreLab);
 			
 			addScoreInput = new TextInput()
@@ -48,7 +48,7 @@ package com.xiaomu.view.group
 			addScoreInput.width = 300
 			addScoreInput.height = 40;
 			addScoreInput.fontSize = 24;
-			addScoreInput.maxChars = 5;
+//			addScoreInput.maxChars = 5;
 			addChild(addScoreInput)
 		}
 		
@@ -99,18 +99,18 @@ package com.xiaomu.view.group
 					function (e:Event):void {
 						var response:Object = JSON.parse(e.currentTarget.data)
 						if (response.code == 0) {
-							AppSmallAlert.show('下分成功');
+							AppSmallAlert.show('减少疲劳值成功');
 							AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.UPDATE_MEMBER_INFO_SUCCESS));
 							close()
 						} else {
-							AppSmallAlert.show('下分失败');
+							AppSmallAlert.show('减少疲劳值失败');
 						}
 					},
 					function (e:Event):void {
-						AppSmallAlert.show('下分失败');
+						AppSmallAlert.show('减少疲劳值失败');
 					})
 			} else {
-				AppSmallAlert.show('对方积分不足，下分失败')
+				AppSmallAlert.show('对方疲劳值不足，减少失败')
 			}
 		}
 		

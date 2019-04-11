@@ -79,7 +79,7 @@ package com.xiaomu.view.group
 				PopUpManager.removePopUp(this)
 				return
 			}else if(selectedStr == "单独提成值"){
-//				trace("选则了设置单独提成值");
+				//				trace("选则了设置单独提成值");
 				
 				var setSpecialTiChengPanel:SetSpecialTiChengPanel = new SetSpecialTiChengPanel()
 				setSpecialTiChengPanel.targetUser = targetUser
@@ -114,60 +114,55 @@ package com.xiaomu.view.group
 		private function doAction():void {
 			if(selectedStr== "升职")
 			{
-//				if (fromUser.uid == toUser.pid) {
-					if (fromUser.ll > toUser.ll + 1) {
-						HttpApi.getInstane().updateGroupUser({
-//							update: {ll: toUser.ll + 1}, 
-							update: {ll: toUser.ll + 1,pid: AppData.getInstane().user.id}, 
-							query: {gid: toUser.gid, uid: toUser.uid}
-						},
-							function (e:Event):void {
-								var response:Object = JSON.parse(e.currentTarget.data)
-								if (response.code == 0) {
-									AppSmallAlert.show('升职成功')
-									AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.UPDATE_MEMBER_INFO_SUCCESS));
-								} else {
-									AppSmallAlert.show('升职失败')
-								}
-							})
-					} else {
-						AppSmallAlert.show('无法再升职了')
-					}
-//				} else {
-//					AppAlert.show('您没有权限操作')
-//				}
+				AppAlert.show('是否确定将此玩家降职', '',Alert.OK|Alert.CANCEL, function (e:UIEvent):void {
+					if (e.detail == Alert.OK) {
+						if (fromUser.ll > toUser.ll + 1) {
+							HttpApi.getInstane().updateGroupUser({
+								update: {ll: toUser.ll + 1,pid: AppData.getInstane().user.id}, 
+								query: {gid: toUser.gid, uid: toUser.uid}
+							},
+								function (e:Event):void {
+									var response:Object = JSON.parse(e.currentTarget.data)
+									if (response.code == 0) {
+										AppSmallAlert.show('升职成功')
+										AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.UPDATE_MEMBER_INFO_SUCCESS));
+									} else {
+										AppSmallAlert.show('升职失败')
+									}
+								})
+						} else {
+							AppSmallAlert.show('无法再升职了')
+						}
+					}},null);
 			}
 			else if(selectedStr== "降职")
 			{
-//				if (fromUser.uid == toUser.pid) {
-					if (toUser.ll > 0) {
-						HttpApi.getInstane().updateGroupUser({
-//							update: {ll: toUser.ll - 1}, 
-							update: {ll: toUser.ll - 1,pid: AppData.getInstane().user.id}, 
-							query: {gid: toUser.gid, uid: toUser.uid}
-						},
-							function (e:Event):void {
-								var response:Object = JSON.parse(e.currentTarget.data)
-								if (response.code == 0) {
-									AppSmallAlert.show('降职成功')
-									AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.UPDATE_MEMBER_INFO_SUCCESS));
-								} else {
-									AppSmallAlert.show('降职失败')
-								}
-							})
-					} else {
-						AppSmallAlert.show('无法再降职了')
-					}
-//				} else {
-//					AppAlert.show('您没有权限操作')
-//				}
+				AppAlert.show('是否确定将此玩家降职', '',Alert.OK|Alert.CANCEL, function (e:UIEvent):void {
+					if (e.detail == Alert.OK) {
+						if (toUser.ll > 0) {
+							HttpApi.getInstane().updateGroupUser({
+								update: {ll: toUser.ll - 1,pid: AppData.getInstane().user.id}, 
+								query: {gid: toUser.gid, uid: toUser.uid}
+							},
+								function (e:Event):void {
+									var response:Object = JSON.parse(e.currentTarget.data)
+									if (response.code == 0) {
+										AppSmallAlert.show('降职成功')
+										AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.UPDATE_MEMBER_INFO_SUCCESS));
+									} else {
+										AppSmallAlert.show('降职失败')
+									}
+								})
+						} else {
+							AppSmallAlert.show('无法再降职了')
+						}
+					}},null);
 			}
 			else if(selectedStr== "踢出群")
 			{
-				
 				AppAlert.show('是否确定将此玩家提出群', '',Alert.OK|Alert.CANCEL, function (e:UIEvent):void {
 					if (e.detail == Alert.OK) {
-//						// 替人操作
+						// 替人操作
 						if (fromUser.ll == 4) {
 							HttpApi.getInstane().updateGroupUser({
 								update: {fs: fromUser.fs + toUser.fs}, 
@@ -192,14 +187,11 @@ package com.xiaomu.view.group
 						} else {
 							AppSmallAlert.show('您没有权限操作')
 						}
-						trace('ok');
 					} else {
 						trace('cancel');
 					}
 				})
-					
 			}
-			
 			PopUpManager.removePopUp(this)
 		}
 		
