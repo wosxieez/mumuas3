@@ -163,6 +163,7 @@ package com.xiaomu.view.room
 					huxiImg.visible = true;
 					huxiLab.visible = false;
 					jiaJianLab.text = huxi+"";
+					huxiImg.x = -430; ///放炮的徽章放在左边
 				}else{
 					//没胡没放炮
 					huxiImg.visible = false;
