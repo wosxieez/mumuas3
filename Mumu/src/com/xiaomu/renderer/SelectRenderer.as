@@ -24,7 +24,6 @@ package com.xiaomu.renderer
 			super.commitProperties()
 			
 			if (!data) return
-			data.cards.sort()
 			var oldMyGroupCardUIs:Array = []
 			for each(var cardUI: CardUI in myGroupCardUIs) {
 				cardUI.visible = false
