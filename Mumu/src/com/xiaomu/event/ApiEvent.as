@@ -7,6 +7,7 @@ package com.xiaomu.event
 		
 		public static const ON_GROUP:String = 'onGroup'
 		public static const ON_ROOM:String = 'onRoom'
+		public static const JOIN_ROOM:String = 'joinRoom'
 			
 		public var data: Object
 		

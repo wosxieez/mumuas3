@@ -3,6 +3,7 @@ package com.xiaomu.view.home.setting
 	
 	import com.xiaomu.component.ImageButton;
 	import com.xiaomu.util.Audio;
+	import com.xiaomu.util.HttpApi;
 	import com.xiaomu.view.MainView;
 	import com.xiaomu.view.login.LoginView;
 	
@@ -176,6 +177,7 @@ package com.xiaomu.view.home.setting
 			PopUpManager.removeAllPopUp();
 			dispose()
 			MainView.getInstane().popView(LoginView)
+			HttpApi.getInstane().stopMonitor()
 		}
 		
 		public function dispose():void {

@@ -1,8 +1,16 @@
 package com.xiaomu.util
 {
+	import com.xiaomu.component.AppAlert;
+	import com.xiaomu.view.other.NetErrorView;
+	
 	import flash.events.EventDispatcher;
+	import flash.events.StatusEvent;
 	import flash.net.URLRequest;
 	import flash.net.URLRequestMethod;
+	
+	import air.net.URLMonitor;
+	
+	import coco.event.UIEvent;
 	
 	public class HttpApi extends EventDispatcher
 	{
@@ -18,6 +26,29 @@ package com.xiaomu.util
 			}
 			
 			return instance
+		}
+		
+		private var monitor:URLMonitor =new URLMonitor(new URLRequest("http://hefeixiaomu.com"));  
+		
+		public function startMonitor():void
+		{
+			monitor.addEventListener(StatusEvent.STATUS, showStatus)  
+			monitor.start();  
+		}
+		
+		public function stopMonitor():void {
+			monitor.removeEventListener(StatusEvent.STATUS, showStatus)  
+			monitor.stop()  
+		}
+		
+		protected function showStatus(event:StatusEvent):void
+		{
+			trace('网络状态', monitor.available, monitor.acceptableStatusCodes)
+			if (!monitor.available) {
+				AppAlert.show('网络连接断开，请检查网络设置，重新连接', "", 0x4, function (e:UIEvent):void {
+					NetErrorView.getInstance().open()
+				})
+			}
 		}
 		
 		public function getVersion(resultHandler:Function = null, faultHandler:Function = null):void

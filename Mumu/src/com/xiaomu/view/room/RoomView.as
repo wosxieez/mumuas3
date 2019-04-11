@@ -514,6 +514,8 @@ package com.xiaomu.view.room
 			this.roomname = room.rn
 			this.roomrule = room.ru
 			Api.getInstane().addEventListener(ApiEvent.ON_ROOM, onNotificationHandler)
+			Api.getInstane().addEventListener(ApiEvent.JOIN_ROOM, onJoinRoomHandler)
+			invalidateProperties()
 			Api.getInstane().queryRoomStatus(function (response:Object):void {
 				if (response.code == 0) {
 					roomData = response.data
@@ -524,6 +526,21 @@ package com.xiaomu.view.room
 				} else {
 					AppAlert.show('房间数据加载失败')
 					close()
+				}
+			}) 
+		}
+		
+		protected function onJoinRoomHandler(event:ApiEvent):void
+		{
+			// 正在恢复房间数据
+			trace('正在恢复房间数据')
+			Api.getInstane().queryRoomStatus(function (response:Object):void {
+				if (response.code == 0) {
+					trace('恢复成功')
+					needRiffleCard = true
+					roomData = response.data
+				} else {
+					trace('恢复失败')
 				}
 			}) 
 		}
@@ -577,6 +594,9 @@ package com.xiaomu.view.room
 						zhunbeiButton.visible = !zhunbeiButton2.visible
 					}
 				}
+			} else {
+				zhunbeiButton.visible = true
+				zhunbeiButton2.visible = false
 			}
 		}
 		
@@ -1371,19 +1391,17 @@ package com.xiaomu.view.room
 		}
 		
 		public function close():void {
+			Api.getInstane().removeEventListener(ApiEvent.ON_ROOM, onNotificationHandler)
+			Api.getInstane().removeEventListener(ApiEvent.JOIN_ROOM, onJoinRoomHandler)
+			Api.getInstane().leaveRoom(function (response:Object):void {})
+			hideAllUI()
+			Audio.getInstane().stopTimeout()
+				
 			if (this.roomrule.id > 0) {
-				Api.getInstane().removeEventListener(ApiEvent.ON_ROOM, onNotificationHandler)
-				Api.getInstane().leaveRoom(function (response:Object):void {})
-				hideAllUI()
 				MainView.getInstane().popView(GroupView)
-				Audio.getInstane().stopTimeout()
 			} else {
-				Api.getInstane().removeEventListener(ApiEvent.ON_ROOM, onNotificationHandler)
-				Api.getInstane().leaveRoom(function (response:Object):void {})
 				Api.getInstane().leaveGroup()
-				hideAllUI()
 				MainView.getInstane().popView(HomeView)
-				Audio.getInstane().stopTimeout()
 			}
 		}
 		

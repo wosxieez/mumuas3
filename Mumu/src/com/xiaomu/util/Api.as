@@ -13,6 +13,7 @@ package com.xiaomu.util
 	[Event(name="onGroup", type="com.xiaomu.event.ApiEvent")]
 	[Event(name="onRoom", type="com.xiaomu.event.ApiEvent")]
 	[Event(name="onGroupRoom", type="com.xiaomu.event.ApiEvent")]
+	[Event(name="joinRoom", type="com.xiaomu.event.ApiEvent")]
 	
 	public class Api extends EventDispatcher
 	{
@@ -60,6 +61,8 @@ package com.xiaomu.util
 			} else {
 				server = AppData.getInstane().serverHost
 			}
+			// test
+//			server ='127.0.0.1'
 			trace('战斗服务器地址...', server)
 			pomelo.init(server, 3014)
 			pomelo.addEventListener(PomeloEvent.HANDSHAKE, onConnectHandler);
@@ -85,6 +88,8 @@ package com.xiaomu.util
 			} else {
 				server = AppData.getInstane().serverHost
 			}
+			// test
+//			server ='127.0.0.1'
 			trace('战斗服务器地址...', server)
 			pomelo.init(server, 3014)
 			pomelo.addEventListener(PomeloEvent.HANDSHAKE, onConnectHandler);
@@ -135,11 +140,15 @@ package com.xiaomu.util
 						})
 						
 						// 看是不是重连 如果是重连切有房间号 自动加入房间
-						if (isReconnect) trace('正在重连...加入群成功')
-						else trace('手动连接...加入群成功')
-						if (isReconnect && savedRoomname) {
-							reJoinRoom(savedRoomname)
-						}
+						if (isReconnect) {
+							trace('正在重连...加入群成功', savedRoomname)
+							if (savedRoomname) {
+								reJoinRoom(savedRoomname)
+							}
+						} 
+						else {
+							trace('手动连接...加入群成功')
+						} 
 					} else {
 						if (isReconnect) trace('正在重连...加入群失败')
 						else trace('手动连接...加入群失败')
@@ -216,9 +225,10 @@ package com.xiaomu.util
 					// 记录加入的房间号
 					if (response.code == 0) {
 						trace('手动连接...加入房间成功')
-						roomname = response.data.rn
+						savedRoomname = response.data.rn
+						dispatchEvent(new ApiEvent(ApiEvent.JOIN_ROOM))
 					} else {
-						roomname = null
+						savedRoomname = null
 						trace('手动连接...加入房间失败')
 					}
 				})
@@ -234,6 +244,7 @@ package com.xiaomu.util
 				function(response:Object):void {
 					if (response.code == 0) {
 						trace('正在重连...加入房间成功')
+						dispatchEvent(new ApiEvent(ApiEvent.JOIN_ROOM))
 						if (reconnectAction) sendAction(reconnectAction)
 					} else {
 						trace('正在重连...加入房间失败')
@@ -297,6 +308,12 @@ package com.xiaomu.util
 			pomelo.request('chat.roomHandler.pushMessage', data, function(response:Object):void {
 				cb(response)
 			})
+		}
+		
+		public function checkReconnect():void {
+			if (savedGroupid >= 0 && savedUsername && !pomelo) {
+				reconnect()
+			}
 		}
 		
 		public function reconnect(action:Object = null):void {

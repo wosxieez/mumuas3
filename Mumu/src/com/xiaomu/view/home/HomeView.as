@@ -279,6 +279,7 @@ package com.xiaomu.view.home
 		}
 		
 		public function init():void{
+			HttpApi.getInstane().startMonitor()
 			Audio.getInstane().playBGM()
 			userInfoView.userInfoData = AppData.getInstane().user
 		}

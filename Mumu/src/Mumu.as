@@ -37,7 +37,6 @@ package
 			AppData.getInstane().versionNum = localXML.nss::versionNumber
 		}
 		
-		
 		[Embed(source="assets/bg.png")]
 		private var BgClass:Class
 		
