@@ -38,6 +38,7 @@ package com.xiaomu.view.room
 			AppManager.getInstance().addEventListener(AppManagerEvent.CHANGE_ROOM_TABLE_IMG,changeRoomTableImgHandler);
 			AppManager.getInstance().addEventListener(AppManagerEvent.LEAVE_GROUP_ROOM,leaveGroupRoomHandler);
 			AppManager.getInstance().addEventListener(AppManagerEvent.FIX_ROOM,fixRoomHandler);
+			AppManager.getInstance().addEventListener(AppManagerEvent.FORCE_LEAVE,forceLeaveHandler);
 		}
 		
 		protected function leaveGroupRoomHandler(event:AppManagerEvent):void
@@ -1437,12 +1438,18 @@ package com.xiaomu.view.room
 		 */
 		protected function showSettingPanelBtnHandler(event:MouseEvent):void
 		{
+			var roomSettingPanel:RoomSettingPanel = new RoomSettingPanel();
 			PopUpManager.centerPopUp(PopUpManager.addPopUp(new RoomSettingPanel(),null,true,true));
 		}
 		
 		protected function fixRoomHandler(event:AppManagerEvent):void
 		{
 			Api.getInstane().reconnect()
+		}
+		
+		protected function forceLeaveHandler(event:AppManagerEvent):void
+		{
+			close();
 		}
 		
 	}

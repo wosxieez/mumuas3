@@ -58,6 +58,11 @@ package com.xiaomu.event
 		 */
 		public static const FIX_ROOM:String = 'fixRoom';
 		
+		/**
+		 *强制退出房间
+		 */
+		public static const FORCE_LEAVE:String='forceLeave'
+		
 		public static const REFRESH_GROUP_DATA:String = 'refreshGroupData'
 		
 		/** Message用户事件信息存储*/

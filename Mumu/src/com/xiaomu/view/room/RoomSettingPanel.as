@@ -1,5 +1,6 @@
 package com.xiaomu.view.room
 {
+	import com.xiaomu.component.AppAlert;
 	import com.xiaomu.component.ImageButton;
 	import com.xiaomu.event.AppManagerEvent;
 	import com.xiaomu.manager.AppManager;
@@ -8,8 +9,10 @@ package com.xiaomu.view.room
 	
 	import flash.events.MouseEvent;
 	
+	import coco.component.Alert;
 	import coco.component.Image;
 	import coco.core.UIComponent;
+	import coco.event.UIEvent;
 	import coco.manager.PopUpManager;
 	
 	public class RoomSettingPanel extends UIComponent
@@ -27,6 +30,7 @@ package com.xiaomu.view.room
 		private var changeTableBtn:ImageButton;
 		private var fixBtn:ImageButton;
 		private var leaveRoomBtn:ImageButton;
+		private var leaveForceBtn:ImageButton;
 		
 		override protected function createChildren():void
 		{
@@ -76,6 +80,14 @@ package com.xiaomu.view.room
 			leaveRoomBtn.height = 68;
 			leaveRoomBtn.addEventListener(MouseEvent.CLICK,leaveRoomBtnHandler);
 			addChild(leaveRoomBtn);
+			
+			leaveForceBtn = new ImageButton();
+			leaveForceBtn.upImageSource = 'assets/room/btn_qztc_normal.png';
+			leaveForceBtn.downImageSource = 'assets/room/btn_qztc_press.png';
+			leaveForceBtn.width = 168;
+			leaveForceBtn.height = 68;
+			leaveForceBtn.addEventListener(MouseEvent.CLICK,leaveForceBtnHandler);
+			addChild(leaveForceBtn);
 		}
 		
 		override protected function updateDisplayList():void
@@ -94,11 +106,16 @@ package com.xiaomu.view.room
 			changeTableBtn.x = width-changeTableBtn.width-20;
 			changeTableBtn.y = gameSetBtn.y+gameSetBtn.height+30;
 			
+			leaveForceBtn.x = changeTableBtn.x;
+			leaveForceBtn.y = changeTableBtn.y+changeTableBtn.height+30;
+			
 			fixBtn.x = width-fixBtn.width-20;
-			fixBtn.y = changeTableBtn.y+changeTableBtn.height+30;
+			fixBtn.y = leaveForceBtn.y+leaveForceBtn.height+30;
 			
 			leaveRoomBtn.x = width-leaveRoomBtn.width-20;
 			leaveRoomBtn.y = fixBtn.y+fixBtn.height+30;
+			
+			
 		}
 		
 		protected function closeBtnHandler(event:MouseEvent):void
@@ -137,6 +154,22 @@ package com.xiaomu.view.room
 		protected function fixBtn_clickHandler(event:MouseEvent):void
 		{
 			AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.FIX_ROOM));
+			PopUpManager.removePopUp(this);
+		}
+		
+		protected function leaveForceBtnHandler(event:MouseEvent):void
+		{
+			PopUpManager.removePopUp(this);
+			AppAlert.show('是否确定强制退出', '',Alert.OK|Alert.CANCEL, function (e:UIEvent):void {
+				if (e.detail == Alert.OK) {
+					trace("强制退出");
+					closeSelf();
+					AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.FORCE_LEAVE));
+				}},null);
+		}
+		
+		private function closeSelf():void
+		{
 			PopUpManager.removePopUp(this);
 		}
 	}

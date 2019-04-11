@@ -15,6 +15,7 @@ package com.xiaomu.manager
 	[Event(name="updateGroupRulesSuccess", type="com.xiaomu.event.AppManagerEvent")]
 	[Event(name="createGroupSuccess", type="com.xiaomu.event.AppManagerEvent")]
 	[Event(name="refreshGroupData", type="com.xiaomu.event.AppManagerEvent")]
+	[Event(name="forceLeave", type="com.xiaomu.event.AppManagerEvent")]
 	
 	public class AppManager extends EventDispatcher
 	{
