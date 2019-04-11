@@ -13,6 +13,7 @@ package com.xiaomu.renderer
 		}
 		
 		private var typeIcon:Image;
+		private var huIcon:Image;
 		private var cardIcon1:Image;
 		private var cardIcon2:Image;
 		private var cardIcon3:Image;
@@ -35,6 +36,9 @@ package com.xiaomu.renderer
 			
 			cardIcon1 = new Image();
 			addChild(cardIcon1);
+			
+			huIcon = new Image();
+			addChild(huIcon);
 		}
 		
 		override protected function commitProperties():void
@@ -42,11 +46,14 @@ package com.xiaomu.renderer
 			super.createChildren();
 			
 			if(data){
+				trace("data",JSON.stringify(data));
 				cardIcon4.visible = true;
 				cardIcon3.visible = true;
 				cardIcon2.visible = true;
 				cardIcon1.visible = true;
 				typeIcon.source = "assets/cards/type_"+data.name+".png";
+				huIcon.source = "assets/cards/hukuang.png";
+				huIcon.visible = data.hu==true;
 				if(data.name=='pao'){
 					cardIcon4.visible = true;
 					cardIcon4.source = 'assets/cards/Card_half_'+data.cards[3]+".png"
@@ -103,8 +110,8 @@ package com.xiaomu.renderer
 			typeIcon.width = width;
 			typeIcon.height = height;
 			
-			cardIcon1.width = cardIcon2.width = cardIcon3.width =cardIcon4.width =  width;
-			cardIcon1.height = cardIcon2.height = cardIcon3.height =cardIcon4.height =  height;
+			huIcon.width = cardIcon1.width = cardIcon2.width = cardIcon3.width =cardIcon4.width =  width;
+			huIcon.height = cardIcon1.height = cardIcon2.height = cardIcon3.height =cardIcon4.height =  height;
 			
 			cardIcon4.x = 0;
 			cardIcon4.y = typeIcon.y+typeIcon.height+10;
@@ -117,6 +124,8 @@ package com.xiaomu.renderer
 			
 			cardIcon1.x = 0;
 			cardIcon1.y = cardIcon2.y+cardIcon2.height-2;
+			
+			huIcon.y = cardIcon4.y+(height-2)*(4-data.cards.length);
 		}
 	}
 }
