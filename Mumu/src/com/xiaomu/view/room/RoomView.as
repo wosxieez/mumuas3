@@ -684,6 +684,7 @@ package com.xiaomu.view.room
 				if (draggingCardUI) {
 					draggingCardUI.stopDrag()
 					this.removeEventListener(MouseEvent.MOUSE_UP, this_mouseUpHandler)
+					this.removeEventListener(MouseEvent.MOUSE_MOVE, this_mouseMoveHandler)
 				}
 				
 				if (!myHandCards) {
@@ -1085,11 +1086,18 @@ package com.xiaomu.view.room
 				}
 				
 				this.addEventListener(MouseEvent.MOUSE_UP, this_mouseUpHandler)
+				this.addEventListener(MouseEvent.MOUSE_MOVE, this_mouseMoveHandler)
 			}
+		}
+		
+		protected function this_mouseMoveHandler(event:MouseEvent):void
+		{
+			event.updateAfterEvent()
 		}
 		
 		protected function this_mouseUpHandler(event:MouseEvent):void {
 			this.removeEventListener(MouseEvent.MOUSE_UP, this_mouseUpHandler)
+			this.removeEventListener(MouseEvent.MOUSE_MOVE, this_mouseMoveHandler)
 			if (draggingCardUI) {
 				draggingCardUI.stopDrag()
 				if (myActionUser && myActionUser.nd) {
