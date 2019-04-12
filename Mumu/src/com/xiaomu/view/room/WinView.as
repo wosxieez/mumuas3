@@ -161,14 +161,16 @@ package com.xiaomu.view.room
 			
 			trace("winView一把结束后的数据：",JSON.stringify(data));
 			
-			var hc:Number = data.hc; ///最后胡的牌
-			var groupCards:Array = data.us[0].groupCards as Array;
-			for (var i:int = groupCards.length-1; i >= 0; i--) 
-			{
-				var arr :Array =  groupCards[i].cards as Array;
-				groupCards[i].hu=arr[arr.length-1]==hc
-				if(groupCards[i].hu){
-					break
+			if(data.hn){
+				var hc:Number = data.hc; ///最后胡的牌
+				var groupCards:Array = data.us[0].groupCards as Array;
+				for (var i:int = groupCards.length-1; i >= 0; i--) 
+				{
+					var arr :Array =  groupCards[i].cards as Array;
+					groupCards[i].hu=arr[arr.length-1]==hc
+					if(groupCards[i].hu){
+						break
+					}
 				}
 			}
 			//			trace("处理后的数据：",JSON.stringify(groupCards));///找到胡的牌
