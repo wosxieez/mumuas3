@@ -315,8 +315,6 @@ package com.xiaomu.view.room
 		
 		override protected function commitProperties():void {
 			super.commitProperties()
-				
-			trace('失效...')
 			
 			try
 			{
@@ -1240,15 +1238,15 @@ package com.xiaomu.view.room
 				}
 				case Notifications.onGameOver: 
 				{
-					Audio.getInstane().playHandle('hu')
 					roomData = notification.data
-					//					AppAlert.show('一局游戏结束，胡息满一百') ///游戏结束房卡消耗。人自动退出到游戏的群界面
+					if (roomData.hn) {
+						Audio.getInstane().playHandle('hu')
+					}
 					trace("roomView一局游戏结束:",JSON.stringify(roomData));
 					var endView:EndResultView = new EndResultView();
 					endView.data = roomData;
 					endView.ruleData = this.roomrule;
 					PopUpManager.centerPopUp(PopUpManager.addPopUp(endView,null,true,false,0,0.8));
-					
 					var winView3:WinView = new WinView();
 					winView3.data = roomData;
 					winView3.allOver = true;

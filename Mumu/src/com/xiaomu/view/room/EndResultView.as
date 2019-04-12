@@ -120,7 +120,7 @@ package com.xiaomu.view.room
 		{
 			super.commitProperties();
 			
-			if(data){
+			if(data && data.hn){
 				if(data.hn==data.us[0].username){
 					winnerFrom.data = data.us[0];
 					otherFrom.data = data.us[1];

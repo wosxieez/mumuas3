@@ -26,7 +26,6 @@ package com.xiaomu.util
 			var countedCards:Dictionary = countBy(cards)
 			var riffledCards:Array = [];
 			var card:int
-			trace('洗牌...')
 			// 四张 三张
 			for (card in countedCards) {
 				if (countedCards[card] == 4) {
@@ -340,15 +339,27 @@ package com.xiaomu.util
 		 * @param cards: 手中的牌，或者手中的牌加新翻开的底牌。
 		 */
 		public function shouShun(cards):Array {
+			var kanShuns:Array = []
+			var countedCards:Dictionary = countBy(cards)
+			for (var card:int in countedCards) {
+				if (countedCards[card] == 3) {
+					kanShuns.push({ name: Actions.Kan, cards: [card, card, card] })
+					deleteCard(cards, card)
+					deleteCard(cards, card)
+					deleteCard(cards, card)
+				}
+			}
+			
 			var allShuns:Array = canShun(cards, [])
 			if (allShuns && allShuns.length > 0) {
 				var maxHuXi:int = 0
 				var maxHuGroup:Array = null
 				for each(var shuns:Array in allShuns) {
-					var huxi:int =getHuXi(shuns)
+					var lastedShuns:Array = kanShuns.concat(shuns)
+					var huxi:int =getHuXi(lastedShuns)
 					if (huxi >= maxHuXi) {
 						maxHuXi = huxi
-						maxHuGroup = shuns
+						maxHuGroup = lastedShuns
 					}
 				}
 				return maxHuGroup
@@ -713,11 +724,6 @@ package com.xiaomu.util
 				var countedCards:Object = countBy(cards);
 				var currentCard:int = cards[0]
 				countedCards[currentCard]--
-				
-				// 列出坎
-				if (countedCards[currentCard] > 1) {
-					canShuns.push({ name: Actions.Kan, cards: [currentCard, currentCard, currentCard] }) 
-				}
 				
 				// 列出吃
 				if (countedCards[currentCard - 1]) {
