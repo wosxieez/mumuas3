@@ -311,6 +311,8 @@ package com.xiaomu.view.room
 		
 		override protected function commitProperties():void {
 			super.commitProperties()
+				
+			trace('失效...')
 			
 			try
 			{

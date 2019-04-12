@@ -26,7 +26,7 @@ package com.xiaomu.util
 			var countedCards:Dictionary = countBy(cards)
 			var riffledCards:Array = [];
 			var card:int
-			
+			trace('洗牌...')
 			// 四张 三张
 			for (card in countedCards) {
 				if (countedCards[card] == 4) {
@@ -259,72 +259,72 @@ package com.xiaomu.util
 					}
 				}
 				// 看手里牌能不能跑
-				var aHandCards:Array = JSON.parse(JSON.stringify(cardsOnHand)) as Array
-				var aGroupCards:Array = JSON.parse(JSON.stringify(cardsOnGroup)) as Array
-				var canPaoCards:Array = canTi(aHandCards, currentCard)
+				var aHandCards1:Array = JSON.parse(JSON.stringify(cardsOnHand)) as Array
+				var aGroupCards1:Array = JSON.parse(JSON.stringify(cardsOnGroup)) as Array
+				var canPaoCards:Array = canTi(aHandCards1, currentCard)
 				if (canPaoCards) {
 					canChiPaoPeng = true
 					for each(var card:int in canPaoCards) {
-						deleteCard(aHandCards, card)
+						deleteCard(aHandCards1, card)
 					}
-					aGroupCards.push({ name: Actions.Ti, cards: [currentCard, currentCard, currentCard, currentCard] })
-					var shun:Array = shouShun(aHandCards)
-					if (shun) {
-						allGroups.push(aGroupCards.concat(shun))
+					aGroupCards1.push({ name: Actions.Ti, cards: [currentCard, currentCard, currentCard, currentCard] })
+					var shun1:Array = shouShun(aHandCards1)
+					if (shun1) {
+						allGroups.push(aGroupCards1.concat(shun1))
 					}
 				}
 				
 				// 看手里牌能不能碰
-				var aHandCards:Array = JSON.parse(JSON.stringify(cardsOnHand)) as Array
-				var aGroupCards:Array = JSON.parse(JSON.stringify(cardsOnGroup)) as Array 
-				var canPengCards:Array = canPeng(aHandCards, currentCard)
+				var aHandCards2:Array = JSON.parse(JSON.stringify(cardsOnHand)) as Array
+				var aGroupCards2:Array = JSON.parse(JSON.stringify(cardsOnGroup)) as Array 
+				var canPengCards:Array = canPeng(aHandCards2, currentCard)
 				if (canPengCards) {
 					canChiPaoPeng = true
-					for each(var card:int in canPengCards) {
-						deleteCard(aHandCards, card)
+					for each(var card2:int in canPengCards) {
+						deleteCard(aHandCards2, card2)
 					}
-						aGroupCards.push({ name: Actions.Wei, cards: [currentCard, currentCard, currentCard] })
-					var shun:Array = shouShun(aHandCards)
-					if (shun) {
-						allGroups.push(aGroupCards.concat(shun))
+					aGroupCards2.push({ name: Actions.Wei, cards: [currentCard, currentCard, currentCard] })
+					var shun2:Array = shouShun(aHandCards2)
+					if (shun2) {
+						allGroups.push(aGroupCards2.concat(shun2))
 					}
 				}
 				
 				// 看手里牌能不能吃
-				var canChiGroups = canChi(cardsOnHand, currentCard)
+				var canChiGroups:Array = canChi(cardsOnHand, currentCard)
 				if (canChiGroups) {
 					canChiPaoPeng = true
 					for each(var chiGroup:Object in canChiGroups) {
-						var aHandCards:Array = JSON.parse(JSON.stringify(cardsOnHand)) as Array
-						var aGroupCards:Array = JSON.parse(JSON.stringify(cardsOnGroup)) as Array
-						for each(var card:int in chiGroup.cards) {
-							deleteCard(aHandCards, card)
+						var aHandCards3:Array = JSON.parse(JSON.stringify(cardsOnHand)) as Array
+						var aGroupCards3:Array = JSON.parse(JSON.stringify(cardsOnGroup)) as Array
+						for each(var card3:int in chiGroup.cards) {
+							deleteCard(aHandCards3, card3)
 						}
 						chiGroup.cards.push(currentCard)
-						aGroupCards.push({ name: Actions.Chi, cards: chiGroup.cards })
-						var shun:Array = shouShun(aHandCards)
-						if (shun) {
-							allGroups.push(aGroupCards.concat(shun))
+						aGroupCards3.push({ name: Actions.Chi, cards: chiGroup.cards })
+						var shun3:Array = shouShun(aHandCards3)
+						if (shun3) {
+							allGroups.push(aGroupCards3.concat(shun3))
 						}
 					}
 				}
 				
 				if (!canChiPaoPeng) {
-					var aHandCards:Array = JSON.parse(JSON.stringify(cardsOnHand)) as Array
-					var aGroupCards:Array = JSON.parse(JSON.stringify(cardsOnGroup)) as Array
-					aHandCards.push(currentCard)
-					var shun:Array = shouShun(aHandCards)
-					if (shun) {
-						allGroups.push(aGroupCards.concat(shun))
+					var aHandCards4:Array = JSON.parse(JSON.stringify(cardsOnHand)) as Array
+					var aGroupCards4:Array = JSON.parse(JSON.stringify(cardsOnGroup)) as Array
+					aHandCards4.push(currentCard)
+					var shun4:Array = shouShun(aHandCards4)
+					if (shun4) {
+						allGroups.push(aGroupCards4.concat(shun4))
 					}
 				}
 			} else {
 				// currentCard === 0
-				var aHandCards:Array = JSON.parse(JSON.stringify(cardsOnHand)) as Array
-				var aGroupCards:Array = JSON.parse(JSON.stringify(cardsOnGroup)) as Array
-				var shun:Array = shouShun(aHandCards)
-				if (shun) {
-					allGroups.push(aGroupCards.concat(shun))
+				var aHandCards5:Array = JSON.parse(JSON.stringify(cardsOnHand)) as Array
+				var aGroupCards5:Array = JSON.parse(JSON.stringify(cardsOnGroup)) as Array
+				var shun5:Array = shouShun(aHandCards5)
+				if (shun5) {
+					allGroups.push(aGroupCards5.concat(shun5))
 				}
 			}
 			
@@ -340,115 +340,21 @@ package com.xiaomu.util
 		 * @param cards: 手中的牌，或者手中的牌加新翻开的底牌。
 		 */
 		public function shouShun(cards):Array {
-			var countedCards:Dictionary = countBy(cards)
-			var results:Array = [];
-			
-			// 处理四张 三张
-			for (var key:int in countedCards) {
-				if (countedCards[key] == 4) {
-					results.push({ name: Actions.Ti, cards: [key, key, key, key] });
-					delete countedCards[key];
-				} else if (countedCards[key] === 3) {
-					results.push({ name: Actions.Kan, cards: [key, key, key] });
-					delete countedCards[key];
-				}
-			}
-			
-			// 去掉2，7 10
-			if (countedCards[2] >= 1 && countedCards[7] >= 1 && countedCards[10] >= 1) {
-				results.push({ name: Actions.Chi, cards: [2, 7, 10] });
-				countedCards[2]--
-				countedCards[7]--
-				countedCards[10]--
-			}
-			if (countedCards[2] >= 1 && countedCards[7] >= 1 && countedCards[10] >= 1) {
-				results.push({ name: Actions.Chi, cards: [2, 7, 10] });
-				countedCards[2]--
-				countedCards[7]--
-				countedCards[10]--
-			}
-			// 去掉12，17 20
-			if (countedCards[12] >= 1 && countedCards[17] >= 1 && countedCards[20] >= 1) {
-				results.push({ name: Actions.Chi, cards: [12, 17, 20] });
-				countedCards[12]--
-				countedCards[17]--
-				countedCards[20]--
-			}
-			if (countedCards[12] >= 1 && countedCards[17] >= 1 && countedCards[20] >= 1) {
-				results.push({ name: Actions.Chi, cards: [12, 17, 20] });
-				countedCards[12]--
-				countedCards[17]--
-				countedCards[20]--
-			}
-			
-			var findShunzi:Function = function (singleCard:int):Array {
-				// 顺子
-				if (countedCards[singleCard + 1] && countedCards[singleCard + 2] && singleCard != 9 && singleCard != 10) {
-					countedCards[singleCard]--;
-					countedCards[singleCard + 1]--;
-					countedCards[singleCard + 2]--;
-					return [singleCard, singleCard + 1, singleCard + 2];
-				}
-				if (countedCards[singleCard + 1] && countedCards[singleCard - 1] && singleCard !== 10 && singleCard !== 11) {
-					countedCards[singleCard]--;
-					countedCards[singleCard + 1]--;
-					countedCards[singleCard - 1]--;
-					return [singleCard - 1, singleCard, singleCard + 1];
-				}
-				
-				if (countedCards[singleCard - 1] && countedCards[singleCard - 2] && singleCard !== 11 && singleCard !== 12) {
-					countedCards[singleCard]--;
-					countedCards[singleCard - 1]--;
-					countedCards[singleCard - 2]--;
-					return [singleCard - 2, singleCard - 1, singleCard];
-				}
-				
-				// 大小混搭
-				if (singleCard > 10 && (countedCards[singleCard - 10] > 1)) {
-					countedCards[singleCard]--;
-					countedCards[singleCard - 10] -= 2;
-					return [singleCard, singleCard - 10, singleCard - 10];
-				}
-				if (singleCard < 11 && (countedCards[singleCard + 10] > 1)) {
-					countedCards[singleCard]--;
-					countedCards[singleCard + 10] -= 2;
-					return [singleCard, singleCard + 10, singleCard + 10];
-				}
-				
-				return null
-			}
-			
-			for (var key2:int in countedCards) {
-				if (countedCards[key2] == 1) {
-					var shunzi:Array = findShunzi(key2)
-					if (shunzi) {
-						results.push({ name: Actions.Chi, cards: shunzi })
+			var allShuns:Array = canShun(cards, [])
+			if (allShuns && allShuns.length > 0) {
+				var maxHuXi:int = 0
+				var maxHuGroup:Array = null
+				for each(var shuns:Array in allShuns) {
+					var huxi:int =getHuXi(shuns)
+					if (huxi >= maxHuXi) {
+						maxHuXi = huxi
+						maxHuGroup = shuns
 					}
-				} 
-			}
-			
-			for (var key3:int in countedCards) {
-				if (countedCards[key3] == 0) {
-					delete countedCards[key3];
-				} 
-			}
-			
-			var keys:Array = []
-			for (var key4:int in countedCards) {
-				keys.push(key4)
-			}
-			
-			if (keys.length > 1) {
-				return null
-			} else if (keys.length == 1) {
-				if (countedCards[keys[0]] == 2) {
-					results.push({ name: Actions.Jiang, cards: [parseInt(keys[0]), parseInt(keys[0])] })
-				} else {
-					return null
 				}
+				return maxHuGroup
+			} else {
+				return null
 			}
-			
-			return results
 		}
 		
 		public function getHuXi(groups:Array):int {
@@ -791,6 +697,133 @@ package com.xiaomu.util
 				}
 			}
 			return validBiDatas
+		}
+		
+		
+		private function canShun(cards:Array, needDeleteCards:Array):Array {
+			
+			for each(var card:int in needDeleteCards) {
+				deleteCard(cards, card)
+			}
+			
+			var allShuns:Array = []
+			var canShuns:Array = []
+			
+			if (cards.length > 0) {
+				var countedCards:Object = countBy(cards);
+				var currentCard:int = cards[0]
+				countedCards[currentCard]--
+				
+				// 列出坎
+				if (countedCards[currentCard] > 1) {
+					canShuns.push({ name: Actions.Kan, cards: [currentCard, currentCard, currentCard] }) 
+				}
+				
+				// 列出吃
+				if (countedCards[currentCard - 1]) {
+					if (countedCards[currentCard - 2] && currentCard !== 11 && currentCard !== 12) {
+						canShuns.push({ name: Actions.Chi, cards: [currentCard - 2, currentCard - 1, currentCard] }) // 判断8在尾部 查询 6 7 '8'  尾牌不能等于 11 12
+					}
+					if (countedCards[currentCard + 1] && currentCard !== 10 && currentCard !== 11) {
+						canShuns.push({ name: Actions.Chi, cards: [currentCard - 1, currentCard, currentCard + 1] }) // 判断8在中部 查询 7 '8' 9  中牌不能等于 10 11
+					}
+				}
+				if (countedCards[currentCard + 1]) {
+					if (countedCards[currentCard + 2] && currentCard !== 9 && currentCard !== 10) {
+						canShuns.push({ name: Actions.Chi, cards: [currentCard, currentCard + 1, currentCard + 2] }) // 判断8在首部 查询 '8' 9 10 首牌不能等于 9 10
+					}
+				}
+				if (currentCard < 11) {
+					// 8
+					if (countedCards[currentCard] && countedCards[currentCard + 10]) {
+						canShuns.push({ name: Actions.Chi, cards: [currentCard, currentCard, currentCard + 10] }) // 判断 8 8 18
+					}
+					if (countedCards[currentCard + 10] >= 2) {
+						canShuns.push({ name: Actions.Chi, cards: [currentCard, currentCard + 10, currentCard + 10] }) // 判断 8 18 18
+					}
+					// 2 7 10
+					if (currentCard == 2) {
+						if (countedCards[7] && countedCards[10]) {
+							canShuns.push({ name: Actions.Chi, cards: [7, 10] })
+						}
+					} else if (currentCard == 7) {
+						if (countedCards[2] && countedCards[10]) {
+							canShuns.push({ name: Actions.Chi, cards: [2, 10] })
+						}
+					} else if (currentCard == 10) {
+						if (countedCards[2] && countedCards[7]) {
+							canShuns.push({ name: Actions.Chi, cards: [2, 7] })
+						}
+					}
+				} else {
+					// 18
+					if (countedCards[currentCard] && countedCards[currentCard - 10]) {
+						canShuns.push({ name: Actions.Chi, cards: [currentCard, currentCard, currentCard - 10] }) // 判断 18 18 8
+					}
+					if (countedCards[currentCard - 10] >= 2) {
+						canShuns.push({ name: Actions.Chi, cards: [currentCard, currentCard - 10, currentCard - 10] }) // 判断 18 8 8
+					}
+					if (currentCard == 12) {
+						if (countedCards[17] && countedCards[20]) {
+							canShuns.push({ name: Actions.Chi, cards: [12, 17, 20] }) 
+						}
+					} else if (currentCard == 17) {
+						if (countedCards[12] && countedCards[20]) {
+							canShuns.push({ name: Actions.Chi, cards: [12, 17, 20] })
+						}
+					} else  if (currentCard == 20) {
+						if (countedCards[12] && countedCards[17]) {
+							canShuns.push({ name: Actions.Chi, cards: [12, 17, 20] })
+						}
+					}
+				}
+				
+				// 12 12
+				// 列出 将
+				if (countedCards[currentCard] >= 1) {
+					canShuns.push({ name: Actions.Jiang, cards: [currentCard, currentCard] })
+				}
+				
+				if (canShuns.length > 0) {
+					for each(var shun:Object in canShuns) {
+						var subShuns:Array = canShun(JSON.parse(JSON.stringify(cards)) as Array, shun.cards)
+						if (subShuns) {
+							if (subShuns.length > 0) {
+								for each(var subShun:Array in subShuns) {
+									allShuns.push([shun].concat(subShun))
+								}
+							} else {
+								allShuns.push([shun])
+							}
+						}
+					}
+					
+					var validAllShuns:Array = []
+					
+					for each(var shuns:Array in allShuns) {
+						var jc:int = 0
+						
+						for each(var shun2:Object in shuns) {
+							if (shun2.name === Actions.Jiang)
+								jc++
+						}
+						
+						if (jc <= 1) {
+							validAllShuns.push(shuns)
+						}
+					}
+					
+					if (validAllShuns.length > 0) {
+						return validAllShuns
+					} else {
+						return null
+					}
+				} else {
+					return null
+				}
+			} else {
+				return []
+			}
 		}
 		
 	}
