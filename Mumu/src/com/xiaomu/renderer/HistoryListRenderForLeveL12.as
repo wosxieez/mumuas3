@@ -57,7 +57,7 @@ package com.xiaomu.renderer
 			
 			timeLab = new Label();
 			timeLab.textAlign = TextAlign.LEFT;
-			timeLab.width = 200;
+			timeLab.width = 240;
 			timeLab.height = 30;
 			timeLab.color = 0x6f1614;
 			addChild(timeLab);
@@ -168,13 +168,13 @@ package com.xiaomu.renderer
 		{
 			super.commitProperties();
 			
-			timeLab.text = data.createdAt;
+			timeLab.text = data.newDate;
 			wanfaLab.text = data.tc==0?"上下分":"玩法:"+data.run;
 			tcLab.text = data.tc==0?"":"提成:"+data.tc;
-			winNameTitle.text = data.tc==0?"上分者":"赢家";
+			winNameTitle.text = data.tc==0?"得分者":"赢家";
 			winName.text = data.wn!=""?("名:"+data.wn):("id:"+data.wid)
 			winTotal.text = data.wtfs+"\r(+"+data.wfs+")";
-			loseNameTitle.text = data.tc==0?"下分者":"输家";
+			loseNameTitle.text = data.tc==0?"出分者":"输家";
 			loseName.text = data.ln!=""?("名:"+data.ln):("id:"+data.lid)
 			loseTotal.text = data.ltfs+"\r("+data.lfs+")";
 			

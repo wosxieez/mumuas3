@@ -7,6 +7,7 @@ package com.xiaomu.view.group
 	import com.xiaomu.renderer.HistoryListRenderForLeveL34;
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.HttpApi;
+	import com.xiaomu.util.TimeFormat;
 	
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -136,12 +137,14 @@ package com.xiaomu.view.group
 			if(AppData.getInstane().groupLL==4||AppData.getInstane().groupLL==3){ ///如果是馆主或副馆主。可以看到该群的所有分值变动情况
 				HttpApi.getInstane().getfight({gid:AppData.getInstane().group.id},function(e:Event):void{
 					trace("馆主，副馆主。查询这个群的所有战绩和上下分记录");
-					trace(e.currentTarget.data);
 					var respones:Object = JSON.parse(e.currentTarget.data);
 					if(respones.code==0){
 						historyList.itemRendererClass = HistoryListRenderForLeveL34;
 						respones.data.sortOn("id", Array.NUMERIC | Array.DESCENDING);
-						trace(JSON.stringify(respones.data));
+						(respones.data as Array).map(function(element:*,index:int, arr:Array):Object{
+							element.beijingTime = TimeFormat.getTimeObj(element.createdAt).time;
+							element.newDate = TimeFormat.getTimeObj(element.createdAt).date;
+						})
 						historyData = respones.data;
 					}else{
 						AppSmallAlert.show("查询失败")
@@ -155,11 +158,14 @@ package com.xiaomu.view.group
 					]
 				},function(e:Event):void{
 					trace('普通成员。查询赢家id,或输家id。可以查询到个人的战绩和上下分记录');///查wid,lid。
-					trace(e.currentTarget.data);
 					var respones:Object = JSON.parse(e.currentTarget.data);
 					if(respones.code==0){
 						historyList.itemRendererClass = HistoryListRenderForLeveL0;
 						respones.data.sortOn("id", Array.NUMERIC | Array.DESCENDING);
+						(respones.data as Array).map(function(element:*,index:int, arr:Array):Object{
+							element.beijingTime = TimeFormat.getTimeObj(element.createdAt).time;
+							element.newDate = TimeFormat.getTimeObj(element.createdAt).date;
+						})
 						historyData = respones.data;
 					}else{
 						AppSmallAlert.show("查询失败")
@@ -178,11 +184,14 @@ package com.xiaomu.view.group
 					]
 				},function(e:Event):void{
 					trace("一二级管理员。自己的战绩，给别人的上下分。自己的提成");///查 wid,lid,w1id,w2id,l1id,l2id  （涉及到自己的id）
-					trace(e.currentTarget.data);
 					var respones:Object = JSON.parse(e.currentTarget.data);
 					if(respones.code==0){
 						historyList.itemRendererClass = HistoryListRenderForLeveL12;
 						respones.data.sortOn("id", Array.NUMERIC | Array.DESCENDING);
+						(respones.data as Array).map(function(element:*,index:int, arr:Array):Object{
+							element.beijingTime = TimeFormat.getTimeObj(element.createdAt).time;
+							element.newDate = TimeFormat.getTimeObj(element.createdAt).date;
+						})
 						historyData = respones.data;
 					}else{
 						AppSmallAlert.show("查询失败")
