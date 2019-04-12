@@ -37,7 +37,7 @@ package com.xiaomu.view.room
 			addChild(userHeadIcon);
 			
 			userNameLab = new Label();
-			userNameLab.text = '测试';
+			userNameLab.text = '';
 			userNameLab.textAlign = TextAlign.LEFT;
 			userNameLab.color = 0x89755c;
 			userNameLab.fontSize = 24;

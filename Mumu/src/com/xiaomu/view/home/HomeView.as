@@ -207,7 +207,7 @@ package com.xiaomu.view.home
 			Loading.getInstance().open()
 			Api.getInstane().joinGroup(AppData.getInstane().user.username, 0, function (response:Object):void {
 				if (response.code == 0) {
-					Api.getInstane().createRoom({cc: 1, hx: 15, id: 0}, function (response:Object):void {
+					Api.getInstane().createRoom({cc: 2, hx: 15, id: 0}, function (response:Object):void {
 						Loading.getInstance().close()
 						if (response.code == 0) {
 							RoomView(MainView.getInstane().pushView(RoomView)).init(response.data)

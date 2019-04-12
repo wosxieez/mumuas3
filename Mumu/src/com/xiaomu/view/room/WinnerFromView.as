@@ -137,7 +137,7 @@ package com.xiaomu.view.room
 			bgImg.source = 'assets/endAll/'+(isWinner?'floor_zjs04':'bac_02')+'.png';
 			
 			if (!data) return
-			trace('data:',JSON.stringify(data),data.tjs);
+//			trace('data:',JSON.stringify(data),data.tjs);
 			zongHuxiLab.text = data.thx+"";
 			zongFenLab.text = isWinner?"+"+data.tjs:""+data.tjs
 			zongFenLab.color = isWinner?0xed5330:0x459ad7;

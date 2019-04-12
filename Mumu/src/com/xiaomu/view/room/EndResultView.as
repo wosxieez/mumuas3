@@ -128,6 +128,11 @@ package com.xiaomu.view.room
 					winnerFrom.data = data.us[1];
 					otherFrom.data = data.us[0];
 				}
+			}else if(data && !data.hn){
+				winnerFrom.data = data.us[0];
+				if(data.us.length>1){
+					otherFrom.data = data.us[1];
+				}
 			}
 			
 			if(ruleData){
