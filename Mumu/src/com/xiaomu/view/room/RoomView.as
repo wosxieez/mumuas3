@@ -227,7 +227,8 @@ package com.xiaomu.view.room
 			addChild(iconLayer)
 			
 			canPengButton = new ImageButton()
-			canPengButton.upImageSource = Assets.getInstane().getAssets('oprate_peng0.png')
+			canPengButton.upImageSource = 'assets/room/Z_peng_light.png'
+			canPengButton.downImageSource = 'assets/room/Z_peng.png'
 			canPengButton.width = 154
 			canPengButton.height = 159
 			canPengButton.visible = false
@@ -235,7 +236,8 @@ package com.xiaomu.view.room
 			iconLayer.addChild(canPengButton)
 			
 			canChiButton = new ImageButton()
-			canChiButton.upImageSource = Assets.getInstane().getAssets('oprate_chi0.png')
+			canChiButton.upImageSource = 'assets/room/chi_light.png'
+			canChiButton.downImageSource = 'assets/room/chi.png'
 			canChiButton.width = 154
 			canChiButton.height = 159
 			canChiButton.visible = false
@@ -243,7 +245,8 @@ package com.xiaomu.view.room
 			iconLayer.addChild(canChiButton)
 			
 			cancelButton = new ImageButton()
-			cancelButton.upImageSource = Assets.getInstane().getAssets('oprate_close0.png')
+			cancelButton.upImageSource = 'assets/room/Z_guo_light.png'
+			cancelButton.downImageSource = 'assets/room/Z_guo.png'
 			cancelButton.width = 100
 			cancelButton.height = 103
 			cancelButton.visible = false
@@ -251,7 +254,8 @@ package com.xiaomu.view.room
 			iconLayer.addChild(cancelButton)
 			
 			canHuButton = new ImageButton()
-			canHuButton.upImageSource = Assets.getInstane().getAssets('oprate_hu0.png')
+			canHuButton.upImageSource = 'assets/room/Z_hu_light.png'
+			canHuButton.downImageSource = 'assets/room/Z_hu.png'
 			canHuButton.width = 154
 			canHuButton.height = 159
 			canHuButton.visible = false
