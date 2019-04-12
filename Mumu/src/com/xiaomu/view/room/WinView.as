@@ -2,6 +2,7 @@ package com.xiaomu.view.room
 {
 	import com.xiaomu.component.ImageButton;
 	import com.xiaomu.renderer.CardGroupRender;
+	import com.xiaomu.renderer.DipaiGroupRender;
 	import com.xiaomu.util.Actions;
 	import com.xiaomu.util.Api;
 	import com.xiaomu.util.AppData;
@@ -11,6 +12,7 @@ package com.xiaomu.view.room
 	
 	import coco.component.ButtonGroup;
 	import coco.component.Image;
+	import coco.component.Label;
 	import coco.core.UIComponent;
 	import coco.manager.PopUpManager;
 	
@@ -62,6 +64,8 @@ package com.xiaomu.view.room
 		private var titleImage:Image
 		private var closeImage:Image
 		private var readyImage:ImageButton;
+		private var dipaiLab:Label;
+		private var dipaigroup:ButtonGroup;
 		
 		private var _data:Object
 		
@@ -154,20 +158,46 @@ package com.xiaomu.view.room
 			readyImage.height = 70;
 			readyImage.addEventListener(MouseEvent.CLICK,readyImageHandler);
 			addChild(readyImage);
+			
+			dipaiLab = new Label();
+			dipaiLab.text = '底牌:';
+			dipaiLab.color = 0x3b2b21;
+			dipaiLab.height = 30;
+			dipaiLab.width = 100;
+			dipaiLab.fontSize = 24;
+			addChild(dipaiLab);
+			
+			dipaigroup = new ButtonGroup();
+			dipaigroup.itemRendererClass = DipaiGroupRender;
+			dipaigroup.height = dipaigroup.itemRendererHeight = 35;
+			dipaigroup.itemRendererWidth = 35;
+			dipaigroup.gap = 2;
+			addChild(dipaigroup);
 		}
 		
 		override protected function commitProperties():void {
 			super.commitProperties()
 			
 			trace("winView一把结束后的数据：",JSON.stringify(data));
+			if(data.cs){
+				dipaigroup.width = dipaigroup.itemRendererWidth*data.cs.length+dipaigroup.gap*(data.cs.length-1);
+				dipaigroup.dataProvider = data.cs;
+			}
 			
 			if(data.hn){
+				var groupCards:Array
+				if(data.hn==data.us[0].username){
+					groupCards = data.us[0].groupCards as Array;
+				}else{
+					groupCards = data.us[1].groupCards as Array;
+				}
 				var hc:Number = data.hc; ///最后胡的牌
-				var groupCards:Array = data.us[0].groupCards as Array;
 				for (var i:int = groupCards.length-1; i >= 0; i--) 
 				{
 					var arr :Array =  groupCards[i].cards as Array;
-					groupCards[i].hu=arr[arr.length-1]==hc
+					if(arr[arr.length-1]==hc){
+						groupCards[i].hu=true
+					}
 					if(groupCards[i].hu){
 						break
 					}
@@ -295,6 +325,12 @@ package com.xiaomu.view.room
 			background.height = height
 			
 			titleImage.x = (width - titleImage.width) / 2 
+			
+			dipaiLab.x = 50;
+			dipaiLab.y = 82;
+			
+			dipaigroup.x = dipaiLab.x+dipaiLab.width;
+			dipaigroup.y = dipaiLab.y-5;
 			
 			diban.x = ( width - diban.width ) / 2
 			diban1.x = ( width - diban1.width ) / 2

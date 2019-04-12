@@ -45,6 +45,7 @@ package com.xiaomu.view.room
 		private var rankBgImg:Image;
 		private var zongHuxiImg:Image;
 		private var zongHuxiLab:Label;
+		private var zongFenImg:Image;
 		private var zongFenLab:Label;
 		private var gaoShouImg:Image;
 		override protected function createChildren():void
@@ -72,7 +73,7 @@ package com.xiaomu.view.room
 			rankBgImg.addChild(zongHuxiImg);
 			
 			zongHuxiLab = new Label();
-			zongHuxiLab.fontSize = 40;
+			zongHuxiLab.fontSize = 34;
 			zongHuxiLab.textAlign= TextAlign.RIGHT;
 			zongHuxiLab.color = 0x89755c;
 			rankBgImg.addChild(zongHuxiLab);
@@ -83,6 +84,12 @@ package com.xiaomu.view.room
 			gaoShouImg.height = 81;
 			rankBgImg.addChild(gaoShouImg);
 			gaoShouImg.visible = false;
+			
+			zongFenImg = new Image();
+			zongFenImg.source = 'assets/endAll/text_total_score_n.png';
+			zongFenImg.width = 48*1.5;
+			zongFenImg.height = 31*1.5;
+			bgImg.addChild(zongFenImg);
 			
 			zongFenLab = new Label();
 			zongFenLab.fontSize = 40;
@@ -107,16 +114,20 @@ package com.xiaomu.view.room
 			zongHuxiImg.y = 5;
 			
 			zongHuxiLab.width = width/2;
-			zongHuxiLab.height = 45;
+			zongHuxiLab.height = 40;
 			zongHuxiLab.x = rankBgImg.x+rankBgImg.width-zongHuxiLab.width-20
+			zongHuxiLab.y = zongHuxiImg.y;
 				
 			gaoShouImg.x = 60;
 			gaoShouImg.y = 80;
 			
-			zongFenLab.width = bgImg.width;
+			zongFenImg.x = 30;
+			zongFenImg.y = bgImg.y+bgImg.height-zongFenImg.height-20;
+			
+			zongFenLab.x = zongFenImg.x+zongFenImg.width;
+			zongFenLab.y = zongFenImg.y;
+			zongFenLab.width = bgImg.width-zongFenLab.x;
 			zongFenLab.height = 45;
-			zongFenLab.x = 0;
-			zongFenLab.y = bgImg.x+bgImg.height-zongFenLab.height-20;
 		}
 		
 		override protected function commitProperties():void
@@ -128,7 +139,7 @@ package com.xiaomu.view.room
 			if (!data) return
 			trace('data:',JSON.stringify(data),data.tjs);
 			zongHuxiLab.text = data.thx+"";
-			zongFenLab.text = isWinner?"+ "+data.tjs:data.tjs
+			zongFenLab.text = isWinner?"+"+data.tjs:""+data.tjs
 			zongFenLab.color = isWinner?0xed5330:0x459ad7;
 			winnerHeadView.data = data;
 			gaoShouImg.visible = isWinner;

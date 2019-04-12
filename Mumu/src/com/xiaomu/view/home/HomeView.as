@@ -14,6 +14,7 @@ package com.xiaomu.view.home
 	import com.xiaomu.view.home.noticeBar.NoticeBar;
 	import com.xiaomu.view.home.setting.SettingPanelView;
 	import com.xiaomu.view.room.RoomView;
+	import com.xiaomu.view.room.WinView;
 	import com.xiaomu.view.userBarView.UserInfoView;
 	
 	import flash.events.Event;
@@ -414,9 +415,9 @@ package com.xiaomu.view.home
 			//			trace(JSON.stringify(arr));
 			//			trace(JSON.stringify(newArr));
 			
-			//			var endView:EndResultView = new EndResultView();
-			//			endView.data = AppData.getInstane().testDataEnd
-			//			PopUpManager.centerPopUp(PopUpManager.addPopUp(endView,null,true,false,0,0.8));
+			//						var endView:EndResultView = new EndResultView();
+			//						endView.data = AppData.getInstane().testDataEnd
+			//						PopUpManager.centerPopUp(PopUpManager.addPopUp(endView,null,true,false,0,0.8));
 			
 			//			var winView3:WinView = new WinView();
 			//			winView3.data = AppData.getInstane().testDataDiHu;

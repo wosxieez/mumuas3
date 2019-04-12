@@ -154,8 +154,8 @@ package com.xiaomu.view.room
 			
 			totalhuxiDisplay = new Label()
 			totalhuxiDisplay.y = 110
-			totalhuxiDisplay.color = 0xFFFFFF
-			totalhuxiDisplay.fontSize = 15
+			totalhuxiDisplay.color = 0xFFFF33
+			totalhuxiDisplay.fontSize = 20
 			totalhuxiDisplay.width = 80
 			totalhuxiDisplay.height = 25
 			addChild(totalhuxiDisplay)
@@ -163,7 +163,7 @@ package com.xiaomu.view.room
 			huxiDisplay = new Label()
 			huxiDisplay.y = 135
 			huxiDisplay.color = 0xFFFFFF
-			huxiDisplay.fontSize = 15
+			huxiDisplay.fontSize = 18
 			huxiDisplay.width = 80
 			huxiDisplay.height = 25
 			addChild(huxiDisplay)
@@ -173,7 +173,7 @@ package com.xiaomu.view.room
 			super.commitProperties()
 				
 			usernameDisplay.text = username
-			totalhuxiDisplay.text = '总息:' + thx
+			totalhuxiDisplay.text = ""+thx
 			huxiDisplay.text = '胡息:' + huxi
 				
 			zhuangImage.visible = isZhuang
