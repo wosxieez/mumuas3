@@ -13,7 +13,6 @@ package com.xiaomu.view.home
 	import com.xiaomu.view.hall.HallView;
 	import com.xiaomu.view.home.noticeBar.NoticeBar;
 	import com.xiaomu.view.home.setting.SettingPanelView;
-	import com.xiaomu.view.room.EndResultView;
 	import com.xiaomu.view.room.RoomView;
 	import com.xiaomu.view.userBarView.UserInfoView;
 	
@@ -207,7 +206,7 @@ package com.xiaomu.view.home
 			Loading.getInstance().open()
 			Api.getInstane().joinGroup(AppData.getInstane().user.username, 0, function (response:Object):void {
 				if (response.code == 0) {
-					Api.getInstane().createRoom({cc: 2, hx: 15, id: 0}, function (response:Object):void {
+					Api.getInstane().createRoom({cc: 1, hx: 15, id: 0}, function (response:Object):void {
 						Loading.getInstance().close()
 						if (response.code == 0) {
 							RoomView(MainView.getInstane().pushView(RoomView)).init(response.data)

@@ -1221,11 +1221,6 @@ package com.xiaomu.view.room
 					trace("roomView一把玩家赢牌1:",JSON.stringify(roomData));
 					var winView1:WinView = new WinView();
 					winView1.data = roomData;
-					// 娱乐房一局就结束了
-					if (this.roomrule.id == 0) {
-						close()
-						winView1.allOver = true;
-					}
 					PopUpManager.centerPopUp(PopUpManager.addPopUp(winView1,null,true,false));
 					break
 				}
@@ -1236,11 +1231,6 @@ package com.xiaomu.view.room
 					trace("roomView一把荒庄1:",JSON.stringify(roomData));
 					var winView2:WinView = new WinView();
 					winView2.data = roomData;
-					// 娱乐房一局就结束了
-					if (this.roomrule.id == 0) {
-						close()
-						winView2.allOver = true
-					}
 					PopUpManager.centerPopUp(PopUpManager.addPopUp(winView2,null,true,false));
 					break
 				}
