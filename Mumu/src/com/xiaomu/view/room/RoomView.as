@@ -1415,7 +1415,7 @@ package com.xiaomu.view.room
 		protected function canChiButton_clickHandler(event:MouseEvent):void
 		{
 			if (myActionUser) {
-				if (myActionUser.cd.dt.length == 1) {
+				if (myActionUser.cd.dt.length == 1 && !myActionUser.cd.dt[0].bi) {
 					undoActionUser()
 					myActionUser.cd.dt = [myActionUser.cd.dt[0]]
 					myActionUser.cd.ac = 1
