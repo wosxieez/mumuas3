@@ -135,6 +135,12 @@ package com.xiaomu.view.login
 				AppSmallAlert.show("请完善账号和密码")
 				return
 			}
+			var phoneArr:Array = phoneNumInput.text.split('');
+			var passwordArr:Array = passwordInput.text.split('');
+			if(phoneArr.indexOf(" ")!=-1||passwordArr.indexOf(" ")!=-1){
+				AppSmallAlert.show("格式有误，请检查是否有空格存在");
+				return
+			}
 			HttpApi.getInstane().addUser({username: phoneNumInput.text, password: passwordInput.text},
 				function(e:Event):void{
 					var response:Object = JSON.parse(e.currentTarget.data)
