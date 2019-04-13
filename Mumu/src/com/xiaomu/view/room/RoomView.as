@@ -1172,7 +1172,9 @@ package com.xiaomu.view.room
 				draggingCardUI.parent.setChildIndex(draggingCardUI, draggingCardUI.parent.numChildren - 1)
 				oldPoint = cardLayer.localToGlobal(new Point(draggingCardUI.x, draggingCardUI.y))
 				draggingCardUI.startDrag()
-				tingCardsView.tingCards = draggingCardUI.tingCards
+				if (draggingCardUI.tingCards) {
+					tingCardsView.tingCards = draggingCardUI.tingCards
+				}
 				this.addEventListener(MouseEvent.MOUSE_UP, this_mouseUpHandler)
 				this.addEventListener(MouseEvent.MOUSE_MOVE, this_mouseMoveHandler)
 			}
@@ -1201,12 +1203,15 @@ package com.xiaomu.view.room
 					} else {
 						riffleCard()
 						invalidateMyHandCardUIs()
-						invalidateMyHandCardUIsCanOutTing()
+						if (newCardTip.visible)
+							invalidateMyHandCardUIsCanOutTing()
 					}
 				} else {
 					// 如果不是我出牌的 整理牌
 					riffleCard()
 					invalidateMyHandCardUIs()
+					if (newCardTip.visible)
+						invalidateMyHandCardUIsCanOutTing()
 				}
 			}
 		}

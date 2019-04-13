@@ -194,6 +194,7 @@ package com.xiaomu.util
 		}
 		
 		public function canOutCardTing(groupCards:Array, handCards:Array, huXi:int):Array {
+			trace('检测出牌听')
 			var outTingCards:Array = []
 			for (var i:int = 0; i < handCards.length; i++) {
 				var newHandCards:Array = handCards.concat([])
@@ -215,6 +216,7 @@ package com.xiaomu.util
 		 * 
 		 */		
 		public function canTing(groupCards:Array, handCards:Array, huXi:int):Array {
+			trace('检测听牌')
 			var tingCards:Array = []
 			for (var i:int = 1; i <= 20; i++) {
 				var canHuDatas:Array = canHu(handCards, groupCards, i)
