@@ -1172,7 +1172,7 @@ package com.xiaomu.view.room
 				draggingCardUI.parent.setChildIndex(draggingCardUI, draggingCardUI.parent.numChildren - 1)
 				oldPoint = cardLayer.localToGlobal(new Point(draggingCardUI.x, draggingCardUI.y))
 				draggingCardUI.startDrag()
-				if (draggingCardUI.tingCards) {
+				if (newCardTip.visible) {
 					tingCardsView.tingCards = draggingCardUI.tingCards
 				}
 				this.addEventListener(MouseEvent.MOUSE_UP, this_mouseUpHandler)
