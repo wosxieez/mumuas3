@@ -258,6 +258,7 @@ package com.xiaomu.util
 		 */		
 		public function leaveRoom(cb:Function):void {
 			savedRoomname = null
+			if (!pomelo) return
 			pomelo.request('connector.entryHandler.leaveRoom', {},
 				function(response:Object):void {
 					cb(response)
