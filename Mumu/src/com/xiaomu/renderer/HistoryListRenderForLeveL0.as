@@ -173,10 +173,10 @@ package com.xiaomu.renderer
 			tcLab.text = data.tc==0?"":"提成:"+data.tc;
 			winNameTitle.text = data.tc==0?"得分者":"赢家";
 			winName.text = data.wn!=""?("名:"+data.wn):("id:"+data.wid)
-			winTotal.text = data.wtfs+"\r(+"+data.wfs+")";
+			winTotal.text = data.wtfs+"(+"+data.wfs+")";
 			loseNameTitle.text = data.tc==0?"出分者":"输家";
 			loseName.text = data.ln!=""?("名:"+data.ln):("id:"+data.lid)
-			loseTotal.text = data.ltfs+"\r("+data.lfs+")";
+			loseTotal.text = data.ltfs+"("+data.lfs+")";
 			
 			//			winL1name.text = "一级id:"+data.w1id+"\r"+data.w1tfs+"(+"+data.w1tc+")";
 			//			winL2name.text = "二级id:"+data.w2id+"\r"+data.w2tfs+"(+"+data.w2tc+")";
