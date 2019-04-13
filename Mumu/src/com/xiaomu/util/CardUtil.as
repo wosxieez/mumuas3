@@ -193,7 +193,7 @@ package com.xiaomu.util
 			return countedCards
 		}
 		
-		public function outCardCanTing(groupCards:Array, handCards:Array, huXi:int):Array {
+		public function canOutCardTing(groupCards:Array, handCards:Array, huXi:int):Array {
 			var outTingCards:Array = []
 			for (var i:int = 0; i < handCards.length; i++) {
 				var newHandCards:Array = handCards.concat([])
@@ -338,7 +338,8 @@ package com.xiaomu.util
 		 * 玩家的牌是否无单牌。
 		 * @param cards: 手中的牌，或者手中的牌加新翻开的底牌。
 		 */
-		public function shouShun(cards):Array {
+		public function shouShun(cards:Array):Array {
+			if (cards.length == 0) return []
 			var kanShuns:Array = []
 			var countedCards:Dictionary = countBy(cards)
 			for (var card:int in countedCards) {
@@ -349,20 +350,23 @@ package com.xiaomu.util
 					deleteCard(cards, card)
 				}
 			}
-			
 			var allShuns:Array = canShun(cards, [])
-			if (allShuns && allShuns.length > 0) {
-				var maxHuXi:int = 0
-				var maxHuGroup:Array = null
-				for each(var shuns:Array in allShuns) {
-					var lastedShuns:Array = kanShuns.concat(shuns)
-					var huxi:int =getHuXi(lastedShuns)
-					if (huxi >= maxHuXi) {
-						maxHuXi = huxi
-						maxHuGroup = lastedShuns
+			if (allShuns) {
+				if (allShuns.length > 0) {
+					var maxHuXi:int = 0
+					var maxHuGroup:Array = null
+					for each(var shuns:Array in allShuns) {
+						var lastedShuns:Array = kanShuns.concat(shuns)
+						var huxi:int =getHuXi(lastedShuns)
+						if (huxi >= maxHuXi) {
+							maxHuXi = huxi
+							maxHuGroup = lastedShuns
+						}
 					}
+					return maxHuGroup
+				} else {
+					return kanShuns
 				}
-				return maxHuGroup
 			} else {
 				return null
 			}

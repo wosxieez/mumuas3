@@ -392,21 +392,19 @@ package com.xiaomu.view.room
 			} 
 			
 			if (roomData.ig) {
-				if (preUser) {
-					updatePreGroupCardUIs()
-					updatePrePassCardUIs()
-				}
-				
 				if (myUser) {
 					updateMyHandCardUIs()
 					updateMyGroupCardUIs()
 					updateMyPassCardUIs()
-					updateMyHandCardUIsCanTing()
 				}
 				
+				if (preUser) {
+					callLater(updatePreGroupCardUIs)
+					callLater(updatePrePassCardUIs)
+				}
 				if (nextUser) {
-					updateNextGroupCardUIs()
-					updateNextPassCardUIs()
+					callLater(updateNextGroupCardUIs)
+					callLater(updateNextPassCardUIs)
 				} 
 				
 				updateNewCard()
@@ -416,9 +414,6 @@ package com.xiaomu.view.room
 				if (myActionUser) {
 					if (myActionUser.nd) {
 						newCardTip.visible = true
-						Audio.getInstane().playTimeout()
-						tingCardsView.tingCards = null
-						updateMyHandCardUIsCanOutTing()
 						myUserHead.isFocus = true
 					}
 					if (myActionUser.hd) {
@@ -444,6 +439,14 @@ package com.xiaomu.view.room
 						preUserHead.isFocus = true
 					}
 				}
+				
+				if (newCardTip.visible) {
+					invalidateMyHandCardUIsCanOutTing()
+					Audio.getInstane().playTimeout()
+				} else {
+					invalidateMyHandCardUIsCanTing()
+				}
+				
 			} else {
 				updateReadyUI()
 			}
@@ -798,9 +801,36 @@ package com.xiaomu.view.room
 			}
 		}
 		
+		
+		//------------------------------------------------------------------------------------------------------------------------
+		//
+		//	失效出听的牌
+		//
+		//------------------------------------------------------------------------------------------------------------------------
+		
+		private var invalidateMyHandCardUIsCanOutTingFlag:Boolean = false; // 出听牌失效
+		
+		private function invalidateMyHandCardUIsCanOutTing():void
+		{
+			if (!invalidateMyHandCardUIsCanOutTingFlag)
+			{
+				invalidateMyHandCardUIsCanOutTingFlag = true;
+				callLater(validateMyHandCardUIsCanOutTing)
+			}
+		}
+		
+		private function validateMyHandCardUIsCanOutTing():void
+		{
+			if (invalidateMyHandCardUIsCanOutTingFlag)
+			{
+				invalidateMyHandCardUIsCanOutTingFlag = false;
+				updateMyHandCardUIsCanOutTing();
+			}
+		}
+		
 		private function updateMyHandCardUIsCanOutTing():void {
 			if (myUser) {
-				var outTings:Array = CardUtil.getInstane().outCardCanTing(myUser.groupCards, myUser.handCards, this.roomrule.hx)
+				var outTings:Array = CardUtil.getInstane().canOutCardTing(myUser.groupCards, myUser.handCards, this.roomrule.hx)
 				if (outTings) {
 					for each(var item:Object in outTings) {
 						for each(var cardUI:CardUI in myHandCardUIs) {
@@ -811,6 +841,33 @@ package com.xiaomu.view.room
 						}
 					}
 				}
+			}
+		}
+		
+		
+		//------------------------------------------------------------------------------------------------------------------------
+		//
+		//	失效听的牌
+		//
+		//------------------------------------------------------------------------------------------------------------------------
+		
+		private var invalidateMyHandCardUIsCanTingFlag:Boolean = false; // 听牌失效
+		
+		private function invalidateMyHandCardUIsCanTing():void
+		{
+			if (!invalidateMyHandCardUIsCanTingFlag)
+			{
+				invalidateMyHandCardUIsCanTingFlag = true;
+				callLater(validateMyHandCardUIsCanTing)
+			}
+		}
+		
+		private function validateMyHandCardUIsCanTing():void
+		{
+			if (invalidateMyHandCardUIsCanTingFlag)
+			{
+				invalidateMyHandCardUIsCanTingFlag = false;
+				updateMyHandCardUIsCanTing();
 			}
 		}
 		
@@ -1131,7 +1188,7 @@ package com.xiaomu.view.room
 		private function riffleCard():void {
 			// 整理牌
 			ei = getMyHandCardsIndex(this.mouseX)
-			if (si >= 0 && ei >= 0 && si != ei) {
+			if (si >= 0 && si != ei) {
 				//  调整牌位置
 				if (myHandCards[si]) {
 					var index:int = (myHandCards[si] as Array).indexOf(draggingCardUI.card)
@@ -1149,9 +1206,12 @@ package com.xiaomu.view.room
 									myHandCards[ei].push(draggingCardUI.card)
 								}
 							}
-						} else {
+						} else if (ei >= 0) {
 							myHandCards[si].splice(index, 1) // 删除这个元素
 							myHandCards.push([draggingCardUI.card])
+						} else {
+							myHandCards[si].splice(index, 1) // 删除这个元素
+							myHandCards.unshift([draggingCardUI.card])
 						}
 					}
 				}
@@ -1398,7 +1458,7 @@ package com.xiaomu.view.room
 			Api.getInstane().leaveRoom(function (response:Object):void {})
 			hideAllUI()
 			Audio.getInstane().stopTimeout()
-				
+			
 			if (this.roomrule.id > 0) {
 				MainView.getInstane().popView(GroupView)
 			} else {
