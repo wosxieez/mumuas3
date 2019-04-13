@@ -58,7 +58,8 @@ package com.xiaomu.view.room
 			if (!tingCards) {
 				visible = false
 				return
-			} {
+			} else
+			{
 				visible = true
 			}
 			var oldMyPassCardUIs:Array = []
