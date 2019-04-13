@@ -754,15 +754,15 @@ package com.xiaomu.util
 					// 2 7 10
 					if (currentCard == 2) {
 						if (countedCards[7] && countedCards[10]) {
-							canShuns.push({ name: Actions.Chi, cards: [7, 10] })
+							canShuns.push({ name: Actions.Chi, cards: [2, 7, 10] })
 						}
 					} else if (currentCard == 7) {
 						if (countedCards[2] && countedCards[10]) {
-							canShuns.push({ name: Actions.Chi, cards: [2, 10] })
+							canShuns.push({ name: Actions.Chi, cards: [2, 7, 10] })
 						}
 					} else if (currentCard == 10) {
 						if (countedCards[2] && countedCards[7]) {
-							canShuns.push({ name: Actions.Chi, cards: [2, 7] })
+							canShuns.push({ name: Actions.Chi, cards: [2, 7, 10] })
 						}
 					}
 				} else {
