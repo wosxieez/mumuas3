@@ -10,6 +10,7 @@ package com.xiaomu.view.home
 	import com.xiaomu.util.Audio;
 	import com.xiaomu.util.HttpApi;
 	import com.xiaomu.view.MainView;
+	import com.xiaomu.view.caicaicai.CaiCaiCaiView;
 	import com.xiaomu.view.hall.HallView;
 	import com.xiaomu.view.home.noticeBar.NoticeBar;
 	import com.xiaomu.view.home.setting.SettingPanelView;
@@ -199,7 +200,7 @@ package com.xiaomu.view.home
 		
 		protected function paoDeKuaiImg_clickHandler(event:MouseEvent):void
 		{
-			AppAlert.show('程序员小哥哥正在努力的开发中....')
+			MainView.getInstane().pushView(CaiCaiCaiView);
 		}
 		
 		protected function ziPaiImg_clickHandler(event:MouseEvent):void
