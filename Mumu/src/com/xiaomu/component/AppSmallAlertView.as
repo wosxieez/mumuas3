@@ -88,7 +88,6 @@ package com.xiaomu.component
 		
 		private function completeHandler():void
 		{
-			trace("complete");
 			PopUpManager.removePopUp(this);
 		}
 	}

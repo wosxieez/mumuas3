@@ -68,7 +68,7 @@ package com.xiaomu.view.caicaicai
 			
 			if(numStr){
 				var dataArray:Array =  String(numStr).split("");
-				trace("数据：",JSON.stringify(dataArray));
+//				trace("数据：",JSON.stringify(dataArray));
 				numberBar.dataProvider = dataArray
 			}
 		}
