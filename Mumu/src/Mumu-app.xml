@@ -11,7 +11,7 @@
 	<!-- A universally unique application identifier. Must be unique across 
 		all AIR applications. Using a reverse DNS-style name as the id is recommended. 
 		(Eg. com.example.ExampleApplication.) Required. -->
-	<id>com.xiaomu.niuniu</id>
+	<id>com.greencloud.app2formobile</id>
 
 	<!-- Used as the filename for the application. Required. -->
 	<filename>牛牛跑胡子</filename>
@@ -103,10 +103,8 @@
 			</array>
 			<key>UIStatusBarStyle</key> 
         	<string>UIStatusBarStyleBlackOpaque</string>
-        	<key>UIRequiredDeviceCapabilities</key> 
-                            <array> 
-                            <string>microphone</string> 
-                            </array>
+        	<key>NSMicrophoneUsageDescription</key> 
+            <string>牛牛语音对讲功能需要访问您的麦克风</string> 
 		]]></InfoAdditions>
 		<requestedDisplayResolution>high</requestedDisplayResolution>
 	</iPhone>

@@ -9,7 +9,6 @@ package com.xiaomu.view.room
 	import coco.component.HGroup;
 	import coco.component.HorizontalAlign;
 	import coco.component.VerticalAlign;
-	import coco.manager.PopUpManager;
 	
 	public class DaNiaoNoticePanel extends HGroup
 	{
@@ -61,11 +60,11 @@ package com.xiaomu.view.room
 		}
 		
 		public function open():void {
-			PopUpManager.centerPopUp(PopUpManager.addPopUp(this, null, true))
+			visible = true
 		}
 		
 		public function close():void {
-			PopUpManager.removePopUp(this)
+			visible = false
 		}
 		
 	}

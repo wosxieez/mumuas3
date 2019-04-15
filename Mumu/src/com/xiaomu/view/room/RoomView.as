@@ -106,6 +106,7 @@ package com.xiaomu.view.room
 		private var myActionUser:Object
 		private var preActionUser:Object
 		private var nextActionUser:Object
+		private var daNiaoView:DaNiaoNoticePanel
 		
 		private var showSettingPanelBtn:ImageButton;
 		
@@ -325,6 +326,10 @@ package com.xiaomu.view.room
 			refreshButton.downImageSource = 'assets/group/btn_guild2_refresh_p.png';
 			refreshButton.addEventListener(MouseEvent.CLICK, refreshButton_clickHandler)
 			addChild(refreshButton)
+			
+			daNiaoView = new DaNiaoNoticePanel()
+			daNiaoView.visible = false
+			addChild(daNiaoView)
 		}
 		
 		override protected function commitProperties():void {
@@ -531,6 +536,9 @@ package com.xiaomu.view.room
 			
 			goback.x = width - goback.width - 200
 			goback.y = 10
+				
+			daNiaoView.x = (width - daNiaoView.width) / 2
+			daNiaoView.y = (height - daNiaoView.height) / 2
 		}
 		
 		public function init(room:Object): void {
@@ -538,13 +546,15 @@ package com.xiaomu.view.room
 			this.roomrule = room.ru
 			Api.getInstane().addEventListener(ApiEvent.ON_ROOM, onNotificationHandler)
 			Api.getInstane().addEventListener(ApiEvent.JOIN_ROOM, onJoinRoomHandler)
-			invalidateProperties()
+			tingCardsView.tingCards = null
 			Api.getInstane().queryRoomStatus(function (response:Object):void {
 				if (response.code == 0) {
 					roomData = response.data
 					needRiffleCard = true
 					if (room.ru && room.ru.id > 0 && room.ru.hasOwnProperty('nf') && room.ru.nf > 0 && !roomData.og) {
-						new DaNiaoNoticePanel().open()
+						daNiaoView.open()
+					} else {
+						daNiaoView.close()
 					}
 				} else {
 					AppAlert.show('房间数据加载失败')
