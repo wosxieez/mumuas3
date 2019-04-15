@@ -1561,6 +1561,7 @@ package com.xiaomu.view.room
 		
 		protected function talkButton_downHandler(event:MouseEvent):void
 		{
+			TalkManager.getInstane().webServer = AppData.getInstane().webUrl
 			TalkManager.getInstane().addEventListener(TalkEvent.SUCCESS, talkSuccessHandler)
 			TalkManager.getInstane().start()
 		}

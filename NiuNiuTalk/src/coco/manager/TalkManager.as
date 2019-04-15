@@ -30,6 +30,8 @@ package coco.manager
 		
 		private static var instance:TalkManager
 		
+		public var webServer:String = 'http://hefeixiaomu.com:3008'
+		
 		public static function getInstane(): TalkManager {
 			if (!instance) {
 				instance = new TalkManager()
@@ -61,7 +63,7 @@ package coco.manager
 		}
 		
 		public function play(uuid:String):void {
-			var urlrequest:URLRequest = new URLRequest('http://hefeixiaomu.com:3008/get_audio');
+			var urlrequest:URLRequest = new URLRequest(webServer + 'get_audio');
 			urlrequest.method = URLRequestMethod.POST
 			urlrequest.contentType = 'application/json'
 			urlrequest.data = JSON.stringify({uuid: uuid})
@@ -115,7 +117,7 @@ package coco.manager
 			cb.writeBytes(rec.output);
 			cb.writeUTFBytes("\r\n--" + BOUNDARY + "--\r\n");
 			
-			var urlReq:URLRequest = new URLRequest('http://hefeixiaomu.com:3008/upload_audio');
+			var urlReq:URLRequest = new URLRequest(webServer + 'upload_audio');
 			urlReq.method = URLRequestMethod.POST;
 			urlReq.contentType = "multipart/form-data; boundary=" + BOUNDARY;
 			urlReq.data = cb;
