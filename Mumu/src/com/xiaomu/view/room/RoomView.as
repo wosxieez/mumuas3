@@ -27,8 +27,10 @@ package com.xiaomu.view.room
 	import coco.component.Image;
 	import coco.component.Label;
 	import coco.core.UIComponent;
+	import coco.event.TalkEvent;
 	import coco.event.UIEvent;
 	import coco.manager.PopUpManager;
+	import coco.manager.TalkManager;
 	
 	public class RoomView extends UIComponent
 	{
@@ -97,6 +99,7 @@ package com.xiaomu.view.room
 		private var newCardTip:Image
 		private var checkWaitTip:Image
 		private var chatButton:ImageButton
+		private var talkButton:ImageButton
 		private var tingCardsView:TingCardsView
 		private var goback:ImageButton
 		private var refreshButton:ImageButton
@@ -286,6 +289,16 @@ package com.xiaomu.view.room
 			chatButton.upImageSource = 'assets/room/btn_chat.png'
 			chatButton.addEventListener(MouseEvent.CLICK, chatButton_clickHandler)
 			iconLayer.addChild(chatButton)
+			
+			talkButton = new ImageButton()
+			talkButton.width = 60
+			talkButton.height = 60
+			talkButton.upImageSource = 'assets/room/btn_mic.png'
+			talkButton.downImageSource = 'assets/room/btn_mic_press.png'
+			talkButton.addEventListener(MouseEvent.MOUSE_OUT, talkButton_outHandler)
+			talkButton.addEventListener(MouseEvent.MOUSE_DOWN, talkButton_downHandler)
+			talkButton.addEventListener(MouseEvent.MOUSE_UP, talkButton_upkHandler)
+			iconLayer.addChild(talkButton)
 			
 			///设置按钮--点击
 			showSettingPanelBtn = new ImageButton();
@@ -487,8 +500,11 @@ package com.xiaomu.view.room
 			chatButton.x = width - 10 - chatButton.width
 			chatButton.y = cancelButton.y + cancelButton.height + 10
 			
-			refreshButton.x = chatButton.x
-			refreshButton.y = chatButton.y + chatButton.height + 10
+			talkButton.x = chatButton.x
+			talkButton.y = chatButton.y + chatButton.height + 10
+			
+			refreshButton.x = talkButton.x
+			refreshButton.y = talkButton.y + talkButton.height + 10
 			
 			canChiButton.x = cancelButton.x - canChiButton.width - 10
 			canChiButton.y = (height - canChiButton.height) / 2
@@ -1260,7 +1276,14 @@ package com.xiaomu.view.room
 			{
 				case Notifications.onRoomMessage: 
 				{
-					Audio.getInstane().playChat(notification.data.data)
+					var message:Object = notification.data
+					if (message.at == 0) {
+						// 模版消息
+						Audio.getInstane().playChat(message.data)
+					} else if (message.at == 1) {
+						// 对讲消息
+						TalkManager.getInstane().play(message.data)
+					}
 					break
 				}
 				case Notifications.onAskExit: 
@@ -1522,6 +1545,29 @@ package com.xiaomu.view.room
 		protected function chatButton_clickHandler(event:MouseEvent):void
 		{
 			RoomChatView.getInstane().open(chatButton.x - RoomChatView.getInstane().width, (height - RoomChatView.getInstane().height) / 2)
+		}
+		
+		protected function talkButton_downHandler(event:MouseEvent):void
+		{
+			TalkManager.getInstane().addEventListener(TalkEvent.SUCCESS, talkSuccessHandler)
+			TalkManager.getInstane().start()
+		}
+		
+		protected function talkButton_outHandler(event:MouseEvent):void
+		{
+			TalkManager.getInstane().cancel()
+		}
+		
+		protected function talkButton_upkHandler(event:MouseEvent):void
+		{
+			TalkManager.getInstane().stop()
+		}
+		
+		protected function talkSuccessHandler(event:TalkEvent):void
+		{
+			Api.getInstane().sendRoomMessage({at: 1, sn: AppData.getInstane().user.username, data: event.data}, 
+				function (response):void {
+				})
 		}
 		
 		private function meNewCard(card:int):void {

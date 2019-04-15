@@ -1,7 +1,6 @@
 package com.xiaomu.view.login
 {
 	import com.xiaomu.component.AppAlert;
-	import com.xiaomu.component.AppSmallAlert;
 	import com.xiaomu.component.ImageButton;
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.HttpApi;
@@ -11,7 +10,6 @@ package com.xiaomu.view.login
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
-	import coco.component.Alert;
 	import coco.component.Label;
 	import coco.component.TextInput;
 	import coco.core.UIComponent;
