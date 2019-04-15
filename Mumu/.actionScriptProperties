@@ -35,8 +35,6 @@
         </excludedEntries>
       </libraryPathEntry>
       <libraryPathEntry kind="1" linkType="1" path="libs"/>
-      <libraryPathEntry kind="3" linkType="1" path="/pomelo/bin/pomelo.swc" useDefaultLinkType="false"/>
-      <libraryPathEntry kind="3" linkType="1" path="/NiuNiuTalk/bin/NiuNiuTalk.swc" useDefaultLinkType="false"/>
     </libraryPath>
     <sourceAttachmentPath/>
   </compiler>
