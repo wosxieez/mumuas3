@@ -181,7 +181,7 @@ package com.xiaomu.view.caicaicai
 			maxBtn.addEventListener(MouseEvent.CLICK,maxBtnHandler);
 			addChild(maxBtn);
 			
-			var str:String = '<font  size="18"  color="#ffffff">游戏提示:<br><br>        点击大小按钮，系统会随机生成一个0到9999的数。<br>如果大于<font color="#feba02">5500</font>，则为大数，如果小于<font color="#feba02">4500</font>，则为小数。<br>赔率为1赔1。<br>        比如押1个元宝，押中后，系统会自动给账户增加<br>一个元宝，没押中则减一个元宝。</font>';
+			var str:String = '<font  size="18"  color="#ffffff">游戏提示:<br><br>        点击大小按钮，系统会随机生成一个0到9999的数。<br>如果大于<font color="#feba02">5500</font>，则为大数，如果小于<font color="#feba02">4500</font>，则为小数。<br>        赔率为1赔1。比如押1个元宝，押中后，系统会自<br>动给账户增加一个元宝，没押中则减一个元宝。</font>';
 			shuomingText = new TextArea();
 			shuomingText.htmlText = str;
 			shuomingText.color = 0xffffff;
