@@ -97,6 +97,16 @@ package coco.manager
 		
 		protected function okHandler(event:Event):void
 		{
+			if (rec.output.length < 10000) return
+			try
+			{
+				new WavSound(rec.output).play()
+			} 
+			catch(error:Error) 
+			{
+				
+			}
+			
 			trace('保存对讲数据...')
 			var cb:ByteArray = new ByteArray();			
 			cb.writeUTFBytes("--" + BOUNDARY + "\r\n");

@@ -4,7 +4,6 @@ package
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.Assets;
 	import com.xiaomu.util.Audio;
-	import com.xiaomu.util.CardUtil;
 	import com.xiaomu.util.HttpApi;
 	import com.xiaomu.view.MainView;
 	import com.xiaomu.view.login.LoginView;
@@ -36,14 +35,6 @@ package
 			var localXML:XML = NativeApplication.nativeApplication.applicationDescriptor
 			var nss:Namespace = localXML.namespace()
 			AppData.getInstane().versionNum = localXML.nss::versionNumber
-				
-//			CardUtil.getInstane().canOutCardTing([ 
-//				{ name: 'chi', cards: [ 11, 12, 13 ] },
-//				{ name: 'wei', cards: [ 9, 9, 9 ] },
-//				{ name: 'wei', cards: [ 4, 4, 4 ] }
-//			], [1,2, 3, 2,7,10, 14, 6, 16, 16, 20, 17], 15)
-				
-			CardUtil.getInstane().shouShun([1,2,3,2,7,10,6,16,16])
 		}
 		
 		[Embed(source="assets/bg.png")]

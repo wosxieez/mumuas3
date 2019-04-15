@@ -51,7 +51,7 @@ package org.bytearray.micrecorder
 	 */	
 	public final class MicRecorder extends EventDispatcher
 	{
-		private var _gain:uint;
+		private var _gain:uint = 100
 		private var _rate:uint;
 		private var _silenceLevel:uint;
 		private var _timeOut:uint;
@@ -91,7 +91,7 @@ package org.bytearray.micrecorder
 		public function record():void
 		{
 			if ( _microphone == null )
-				_microphone = Microphone.getMicrophone();
+				_microphone = Microphone.getMicrophone()
 			 
 			_difference = getTimer();
 			

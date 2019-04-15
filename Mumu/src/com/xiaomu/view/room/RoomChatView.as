@@ -3,6 +3,7 @@ package com.xiaomu.view.room
 	import com.xiaomu.renderer.ChatRenderer;
 	import com.xiaomu.util.Api;
 	import com.xiaomu.util.AppData;
+	import com.xiaomu.util.Audio;
 	
 	import coco.component.List;
 	import coco.component.Panel;
@@ -18,10 +19,10 @@ package com.xiaomu.view.room
 			borderColor = 0x000000
 			backgroundColor = 0x000000
 			backgroundAlpha = 0.6
-			titleHeight = 40
+			titleHeight = 60
 			title = '聊天'
-			width = 300
-			height = 400
+			width = 500
+			height = 600
 		}
 		
 		private static var instance:RoomChatView
@@ -38,10 +39,12 @@ package com.xiaomu.view.room
 		
 		override protected function createChildren():void {
 			super.createChildren()
-			
+				
+			titleDisplay.fontSize = 30
+				
 			list = new List()
 			list.verticalScrollEnabled = false
-			list.itemRendererHeight = 40
+			list.itemRendererHeight = 60
 			list.itemRendererClass = ChatRenderer
 			list.dataProvider = ['快点啊，都等得我花儿都谢了',
 				'怎么又短线了，网络怎么这么差啊',
@@ -63,6 +66,8 @@ package com.xiaomu.view.room
 			Api.getInstane().sendRoomMessage({at: 0, sn: AppData.getInstane().user.username, data: list.selectedIndex}, 
 				function (response):void {
 				})
+				
+			Audio.getInstane().playChat(String(list.selectedIndex))
 			list.selectedIndex = -1
 			PopUpManager.removePopUp(this)
 		}

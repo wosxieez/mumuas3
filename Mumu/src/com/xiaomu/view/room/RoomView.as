@@ -1277,12 +1277,14 @@ package com.xiaomu.view.room
 				case Notifications.onRoomMessage: 
 				{
 					var message:Object = notification.data
-					if (message.at == 0) {
-						// 模版消息
-						Audio.getInstane().playChat(message.data)
-					} else if (message.at == 1) {
-						// 对讲消息
-						TalkManager.getInstane().play(message.data)
+					if (message.sn != AppData.getInstane().user.username) {
+						if (message.at == 0) {
+							// 模版消息
+							Audio.getInstane().playChat(message.data)
+						} else if (message.at == 1) {
+							// 对讲消息
+							TalkManager.getInstane().play(message.data)
+						}
 					}
 					break
 				}

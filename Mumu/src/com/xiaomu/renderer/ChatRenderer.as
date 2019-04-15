@@ -13,6 +13,7 @@ package com.xiaomu.renderer
 		override protected function createChildren():void {
 			super.createChildren()
 				
+			labelDisplay.fontSize = 30
 			labelDisplay.color = 0xFFFFFF
 		}
 		
