@@ -28,12 +28,12 @@ package com.xiaomu.view.room
 		}
 		
 		private var _data:Object;
-
+		
 		public function get data():Object
 		{
 			return _data;
 		}
-
+		
 		public function set data(value:Object):void
 		{
 			_data = value;
@@ -45,6 +45,7 @@ package com.xiaomu.view.room
 		private var rankBgImg:Image;
 		private var zongHuxiImg:Image;
 		private var zongHuxiLab:Label;
+		private var zongHuxiLab2:Label;
 		private var zongFenImg:Image;
 		private var zongFenLab:Label;
 		private var gaoShouImg:Image;
@@ -68,15 +69,21 @@ package com.xiaomu.view.room
 			
 			zongHuxiImg = new Image();
 			zongHuxiImg.source = 'assets/endAll/zhx.png';
-			zongHuxiImg.width = 92;
-			zongHuxiImg.height = 34;
+			zongHuxiImg.width = 92*0.8;
+			zongHuxiImg.height = 34*0.8;
 			rankBgImg.addChild(zongHuxiImg);
 			
 			zongHuxiLab = new Label();
-			zongHuxiLab.fontSize = 34;
-			zongHuxiLab.textAlign= TextAlign.RIGHT;
+			zongHuxiLab.fontSize = 24;
+			zongHuxiLab.textAlign= TextAlign.LEFT;
 			zongHuxiLab.color = 0x89755c;
 			rankBgImg.addChild(zongHuxiLab);
+			
+			zongHuxiLab2 = new Label();
+			zongHuxiLab2.fontSize = 34;
+			zongHuxiLab2.textAlign= TextAlign.RIGHT;
+			zongHuxiLab2.color = 0x89755c;
+			rankBgImg.addChild(zongHuxiLab2);
 			
 			gaoShouImg = new Image();
 			gaoShouImg.source = 'assets/endAll/icon_gs.png';
@@ -113,11 +120,16 @@ package com.xiaomu.view.room
 			zongHuxiImg.x = 5;
 			zongHuxiImg.y = 5;
 			
-			zongHuxiLab.width = width/2;
+			zongHuxiLab.width = 90;
 			zongHuxiLab.height = 40;
-			zongHuxiLab.x = rankBgImg.x+rankBgImg.width-zongHuxiLab.width-20
+			zongHuxiLab.x = zongHuxiImg.x+zongHuxiImg.width
 			zongHuxiLab.y = zongHuxiImg.y;
-				
+			
+			zongHuxiLab2.width = 90;
+			zongHuxiLab2.height = 40;
+			zongHuxiLab2.x =rankBgImg.x+rankBgImg.width-zongHuxiLab2.width-10
+			zongHuxiLab2.y = zongHuxiImg.y;
+			
 			gaoShouImg.x = 60;
 			gaoShouImg.y = 80;
 			
@@ -137,12 +149,29 @@ package com.xiaomu.view.room
 			bgImg.source = 'assets/endAll/'+(isWinner?'floor_zjs04':'bac_02')+'.png';
 			
 			if (!data) return
-//			trace('data:',JSON.stringify(data),data.tjs);
-			zongHuxiLab.text = data.thx+"";
+			//			trace('data:',JSON.stringify(data),data.tjs);
+			zongHuxiLab.text = "("+data.thx+")";
+			zongHuxiLab2.text = action(data.thx)+"";
 			zongFenLab.text = isWinner?"+"+data.tjs:""+data.tjs
 			zongFenLab.color = isWinner?0xed5330:0x459ad7;
 			winnerHeadView.data = data;
 			gaoShouImg.visible = isWinner;
+		}
+		
+		/**
+		 * 四舍五入
+		 */
+		protected function action(number:Number):Number{
+			var yuShu:Number = number%10;
+			trace("yuShu:",yuShu);
+			if(Math.abs(yuShu)>=5){
+				if(number>0){
+					number=number+(10-Math.abs(yuShu));
+				}else{
+					number=number-(10-Math.abs(yuShu));
+				}
+			}
+			return number
 		}
 		
 	}

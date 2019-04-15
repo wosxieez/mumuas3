@@ -35,12 +35,12 @@ package com.xiaomu.view.room
 		}
 		
 		private var _ruleData:Object;
-
+		
 		public function get ruleData():Object
 		{
 			return _ruleData;
 		}
-
+		
 		public function set ruleData(value:Object):void
 		{
 			_ruleData = value;
@@ -137,6 +137,9 @@ package com.xiaomu.view.room
 			
 			if(ruleData){
 				niaoFenView.data = ruleData;
+				niaoFenView.visible = ruleData.rulename;
+			}else{
+				niaoFenView.visible = false;
 			}
 		}
 		

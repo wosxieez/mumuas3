@@ -62,7 +62,7 @@ package com.xiaomu.view.group
 			addChild(bgImg);
 			
 			historyList = new List();
-			historyList.itemRendererHeight = 150;
+			historyList.itemRendererHeight = 160;
 			historyList.gap = 15;
 			addChild(historyList);
 			
