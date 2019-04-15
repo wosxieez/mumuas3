@@ -248,10 +248,12 @@ package com.xiaomu.view.caicaicai
 			}
 			if(AppData.getInstane().user.fc==0){
 				AppSmallAlert.show('您的元宝不够了');
+				allowClick = true;
 				return
 			}
 			if(parseInt(xiazhuInput.text)>AppData.getInstane().user.fc){
 				AppSmallAlert.show('押宝数不可大于剩余元宝数');
+				allowClick = true;
 				return;
 			}
 			startHandler(false)
@@ -264,10 +266,12 @@ package com.xiaomu.view.caicaicai
 			}
 			if(AppData.getInstane().user.fc==0){
 				AppSmallAlert.show('您的元宝不够了');
+				allowClick = true;
 				return
 			}
 			if(parseInt(xiazhuInput.text)>AppData.getInstane().user.fc){
 				AppSmallAlert.show('押宝数不可大于剩余元宝数');
+				allowClick = true;
 				return;
 			}
 			startHandler(true)
@@ -350,6 +354,7 @@ package com.xiaomu.view.caicaicai
 			updateHandler();
 			setTimeout(function():void{
 				AppSmallAlert.show('恭喜你，你猜对了！')
+				allowClick = true;
 			},1000);
 		}
 		
@@ -359,6 +364,7 @@ package com.xiaomu.view.caicaicai
 			updateHandler();
 			setTimeout(function():void{
 				AppSmallAlert.show('很遗憾，你猜错了。')
+				allowClick = true;
 			},1000);
 		}
 		
