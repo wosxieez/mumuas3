@@ -37,7 +37,9 @@ package com.xiaomu.renderer
 			var verticalGap:Number = cardHeight * Size.GAP_RADIO
 			var newCardUI:CardUI
 			var startX:Number = 2
-			for (var j:int = 0; j < data.cards.length; j++) {
+			var cards:Array = data.cards.concat([])
+			cards.sort()
+			for (var j:int = 0; j < cards.length; j++) {
 				newCardUI = oldMyGroupCardUIs.pop()
 				if (!newCardUI) {
 					newCardUI = new CardUI()
@@ -49,7 +51,7 @@ package com.xiaomu.renderer
 				newCardUI.height = cardHeight
 				newCardUI.x = startX
 				newCardUI.y = height - newCardUI.height - j * verticalGap - 2
-				newCardUI.card = data.cards[j]
+				newCardUI.card = cards[j]
 				newCardUI.type = CardUI.TYPE_BIG_CARD
 				setChildIndex(newCardUI, 0)
 				myGroupCardUIs.push(newCardUI)
