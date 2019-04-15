@@ -195,7 +195,7 @@ package com.xiaomu.view.caicaicai
 		{
 			super.commitProperties();
 			
-			roomCardBar.count = AppData.getInstane().user.fc
+			roomCardBar.count = AppData.getInstane().user.fc?AppData.getInstane().user.fc:"0";
 		}
 		
 		override protected function updateDisplayList():void
