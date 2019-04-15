@@ -49,6 +49,7 @@ package com.xiaomu.view.caicaicai
 		private var amountLab:LabelhasBg
 		private var refreshButton:ImageButton;
 		private var shuomingText:TextArea;
+		private var lab:Label;
 		
 		override protected function createChildren():void
 		{
@@ -57,6 +58,11 @@ package com.xiaomu.view.caicaicai
 			bgImg = new Image()
 			bgImg.source = 'assets/hall/guild_hall_bg.png'
 			addChild(bgImg)
+			
+			lab = new Label();
+			lab.alpha = 0.5
+			lab.color = 0xffffff;
+			addChild(lab);
 			
 			goback= new ImageButton()
 			goback.upImageSource = 'assets/group/btn_guild2_return_n.png';
@@ -239,6 +245,8 @@ package com.xiaomu.view.caicaicai
 			shuomingText.y = bigBtn.y+bigBtn.height+30;
 			shuomingText.width = bigBtn.width*2+150+90;
 			shuomingText.height = 240;
+			
+			lab.width = width;
 		}
 		
 		protected function smallHandler(event:MouseEvent):void
@@ -282,13 +290,15 @@ package com.xiaomu.view.caicaicai
 			allowClick = false;
 			var result:Number = Math.floor((Math.random()*9999+1));
 			trace("随机数：",result);
-			if(result<=4500){
+			lab.text = result+"";
+			
+			if(result<4500){
 				if(!guessBig){
 					winHandler();
 				}else{
 					loseHandler();
 				}
-			}else if(result>=5500){
+			}else if(result>5500){
 				if(guessBig){
 					winHandler();
 				}else{
