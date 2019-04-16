@@ -63,7 +63,15 @@ package com.xiaomu.event
 		 */
 		public static const FORCE_LEAVE:String='forceLeave'
 		
+		/**
+		 *刷新群信息 
+		 */
 		public static const REFRESH_GROUP_DATA:String = 'refreshGroupData'
+			
+		/**
+		 *刷新用户信息 
+		 */
+		public static const REFRESH_USER_INFO:String = 'refreshUserInfo'
 		
 		/** Message用户事件信息存储*/
 		public var message:Object;

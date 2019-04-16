@@ -3,6 +3,8 @@ package com.xiaomu.view.caicaicai
 	import com.xiaomu.component.AppSmallAlert;
 	import com.xiaomu.component.ImageButton;
 	import com.xiaomu.component.LabelhasBg;
+	import com.xiaomu.event.AppManagerEvent;
+	import com.xiaomu.manager.AppManager;
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.HttpApi;
 	import com.xiaomu.view.MainView;
@@ -399,6 +401,7 @@ package com.xiaomu.view.caicaicai
 						AppData.getInstane().user = respones.data[0]
 						invalidateProperties();
 						allowClick = true;
+						AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.REFRESH_USER_INFO));
 					},2000);
 				}
 			},null);

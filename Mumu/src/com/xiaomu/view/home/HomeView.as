@@ -4,7 +4,9 @@ package com.xiaomu.view.home
 	import com.xiaomu.component.AppSmallAlert;
 	import com.xiaomu.component.ImageButton;
 	import com.xiaomu.component.Loading;
+	import com.xiaomu.event.AppManagerEvent;
 	import com.xiaomu.itemRender.HomeBottomBarRender;
+	import com.xiaomu.manager.AppManager;
 	import com.xiaomu.util.Api;
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.Audio;
@@ -38,7 +40,15 @@ package com.xiaomu.view.home
 		public function HomeView()
 		{
 			super();
+			AppManager.getInstance().addEventListener(AppManagerEvent.REFRESH_USER_INFO,refreshUserInfoHandler);
 		}
+		
+		protected function refreshUserInfoHandler(event:AppManagerEvent):void
+		{
+			trace(AppData.getInstane().user.fc);
+			userInfoView.userInfoData = AppData.getInstane().user;
+		}
+		
 		private var bg : Image;
 		private var myGroup:ImageButton;
 		private var userInfoView:UserInfoView
