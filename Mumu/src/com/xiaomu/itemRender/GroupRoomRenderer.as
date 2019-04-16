@@ -49,7 +49,7 @@ package com.xiaomu.itemRender
 			if (data) {
 				labelDisplay.text = JSON.stringify(data)
 				labelDisplay.visible =false;
-				trace("数据：：",JSON.stringify(data));// {"users":["wosxieez4","xiebao"],"name":"room878234","rid":1}
+//				trace("数据：：",JSON.stringify(data));// {"users":["wosxieez4","xiebao"],"name":"room878234","rid":1}
 //				trace("玩法：",JSON.stringify(AppData.getInstane().allRules));
 				for each (var ruleObj:Object in AppData.getInstane().allRules) 
 				{

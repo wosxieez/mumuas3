@@ -112,6 +112,7 @@ package com.xiaomu.view.room
 		private var daNiaoView:DaNiaoNoticePanel
 		
 		private var showSettingPanelBtn:ImageButton;
+		private var showRuleNamePanelBtn:ImageButton;
 		
 		private var _roomData:Object
 		
@@ -313,6 +314,15 @@ package com.xiaomu.view.room
 			showSettingPanelBtn.height = 68;
 			showSettingPanelBtn.addEventListener(MouseEvent.CLICK,showSettingPanelBtnHandler);
 			addChild(showSettingPanelBtn);
+			
+			//显示玩法按钮
+			showRuleNamePanelBtn = new ImageButton();
+			showRuleNamePanelBtn.upImageSource='assets/room/btn_wanfa_up.png';
+			showRuleNamePanelBtn.downImageSource='assets/room/btn_wanfa_down.png';
+			showRuleNamePanelBtn.width = 69;
+			showRuleNamePanelBtn.height = 68;
+			showRuleNamePanelBtn.addEventListener(MouseEvent.CLICK,showRuleNamePanelBtnHandler);
+			addChild(showRuleNamePanelBtn);
 			
 			goback= new ImageButton()
 			goback.upImageSource = 'assets/group/btn_guild2_return_n.png';
@@ -543,6 +553,9 @@ package com.xiaomu.view.room
 			
 			daNiaoView.x = (width - daNiaoView.width) / 2
 			daNiaoView.y = (height - daNiaoView.height) / 2
+				
+			showRuleNamePanelBtn.x = 400;
+			showRuleNamePanelBtn.y = 10;
 		}
 		
 		public function init(room:Object): void {
@@ -1645,6 +1658,25 @@ package com.xiaomu.view.room
 		protected function forceLeaveHandler(event:AppManagerEvent):void
 		{
 			close();
+		}
+		
+		private var rulePanel:RulePanelOnRoom;
+		/**
+		 * 显示当前玩法小弹窗
+		 */
+		protected function showRuleNamePanelBtnHandler(event:MouseEvent):void
+		{
+			if(!rulePanel){
+				rulePanel = new RulePanelOnRoom();
+			}
+			rulePanel.data = AppData.getInstane().rule;
+			rulePanel.x =-rulePanel.width/2+showRuleNamePanelBtn.width/2;
+			rulePanel.y = showRuleNamePanelBtn.height;
+			if(!rulePanel.isPopUp){
+				PopUpManager.addPopUp(rulePanel,showRuleNamePanelBtn,true,true,0,0);
+			}else{
+				PopUpManager.removePopUp(rulePanel);
+			}
 		}
 		
 	}
