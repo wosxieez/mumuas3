@@ -253,7 +253,7 @@ package com.xiaomu.view.caicaicai
 		
 		protected function smallHandler(event:MouseEvent):void
 		{
-			if(!allowClick){
+			if(!allowClick||!xiazhuInput.text){
 				return
 			}
 			if(AppData.getInstane().user.jb==0){
@@ -271,7 +271,7 @@ package com.xiaomu.view.caicaicai
 		
 		protected function bigHandler(event:MouseEvent):void
 		{
-			if(!allowClick){
+			if(!allowClick||!xiazhuInput.text){
 				return
 			}
 			if(AppData.getInstane().user.jb==0){
