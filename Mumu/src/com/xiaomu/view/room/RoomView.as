@@ -4,6 +4,7 @@ package com.xiaomu.view.room
 	import com.xiaomu.component.BigCardUI;
 	import com.xiaomu.component.CardUI;
 	import com.xiaomu.component.ImageButton;
+	import com.xiaomu.component.Recording;
 	import com.xiaomu.event.ApiEvent;
 	import com.xiaomu.event.AppManagerEvent;
 	import com.xiaomu.event.SelectEvent;
@@ -22,6 +23,8 @@ package com.xiaomu.view.room
 	
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
+	import flash.utils.clearTimeout;
+	import flash.utils.setTimeout;
 	
 	import coco.component.Alert;
 	import coco.component.Image;
@@ -288,6 +291,7 @@ package com.xiaomu.view.room
 			chatButton.width = 60
 			chatButton.height = 60
 			chatButton.upImageSource = 'assets/room/btn_chat.png'
+			chatButton.downImageSource = 'assets/room/btn_chat_press.png'
 			chatButton.addEventListener(MouseEvent.CLICK, chatButton_clickHandler)
 			iconLayer.addChild(chatButton)
 			
@@ -536,7 +540,7 @@ package com.xiaomu.view.room
 			
 			goback.x = width - goback.width - 200
 			goback.y = 10
-				
+			
 			daNiaoView.x = (width - daNiaoView.width) / 2
 			daNiaoView.y = (height - daNiaoView.height) / 2
 		}
@@ -616,6 +620,8 @@ package com.xiaomu.view.room
 			canChiButton.visible = false
 			canPengButton.visible = false
 			canHuButton.visible = false
+			
+			PopUpManager.removePopUp(ChiSelectView.getInstane())
 		}
 		
 		private function updateReadyUI():void {
@@ -1277,10 +1283,6 @@ package com.xiaomu.view.room
 		
 		protected function onNotificationHandler(event:ApiEvent):void
 		{
-			if (ChiSelectView.getInstane().isPopUp) {
-				PopUpManager.removePopUp(ChiSelectView.getInstane())
-			}
-			
 			var notification: Object = event.data
 			switch(notification.name)
 			{
@@ -1538,8 +1540,8 @@ package com.xiaomu.view.room
 		
 		protected function refreshButton_clickHandler(event:MouseEvent):void
 		{
-			needRiffleCard = true
-			invalidateProperties()
+			myHandCards = null
+			invalidateMyHandCardUIs()
 		}
 		
 		protected function zhunbeiButton_clickHandler(event:MouseEvent):void
@@ -1559,21 +1561,41 @@ package com.xiaomu.view.room
 			RoomChatView.getInstane().open(chatButton.x - RoomChatView.getInstane().width, (height - RoomChatView.getInstane().height) / 2)
 		}
 		
+		
+		private var talkTimeID:uint
+		private var isTalking:Boolean = false
+		
 		protected function talkButton_downHandler(event:MouseEvent):void
 		{
-			TalkManager.getInstane().webServer = AppData.getInstane().webUrl
-			TalkManager.getInstane().addEventListener(TalkEvent.SUCCESS, talkSuccessHandler)
-			TalkManager.getInstane().start()
+			if (isTalking) return 
+			Recording.getInstance().open()
+			clearTimeout(talkTimeID)
+			talkTimeID = setTimeout(function ():void {
+				isTalking = true
+				TalkManager.getInstane().webServer = AppData.getInstane().webUrl
+				TalkManager.getInstane().addEventListener(TalkEvent.SUCCESS, talkSuccessHandler)
+				TalkManager.getInstane().start()
+			}, 500)
 		}
 		
 		protected function talkButton_outHandler(event:MouseEvent):void
 		{
-			TalkManager.getInstane().cancel()
+			Recording.getInstance().close()
+			clearTimeout(talkTimeID)
+			if (isTalking) {
+				TalkManager.getInstane().cancel()
+				isTalking = false
+			}
 		}
 		
 		protected function talkButton_upkHandler(event:MouseEvent):void
 		{
-			TalkManager.getInstane().stop()
+			Recording.getInstance().close()
+			clearTimeout(talkTimeID)
+			if (isTalking) {
+				TalkManager.getInstane().stop()
+				isTalking = false
+			}
 		}
 		
 		protected function talkSuccessHandler(event:TalkEvent):void

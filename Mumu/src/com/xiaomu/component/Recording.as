@@ -7,9 +7,9 @@ package com.xiaomu.component
 	import coco.core.UIComponent;
 	import coco.manager.PopUpManager;
 	
-	public class Loading extends UIComponent
+	public class Recording extends UIComponent
 	{
-		public function Loading()
+		public function Recording()
 		{
 			super();
 			
@@ -19,12 +19,12 @@ package com.xiaomu.component
 			addEventListener(Event.ENTER_FRAME, this_enterFrameHandler);
 		}
 		
-		private static var instance:Loading;
+		private static var instance:Recording;
 		
-		public static function getInstance():Loading
+		public static function getInstance():Recording
 		{
 			if (!instance)
-				instance = new Loading();
+				instance = new Recording();
 			
 			return instance;
 		}
@@ -116,7 +116,7 @@ package com.xiaomu.component
 		public function open():void
 		{
 			isOk = true
-			PopUpManager.addPopUp(this, null, true, true, 0, 0);
+			PopUpManager.addPopUp(this, null, false, true, 0, 0);
 			PopUpManager.centerPopUp(this);
 		}
 		
