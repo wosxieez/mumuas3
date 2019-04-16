@@ -397,7 +397,7 @@ package com.xiaomu.view.home
 						update: {qd: todayDate,fc:oldfc+2,jb:oldjb+1000}, 
 						query: {id: user_id}
 					},function(e:Event):void{
-						AppAlert.show("签到成功！\r\n牛牛送您两张房卡和一千金币祝您游戏愉快！")
+						AppAlert.show("签到成功！\r\n牛牛送您2张房卡和1000金币祝您游戏愉快！")
 						///刷新界面上的房卡显示
 						HttpApi.getInstane().getUser({"id":user_id},function(e:Event):void{
 							AppData.getInstane().user = JSON.parse(e.currentTarget.data).data[0]
