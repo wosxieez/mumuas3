@@ -68,7 +68,7 @@ package com.xiaomu.view.caicaicai
 			
 			if(numStr){
 				var dataArray:Array =  String(numStr).split("");
-//				trace("数据：",JSON.stringify(dataArray));
+				trace("数据：",JSON.stringify(dataArray));
 				numberBar.dataProvider = dataArray
 			}
 		}
@@ -94,16 +94,17 @@ package com.xiaomu.view.caicaicai
 			
 			var count:Number = 0;
 			var time1:uint = setInterval(function():void{
-				numberBar.dataProvider = tempArr[Math.floor(Math.random()*9000)].split("");
+				numberBar.dataProvider = tempArr[Math.floor(Math.random()*9000)].split("");///随机刷新数字界面
 				count++;
 				
 				if(count==10){
 					clearInterval(time1);
 					setTimeout(function():void{
-						invalidateProperties();
-					},100);
+						var dataArray:Array =  String(numStr).split("");
+						numberBar.dataProvider = dataArray
+					},50);
 				}
-			},50);
+			},80);
 		}
 		
 		

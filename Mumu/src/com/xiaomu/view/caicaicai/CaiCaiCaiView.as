@@ -35,14 +35,14 @@ package com.xiaomu.view.caicaicai
 		
 		private var allowClick:Boolean=true;
 		
-		private var newRoomCard:Number;
+		private var newJinBin:Number;
 		private var bgImg:Image;
 		private var goback:ImageButton;
 		private var resultLab:Label;
 		private var bigBtn:Button;
 		private var smallBtn:Button;
 		private var numberBar:CaiBarTool;
-		private var roomCardBar:GoldOrCardShowBar;
+		private var goldBar:GoldOrCardShowBar;
 		private var xiazhuInput:TextInput;
 		private var chu2Btn:Button;
 		private var cheng2Btn:Button;
@@ -86,20 +86,20 @@ package com.xiaomu.view.caicaicai
 			refreshButton.addEventListener(MouseEvent.CLICK, refreshButton_clickHandler)
 			addChild(refreshButton)
 			
-			roomCardBar = new GoldOrCardShowBar();
-			roomCardBar.width = 240;
-			roomCardBar.height = 50;
-			roomCardBar.iconWidthHeight = [roomCardBar.height,roomCardBar.height];
-			roomCardBar.typeSource = 'assets/user/icon_yuanbao_01.png';
-			addChild(roomCardBar);
+			goldBar = new GoldOrCardShowBar();
+			goldBar.width = 240;
+			goldBar.height = 50;
+			goldBar.iconWidthHeight = [goldBar.height,goldBar.height];
+			goldBar.typeSource = 'assets/user/icon_jinbi_01.png';
+			addChild(goldBar);
 			
 			bigBtn = new Button();
 			bigBtn.label ='押大';
 			bigBtn.color = 0xffffff;
 			bigBtn.fontSize = 30;
 			bigBtn.bold = true;
-			bigBtn.width = 150;
-			bigBtn.height = 60;
+			bigBtn.width = 150*1.2;
+			bigBtn.height = 60*1.2;
 			bigBtn.radius = 10;
 			bigBtn.backgroundColor = 0xf2c40b;
 			bigBtn.addEventListener(MouseEvent.CLICK,bigHandler);
@@ -110,16 +110,16 @@ package com.xiaomu.view.caicaicai
 			smallBtn.color = 0xffffff;
 			smallBtn.fontSize = 30;
 			smallBtn.bold = true;
-			smallBtn.width = 150;
-			smallBtn.height = 60;
+			smallBtn.width = 150*1.2;
+			smallBtn.height = 60*1.2;
 			smallBtn.radius = 10;
 			smallBtn.backgroundColor = 0xf2c40b;
 			smallBtn.addEventListener(MouseEvent.CLICK,smallHandler);
 			addChild(smallBtn);
 			
 			numberBar = new CaiBarTool();
-			numberBar.width = 250;
-			numberBar.height = 80;
+			numberBar.width = 250*1.2;
+			numberBar.height = 80*1.2;
 			addChild(numberBar);
 			
 			xiazhuInput =  new TextInput();
@@ -138,16 +138,16 @@ package com.xiaomu.view.caicaicai
 			amountLab = new LabelhasBg();
 			amountLab.bgcolor = 0x142f4d;
 			amountLab.color = 0xffffff;
-			amountLab.text = '元宝数';
+			amountLab.text = '金币数';
 			amountLab.fontSize = 26;
-			amountLab.width = 142;
-			amountLab.height = 50;
+			amountLab.width = 100*1.2;
+			amountLab.height = 70;
 			addChild(amountLab);
 			
 			chu2Btn = new Button();
-			chu2Btn.label = '/2';
-			chu2Btn.width = 60;
-			chu2Btn.height = 50;
+			chu2Btn.label = '/ 2';
+			chu2Btn.width = 70*1.2;
+			chu2Btn.height = 70;
 			chu2Btn.fontSize = 26;
 			chu2Btn.backgroundColor = 0x142f4d;
 			chu2Btn.color = 0xffffff;
@@ -156,9 +156,9 @@ package com.xiaomu.view.caicaicai
 			addChild(chu2Btn);
 			
 			cheng2Btn = new Button();
-			cheng2Btn.label = 'x2';
-			cheng2Btn.width = 60;
-			cheng2Btn.height = 50;
+			cheng2Btn.label = 'x 2';
+			cheng2Btn.width = 70*1.2;
+			cheng2Btn.height = 70;
 			cheng2Btn.fontSize = 26;
 			cheng2Btn.backgroundColor = 0x142f4d;
 			cheng2Btn.color = 0xffffff;
@@ -168,8 +168,8 @@ package com.xiaomu.view.caicaicai
 			
 			minBtn = new Button();
 			minBtn.label = '最小';
-			minBtn.width = 90;
-			minBtn.height = 50;
+			minBtn.width = 90*1.2;
+			minBtn.height = 70;
 			minBtn.fontSize = 26;
 			minBtn.backgroundColor = 0x142f4d;
 			minBtn.color = 0xffffff;
@@ -180,8 +180,8 @@ package com.xiaomu.view.caicaicai
 			maxBtn = new Button();
 			maxBtn.topRightRadius = maxBtn.bottomRightRadius = 10;
 			maxBtn.label = '最大';
-			maxBtn.width = 90;
-			maxBtn.height = 50;
+			maxBtn.width = 90*1.2;
+			maxBtn.height = 70;
 			maxBtn.fontSize = 26;
 			maxBtn.backgroundColor = 0x142f4d;
 			maxBtn.color = 0xffffff;
@@ -189,7 +189,7 @@ package com.xiaomu.view.caicaicai
 			maxBtn.addEventListener(MouseEvent.CLICK,maxBtnHandler);
 			addChild(maxBtn);
 			
-			var str:String = '<font  size="18"  color="#ffffff">游戏提示:<br><br>        点击大小按钮，系统会随机生成一个0到9999的数。<br>如果大于<font color="#feba02">5500</font>，则为大数，如果小于<font color="#feba02">4500</font>，则为小数。<br>        赔率为1赔1。比如押1个元宝，押中后，系统会自<br>动给账户增加一个元宝，没押中则减一个元宝。</font>';
+			var str:String = '<font  size="18"  color="#ffffff">游戏提示:<br><br>        点击大小按钮，系统会随机生成一个0到9999的数。<br>如果大于<font color="#feba02">5500</font>，则为大数，如果小于<font color="#feba02">4500</font>，则为小数。<br>        赔率为1赔1。比如押1个金币，押中后，系统会自<br>动给账户增加一个金币，没押中则减一个金币。</font>';
 			shuomingText = new TextArea();
 			shuomingText.htmlText = str;
 			shuomingText.color = 0xffffff;
@@ -203,7 +203,7 @@ package com.xiaomu.view.caicaicai
 		{
 			super.commitProperties();
 			
-			roomCardBar.count = AppData.getInstane().user.fc?AppData.getInstane().user.fc:"0";
+			goldBar.count = AppData.getInstane().user.jb?AppData.getInstane().user.jb:"0";
 		}
 		
 		override protected function updateDisplayList():void
@@ -217,8 +217,8 @@ package com.xiaomu.view.caicaicai
 			numberBar.x = (width-numberBar.width)/2;
 			numberBar.y = 100
 			
-			roomCardBar.x = 200;
-			roomCardBar.y = 15;
+			goldBar.x = 200;
+			goldBar.y = 15;
 			
 			xiazhuInput.width = bigBtn.width*2+150;
 			xiazhuInput.height = 70;
@@ -243,7 +243,7 @@ package com.xiaomu.view.caicaicai
 			refreshButton.x = width - 20 - refreshButton.width
 			refreshButton.y  = 10
 				
-			shuomingText.x = bigBtn.x-30;
+			shuomingText.x = bigBtn.x-10;
 			shuomingText.y = bigBtn.y+bigBtn.height+30;
 			shuomingText.width = bigBtn.width*2+150+90;
 			shuomingText.height = 240;
@@ -256,13 +256,13 @@ package com.xiaomu.view.caicaicai
 			if(!allowClick){
 				return
 			}
-			if(AppData.getInstane().user.fc==0){
-				AppSmallAlert.show('您的元宝不够了');
+			if(AppData.getInstane().user.jb==0){
+				AppSmallAlert.show('您的金币不够了');
 				allowClick = true;
 				return
 			}
-			if(parseInt(xiazhuInput.text)>AppData.getInstane().user.fc){
-				AppSmallAlert.show('押宝数不可大于剩余元宝数');
+			if(parseInt(xiazhuInput.text)>AppData.getInstane().user.jb){
+				AppSmallAlert.show('押宝数不可大于剩余金币数');
 				allowClick = true;
 				return;
 			}
@@ -274,13 +274,13 @@ package com.xiaomu.view.caicaicai
 			if(!allowClick){
 				return
 			}
-			if(AppData.getInstane().user.fc==0){
-				AppSmallAlert.show('您的元宝不够了');
+			if(AppData.getInstane().user.jb==0){
+				AppSmallAlert.show('您的金币不够了');
 				allowClick = true;
 				return
 			}
-			if(parseInt(xiazhuInput.text)>AppData.getInstane().user.fc){
-				AppSmallAlert.show('押宝数不可大于剩余元宝数');
+			if(parseInt(xiazhuInput.text)>AppData.getInstane().user.jb){
+				AppSmallAlert.show('押宝数不可大于剩余金币数');
 				allowClick = true;
 				return;
 			}
@@ -321,8 +321,8 @@ package com.xiaomu.view.caicaicai
 		protected function cheng2BtnHandler(event:MouseEvent):void
 		{
 			var cheng2Num:Number = parseInt(xiazhuInput.text)*2
-			if(cheng2Num>=AppData.getInstane().user.fc){
-				xiazhuInput.text = AppData.getInstane().user.fc+""
+			if(cheng2Num>=AppData.getInstane().user.jb){
+				xiazhuInput.text = AppData.getInstane().user.jb+""
 			}else{
 				xiazhuInput.text = cheng2Num+""
 			}
@@ -340,8 +340,8 @@ package com.xiaomu.view.caicaicai
 		
 		protected function maxBtnHandler(event:MouseEvent):void
 		{
-			if(AppData.getInstane().user.fc>0){
-				xiazhuInput.text = AppData.getInstane().user.fc+""
+			if(AppData.getInstane().user.jb>0){
+				xiazhuInput.text = AppData.getInstane().user.jb+""
 			}else{
 				xiazhuInput.text = '1';
 			}
@@ -355,27 +355,27 @@ package com.xiaomu.view.caicaicai
 		protected function changeHandler(event:UIEvent):void
 		{
 			var xiazhuNum:Number = parseInt(xiazhuInput.text);
-			if(xiazhuNum>AppData.getInstane().user.fc){
-				xiazhuInput.text = AppData.getInstane().user.fc+""
+			if(xiazhuNum>AppData.getInstane().user.jb){
+				xiazhuInput.text = AppData.getInstane().user.jb+""
 			}
 		}
 		
 		private function winHandler():void
 		{
-			newRoomCard = AppData.getInstane().user.fc+Math.floor(parseInt(xiazhuInput.text));
+			newJinBin = AppData.getInstane().user.jb+Math.floor(parseInt(xiazhuInput.text));
 			updateHandler();
 			setTimeout(function():void{
-				AppSmallAlert.show('恭喜你，你猜对了！')
+				AppSmallAlert.show('恭喜你，你猜对了！',AppSmallAlert.SUCCESS)
 				allowClick = true;
 			},1000);
 		}
 		
 		private function loseHandler():void
 		{
-			newRoomCard= AppData.getInstane().user.fc-Math.floor(parseInt(xiazhuInput.text));
+			newJinBin= AppData.getInstane().user.jb-Math.floor(parseInt(xiazhuInput.text));
 			updateHandler();
 			setTimeout(function():void{
-				AppSmallAlert.show('很遗憾，你猜错了。')
+				AppSmallAlert.show('很遗憾，你猜错了。',AppSmallAlert.WARNING)
 				allowClick = true;
 			},1000);
 		}
@@ -383,7 +383,7 @@ package com.xiaomu.view.caicaicai
 		private function updateHandler():void
 		{
 			HttpApi.getInstane().updateUser({
-				update: {fc:newRoomCard}, 
+				update: {jb:newJinBin}, 
 				query: {id: AppData.getInstane().user.id}
 			},function(e:Event):void{
 				if(JSON.parse(e.currentTarget.data).code==0){

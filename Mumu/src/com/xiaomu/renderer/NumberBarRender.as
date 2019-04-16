@@ -45,7 +45,7 @@ package com.xiaomu.renderer
 			super.drawSkin();
 			
 			graphics.clear();
-			graphics.beginFill(0x3b3d41);
+			graphics.beginFill(0x3b3d41,0);
 			graphics.drawRoundRect(0,0,width,height,10,10);
 			graphics.endFill();
 		}

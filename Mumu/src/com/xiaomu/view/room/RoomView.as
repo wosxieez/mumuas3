@@ -1666,6 +1666,9 @@ package com.xiaomu.view.room
 		 */
 		protected function showRuleNamePanelBtnHandler(event:MouseEvent):void
 		{
+			if(!AppData.getInstane().rule){
+				return
+			}
 			if(!rulePanel){
 				rulePanel = new RulePanelOnRoom();
 			}

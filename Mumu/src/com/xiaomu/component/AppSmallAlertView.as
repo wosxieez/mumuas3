@@ -45,6 +45,19 @@ package com.xiaomu.component
 			_time = value;
 		}
 		
+		private var _type:String;
+
+		public function get type():String
+		{
+			return _type;
+		}
+
+		public function set type(value:String):void
+		{
+			_type = value;
+			invalidateSkin();
+		}
+
 		private var bgImg:Image;
 		private var lab:Label;
 		override protected function createChildren():void
@@ -76,6 +89,34 @@ package com.xiaomu.component
 			lab.height =bgImg.height = 50
 			bgImg.x = (width-bgImg.width)/2;
 			bgImg.y = (height-bgImg.height)/2;
+		}
+		
+		override protected function drawSkin():void
+		{
+			super.drawSkin();
+		
+			switch(type)
+			{
+				case "normal":
+				{
+					lab.color = 0xffffff;
+					break;
+				}
+				case "success":
+				{
+					lab.color = 0x99FF99;
+					break;
+				}
+				case "warning":
+				{
+					lab.color = 0xFF0033;
+					break;
+				}
+				default:
+				{
+					break;
+				}
+			}
 		}
 		
 		protected function addHandler(event:Event):void
