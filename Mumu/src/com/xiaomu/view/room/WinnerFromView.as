@@ -163,12 +163,17 @@ package com.xiaomu.view.room
 		 */
 		protected function action(number:Number):Number{
 			var yuShu:Number = number%10;
-			trace("yuShu:",yuShu);
 			if(Math.abs(yuShu)>=5){
 				if(number>0){
 					number=number+(10-Math.abs(yuShu));
 				}else{
 					number=number-(10-Math.abs(yuShu));
+				}
+			}else{
+				if(number>0){
+					number=number-Math.abs(yuShu);
+				}else{
+					number=number+Math.abs(yuShu);
 				}
 			}
 			return number
