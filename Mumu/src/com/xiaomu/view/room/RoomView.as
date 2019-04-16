@@ -554,7 +554,7 @@ package com.xiaomu.view.room
 			daNiaoView.x = (width - daNiaoView.width) / 2
 			daNiaoView.y = (height - daNiaoView.height) / 2
 				
-			showRuleNamePanelBtn.x = 400;
+			showRuleNamePanelBtn.x = width-200;
 			showRuleNamePanelBtn.y = 10;
 		}
 		
