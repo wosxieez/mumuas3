@@ -43,6 +43,8 @@ package com.xiaomu.view.hall
 		}
 		
 		private var bg:Image
+		private var infoImg:Image;
+		private var npcImg:Image;
 		private var titleImg:Image;
 		private var groupsList:List
 		private var signoutBtn:Image
@@ -74,6 +76,14 @@ package com.xiaomu.view.hall
 			titleImg = new Image();
 			titleImg.source ='assets/hall/title_wdpyq.png';
 			addChild(titleImg);
+			
+			infoImg = new Image();
+			infoImg.source = 'assets/hall/guild_hall_info.png';
+			addChild(infoImg);
+			
+			npcImg = new Image();
+			npcImg.source = 'assets/hall/guild_hall_npc.png';
+			addChild(npcImg);
 			
 			groupsList = new List()
 			groupsList.padding = 20
@@ -121,6 +131,11 @@ package com.xiaomu.view.hall
 		override protected function commitProperties():void {
 			super.commitProperties()
 			groupsList.dataProvider = groupsData
+			if(groupsData==null||JSON.stringify(groupsData) == "[]"){
+				infoImg.visible = npcImg.visible = true;
+			}else{
+				infoImg.visible = npcImg.visible = false;
+			}
 		}
 		
 		override protected function updateDisplayList():void{
@@ -128,6 +143,16 @@ package com.xiaomu.view.hall
 			
 			bg.width = width
 			bg.height = height
+			
+			infoImg.width = 462*0.7;
+			infoImg.height = 554*0.7;
+			infoImg.y = (height-infoImg.height)/2+30;
+			infoImg.x = (width-infoImg.width)/2
+			
+			npcImg.width = 244*0.8;
+			npcImg.height = 445*0.8;
+			npcImg.y = (height-npcImg.height)/2+20;
+			npcImg.x = infoImg.x+infoImg.width+30;
 			
 			titleImg.width = 308;
 			titleImg.height = 74;
@@ -223,7 +248,7 @@ package com.xiaomu.view.hall
 														}
 													}
 													groupsData = response2.data
-													//trace("groupsData:",JSON.stringify(response2.data));
+													//													trace("groupsData:",JSON.stringify(response2.data));
 												} else {
 													groupsData = null
 												}
