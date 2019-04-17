@@ -45,7 +45,7 @@ package com.xiaomu.view.home
 		
 		protected function refreshUserInfoHandler(event:AppManagerEvent):void
 		{
-			trace(AppData.getInstane().user.jb);
+//			trace(AppData.getInstane().user.jb);
 			userInfoView.userInfoData = AppData.getInstane().user;
 		}
 		
@@ -388,27 +388,39 @@ package com.xiaomu.view.home
 		{
 			var todayDate:String = getTodayDate();
 			var user_id:int = parseInt(AppData.getInstane().user.id);
+			HttpApi.getInstane().checkIn({query:{id:user_id}},function(e:Event):void{
+				var respones:Object = JSON.parse(e.currentTarget.data);
+				if(respones.data=='check_in success'){
+					addRoomCardAndGold();
+					AppAlert.show("签到成功！\r\n牛牛送您2张房卡和1000金币祝您游戏愉快！")
+				}else if(respones.data=='check_in repeat'){
+					AppAlert.show("今日已签到。\r\n请明日再来哦亲！")
+				}else{
+					AppSmallAlert.show("签到失败");
+				}
+			},null);
+		}
+		
+		private function addRoomCardAndGold():void
+		{
+			var user_id:int = parseInt(AppData.getInstane().user.id);
 			HttpApi.getInstane().getUser({"id":user_id},function(e:Event):void{
 				var oldDate:String = JSON.parse(e.currentTarget.data).data[0].qd;
 				var oldfc:int = JSON.parse(e.currentTarget.data).data[0].fc;
 				var oldjb:int = JSON.parse(e.currentTarget.data).data[0].jb
-				if(todayDate!=oldDate){
-					HttpApi.getInstane().updateUser({
-						update: {qd: todayDate,fc:oldfc+2,jb:oldjb+1000}, 
-						query: {id: user_id}
-					},function(e:Event):void{
-						AppAlert.show("签到成功！\r\n牛牛送您2张房卡和1000金币祝您游戏愉快！")
-						///刷新界面上的房卡显示
-						HttpApi.getInstane().getUser({"id":user_id},function(e:Event):void{
-							AppData.getInstane().user = JSON.parse(e.currentTarget.data).data[0]
-							userInfoView.userInfoData = JSON.parse(e.currentTarget.data).data[0]
-						},null);
+				HttpApi.getInstane().updateUser({
+					update: {fc:oldfc+2,jb:oldjb+1000}, 
+					query: {id: user_id}
+				},function(e:Event):void{
+					///刷新界面上的房卡显示
+					HttpApi.getInstane().getUser({"id":user_id},function(e:Event):void{
+						AppData.getInstane().user = JSON.parse(e.currentTarget.data).data[0]
+						userInfoView.userInfoData = JSON.parse(e.currentTarget.data).data[0]
 					},null);
-				}else{
-					AppAlert.show("今日已签到。\r\n请明日再来哦亲！")
-				}
+				},null);
 			},null);
-		}
+		}		
+		
 		
 		private function getTodayDate():String
 		{
