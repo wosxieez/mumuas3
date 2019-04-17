@@ -12,7 +12,6 @@ package com.xiaomu.view.hall
 	import com.xiaomu.util.HttpApi;
 	import com.xiaomu.view.MainView;
 	import com.xiaomu.view.group.GroupView;
-	import com.xiaomu.view.hall.popUpPanel.AddGroupPanel;
 	import com.xiaomu.view.home.HomeView;
 	import com.xiaomu.view.userBarView.UserInfoView;
 	
@@ -296,7 +295,11 @@ package com.xiaomu.view.hall
 		 */
 		protected function joinGroupBtnHandler(event:MouseEvent):void
 		{
-			AppAlert.show('程序员小哥哥正在努力的开发中....\r请联系群主手动添加')
+//			AppAlert.show('程序员小哥哥正在努力的开发中....\r请联系群主手动添加')
+//			HttpApi.getInstane().joinApplyrecord({gid:23,uid:AppData.getInstane().user.id,finish:'F'},function(e:Event):void{
+//				trace("response:",e.currentTarget.data);
+//			},null);
+			
 		}
 	}
 }

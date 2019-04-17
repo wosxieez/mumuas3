@@ -1,4 +1,4 @@
-package com.xiaomu.view.hall.popUpPanel
+package com.xiaomu.view.hall
 {
 	import com.xiaomu.component.AppAlert;
 	import com.xiaomu.component.AppPanelSmall;

@@ -393,5 +393,21 @@ package com.xiaomu.util
 			var urlLoader:CocoURLLoader = new CocoURLLoader(resultHandler, faultHandler, true, 20000);
 			urlLoader.load(urlrequest)
 		}
+		
+		/**
+		 *玩家申请加入群的记录表
+		 * @param params
+		 * @param resultHandler
+		 * @param faultHandler
+		 */
+		public function joinApplyrecord(params:Object, resultHandler:Function = null, faultHandler:Function = null):void
+		{
+			var urlrequest:URLRequest = new URLRequest(AppData.getInstane().webUrl + 'insert_applyrecord');
+			urlrequest.method = URLRequestMethod.POST
+			urlrequest.contentType = 'application/json'
+			urlrequest.data = JSON.stringify(params)
+			var urlLoader:CocoURLLoader = new CocoURLLoader(resultHandler, faultHandler, true, 20000);
+			urlLoader.load(urlrequest)
+		}
 	}
 }
