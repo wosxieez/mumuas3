@@ -107,7 +107,7 @@ package com.xiaomu.component
 			realView.x = 115
 			realView.y = titleHeight + 10
 			realView.width = 680
-			realView.height = commitEnabled ? 270 : 370
+			realView.height = commitEnabled ? 290 : 370
 			
 			commitButton.x = (width - commitButton.width) / 2
 			commitButton.y = height - commitButton.height - 15

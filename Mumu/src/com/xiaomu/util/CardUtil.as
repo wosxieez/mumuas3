@@ -263,7 +263,7 @@ package com.xiaomu.util
 						paoGroup.name = Actions.Pao
 					}
 					paoGroup.cards.push(currentCard)
-					var shun:Array = shouShun(aHandCards)
+					var shun:Array = shouShun(aHandCards, currentCard)
 					if (shun) {
 						allGroups.push(aGroupCards.concat(shun))
 					}
@@ -277,7 +277,7 @@ package com.xiaomu.util
 						deleteCard(aHandCards1, card)
 					}
 					aGroupCards1.push({ name: Actions.Ti, cards: [currentCard, currentCard, currentCard, currentCard] })
-					var shun1:Array = shouShun(aHandCards1)
+					var shun1:Array = shouShun(aHandCards1, currentCard)
 					if (shun1) {
 						allGroups.push(aGroupCards1.concat(shun1))
 					}
@@ -292,7 +292,7 @@ package com.xiaomu.util
 						deleteCard(aHandCards2, card2)
 					}
 					aGroupCards2.push({ name: Actions.Wei, cards: [currentCard, currentCard, currentCard] })
-					var shun2:Array = shouShun(aHandCards2)
+					var shun2:Array = shouShun(aHandCards2, currentCard)
 					if (shun2) {
 						allGroups.push(aGroupCards2.concat(shun2))
 					}
@@ -309,7 +309,7 @@ package com.xiaomu.util
 						}
 						chiGroup.cards.push(currentCard)
 						aGroupCards3.push({ name: Actions.Chi, cards: chiGroup.cards })
-						var shun3:Array = shouShun(aHandCards3)
+						var shun3:Array = shouShun(aHandCards3, currentCard)
 						if (shun3) {
 							allGroups.push(aGroupCards3.concat(shun3))
 						}
@@ -319,7 +319,7 @@ package com.xiaomu.util
 				var aHandCards4:Array = JSON.parse(JSON.stringify(cardsOnHand)) as Array
 				var aGroupCards4:Array = JSON.parse(JSON.stringify(cardsOnGroup)) as Array
 				aHandCards4.push(currentCard)
-				var shun4:Array = shouShun(aHandCards4)
+				var shun4:Array = shouShun(aHandCards4, currentCard)
 				if (shun4) {
 					allGroups.push(aGroupCards4.concat(shun4))
 				}
@@ -327,7 +327,7 @@ package com.xiaomu.util
 				// currentCard === 0
 				var aHandCards5:Array = JSON.parse(JSON.stringify(cardsOnHand)) as Array
 				var aGroupCards5:Array = JSON.parse(JSON.stringify(cardsOnGroup)) as Array
-				var shun5:Array = shouShun(aHandCards5)
+				var shun5:Array = shouShun(aHandCards5, currentCard)
 				if (shun5) {
 					allGroups.push(aGroupCards5.concat(shun5))
 				}
@@ -344,12 +344,12 @@ package com.xiaomu.util
 		 * 玩家的牌是否无单牌。
 		 * @param cards: 手中的牌，或者手中的牌加新翻开的底牌。
 		 */
-		public function shouShun(cards:Array):Array {
+		public function shouShun(cards:Array, currentCard:int):Array {
 			if (cards.length == 0) return []
 			var kanShuns:Array = []
 			var countedCards:Dictionary = countBy(cards)
 			for (var card:int in countedCards) {
-				if (countedCards[card] == 3) {
+				if (countedCards[card] == 3 && card != currentCard) {
 					kanShuns.push({ name: Actions.Kan, cards: [card, card, card] })
 					deleteCard(cards, card)
 					deleteCard(cards, card)

@@ -15,8 +15,8 @@ package com.xiaomu.view.home
 	import com.xiaomu.view.caicaicai.CaiCaiCaiView;
 	import com.xiaomu.view.hall.HallView;
 	import com.xiaomu.view.home.noticeBar.NoticeBar;
+	import com.xiaomu.view.home.popUp.PaiHangPanel;
 	import com.xiaomu.view.home.setting.SettingPanelView;
-	import com.xiaomu.view.room.EndResultView;
 	import com.xiaomu.view.room.RoomView;
 	import com.xiaomu.view.userBarView.UserInfoView;
 	
@@ -337,6 +337,8 @@ package com.xiaomu.view.home
 					'缺的娱乐休闲活动。牛牛游戏专注于为玩家提\r' +
 					'供地方特色棋牌游戏服务，提倡玩家健康游戏\r' +
 					'远离赌博。').textAlign = TextAlign.LEFT
+			} else if (btnGroup.selectedItem.name == '战绩') { 
+				PaiHangPanel.getInstance().open()
 			} else {
 				AppAlert.show('')
 			}

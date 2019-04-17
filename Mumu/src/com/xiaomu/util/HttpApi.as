@@ -109,6 +109,22 @@ package com.xiaomu.util
 		}
 		
 		/**
+		 * 查询用户 
+		 * @param resultHandler
+		 * @param faultHandler
+		 * 
+		 */			
+		public function getUser2(params:Object, resultHandler:Function = null, faultHandler:Function = null):void
+		{
+			var urlrequest:URLRequest = new URLRequest(AppData.getInstane().webUrl + 'find_user2');
+			urlrequest.method = URLRequestMethod.POST
+			urlrequest.contentType = 'application/json'
+			urlrequest.data = JSON.stringify(params)
+			var urlLoader:CocoURLLoader = new CocoURLLoader(resultHandler, faultHandler, true, 20000);
+			urlLoader.load(urlrequest)
+		}
+		
+		/**
 		 * 更新用户 
 		 * @param resultHandler
 		 * @param faultHandler
