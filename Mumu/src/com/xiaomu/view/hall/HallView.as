@@ -18,6 +18,7 @@ package com.xiaomu.view.hall
 	
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.utils.setTimeout;
 	
 	import coco.component.HorizontalAlign;
 	import coco.component.Image;
@@ -134,7 +135,11 @@ package com.xiaomu.view.hall
 			super.commitProperties()
 			groupsList.dataProvider = groupsData
 			if(groupsData==null||JSON.stringify(groupsData) == "[]"){
-				infoImg.visible = npcImg.visible = true;
+				setTimeout(function():void{
+					if(groupsData==null||JSON.stringify(groupsData) == "[]"){
+						infoImg.visible = npcImg.visible = true;
+					}
+				},500);
 			}else{
 				infoImg.visible = npcImg.visible = false;
 			}
