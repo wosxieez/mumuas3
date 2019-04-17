@@ -194,13 +194,26 @@ package com.xiaomu.util
 		}
 		
 		public function canOutCardTing(groupCards:Array, handCards:Array, huXi:int):Array {
-			trace('检测出牌听')
 			var outTingCards:Array = []
-			for (var i:int = 0; i < handCards.length; i++) {
-				var newHandCards:Array = handCards.concat([])
+			
+			var myGroupCards:Array = groupCards.concat([])
+			var myhandCards:Array = handCards.concat([])
+			var countedCards:Dictionary = countBy(myhandCards)
+			// 坎牌不能出
+			for (var card:int in countedCards) {
+				if (countedCards[card] == 3) {
+					myGroupCards.push({name: 'kan', cards: [card, card, card]})
+					deleteCard(myhandCards, card)
+					deleteCard(myhandCards, card)
+					deleteCard(myhandCards, card)
+				}
+			}
+			
+			for (var i:int = 0; i < myhandCards.length; i++) {
+				var newHandCards:Array = myhandCards.concat([])
 				var outCard:int = newHandCards[i]
 				newHandCards.splice(i, 1)
-				var tingCards:Array = canTing(groupCards, newHandCards, huXi)
+				var tingCards:Array = canTing(myGroupCards, newHandCards, huXi)
 				if (tingCards) {
 					outTingCards.push({card: outCard, tingCards: tingCards})
 				}
@@ -216,7 +229,6 @@ package com.xiaomu.util
 		 * 
 		 */		
 		public function canTing(groupCards:Array, handCards:Array, huXi:int):Array {
-			trace('检测听牌')
 			var tingCards:Array = []
 			for (var i:int = 1; i <= 20; i++) {
 				var canHuDatas:Array = canHu(handCards, groupCards, i)
@@ -230,7 +242,6 @@ package com.xiaomu.util
 					}
 				}
 			}
-			
 			if (tingCards.length > 0) {
 				return tingCards
 			} else {
@@ -241,13 +252,11 @@ package com.xiaomu.util
 		public function canHu(cardsOnHand:Array, cardsOnGroup:Array, currentCard:int):Array {
 			var allGroups:Array = []
 			if (currentCard != 0) {
-				var canChiPaoPeng:Boolean = false
 				// 看组合牌中能不能跑起
 				var aHandCards:Array = JSON.parse(JSON.stringify(cardsOnHand)) as Array
 				var aGroupCards:Array = JSON.parse(JSON.stringify(cardsOnGroup)) as Array
 				var paoGroup:Object = canTi2(aGroupCards, currentCard)
 				if (paoGroup) {
-					canChiPaoPeng = true
 					if (paoGroup.name == Actions.Wei) {
 						paoGroup.name = Actions.Ti
 					} else {
@@ -264,7 +273,6 @@ package com.xiaomu.util
 				var aGroupCards1:Array = JSON.parse(JSON.stringify(cardsOnGroup)) as Array
 				var canPaoCards:Array = canTi(aHandCards1, currentCard)
 				if (canPaoCards) {
-					canChiPaoPeng = true
 					for each(var card:int in canPaoCards) {
 						deleteCard(aHandCards1, card)
 					}
@@ -280,7 +288,6 @@ package com.xiaomu.util
 				var aGroupCards2:Array = JSON.parse(JSON.stringify(cardsOnGroup)) as Array 
 				var canPengCards:Array = canPeng(aHandCards2, currentCard)
 				if (canPengCards) {
-					canChiPaoPeng = true
 					for each(var card2:int in canPengCards) {
 						deleteCard(aHandCards2, card2)
 					}
@@ -294,7 +301,6 @@ package com.xiaomu.util
 				// 看手里牌能不能吃
 				var canChiGroups:Array = canChi(cardsOnHand, currentCard)
 				if (canChiGroups) {
-					canChiPaoPeng = true
 					for each(var chiGroup:Object in canChiGroups) {
 						var aHandCards3:Array = JSON.parse(JSON.stringify(cardsOnHand)) as Array
 						var aGroupCards3:Array = JSON.parse(JSON.stringify(cardsOnGroup)) as Array
@@ -310,14 +316,12 @@ package com.xiaomu.util
 					}
 				}
 				
-				if (!canChiPaoPeng) {
-					var aHandCards4:Array = JSON.parse(JSON.stringify(cardsOnHand)) as Array
-					var aGroupCards4:Array = JSON.parse(JSON.stringify(cardsOnGroup)) as Array
-					aHandCards4.push(currentCard)
-					var shun4:Array = shouShun(aHandCards4)
-					if (shun4) {
-						allGroups.push(aGroupCards4.concat(shun4))
-					}
+				var aHandCards4:Array = JSON.parse(JSON.stringify(cardsOnHand)) as Array
+				var aGroupCards4:Array = JSON.parse(JSON.stringify(cardsOnGroup)) as Array
+				aHandCards4.push(currentCard)
+				var shun4:Array = shouShun(aHandCards4)
+				if (shun4) {
+					allGroups.push(aGroupCards4.concat(shun4))
 				}
 			} else {
 				// currentCard === 0
