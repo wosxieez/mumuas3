@@ -1666,13 +1666,12 @@ package com.xiaomu.view.room
 		 */
 		protected function showRuleNamePanelBtnHandler(event:MouseEvent):void
 		{
-			if(!AppData.getInstane().rule){
-				return
-			}
 			if(!rulePanel){
 				rulePanel = new RulePanelOnRoom();
 			}
-			rulePanel.data = roomrule;
+//			trace("roomrule:",JSON.stringify(roomrule));
+			var tempRoomRule:Object = {"rulename":"金币休闲场","nf":0,"fd":200,"xf":10,"hx":15,"cc":2}
+			rulePanel.data = roomrule.id!=0?roomrule:tempRoomRule;
 			rulePanel.x =-rulePanel.width/2+showRuleNamePanelBtn.width/2;
 			rulePanel.y = showRuleNamePanelBtn.height;
 			if(!rulePanel.isPopUp){
