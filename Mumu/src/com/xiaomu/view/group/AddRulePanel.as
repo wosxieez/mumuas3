@@ -1,6 +1,5 @@
 package com.xiaomu.view.group
 {
-	import com.xiaomu.component.AppAlert;
 	import com.xiaomu.component.AppPanelBig;
 	import com.xiaomu.component.AppSmallAlert;
 	import com.xiaomu.component.CountTool;
@@ -278,9 +277,6 @@ package com.xiaomu.view.group
 			bgUI.width = contentWidth;
 			bgUI.height = contentHeight+150;
 			
-			trace("contentWidth",contentWidth);
-			trace("contentHeight",contentHeight);
-			
 			var gap:int = 50;
 			var topPadding:int = -35//35;
 			ruleNameLab.x=ruleCountLab.x=ruleHXLab.x=ruleXFLab.x=ruleNFLab.x=ruleFDLab.x=ruleTFLab.x=ruleTCLab.x=ruleTC2Lab.x=ruleTC1Lab.x=minPlzLab.x=100
@@ -351,7 +347,7 @@ package com.xiaomu.view.group
 						if (response.code == 0) {
 							AppSmallAlert.show('添加玩法成功');
 							///这里要重新去获取
-							if(AppData.getInstane().rule==null){
+							if(AppData.getInstane().rule==null||AppData.getInstane().allRules.length==0){
 								getFirstResultHandler();
 							}
 							AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.UPDATE_GROUP_RULES_SUCCESS));

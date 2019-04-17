@@ -1,6 +1,7 @@
 package com.xiaomu.view.group
 {
 	import com.xiaomu.component.AppAlert;
+	import com.xiaomu.component.AppSmallAlert;
 	import com.xiaomu.component.ImageButton;
 	import com.xiaomu.component.Loading;
 	import com.xiaomu.event.ApiEvent;
@@ -205,6 +206,10 @@ package com.xiaomu.view.group
 			createGroupPrivate.upImageSource = 'assets/guild/btn_guild2_create_group_n.png';
 			createGroupPrivate.downImageSource = 'assets/guild/btn_guild2_create_group_p.png';
 			createGroupPrivate.addEventListener(MouseEvent.CLICK, function (e:MouseEvent):void {
+				if(!AppData.getInstane().rule){
+					AppSmallAlert.show("请先选择玩法");
+					return
+				}
 				if(AppData.getInstane().rule.plz&&fenBar.count<AppData.getInstane().rule.plz){
 					AppAlert.show("很遗憾，您的疲劳值不够开始此玩法")
 					return
@@ -228,6 +233,10 @@ package com.xiaomu.view.group
 			createGroupPublic.upImageSource = 'assets/guild/btn_guild2_create_public_n.png';
 			createGroupPublic.downImageSource = 'assets/guild/btn_guild2_create_public_p.png';
 			createGroupPublic.addEventListener(MouseEvent.CLICK, function (e:MouseEvent):void {
+				if(!AppData.getInstane().rule){
+					AppSmallAlert.show("请先选择玩法");
+					return
+				}
 				if(AppData.getInstane().rule.plz&&fenBar.count<AppData.getInstane().rule.plz){
 					AppAlert.show("很遗憾，您的疲劳值不够开始此玩法")
 					return
@@ -474,7 +483,11 @@ package com.xiaomu.view.group
 		
 		protected function startButton_clickHandler(event:MouseEvent):void
 		{
-			trace("allRules,",JSON.stringify(AppData.getInstane().allRules));
+			//			trace("allRules,",JSON.stringify(AppData.getInstane().allRules));
+			if(!AppData.getInstane().rule){
+				AppSmallAlert.show("请先选择玩法");
+				return
+			}
 			if(AppData.getInstane().rule.plz&&fenBar.count<AppData.getInstane().rule.plz){
 				AppAlert.show("很遗憾，您的疲劳值不够开始此玩法")
 				return
@@ -487,23 +500,23 @@ package com.xiaomu.view.group
 			for each (var itemRule:Object in AppData.getInstane().allRules) 
 			{
 				if(itemRule.id==roomsList.selectedItem.rid){
-					if(AppData.getInstane().rule.plz&&fenBar.count<itemRule.plz){
+					if(fenBar.count<itemRule.plz){
 						AppAlert.show("很遗憾，您的疲劳值不够进入此桌的玩法")
 						roomsList.selectedIndex = -1
 						return
+					}else{
+						Loading.getInstance().open()
+						Api.getInstane().joinRoom(roomsList.selectedItem.name, function (response:Object):void {
+							Loading.getInstance().close()
+							if (response.code == 0) {
+								RoomView(MainView.getInstane().pushView(RoomView)).init(response.data)
+							} else {
+								AppAlert.show(JSON.stringify(response.data))
+							}
+						})
 					}
 				}
 			}
-			Loading.getInstance().open()
-			Api.getInstane().joinRoom(roomsList.selectedItem.name, function (response:Object):void {
-				Loading.getInstance().close()
-				if (response.code == 0) {
-					RoomView(MainView.getInstane().pushView(RoomView)).init(response.data)
-				} else {
-					AppAlert.show(JSON.stringify(response.data))
-				}
-			})
-			
 			roomsList.selectedIndex = -1
 		}
 		

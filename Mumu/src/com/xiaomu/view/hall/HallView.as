@@ -80,10 +80,12 @@ package com.xiaomu.view.hall
 			infoImg = new Image();
 			infoImg.source = 'assets/hall/guild_hall_info.png';
 			addChild(infoImg);
+			infoImg.visible = false;
 			
 			npcImg = new Image();
 			npcImg.source = 'assets/hall/guild_hall_npc.png';
 			addChild(npcImg);
+			npcImg.visible = false;
 			
 			groupsList = new List()
 			groupsList.padding = 20

@@ -35,7 +35,7 @@ package com.xiaomu.util
 		public var user:Object  // 当前用户
 		public var group:Object // 当前群
 		public var groupLL:int;//你在当前群中的等级 0普通，1二级管理员，2一级管理员，3副馆主，4馆主
-		public var rule:Object  // 当前玩法
+		public var rule:Object  // 当前你所选中的玩法
 		public var allRules:Array //该群中的所有玩法
 		public var groupUsers:Array;//当前群中的所有成员
 		

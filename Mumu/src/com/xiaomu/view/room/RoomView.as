@@ -1672,7 +1672,7 @@ package com.xiaomu.view.room
 			if(!rulePanel){
 				rulePanel = new RulePanelOnRoom();
 			}
-			rulePanel.data = AppData.getInstane().rule;
+			rulePanel.data = roomrule;
 			rulePanel.x =-rulePanel.width/2+showRuleNamePanelBtn.width/2;
 			rulePanel.y = showRuleNamePanelBtn.height;
 			if(!rulePanel.isPopUp){

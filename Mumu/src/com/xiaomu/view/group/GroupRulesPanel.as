@@ -95,18 +95,41 @@ package com.xiaomu.view.group
 		
 		override public function open():void {
 			super.open()
-				
+			
 			getRuleData();
 		}
 		
 		private function getRuleData():void
 		{
+			trace("玩法管理界面，获取玩法数据");
 			HttpApi.getInstane().getRule({gid: AppData.getInstane().group.id}, function (e:Event):void {
 				try
 				{
 					var response:Object = JSON.parse(e.currentTarget.data)
 					if (response.code == 0) {
+						trace("获取显示待选的玩法:::::::",JSON.stringify(response.data));
+						trace("当前选中的玩法：",JSON.stringify(AppData.getInstane().rule));
+						if((response.data as Array).length>0){
+							var existFlag:Boolean = false;
+							for each (var i:Object in (response.data as Array)) 
+							{
+								if(i.id==AppData.getInstane().rule.id){
+									existFlag = true;
+								}
+							}
+							if(!existFlag){
+								AppData.getInstane().rule = (response.data as Array)[0]
+								NowSelectedPlayRuleView.getInstance().data = AppData.getInstane().rule;
+							}
+						}
+						
 						rulesData = response.data
+						AppData.getInstane().allRules = response.data;
+						if(JSON.stringify(response.data)=="[]"){
+							AppData.getInstane().rule = null;
+							trace("没有待选的玩法了xxxxxxxxxxxxxxxxxxxxx");
+							NowSelectedPlayRuleView.getInstance().data = null;
+						}
 					} else {
 					}
 				} 
