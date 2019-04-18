@@ -90,11 +90,11 @@ package com.xiaomu.view.login
 			loginPanel.x = (width - loginPanel.width) / 2
 			loginPanel.y = (height - loginPanel.height) / 2
 			
-			registerPanel.x = loginPanel.x
-			registerPanel.y = loginPanel.y;
-			
+			registerPanel.x = (width - registerPanel.width) / 2
+			registerPanel.y = (height - registerPanel.height) / 2
+				
 			bottomLab.x = 10;
-			bottomLab.y = height-18;
+			bottomLab.y = height-25;
 			bottomLab.width = width-20;
 			bottomLab.height = 0;
 		}

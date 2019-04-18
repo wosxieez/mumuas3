@@ -19,15 +19,18 @@ package com.xiaomu.view.login
 		{
 			super();
 			width=500*scale;
-			height=280*scale;
+			height=360*scale;
 		}
 		private var scale:Number=1.4;
 		private var title : Label ;
 		private var labNum : Label;
 		private var labPsw : Label;
+		private var labNum2 : Label;
 		private var phoneNumInput : TextInput;
 		private var passwordInput : TextInput;
+		private var passwordInput2 : TextInput;
 		private var registerBtn : ImageButton;
+		private var tipLabel:Label
 		public var cancelBtn:ImageButton;
 		override protected function createChildren():void
 		{
@@ -44,7 +47,7 @@ package com.xiaomu.view.login
 			labNum.color = 0x55555;
 			labNum.text = '账号:';
 			labNum.fontSize = 24*scale;
-			labNum.width = 80*scale;
+			labNum.width = 100*scale;
 			labNum.height = 40*scale;
 			addChild(labNum);
 			
@@ -52,9 +55,17 @@ package com.xiaomu.view.login
 			labPsw.color = 0x55555;
 			labPsw.text = '密码:';
 			labPsw.fontSize = 24*scale;
-			labPsw.width = 80*scale;
+			labPsw.width = 100*scale;
 			labPsw.height = 40*scale;
 			addChild(labPsw);
+			
+			labNum2 = new Label();
+			labNum2.color = 0x55555;
+			labNum2.text = '手机号:';
+			labNum2.fontSize = 24*scale;
+			labNum2.width = 100*scale;
+			labNum2.height = 40*scale;
+			addChild(labNum2);
 			
 			phoneNumInput =  new TextInput();
 			phoneNumInput.maxChars = 11;
@@ -72,6 +83,21 @@ package com.xiaomu.view.login
 			passwordInput.fontSize = 24*scale;
 			passwordInput.displayAsPassword = true;
 			addChild(passwordInput);
+			
+			passwordInput2 = new TextInput();
+			passwordInput2.maxChars = 12;
+			passwordInput2.width = 280*scale;
+			passwordInput2.height = 40*scale;
+			passwordInput2.radius = 8;
+			passwordInput2.fontSize = 24*scale;
+			passwordInput2.restrict = '0-9'
+			addChild(passwordInput2);
+			
+			tipLabel = new Label()
+			tipLabel.width = 300*scale;
+			tipLabel.text = '选填 手机号是为了方便找回密码使用'
+			tipLabel.color = 0xFF0000
+			addChild(tipLabel)
 			
 			registerBtn = new ImageButton();
 			registerBtn.upImageSource = 'assets/login/queding_up.png';
@@ -110,8 +136,16 @@ package com.xiaomu.view.login
 			passwordInput.x = phoneNumInput.x;
 			passwordInput.y = labPsw.y-3;
 			
+			labNum2.x = 20*scale;
+			labNum2.y = 224*scale;
+			passwordInput2.x = passwordInput.x;
+			passwordInput2.y = labNum2.y-3;
+			
 			registerBtn.x = (width-registerBtn.width)/2;
-			registerBtn.y = passwordInput.y+passwordInput.height+20;
+			registerBtn.y = passwordInput2.y+passwordInput2.height+45;
+			
+			tipLabel.x = registerBtn.x
+			tipLabel.y = passwordInput2.y + passwordInput2.height + 5
 			
 			cancelBtn.x = registerBtn.x+registerBtn.width+10;
 			cancelBtn.y = registerBtn.y+(registerBtn.height-cancelBtn.height)/2;
@@ -141,7 +175,7 @@ package com.xiaomu.view.login
 				AppSmallAlert.show("格式有误，请检查是否有空格存在");
 				return
 			}
-			HttpApi.getInstane().addUser({username: phoneNumInput.text, password: passwordInput.text},
+			HttpApi.getInstane().addUser({username: phoneNumInput.text, password: passwordInput.text, mobile: passwordInput2.text},
 				function(e:Event):void{
 					var response:Object = JSON.parse(e.currentTarget.data)
 					if(response.code==0){
