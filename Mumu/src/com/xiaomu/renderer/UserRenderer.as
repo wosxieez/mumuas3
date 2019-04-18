@@ -1,14 +1,11 @@
 package com.xiaomu.renderer
 {
-	import com.xiaomu.view.group.SettingMemberPanel;
-	
 	import flash.events.MouseEvent;
 	
 	import coco.component.DefaultItemRenderer;
 	import coco.component.Image;
 	import coco.component.Label;
 	import coco.component.TextAlign;
-	import coco.util.FontFamily;
 	
 	public class UserRenderer extends DefaultItemRenderer
 	{
@@ -67,7 +64,6 @@ package com.xiaomu.renderer
 			
 			nameLab = new Label();
 			nameLab.color = 0x6f1614;
-			nameLab.fontFamily = FontFamily.MICROSOFT_YAHEI;
 			addChild(nameLab);
 		}
 		

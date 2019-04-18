@@ -4,7 +4,6 @@ package com.xiaomu.view.userBarView
 	import coco.component.Label;
 	import coco.component.TextAlign;
 	import coco.core.UIComponent;
-	import coco.util.FontFamily;
 	
 	public class UserInfoBar extends UIComponent
 	{
@@ -63,7 +62,6 @@ package com.xiaomu.view.userBarView
 			userNameLab.x = headBg.x+headBg.width+5
 			userNameLab.height = 94*0.9
 			userNameLab.fontSize = 24
-			userNameLab.fontFamily = FontFamily.MICROSOFT_YAHEI
 			userNameLab.color = 0xFFFFFF
 			addChild(userNameLab)
 		}

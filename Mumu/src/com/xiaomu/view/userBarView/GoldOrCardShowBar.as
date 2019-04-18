@@ -4,7 +4,6 @@ package com.xiaomu.view.userBarView
 	import coco.component.TextAlign;
 	import coco.component.TextInput;
 	import coco.core.UIComponent;
-	import coco.util.FontFamily;
 	
 	/**
 	 * 金币/房卡显示小组件
@@ -63,7 +62,6 @@ package com.xiaomu.view.userBarView
 			super.createChildren()
 			
 			number = new TextInput();
-			number.fontFamily = FontFamily.MICROSOFT_YAHEI;
 			number.backgroundColor = 0x9999FF;
 			number.backgroundAlpha = 0.1;
 			number.borderAlpha = 0.6;
@@ -71,7 +69,7 @@ package com.xiaomu.view.userBarView
 			number.radius =  height*0.6;
 			number.fontSize = height*0.6;
 			number.width = width;
-			number.height = height*0.9;
+			number.height = height;
 			number.color = 0xFFCC33;
 			number.textAlign = TextAlign.CENTER;
 			addChild(number);
@@ -82,6 +80,7 @@ package com.xiaomu.view.userBarView
 			addIcon = new Image();
 			addIcon.source = 'assets/user/add.png';
 			addIcon.width = addIcon.height = number.height;
+			addIcon.visible = false
 			addChild(addIcon);
 		}
 		
@@ -98,7 +97,7 @@ package com.xiaomu.view.userBarView
 			super.updateDisplayList()
 			
 			typeIcon.x = typeIcon.y = -2;
-			number.y = 0;
+			number.y = 0
 			number.x = iconWidthHeight[0]/3
 			addIcon.x = number.x+number.width-addIcon.width;
 			typeIcon.width = iconWidthHeight[0]

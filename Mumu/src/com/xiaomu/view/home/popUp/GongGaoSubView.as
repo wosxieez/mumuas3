@@ -3,7 +3,6 @@ package com.xiaomu.view.home.popUp
 	import coco.component.Button;
 	import coco.component.TextArea;
 	import coco.core.UIComponent;
-	import coco.util.FontFamily;
 	
 	/**
 	 * 公告内容界面。纯文字内容。非图片内容
@@ -29,7 +28,6 @@ package com.xiaomu.view.home.popUp
 			contentArea.leading = 10;
 			contentArea.color = 0x6f1614;
 			contentArea.fontSize = 24;
-			contentArea.fontFamily = FontFamily.MICROSOFT_YAHEI;
 			addChild(contentArea);
 		}
 		

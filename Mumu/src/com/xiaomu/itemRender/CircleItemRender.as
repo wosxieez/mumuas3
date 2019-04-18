@@ -2,7 +2,6 @@ package com.xiaomu.itemRender
 {
 	import coco.component.DefaultItemRenderer;
 	import coco.component.TextAlign;
-	import coco.util.FontFamily;
 	
 	/**
 	 * 圆形渲染
@@ -20,7 +19,6 @@ package com.xiaomu.itemRender
 			
 			labelDisplay.textAlign = TextAlign.RIGHT
 			labelDisplay.color = 0x0033CC;
-			labelDisplay.fontFamily = FontFamily.MICROSOFT_YAHEI
 			labelDisplay.bold = true;
 			labelDisplay.fontSize = 15;
 			labelDisplay.y = 2;
