@@ -1582,6 +1582,7 @@ package com.xiaomu.view.room
 		{
 			if (isTalking) return 
 			Recording.getInstance().open()
+			Audio.getInstane().pauseBGM()
 			clearTimeout(talkTimeID)
 			talkTimeID = setTimeout(function ():void {
 				isTalking = true
@@ -1594,6 +1595,7 @@ package com.xiaomu.view.room
 		protected function talkButton_outHandler(event:MouseEvent):void
 		{
 			Recording.getInstance().close()
+			Audio.getInstane().resumeBGM()
 			clearTimeout(talkTimeID)
 			if (isTalking) {
 				TalkManager.getInstane().cancel()
@@ -1604,6 +1606,7 @@ package com.xiaomu.view.room
 		protected function talkButton_upkHandler(event:MouseEvent):void
 		{
 			Recording.getInstance().close()
+			Audio.getInstane().resumeBGM()
 			clearTimeout(talkTimeID)
 			if (isTalking) {
 				TalkManager.getInstane().stop()
