@@ -12,6 +12,7 @@ package com.xiaomu.view.hall
 	import com.xiaomu.util.HttpApi;
 	import com.xiaomu.view.MainView;
 	import com.xiaomu.view.group.GroupView;
+	import com.xiaomu.view.group.KeyboardPanel;
 	import com.xiaomu.view.home.HomeView;
 	import com.xiaomu.view.userBarView.UserInfoView;
 	
@@ -25,6 +26,7 @@ package com.xiaomu.view.hall
 	import coco.component.VerticalAlign;
 	import coco.core.UIComponent;
 	import coco.event.UIEvent;
+	import coco.manager.PopUpManager;
 	
 	/**
 	 * 大厅界面
@@ -299,7 +301,7 @@ package com.xiaomu.view.hall
 //			HttpApi.getInstane().joinApplyrecord({gid:23,uid:AppData.getInstane().user.id,finish:'F'},function(e:Event):void{
 //				trace("response:",e.currentTarget.data);
 //			},null);
-			
+//			PopUpManager.centerPopUp(PopUpManager.addPopUp(new KeyboardPanelWithOk(),null,true,true,0,0.2));
 		}
 	}
 }

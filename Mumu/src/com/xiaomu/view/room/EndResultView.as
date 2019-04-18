@@ -146,6 +146,7 @@ package com.xiaomu.view.room
 		protected function closeImgHandler(event:MouseEvent):void
 		{
 			AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.REFRESH_GROUP_DATA))
+			AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.GET_USER_INFO))
 			PopUpManager.removePopUp(this);
 		}
 	}

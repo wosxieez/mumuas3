@@ -17,6 +17,7 @@ package com.xiaomu.view.home
 	import com.xiaomu.view.home.noticeBar.NoticeBar;
 	import com.xiaomu.view.home.popUp.PaiHangPanel;
 	import com.xiaomu.view.home.setting.SettingPanelView;
+	import com.xiaomu.view.room.EndResultView;
 	import com.xiaomu.view.room.RoomView;
 	import com.xiaomu.view.userBarView.UserInfoView;
 	
@@ -41,11 +42,16 @@ package com.xiaomu.view.home
 		{
 			super();
 			AppManager.getInstance().addEventListener(AppManagerEvent.REFRESH_USER_INFO,refreshUserInfoHandler);
+			AppManager.getInstance().addEventListener(AppManagerEvent.GET_USER_INFO,getUserInfoHandler);
+		}
+		
+		protected function getUserInfoHandler(event:Event):void
+		{
+			getUserInfoFromDB();
 		}
 		
 		protected function refreshUserInfoHandler(event:AppManagerEvent):void
 		{
-//			trace(AppData.getInstane().user.jb);
 			userInfoView.userInfoData = AppData.getInstane().user;
 		}
 		
@@ -414,14 +420,25 @@ package com.xiaomu.view.home
 					update: {fc:oldfc+2,jb:oldjb+1000}, 
 					query: {id: user_id}
 				},function(e:Event):void{
-					///刷新界面上的房卡显示
-					HttpApi.getInstane().getUser({"id":user_id},function(e:Event):void{
-						AppData.getInstane().user = JSON.parse(e.currentTarget.data).data[0]
-						userInfoView.userInfoData = JSON.parse(e.currentTarget.data).data[0]
-					},null);
-				},null);
+					var response:Object = JSON.parse(e.currentTarget.data);
+					trace(e.currentTarget.data);
+					if(response.code==0){
+						trace("签到成功，刷新用户信息从数据库重新获取");
+						getUserInfoFromDB();
+					}
+				}
+					,null);
+			},null)
+		}
+		
+		protected  function getUserInfoFromDB():void
+		{
+			///刷新界面上的房卡显示
+			HttpApi.getInstane().getUser({"id":AppData.getInstane().user.id},function(e:Event):void{
+				AppData.getInstane().user = JSON.parse(e.currentTarget.data).data[0];
+				userInfoView.userInfoData = AppData.getInstane().user;
 			},null);
-		}		
+		}
 		
 		
 		private function getTodayDate():String
@@ -449,6 +466,8 @@ package com.xiaomu.view.home
 			//			winView3.data = AppData.getInstane().testDataDiHu;
 			//			PopUpManager.centerPopUp(PopUpManager.addPopUp(winView3,null,true,false));
 		}
+		
+		
 		
 	}
 }
