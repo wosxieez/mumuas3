@@ -8,7 +8,6 @@ package com.xiaomu.itemRender
 	import coco.component.DefaultItemRenderer;
 	import coco.component.Image;
 	import coco.component.Label;
-	import coco.component.TextArea;
 	import coco.manager.PopUpManager;
 	
 	public class GroupUserRender extends DefaultItemRenderer
@@ -21,7 +20,6 @@ package com.xiaomu.itemRender
 		}
 		
 		private var bgImg:Image;
-		private var lab:TextArea;
 		private var manageButton:ImageButton
 		private var labFen:Label;
 		private var labZhiWei:Label;
@@ -33,15 +31,6 @@ package com.xiaomu.itemRender
 			bgImg = new Image();
 			bgImg.source = 'assets/guild/guild_diban02.png';
 			addChild(bgImg);
-			
-			lab = new TextArea();
-			lab.borderAlpha = lab.backgroundAlpha = 0;
-			lab.fontSize = 24;
-			lab.editable = false;
-			lab.color = 0x845525;
-			lab.leading = 5;
-			addChild(lab);
-			lab.visible= false;
 			
 			labName = new Label();
 			labName.fontSize = 24;
@@ -100,7 +89,7 @@ package com.xiaomu.itemRender
 				}
 				
 //				lab.text = data.username + ' 积分 ' + data.fs + ' 职位' + flag
-				labName.text = data.nn && data.nn.length > 0 ? data.nn : data.username;
+				labName.text = data.nn && data.nn.length > 0 ? data.nn + '(' + data.username +  ')' : data.username;
 				labZhiWei.text = flag;
 				labFen.text = data.fs + ' 疲劳值';
 			}
@@ -112,27 +101,22 @@ package com.xiaomu.itemRender
 			bgImg.width = width;
 			bgImg.height = height;
 			
-			lab.width = width-200;
-			lab.height = height*0.7;
-			lab.x = 20;
-			lab.y = (height-lab.height)/2;
-			
 			manageButton.height =  51
 			manageButton.width = 132
 			manageButton.x = width - manageButton.width-20
 			manageButton.y = ( height-manageButton.height)/2
 				
-			labName.x = 20;
-			labName.width = 200;
+			labName.x = 0;
+			labName.width = 300;
 			labName.height = 40;
 			labName.y = (height-labName.height)/2;
 			
-			labZhiWei.x = labName.x+labName.width+10;
+			labZhiWei.x = labName.x+labName.width;
 			labZhiWei.width = 200;
 			labZhiWei.height = 40;
 			labZhiWei.y = (height-labZhiWei.height)/2;
 			
-			labFen.x = labZhiWei.x+labZhiWei.width+10;
+			labFen.x = labZhiWei.x+labZhiWei.width;
 			labFen.width = 200;
 			labFen.height = 40;
 			labFen.y = (height-labFen.height)/2;

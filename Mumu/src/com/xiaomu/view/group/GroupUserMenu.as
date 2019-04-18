@@ -119,7 +119,7 @@ package com.xiaomu.view.group
 		private function doAction():void {
 			if(selectedStr== "升职")
 			{
-				AppAlert.show('是否确定将此玩家降职', '',Alert.OK|Alert.CANCEL, function (e:UIEvent):void {
+				AppAlert.show('是否确定将此玩家升职', '',Alert.OK|Alert.CANCEL, function (e:UIEvent):void {
 					if (e.detail == Alert.OK) {
 						if (fromUser.ll > toUser.ll + 1) {
 							HttpApi.getInstane().updateGroupUser({
