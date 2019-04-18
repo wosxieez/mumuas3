@@ -12,7 +12,6 @@ package com.xiaomu.view.hall
 	import com.xiaomu.util.HttpApi;
 	import com.xiaomu.view.MainView;
 	import com.xiaomu.view.group.GroupView;
-	import com.xiaomu.view.group.KeyboardPanel;
 	import com.xiaomu.view.home.HomeView;
 	import com.xiaomu.view.userBarView.UserInfoView;
 	
@@ -26,7 +25,6 @@ package com.xiaomu.view.hall
 	import coco.component.VerticalAlign;
 	import coco.core.UIComponent;
 	import coco.event.UIEvent;
-	import coco.manager.PopUpManager;
 	
 	/**
 	 * 大厅界面

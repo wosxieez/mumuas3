@@ -49,7 +49,7 @@ package com.xiaomu.view.login
 			super.createChildren();
 			
 			title = new Label();
-			title.text = '手机登录';
+			title.text = '用户名登录';
 			title.color = 0xffffff;
 			title.fontSize = 24*scale;
 			title.width = width;

@@ -34,7 +34,7 @@ package com.xiaomu.view.login
 			super.createChildren();
 			
 			title = new Label();
-			title.text = '手机注册';
+			title.text = '用户名注册';
 			title.color = 0xffffff;
 			title.fontSize = 24*scale;
 			title.width = width;

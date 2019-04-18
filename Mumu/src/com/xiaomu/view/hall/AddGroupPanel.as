@@ -10,6 +10,7 @@ package com.xiaomu.view.hall
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
+	import coco.component.Image;
 	import coco.component.Label;
 	import coco.component.TextAlign;
 	import coco.component.TextInput;
@@ -24,6 +25,7 @@ package com.xiaomu.view.hall
 			super();
 		}
 		
+		private var titleImg:Image;
 		private var groupNameLab:Label;
 		private var groupNameInput:TextInput;
 		
@@ -49,6 +51,12 @@ package com.xiaomu.view.hall
 			groupNameInput.color = 0x6f1614;
 			groupNameInput.radius = 10;
 			addChild(groupNameInput)
+			
+			titleImg = new Image()
+			titleImg.width = 293
+			titleImg.height = 86
+			titleImg.source = 'assets/hall/guild_title_create.png'
+			addRawChild(titleImg)
 		}
 		
 		override protected function updateDisplayList():void
@@ -60,6 +68,8 @@ package com.xiaomu.view.hall
 			
 			groupNameInput.x=groupNameLab.x+groupNameLab.width+10;
 			groupNameInput.y = groupNameLab.y;
+			
+			titleImg.x = (width - titleImg.width) / 2
 		}
 		
 		override protected function commitButton_clickHandler(event:MouseEvent):void {
