@@ -5,6 +5,7 @@ package com.xiaomu.view.home
 	
 	import flash.filesystem.File;
 	
+	import coco.component.Image;
 	import coco.component.List;
 	
 	public class ShopPanel extends AppPanelBig
@@ -26,6 +27,7 @@ package com.xiaomu.view.home
 		}
 		
 		private var list:List
+		private var titleImg:Image;
 		
 		override protected function createChildren():void {
 			super.createChildren()
@@ -36,6 +38,12 @@ package com.xiaomu.view.home
 			list.itemRendererHeight = 200
 			list.itemRendererClass = ShopRender
 			addChild(list)
+			
+			titleImg = new Image()
+			titleImg.width = 293
+			titleImg.height = 86
+			titleImg.source = 'assets/home/home_shop_title.png'
+			addRawChild(titleImg)
 		}
 		
 		override protected function commitProperties():void {
@@ -52,6 +60,8 @@ package com.xiaomu.view.home
 			
 			list.width = contentWidth
 			list.height = contentHeight
+				
+			titleImg.x = (width - titleImg.width) / 2
 		}
 		
 	}
