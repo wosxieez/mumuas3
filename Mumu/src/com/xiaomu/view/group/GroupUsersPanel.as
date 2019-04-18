@@ -5,14 +5,18 @@ package com.xiaomu.view.group
 	import com.xiaomu.event.AppManagerEvent;
 	import com.xiaomu.itemRender.GroupUserRender;
 	import com.xiaomu.manager.AppManager;
+	import com.xiaomu.renderer.ApplyListRender;
+	import com.xiaomu.renderer.TabBarRender;
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.HttpApi;
 	
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
+	import coco.component.ButtonGroup;
 	import coco.component.Image;
 	import coco.component.List;
+	import coco.event.UIEvent;
 	
 	public class GroupUsersPanel extends AppPanelBig
 	{
@@ -24,12 +28,21 @@ package com.xiaomu.view.group
 			commitEnabled = false;
 			AppManager.getInstance().addEventListener(AppManagerEvent.CHANGE_MEMBER_SUCCESS,changeMemberHandler);
 			AppManager.getInstance().addEventListener(AppManagerEvent.UPDATE_MEMBER_INFO_SUCCESS,changeMemberHandler);
+			AppManager.getInstance().addEventListener(AppManagerEvent.CHANGE_APPLY_SUCCESS,changeApplySuccessHandler);
+		}
+		
+		protected function changeApplySuccessHandler(event:AppManagerEvent):void
+		{
+			applyList.dataProvider = AppData.getInstane().allWaitApplys;
+			tabBar.selectedIndex = 1;
 		}
 		
 		private var titleImg:Image;
 		private var bgImg:Image;
-		private var usersList: List
+		private var usersList: List///成员列表
 		private var addUserButton:ImageButton;
+		private var tabBar:ButtonGroup;///顶部tab栏
+		private var applyList:List;///待审核列表
 		
 		private var _usersData:Array
 		
@@ -57,11 +70,29 @@ package com.xiaomu.view.group
 			bgImg.source = 'assets/guild/guild_diban01.png';
 			addChild(bgImg);
 			
-			usersList = new List()
+			tabBar = new ButtonGroup();
+			tabBar.height = tabBar.itemRendererHeight = 54*0.8;
+			tabBar.itemRendererWidth = 203*0.8;
+			tabBar.gap = 10;
+			tabBar.width = 2*tabBar.itemRendererWidth+tabBar.gap;
+			tabBar.labelField = 'name';
+			tabBar.selectedIndex = 0;
+			tabBar.itemRendererClass = TabBarRender;
+			tabBar.addEventListener(UIEvent.CHANGE,tabBarHandler);
+			addChild(tabBar);
+			
+			usersList = new List() ///群成员列表
 			usersList.itemRendererHeight = 80;
 			usersList.gap = 10;
 			usersList.itemRendererClass = GroupUserRender
 			addChild(usersList)
+			
+			applyList = new List();
+			applyList.itemRendererHeight = 80;
+			applyList.gap = 10;
+			applyList.itemRendererClass = ApplyListRender;
+			addChild(applyList)
+			applyList.visible = false;
 			
 			addUserButton = new ImageButton()
 			addUserButton.width = 196;
@@ -72,6 +103,14 @@ package com.xiaomu.view.group
 				new AddUserPanel().open()
 			})
 			addChild(addUserButton)
+			
+			if(AppData.getInstane().groupLL>=3){
+				tabBar.dataProvider = [{"name":"群成员","value":"btn_guild_members"},{"name":"待审核","value":"btn_guild_verify"}];
+			}else{
+				tabBar.dataProvider = [{"name":"群成员","value":"btn_guild_members"}];
+			}
+			
+			tabBar.selectedIndex = 0;
 		}
 		
 		override protected function commitProperties():void {
@@ -95,7 +134,10 @@ package com.xiaomu.view.group
 			super.updateDisplayList()
 			
 			titleImg.x = (contentWidth-titleImg.width)/2;
-			titleImg.y = -60;
+			titleImg.y = -70;
+			
+			tabBar.x = 20;
+			tabBar.y = 20;
 			
 			addUserButton.x = (contentWidth-addUserButton.width)/2;
 			addUserButton.y = contentHeight-addUserButton.height-20;
@@ -105,15 +147,38 @@ package com.xiaomu.view.group
 			bgImg.width = contentWidth-20;
 			bgImg.height = addUserButton.y-bgImg.y-20;
 			
-			usersList.y = bgImg.y+10;
-			usersList.x = bgImg.x+10;
-			usersList.width = contentWidth-40
-			usersList.height = addUserButton.y-usersList.y-30;
+			applyList.y= usersList.y = bgImg.y+10;
+			applyList.x= usersList.x = bgImg.x+10;
+			applyList.width= usersList.width = contentWidth-40
+			applyList.height= usersList.height = addUserButton.y-usersList.y-30;
 		}
 		
 		override public function open():void {
 			super.open()
 			refreshData();
+		}
+		
+		private var oldSelectedIndex:int;
+		/**
+		 * 切换tab
+		 */
+		protected function tabBarHandler(event:UIEvent):void
+		{
+			if(tabBar.selectedItem){
+				oldSelectedIndex = tabBar.selectedIndex;
+			}else{
+				tabBar.selectedIndex = oldSelectedIndex;
+			}
+			if(tabBar.selectedItem.name=='群成员'){
+				usersList.visible = true;
+				applyList.visible = false;
+				addUserButton.visible = true;
+			}else if(tabBar.selectedItem.name=='待审核'){
+				usersList.visible = false;
+				applyList.visible = true;
+				applyList.dataProvider = AppData.getInstane().allWaitApplys;
+				addUserButton.visible = false;
+			}
 		}
 		
 		/**

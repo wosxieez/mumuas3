@@ -1,15 +1,10 @@
 package com.xiaomu.view.hall
 {
-	import com.xiaomu.component.AppAlert;
 	import com.xiaomu.component.AppSmallAlert;
 	import com.xiaomu.component.ImageButton;
-	import com.xiaomu.component.Loading;
 	import com.xiaomu.renderer.KeyBoardRender;
-	import com.xiaomu.util.Api;
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.HttpApi;
-	import com.xiaomu.view.MainView;
-	import com.xiaomu.view.room.RoomView;
 	
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -296,6 +291,8 @@ package com.xiaomu.view.hall
 			deleteOne.y = resetBtn.y;
 		}
 		
+		
+		
 		protected function clickHandler(event:MouseEvent):void
 		{
 			if(event.currentTarget.value=='deleteOne'){
@@ -314,12 +311,17 @@ package com.xiaomu.view.hall
 				}
 			}
 			if (numberArr.length == 4) {
-				PopUpManager.removePopUp(this)
-//				Loading.getInstance().open()
+				//				Loading.getInstance().open()
+				closeHandler();
 				actionHandler();
 			} else {
 				invalidateProperties();
 			}
+		}
+		
+		private function closeHandler():void
+		{
+			PopUpManager.removePopUp(this)
 		}
 		
 		protected function okBtnHandler(event:MouseEvent):void
@@ -333,29 +335,46 @@ package com.xiaomu.view.hall
 		
 		/**
 		 *申请操作
-		 * 1，先查询这个群是否存在。
-		 * 2，存在的话，再提交申请 
+		 * 1，自己是不是已经加入了这个群？
+		 * 2，先查询这个群是否存在。
+		 * 3，存在的话，再提交申请 。
+		 * 4，你的申请是否已经存在
 		 */
 		private function actionHandler():void
 		{
 			var groupNumber:int = parseInt(numberArr.join(''));
-//			trace("action",groupNumber);
+			if(AppData.getInstane().alljoinedGroups&&AppData.getInstane().alljoinedGroups.indexOf(groupNumber)!=-1){
+				AppSmallAlert.show('您已经在该群中了');
+				numberArr = [];
+				return
+			}
+			
 			HttpApi.getInstane().getGroup({id:groupNumber},function(e:Event):void{
-//				trace(e.currentTarget.data);
 				var respones : Object = JSON.parse(e.currentTarget.data);
 				if(respones.data.length>0){
 					///说明该群存在，再查你的申请是否已经存在，群未处理。
-					HttpApi.getInstane().findApplyrecord({uid:AppData.getInstane().user.id,gid:groupNumber,finish:'F'},function(e:Event){
-//						trace("哈哈哈：",e.currentTarget.data);
+					HttpApi.getInstane().findApplyrecord({uid:AppData.getInstane().user.id,gid:groupNumber,finish:'F'},function(e:Event):void{
+						trace("申请表查询结果：",e.currentTarget.data);
 						var respone:Object = JSON.parse(e.currentTarget.data);
-						if((respone.data as Array).length==0){
+						if((respone.data as Array).length==0){///说明同样的（未处理的）请求不存在。可以发起该请求。向表中插入该条数据
+							trace('可以插入该条申请记录');
+							HttpApi.getInstane().joinApplyrecord({uid:AppData.getInstane().user.id,gid:groupNumber,finish:'F',uname:AppData.getInstane().user.username},function(e:Event):void{
+								var respone1:Object = JSON.parse(e.currentTarget.data);
+								if(respone1.code==0){
+									AppSmallAlert.show('申请提交成功，请等待群主确认')
+									numberArr = [];
+									closeHandler();
+								}else{
+									AppSmallAlert.show('申请提交失败')
+								}
+							},null);
 							
+						}else{
+							AppSmallAlert.show('该申请已经存在，请等待群主确认')
+							numberArr = [];
 						}
 					},null);
 					
-//					HttpApi.getInstane().joinApplyrecord({id:groupNumber,finish:'F',result:null},function(e:Event):void{
-//						trace(e.currentTarget.data);
-//					},null);
 				}else{
 					AppSmallAlert.show("输入的群号不存在")
 					numberArr = [];

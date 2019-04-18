@@ -11,6 +11,7 @@ package com.xiaomu.renderer
 			super();
 			backgroundAlpha = 0;
 			borderAlpha = 0;
+			mouseChildren = true;
 		}
 		
 		private var btn:ImageButton;

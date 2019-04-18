@@ -12,6 +12,7 @@ package com.xiaomu.view.group
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.HttpApi;
 	import com.xiaomu.util.Notifications;
+	import com.xiaomu.util.TimeFormat;
 	import com.xiaomu.view.MainView;
 	import com.xiaomu.view.hall.HallView;
 	import com.xiaomu.view.room.RoomView;
@@ -19,6 +20,7 @@ package com.xiaomu.view.group
 	
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.media.Video;
 	
 	import coco.component.Button;
 	import coco.component.HGroup;
@@ -471,9 +473,14 @@ package com.xiaomu.view.group
 		new SwitchRulePanel().open()
 		}*/
 		
+		/**
+		 * 点击群管理按钮，打开群管理界面
+		 * 获取申请列表数据
+		 */
 		protected function userSettingButton_clickHandler(event:MouseEvent):void
 		{
 			new GroupUsersPanel().open()
+			getApplyTableFromDB();
 		}
 		
 		protected function ruleSettingButton_clickHandler(event:MouseEvent):void
@@ -555,7 +562,21 @@ package com.xiaomu.view.group
 		protected function scorehistoryBtn_clickHandler(event:MouseEvent):void
 		{
 			new ScoreHistoryPanel().open();
-			//			new GroupRulesPanel().open();
+		}
+		
+		private function getApplyTableFromDB():void
+		{
+			HttpApi.getInstane().findApplyrecord({gid:AppData.getInstane().group.id,finish:'F'},function(e:Event):void{
+				var response:Object = JSON.parse(e.currentTarget.data);
+				if(response.code == 0){
+					(response.data as Array).map(function(element:*,index:int, arr:Array):Object{
+						element.beijingTime = TimeFormat.getTimeObj(element.createdAt).time;
+						element.newDate = TimeFormat.getTimeObj(element.createdAt).date;
+					})
+					AppData.getInstane().allWaitApplys = response.data as Array;
+					trace('当前群中所有的待审核的申请：',JSON.stringify(AppData.getInstane().allWaitApplys));
+				}
+			},null);
 		}
 	}
 }

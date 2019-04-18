@@ -58,6 +58,8 @@ package com.xiaomu.util
 		public var rule:Object  // 当前你所选中的玩法
 		public var allRules:Array //该群中的所有玩法
 		public var groupUsers:Array;//当前群中的所有成员
+		public var alljoinedGroups:Array;///你所加入过的群。id数组
+		public var allWaitApplys:Array;///当前群中，所有的等待的审核的申请
 		
 		public function get gameMusicValue():String
 		{

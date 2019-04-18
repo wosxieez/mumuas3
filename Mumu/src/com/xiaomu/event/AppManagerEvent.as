@@ -68,6 +68,20 @@ package com.xiaomu.event
 		 */
 		public static const REFRESH_GROUP_DATA:String = 'refreshGroupData'
 			
+		/**
+		 *刷新用户信息 --A界面中请求过后，通知B界面重新赋值。不再重新请求
+		 */
+		public static const REFRESH_USER_INFO:String = 'refreshUserInfo'
+			
+		/**
+		 *获取用户信息 --从数据库请求
+		 */
+		public static const GET_USER_INFO:String = 'getUserInfo'
+			
+		/**
+		 *修改了申请表成功--一般是群主同意或拒绝操作后。更新申请表信息
+		 */
+		public static const CHANGE_APPLY_SUCCESS:String = 'changeApplySuccess'
 		
 		/** Message用户事件信息存储*/
 		public var message:Object;
