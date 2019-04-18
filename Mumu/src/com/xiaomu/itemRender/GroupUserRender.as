@@ -100,9 +100,9 @@ package com.xiaomu.itemRender
 				}
 				
 //				lab.text = data.username + ' 积分 ' + data.fs + ' 职位' + flag
-				labName.text = data.username;
+				labName.text = data.nn && data.nn.length > 0 ? data.nn : data.username;
 				labZhiWei.text = flag;
-				labFen.text = data.fs;
+				labFen.text = data.fs + ' 疲劳值';
 			}
 		}
 		

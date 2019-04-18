@@ -85,6 +85,11 @@ package com.xiaomu.view.group
 				setSpecialTiChengPanel.targetUser = targetUser
 				setSpecialTiChengPanel.open()
 				PopUpManager.removePopUp(this)
+			}else if(selectedStr == "设置昵称"){
+				var setNickNamePanel:SetNickNamePanel = new SetNickNamePanel()
+				setNickNamePanel.targetUser = targetUser
+				setNickNamePanel.open()
+				PopUpManager.removePopUp(this)
 			}
 			
 			// 获取到自己的群信息
@@ -204,32 +209,32 @@ package com.xiaomu.view.group
 			trace("你在这个群的等级：",AppData.getInstane().groupLL,"操作对象等级：",targetUser.ll);
 			if((targetUser.ll==2||targetUser.ll==1)&&(AppData.getInstane().groupLL==4)){
 				trace("你是馆主，且操作对象是一二级管理员，可以设置单独的提成");
-				dataProvider=['升职', '降职', '增加疲劳值', '减少疲劳值', '踢出群','单独提成值']
+				dataProvider=['升职', '降职', '增加疲劳值', '减少疲劳值', '踢出群','单独提成值', '设置昵称']
 			}else if((targetUser.ll==3)&&(AppData.getInstane().groupLL==4)){
 				trace("你是馆主，且操作对象是副馆主");
-				dataProvider=['降职', '增加疲劳值', '减少疲劳值', '踢出群']
+				dataProvider=['降职', '增加疲劳值', '减少疲劳值', '踢出群', '设置昵称']
 			}
 			else if((targetUser.ll==0)&&(AppData.getInstane().groupLL==4)){
 				trace("你是馆主，且操作对象是普通成员");
-				dataProvider=['升职', '增加疲劳值', '减少疲劳值', '踢出群']
+				dataProvider=['升职', '增加疲劳值', '减少疲劳值', '踢出群', '设置昵称']
 			}
 			else if((targetUser.ll==0||targetUser.ll==1)&&(AppData.getInstane().groupLL==3)){
 				trace("你是副馆主，且操作对象是普通成员或二级管理员");
-				dataProvider=['升职', '降职', '增加疲劳值', '减少疲劳值']
+				dataProvider=['升职', '降职', '增加疲劳值', '减少疲劳值', '设置昵称']
 			}else if((targetUser.ll==2)&&(AppData.getInstane().groupLL==3)){
 				trace("你是副馆主，且操作对象是一级管理员");
-				dataProvider=['降职', '增加疲劳值', '减少疲劳值']
+				dataProvider=['降职', '增加疲劳值', '减少疲劳值', '设置昵称']
 			}else if((targetUser.ll>=3)&&(AppData.getInstane().groupLL==3)){
 				trace("你是副馆主，且操作对象等级是大于自身");
 				dataProvider=[]
 			}
 			else if((targetUser.ll==0)&&(AppData.getInstane().groupLL==2)) {
 				trace("你是一级管理员，且操作对象是普通成员，只可以上下分,升职");
-				dataProvider=['升职', '增加疲劳值', '减少疲劳值']
+				dataProvider=['升职', '增加疲劳值', '减少疲劳值', '设置昵称']
 			}
 			else if((targetUser.ll==1)&&(AppData.getInstane().groupLL==2)) {
 				trace("你是一级管理员，且操作对象二级管理员，只可以上下分,降职");
-				dataProvider=['降职', '增加疲劳值', '减少疲劳值']
+				dataProvider=['降职', '增加疲劳值', '减少疲劳值', '设置昵称']
 			}
 			else if((targetUser.ll>=2)&&(AppData.getInstane().groupLL==2)) {
 				trace("你是一级管理员，且操作对象等级是大于自身");
@@ -237,7 +242,7 @@ package com.xiaomu.view.group
 			}
 			else if((targetUser.ll==0)&&(AppData.getInstane().groupLL==1)) {
 				trace("你是二级管理员，且操作对象是普通成员，只可以上下分");
-				dataProvider=['增加疲劳值', '减少疲劳值']
+				dataProvider=['增加疲劳值', '减少疲劳值', '设置昵称']
 			}else if((targetUser.ll>=1)&&(AppData.getInstane().groupLL==1)) {
 				trace("你是二级管理员，且操作对象等级是大于自身");
 				dataProvider=[]
