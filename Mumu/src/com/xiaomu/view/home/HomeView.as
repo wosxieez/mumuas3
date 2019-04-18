@@ -344,7 +344,7 @@ package com.xiaomu.view.home
 					'远离赌博。').textAlign = TextAlign.LEFT
 			} else if (btnGroup.selectedItem.name == '战绩') { 
 				PaiHangPanel.getInstance().open()
-			} else {
+			}  else {
 				AppAlert.show('')
 			}
 			
@@ -361,7 +361,7 @@ package com.xiaomu.view.home
 		 */
 		protected function shoppingBtnHandler(event:MouseEvent):void
 		{
-			AppAlert.show('')
+			ShopPanel.getInstane().open()
 		}
 		
 		/**
