@@ -32,7 +32,8 @@ package com.xiaomu.view.home
 			
 			list = new List()
 			list.itemRendererColumnCount = 4
-			list.itemRendererHeight = 230
+			list.gap = list.padding = 10
+			list.itemRendererHeight = 200
 			list.itemRendererClass = ShopRender
 			addChild(list)
 		}

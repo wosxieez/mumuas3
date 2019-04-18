@@ -206,6 +206,11 @@ package com.xiaomu.view.home
 		
 		protected function ziPaiImg_clickHandler(event:MouseEvent):void
 		{
+			if (AppData.getInstane().user.jb <= 0) {
+				AppSmallAlert.show('您的金币不足，无法进入休闲场', AppSmallAlert.WARNING)
+				return
+			}
+			
 			Loading.getInstance().open()
 			Api.getInstane().joinGroup(AppData.getInstane().user.username, 0, function (response:Object):void {
 				if (response.code == 0) {
@@ -338,6 +343,11 @@ package com.xiaomu.view.home
 		
 		protected function joinRoomClickHandler(event:MouseEvent):void
 		{
+			if (AppData.getInstane().user.jb <= 0) {
+				AppSmallAlert.show('您的金币不足，无法加入休闲场', AppSmallAlert.WARNING)
+				return
+			}
+			
 			PopUpManager.centerPopUp(PopUpManager.addPopUp(new TempKeyboardPanel(),null,true,true,0,0.2))
 		}
 		
