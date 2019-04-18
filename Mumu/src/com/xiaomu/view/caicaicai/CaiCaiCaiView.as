@@ -3,8 +3,7 @@ package com.xiaomu.view.caicaicai
 	import com.xiaomu.component.AppSmallAlert;
 	import com.xiaomu.component.ImageButton;
 	import com.xiaomu.component.LabelhasBg;
-	import com.xiaomu.event.AppManagerEvent;
-	import com.xiaomu.manager.AppManager;
+	import com.xiaomu.event.AppDataEvent;
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.HttpApi;
 	import com.xiaomu.view.MainView;
@@ -31,6 +30,8 @@ package com.xiaomu.view.caicaicai
 			super();
 			width = 1280;
 			height = 720;
+			
+			AppData.getInstane().addEventListener(AppDataEvent.USER_DATA_CHAGNED, user_dataChangedHandler)
 		}
 		
 		private var allowClick:Boolean=true;
@@ -43,7 +44,9 @@ package com.xiaomu.view.caicaicai
 		private var smallBtn:Button;
 		private var numberBar:CaiBarTool;
 		private var goldBar:GoldOrCardShowBar;
+		private var xiazhuTitle:Label
 		private var xiazhuInput:TextInput;
+		private var xiazhuUnit:Label
 		private var chu2Btn:Button;
 		private var cheng2Btn:Button;
 		private var minBtn:Button;
@@ -135,6 +138,28 @@ package com.xiaomu.view.caicaicai
 			xiazhuInput.addEventListener(UIEvent.CHANGE,changeHandler);
 			addChild(xiazhuInput);
 			
+			xiazhuTitle = new Label()
+			xiazhuTitle.fontSize = 26
+			xiazhuTitle.width = 120
+			xiazhuTitle.borderAlpha = 0
+			xiazhuTitle.topLeftRadius = xiazhuTitle.bottomLeftRadius = 10
+			xiazhuTitle.autoDrawSkin = true
+			xiazhuTitle.backgroundColor = 0x142f4d;
+			xiazhuTitle.color = 0xffffff;
+			xiazhuTitle.text = '每局投'
+			addChild(xiazhuTitle)
+			
+			xiazhuUnit = new Label()
+			xiazhuUnit.width = 108
+			xiazhuUnit.borderAlpha = 0
+			xiazhuUnit.topRightRadius = xiazhuUnit.bottomRightRadius = 10
+			xiazhuUnit.autoDrawSkin = true
+			xiazhuUnit.backgroundColor = 0x142f4d;
+			xiazhuUnit.color = 0xffffff;
+			xiazhuUnit.text = '金币'
+			xiazhuUnit.fontSize = 26
+			addChild(xiazhuUnit)
+			
 			amountLab = new LabelhasBg();
 			amountLab.bgcolor = 0x142f4d;
 			amountLab.color = 0xffffff;
@@ -203,7 +228,17 @@ package com.xiaomu.view.caicaicai
 		{
 			super.commitProperties();
 			
-			goldBar.count = AppData.getInstane().user.jb?AppData.getInstane().user.jb:"0";
+			if (AppData.getInstane().user) {
+				goldBar.count = AppData.getInstane().user.jb
+			} else {
+				goldBar.count = "0"
+			}
+			
+		}
+		
+		protected function user_dataChangedHandler(event:AppDataEvent):void
+		{
+			invalidateProperties()
 		}
 		
 		override protected function updateDisplayList():void
@@ -224,6 +259,14 @@ package com.xiaomu.view.caicaicai
 			xiazhuInput.height = 70;
 			xiazhuInput.x = bigBtn.x;
 			xiazhuInput.y = 300;
+			
+			xiazhuTitle.x = xiazhuInput.x
+			xiazhuTitle.y = xiazhuInput.y
+			xiazhuTitle.height = xiazhuInput.height
+				
+			xiazhuUnit.x = xiazhuInput.x + xiazhuInput.width - xiazhuUnit.width
+			xiazhuUnit.y = xiazhuInput.y
+			xiazhuUnit.height = xiazhuInput.height
 			
 			amountLab.x =xiazhuInput.x;
 			amountLab.y = xiazhuInput.y+xiazhuInput.height+2;
@@ -266,6 +309,11 @@ package com.xiaomu.view.caicaicai
 				allowClick = true;
 				return;
 			}
+			if(parseInt(xiazhuInput.text) < 0){
+				AppSmallAlert.show('押宝数不可小于0');
+				allowClick = true;
+				return;
+			}
 			startHandler(false)
 		}
 		
@@ -281,6 +329,11 @@ package com.xiaomu.view.caicaicai
 			}
 			if(parseInt(xiazhuInput.text)>AppData.getInstane().user.jb){
 				AppSmallAlert.show('押宝数不可大于剩余金币数');
+				allowClick = true;
+				return;
+			}
+			if(parseInt(xiazhuInput.text) < 0){
+				AppSmallAlert.show('押宝数不可小于0');
 				allowClick = true;
 				return;
 			}
@@ -394,17 +447,7 @@ package com.xiaomu.view.caicaicai
 		
 		private function refreshData():void
 		{
-			HttpApi.getInstane().getUser({'id':AppData.getInstane().user.id},function(e:Event):void{
-				var respones:Object = JSON.parse(e.currentTarget.data);
-				if(respones.code==0){
-					setTimeout(function():void{
-						AppData.getInstane().user = respones.data[0]
-						invalidateProperties();
-						allowClick = true;
-						AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.REFRESH_USER_INFO));
-					},2000);
-				}
-			},null);
+			AppData.getInstane().getUserData()
 		}
 		
 		protected function refreshButton_clickHandler(event:MouseEvent):void

@@ -3,6 +3,7 @@ package com.xiaomu.view.room
 	import com.xiaomu.component.ImageButton;
 	import com.xiaomu.event.AppManagerEvent;
 	import com.xiaomu.manager.AppManager;
+	import com.xiaomu.util.AppData;
 	
 	import flash.events.MouseEvent;
 	
@@ -146,7 +147,7 @@ package com.xiaomu.view.room
 		protected function closeImgHandler(event:MouseEvent):void
 		{
 			AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.REFRESH_GROUP_DATA))
-			AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.GET_USER_INFO))
+			AppData.getInstane().getUserData()
 			PopUpManager.removePopUp(this);
 		}
 	}

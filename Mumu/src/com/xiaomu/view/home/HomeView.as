@@ -4,9 +4,7 @@ package com.xiaomu.view.home
 	import com.xiaomu.component.AppSmallAlert;
 	import com.xiaomu.component.ImageButton;
 	import com.xiaomu.component.Loading;
-	import com.xiaomu.event.AppManagerEvent;
 	import com.xiaomu.itemRender.HomeBottomBarRender;
-	import com.xiaomu.manager.AppManager;
 	import com.xiaomu.util.Api;
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.Audio;
@@ -40,18 +38,6 @@ package com.xiaomu.view.home
 		public function HomeView()
 		{
 			super();
-			AppManager.getInstance().addEventListener(AppManagerEvent.REFRESH_USER_INFO,refreshUserInfoHandler);
-			AppManager.getInstance().addEventListener(AppManagerEvent.GET_USER_INFO,getUserInfoHandler);
-		}
-		
-		protected function getUserInfoHandler(event:Event):void
-		{
-			getUserInfoFromDB();
-		}
-		
-		protected function refreshUserInfoHandler(event:AppManagerEvent):void
-		{
-			userInfoView.userInfoData = AppData.getInstane().user;
 		}
 		
 		private var bg : Image;
@@ -297,7 +283,6 @@ package com.xiaomu.view.home
 		public function init():void{
 			HttpApi.getInstane().startMonitor()
 			Audio.getInstane().playBGM()
-			userInfoView.userInfoData = AppData.getInstane().user
 		}
 		
 		protected function clickHandler(event:MouseEvent):void{
@@ -423,22 +408,12 @@ package com.xiaomu.view.home
 					trace(e.currentTarget.data);
 					if(response.code==0){
 						trace("签到成功，刷新用户信息从数据库重新获取");
-						getUserInfoFromDB();
+						AppData.getInstane().getUserData()
 					}
 				}
 					,null);
 			},null)
 		}
-		
-		protected  function getUserInfoFromDB():void
-		{
-			///刷新界面上的房卡显示
-			HttpApi.getInstane().getUser({"id":AppData.getInstane().user.id},function(e:Event):void{
-				AppData.getInstane().user = JSON.parse(e.currentTarget.data).data[0];
-				userInfoView.userInfoData = AppData.getInstane().user;
-			},null);
-		}
-		
 		
 		private function getTodayDate():String
 		{

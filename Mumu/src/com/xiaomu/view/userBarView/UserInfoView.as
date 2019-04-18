@@ -1,6 +1,7 @@
 package com.xiaomu.view.userBarView
 {
-	import flash.events.MouseEvent;
+	import com.xiaomu.event.AppDataEvent;
+	import com.xiaomu.util.AppData;
 	
 	import coco.core.UIComponent;
 	
@@ -11,24 +12,13 @@ package com.xiaomu.view.userBarView
 			super();
 			height = 80;
 			width = 300
+			
+			AppData.getInstane().addEventListener(AppDataEvent.USER_DATA_CHAGNED, user_dataChangedHandler)
 		}
 		
 		private var userinfoBar : UserInfoBar
 		private var goldBar : GoldOrCardShowBar;
 		private var roomCardBar : GoldOrCardShowBar;
-		private var _userInfoData:Object;
-		
-		public function get userInfoData():Object
-		{
-			return _userInfoData;
-		}
-		
-		public function set userInfoData(value:Object):void
-		{
-			_userInfoData = value;
-			invalidateProperties();
-			invalidateDisplayList();
-		}
 		
 		override protected function createChildren():void
 		{
@@ -42,7 +32,6 @@ package com.xiaomu.view.userBarView
 			goldBar.height = 50;
 			goldBar.iconWidthHeight = [goldBar.height,goldBar.height];
 			goldBar.typeSource = 'assets/user/icon_jinbi_01.png';
-			goldBar.addEventListener(MouseEvent.CLICK,addGoldHandler);
 			addChild(goldBar);
 			
 			roomCardBar = new GoldOrCardShowBar();
@@ -68,25 +57,20 @@ package com.xiaomu.view.userBarView
 		{
 			super.commitProperties();
 			
-			goldBar.count = userInfoData?(userInfoData.jb?userInfoData.jb:"0"):"0"
-			roomCardBar.count = userInfoData?(userInfoData.fc?userInfoData.fc:"0"):"0"
-			userinfoBar.userName = userInfoData?userInfoData.username+"\rid:"+userInfoData.id:"/"
-			trace(JSON.stringify(userInfoData));
+			if (AppData.getInstane().user) {
+				goldBar.count = AppData.getInstane().user.jb
+				roomCardBar.count = AppData.getInstane().user.fc
+				userinfoBar.userName = AppData.getInstane().user.username+"\rid:"+AppData.getInstane().user.id
+			} else {
+				goldBar.count = "0"
+				roomCardBar.count = "0"
+				userinfoBar.userName = "\rid:"
+			}
 		}
 		
-		override protected function drawSkin():void
+		protected function user_dataChangedHandler(event:AppDataEvent):void
 		{
-			super.drawSkin();
-			
-			/*graphics.clear();
-			graphics.beginFill(0xff0000,1);
-			graphics.drawRect(0,0,width,height);
-			graphics.endFill();*/
-		}
-		
-		protected function addGoldHandler(event:MouseEvent):void
-		{
-			
+			invalidateProperties()
 		}
 		
 	}

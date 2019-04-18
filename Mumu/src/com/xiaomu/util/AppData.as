@@ -1,8 +1,15 @@
 package com.xiaomu.util
 {
+	import com.xiaomu.event.AppDataEvent;
+	
+	import flash.events.Event;
+	import flash.events.EventDispatcher;
 	import flash.net.SharedObject;
 	
-	public class AppData
+	
+	[Event(name="userDataChanged", type="com.xiaomu.event.AppDataEvent")]
+	
+	public class AppData extends EventDispatcher
 	{
 		public function AppData()
 		{
@@ -32,13 +39,25 @@ package com.xiaomu.util
 		public var serverHost:String = '127.0.0.1'
 		public var webUrl:String = 'http://127.0.0.1:3008/'
 		public var roomTableImgsArr:Array = ["pz_cl_bk_0.jpg","pz_cl_bk_1.jpg","pz_cl_bk_2.jpg","pz_cl_bk_3.jpg"]///桌布图片数据
-		public var user:Object  // 当前用户
+			
+		private var _user:Object 
+		
+		public function get user():Object
+		{
+			return _user;
+		}
+
+		public function set user(value:Object):void
+		{
+			_user = value;
+			dispatchEvent(new AppDataEvent(AppDataEvent.USER_DATA_CHAGNED))
+		}
+
 		public var group:Object // 当前群
 		public var groupLL:int;//你在当前群中的等级 0普通，1二级管理员，2一级管理员，3副馆主，4馆主
 		public var rule:Object  // 当前你所选中的玩法
 		public var allRules:Array //该群中的所有玩法
 		public var groupUsers:Array;//当前群中的所有成员
-		
 		
 		public function get gameMusicValue():String
 		{
@@ -120,6 +139,20 @@ package com.xiaomu.util
 				return SharedObject.getLocal("mumu").data[key];
 			else
 				return null;
+		}
+		
+		
+		//--------------------------------------------------------------------------
+		//
+		//  
+		//
+		//--------------------------------------------------------------------------
+		
+		public function getUserData():void {
+			///刷新界面上的房卡显示
+			HttpApi.getInstane().getUser({"id":AppData.getInstane().user.id},function(e:Event):void{
+				AppData.getInstane().user = JSON.parse(e.currentTarget.data).data[0];
+			},null);
 		}
 		
 	}

@@ -68,15 +68,6 @@ package com.xiaomu.event
 		 */
 		public static const REFRESH_GROUP_DATA:String = 'refreshGroupData'
 			
-		/**
-		 *刷新用户信息 --A界面中请求过后，通知B界面重新赋值。不再重新请求
-		 */
-		public static const REFRESH_USER_INFO:String = 'refreshUserInfo'
-			
-		/**
-		 *获取用户信息 --从数据库请求
-		 */
-		public static const GET_USER_INFO:String = 'getUserInfo'
 		
 		/** Message用户事件信息存储*/
 		public var message:Object;
