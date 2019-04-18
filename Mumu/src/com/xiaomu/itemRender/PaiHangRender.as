@@ -51,7 +51,7 @@ package com.xiaomu.itemRender
 			
 			if (data) {
 				labZhiWei.text = data.username;
-				labFen.text = data.jb
+				labFen.text = data.jb + ' 金币'
 				if (index == 0) {
 					labName.color = 0xFF0000
 					labName.text = '状元'
