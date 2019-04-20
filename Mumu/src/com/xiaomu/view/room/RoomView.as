@@ -553,7 +553,7 @@ package com.xiaomu.view.room
 			
 			daNiaoView.x = (width - daNiaoView.width) / 2
 			daNiaoView.y = (height - daNiaoView.height) / 2
-				
+			
 			showRuleNamePanelBtn.x = width-200;
 			showRuleNamePanelBtn.y = 10;
 		}
@@ -760,6 +760,10 @@ package com.xiaomu.view.room
 		 */		
 		private function updateMyHandCardUIs():void {
 			if (myUser) {
+				
+				var cardsChanged:Boolean = false
+				
+				// 需要整理牌 取消拖拽
 				if (draggingCardUI) {
 					draggingCardUI.stopDrag()
 					this.removeEventListener(MouseEvent.MOUSE_UP, this_mouseUpHandler)
@@ -768,6 +772,7 @@ package com.xiaomu.view.room
 				
 				if (!myHandCards) {
 					myHandCards = CardUtil.getInstane().riffle(myUser.handCards)
+					cardsChanged = true
 				} else {
 					// myHandlers 已经存在了 匹配 增减就可以了
 					var oldCards:Array = []
@@ -807,14 +812,17 @@ package com.xiaomu.view.room
 						}
 					}
 					
-					if (oldCards)
+					if (oldCards && oldCards.length > 0) {
 						for each(var oldCard:int in oldCards) {
-						deleteMyHandCard(oldCard)
+							deleteMyHandCard(oldCard)
+						}
+						cardsChanged = true
 					}
 				}
 				
 				for (var ii:int = myHandCards.length - 1; ii >= 0; ii--) {
 					if (myHandCards[ii].length == 0) {
+						cardsChanged = true
 						myHandCards.splice(ii, 1)
 					}
 				}
@@ -1244,6 +1252,13 @@ package com.xiaomu.view.room
 						Api.getInstane().sendAction(action)
 						draggingCardUI.visible = false
 						Audio.getInstane().stopTimeout()
+						// 从myHandCards 删除出的牌 
+						if (myHandCards[si]) {
+							var index:int = (myHandCards[si] as Array).indexOf(draggingCardUI.card)
+							if (index >= 0) {
+								myHandCards[si].splice(index, 1) // 删除这个元素
+							}
+						}
 						meNewCard(draggingCardUI.card)
 					} else {
 						riffleCard()
@@ -1408,7 +1423,7 @@ package com.xiaomu.view.room
 					}
 					break
 				}
-				case Notifications.onTi : 
+				case Notifications.onTi: 
 				{
 					Audio.getInstane().playHandle('ti')
 					roomData = notification.data
@@ -1672,7 +1687,7 @@ package com.xiaomu.view.room
 			if(!rulePanel){
 				rulePanel = new RulePanelOnRoom();
 			}
-//			trace("roomrule:",JSON.stringify(roomrule));
+			//			trace("roomrule:",JSON.stringify(roomrule));
 			var tempRoomRule:Object = {"rulename":"金币休闲场","nf":0,"fd":200,"xf":10,"hx":15,"cc":2}
 			rulePanel.data = roomrule.id!=0?roomrule:tempRoomRule;
 			rulePanel.x =-rulePanel.width/2+showRuleNamePanelBtn.width/2;
