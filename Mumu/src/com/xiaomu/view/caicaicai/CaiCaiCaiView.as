@@ -263,7 +263,7 @@ package com.xiaomu.view.caicaicai
 			xiazhuTitle.x = xiazhuInput.x
 			xiazhuTitle.y = xiazhuInput.y
 			xiazhuTitle.height = xiazhuInput.height
-				
+			
 			xiazhuUnit.x = xiazhuInput.x + xiazhuInput.width - xiazhuUnit.width
 			xiazhuUnit.y = xiazhuInput.y
 			xiazhuUnit.height = xiazhuInput.height
@@ -285,7 +285,7 @@ package com.xiaomu.view.caicaicai
 			
 			refreshButton.x = width - 20 - refreshButton.width
 			refreshButton.y  = 10
-				
+			
 			shuomingText.x = bigBtn.x-10;
 			shuomingText.y = bigBtn.y+bigBtn.height+30;
 			shuomingText.width = bigBtn.width*2+150+90;
@@ -420,6 +420,7 @@ package com.xiaomu.view.caicaicai
 			setTimeout(function():void{
 				AppSmallAlert.show('恭喜你，你猜对了！',AppSmallAlert.SUCCESS)
 				allowClick = true;
+				refreshData();
 			},1000);
 		}
 		
@@ -430,6 +431,7 @@ package com.xiaomu.view.caicaicai
 			setTimeout(function():void{
 				AppSmallAlert.show('很遗憾，你猜错了。',AppSmallAlert.WARNING)
 				allowClick = true;
+				refreshData();
 			},1000);
 		}
 		
@@ -439,9 +441,6 @@ package com.xiaomu.view.caicaicai
 				update: {jb:newJinBin}, 
 				query: {id: AppData.getInstane().user.id}
 			},function(e:Event):void{
-				if(JSON.parse(e.currentTarget.data).code==0){
-					refreshData();
-				}
 			},null);
 		}
 		
