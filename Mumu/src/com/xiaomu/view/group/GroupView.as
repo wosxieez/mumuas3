@@ -15,12 +15,12 @@ package com.xiaomu.view.group
 	import com.xiaomu.util.TimeFormat;
 	import com.xiaomu.view.MainView;
 	import com.xiaomu.view.hall.HallView;
+	import com.xiaomu.view.room.Room2View;
 	import com.xiaomu.view.room.RoomView;
 	import com.xiaomu.view.userBarView.GoldOrCardShowBar;
 	
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-	import flash.media.Video;
 	
 	import coco.component.Button;
 	import coco.component.HGroup;
@@ -221,7 +221,11 @@ package com.xiaomu.view.group
 				Api.getInstane().createRoom(AppData.getInstane().rule, function (response:Object):void {
 					Loading.getInstance().close() 
 					if (response.code == 0) {
-						RoomView(MainView.getInstane().pushView(RoomView)).init(response.data)
+						if (response.data.ru.type == 1) {
+							Room2View(MainView.getInstane().pushView(Room2View)).init(response.data)
+						} else {
+							RoomView(MainView.getInstane().pushView(RoomView)).init(response.data)
+						}
 					} else {
 						AppAlert.show(JSON.stringify(response.data))
 					}
@@ -250,7 +254,11 @@ package com.xiaomu.view.group
 					Api.getInstane().createRoom(AppData.getInstane().rule, function (response:Object):void {
 						Loading.getInstance().close() 
 						if (response.code == 0) {
-							RoomView(MainView.getInstane().pushView(RoomView)).init(response.data)
+							if (response.data.ru.type == 1) {
+								Room2View(MainView.getInstane().pushView(Room2View)).init(response.data)
+							} else {
+								RoomView(MainView.getInstane().pushView(RoomView)).init(response.data)
+							}
 						} else {
 							AppAlert.show(JSON.stringify(response.data))
 						}
@@ -363,7 +371,11 @@ package com.xiaomu.view.group
 									Api.getInstane().joinRoom(room.name, function (response:Object):void {
 										Loading.getInstance().close()
 										if (response.code == 0) {
-											RoomView(MainView.getInstane().pushView(RoomView)).init(response.data)
+											if (response.data.ru.type == 1) {
+												Room2View(MainView.getInstane().pushView(Room2View)).init(response.data)
+											} else {
+												RoomView(MainView.getInstane().pushView(RoomView)).init(response.data)
+											}
 										}
 									})
 								}
@@ -516,7 +528,11 @@ package com.xiaomu.view.group
 						Api.getInstane().joinRoom(roomsList.selectedItem.name, function (response:Object):void {
 							Loading.getInstance().close()
 							if (response.code == 0) {
-								RoomView(MainView.getInstane().pushView(RoomView)).init(response.data)
+								if (response.data.ru.type == 1) {
+									Room2View(MainView.getInstane().pushView(Room2View)).init(response.data)
+								} else {
+									RoomView(MainView.getInstane().pushView(RoomView)).init(response.data)
+								}
 							} else {
 								AppAlert.show(JSON.stringify(response.data))
 							}
