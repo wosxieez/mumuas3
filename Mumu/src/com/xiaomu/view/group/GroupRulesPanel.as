@@ -28,6 +28,7 @@ package com.xiaomu.view.group
 		private var bgImg:Image;
 		private var rulesList: List
 		private var addUserButton:Button;
+		private var titleImg:Image
 		
 		private var _rulesData:Array
 		
@@ -68,6 +69,12 @@ package com.xiaomu.view.group
 				new AddRulePanel().open()
 			})
 			addChild(addUserButton)
+			
+			titleImg = new Image()
+			titleImg.width = 293
+			titleImg.height = 86
+			titleImg.source = 'assets/group/guild_title_floorSet.png'
+			addRawChild(titleImg)
 		}
 		
 		override protected function commitProperties():void {
@@ -91,6 +98,9 @@ package com.xiaomu.view.group
 			rulesList.x = bgImg.x+10;
 			rulesList.width = contentWidth-40
 			rulesList.height = addUserButton.y-rulesList.y-30;
+			
+			titleImg.x = (width - titleImg.width) / 2
+			titleImg.y = 5
 		}
 		
 		override public function open():void {

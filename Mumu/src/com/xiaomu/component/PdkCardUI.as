@@ -1,5 +1,7 @@
 package com.xiaomu.component
 {
+	import flash.events.MouseEvent;
+	
 	import coco.component.Image;
 	import coco.core.UIComponent;
 	
@@ -12,6 +14,9 @@ package com.xiaomu.component
 			width = 35
 			height = 50
 			mouseChildren = false
+			this.addEventListener(MouseEvent.CLICK, function (e:MouseEvent):void {
+				selected = !selected
+			})
 		}
 		
 		private var _card:int = 1
@@ -27,59 +32,28 @@ package com.xiaomu.component
 			invalidateProperties()
 		}
 		
-		private var _canDeal:Boolean = true 
+		private var _selected:Boolean = false
 		
-		public function get canDeal():Boolean
+		public function get selected():Boolean
 		{
-			return _canDeal;
+			return _selected;
 		}
 		
-		public function set canDeal(value:Boolean):void
+		public function set selected(value:Boolean):void
 		{
-			_canDeal = value;
-			invalidateProperties()
-			invalidateSkin()
-		}
-		
-		private var _isReverse:Boolean = false
-		
-		public function get isReverse():Boolean
-		{
-			return _isReverse;
-		}
-		
-		public function set isReverse(value:Boolean):void
-		{
-			_isReverse = value;
-			invalidateProperties()
-		}
-		
-		private var _tingCards:Array
-		
-		public function get tingCards():Array
-		{
-			return _tingCards;
-		}
-		
-		public function set tingCards(value:Array):void
-		{
-			_tingCards = value;
+			_selected = value;
 			invalidateProperties()
 		}
 		
 		private var imageDisplay:Image
-		private var tingIcon:Image
 		private var mask:UIComponent
+		
 		
 		override protected function createChildren():void {
 			super.createChildren()
 			
 			imageDisplay = new Image()
 			addChild(imageDisplay)
-			
-			tingIcon = new Image()
-			tingIcon.source = 'assets/room/ting.png'
-			addChild(tingIcon)
 			
 			mask = new UIComponent()
 			mask.visible = false
@@ -95,8 +69,7 @@ package com.xiaomu.component
 				imageDisplay.source = 'assets/pdk/0.png'
 			}
 			
-			mask.visible = !canDeal
-			tingIcon.visible = canDeal && tingCards
+			mask.visible = selected
 		}
 		
 		override protected function measure():void {
@@ -117,7 +90,7 @@ package com.xiaomu.component
 		
 		override protected function drawSkin():void {
 			super.drawSkin()
-				
+			
 			mask.graphics.clear()
 			mask.graphics.beginFill(0x000000, 0.4)
 			mask.graphics.drawRoundRect(0, 0, mask.width, mask.height, 2)

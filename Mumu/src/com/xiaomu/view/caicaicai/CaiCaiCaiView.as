@@ -94,6 +94,7 @@ package com.xiaomu.view.caicaicai
 			goldBar.height = 50;
 			goldBar.iconWidthHeight = [goldBar.height,goldBar.height];
 			goldBar.typeSource = 'assets/user/icon_jinbi_01.png';
+			goldBar.unit = '金币'
 			addChild(goldBar);
 			
 			bigBtn = new Button();

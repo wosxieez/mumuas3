@@ -31,6 +31,7 @@ package com.xiaomu.view.userBarView
 			goldBar.width = 240;
 			goldBar.height = 50;
 			goldBar.iconWidthHeight = [goldBar.height,goldBar.height];
+			goldBar.unit = '金币'
 			goldBar.typeSource = 'assets/user/icon_jinbi_01.png';
 			addChild(goldBar);
 			
@@ -39,6 +40,7 @@ package com.xiaomu.view.userBarView
 			roomCardBar.height = 50;
 			roomCardBar.iconWidthHeight = [roomCardBar.height,roomCardBar.height];
 			roomCardBar.typeSource = 'assets/user/icon_yuanbao_01.png';
+			roomCardBar.unit = '元宝'
 			addChild(roomCardBar);
 		}
 		

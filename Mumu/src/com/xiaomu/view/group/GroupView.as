@@ -104,13 +104,15 @@ package com.xiaomu.view.group
 			roomCardBar.height = 50;
 			roomCardBar.iconWidthHeight = [roomCardBar.height,roomCardBar.height];
 			roomCardBar.typeSource = 'assets/user/icon_yuanbao_01.png';
+			roomCardBar.unit = '元宝'
 			addChild(roomCardBar);
 			
 			fenBar = new GoldOrCardShowBar();
-			fenBar.width = 240;
+			fenBar.width = 280;
 			fenBar.height = 50;
 			fenBar.iconWidthHeight = [fenBar.height,fenBar.height];
 			fenBar.typeSource = 'assets/user/zuanshi.png';
+			fenBar.unit = '积分'
 			addChild(fenBar);
 			
 			roomsList = new List()

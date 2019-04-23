@@ -38,7 +38,8 @@ package com.xiaomu.util
 		public var versionNum:String="0.0.1"
 		public var serverHost:String = '127.0.0.1'
 		public var webUrl:String = 'http://127.0.0.1:3008/'
-		public var roomTableImgsArr:Array = ["pz_cl_bk_0.jpg","pz_cl_bk_1.jpg","pz_cl_bk_2.jpg","pz_cl_bk_3.jpg"]///桌布图片数据
+		public var roomTableImgsArr:Array = ["pz_cl_bk_0.jpg","pz_cl_bk_1.jpg","pz_cl_bk_2.jpg","pz_cl_bk_3.jpg",
+			"pz_cl_bk_4.jpg","pz_cl_bk_5.jpg","pz_cl_bk_6.jpg","pz_cl_bk_7.jpg","pz_cl_bk_8.jpg","pz_cl_bk_9.jpg"]///桌布图片数据
 			
 		private var _user:Object 
 		

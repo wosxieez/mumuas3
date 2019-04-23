@@ -1,6 +1,7 @@
 package com.xiaomu.view.userBarView
 {
 	import coco.component.Image;
+	import coco.component.Label;
 	import coco.component.TextAlign;
 	import coco.component.TextInput;
 	import coco.core.UIComponent;
@@ -19,6 +20,7 @@ package com.xiaomu.view.userBarView
 		private var typeIcon:Image///金币或房卡图片
 		private var number:TextInput///数量
 		private var addIcon:Image///添加图片
+		private var unitLabel:Label
 		
 		private var _typeSource:String;
 		private var _count:String = '0';
@@ -56,6 +58,19 @@ package com.xiaomu.view.userBarView
 			_typeSource = value;
 			invalidateProperties()
 		}
+		
+		private var _unit:String
+
+		public function get unit():String
+		{
+			return _unit;
+		}
+
+		public function set unit(value:String):void
+		{
+			_unit = value;
+			invalidateProperties()
+		}
 
 		override protected function createChildren():void
 		{
@@ -63,7 +78,7 @@ package com.xiaomu.view.userBarView
 			
 			number = new TextInput();
 			number.backgroundColor = 0x9999FF;
-			number.backgroundAlpha = 0.1;
+			number.backgroundAlpha = .1;
 			number.borderAlpha = 0.6;
 			number.editable = false;
 			number.radius =  height*0.6;
@@ -71,7 +86,8 @@ package com.xiaomu.view.userBarView
 			number.width = width;
 			number.height = height;
 			number.color = 0xFFCC33;
-			number.textAlign = TextAlign.CENTER;
+			number.textAlign = TextAlign.LEFT;
+			number.leftMargin = 25
 			addChild(number);
 			
 			typeIcon = new Image();
@@ -82,6 +98,15 @@ package com.xiaomu.view.userBarView
 			addIcon.width = addIcon.height = number.height;
 			addIcon.visible = false
 			addChild(addIcon);
+			
+			unitLabel = new Label()
+			unitLabel.height = number.height;
+			unitLabel.width = 2 * unitLabel.height
+			unitLabel.textAlign = TextAlign.RIGHT
+			unitLabel.fontSize = 25
+			unitLabel.rightMargin = 10
+			unitLabel.color = 0xFFCC33;
+			addChild(unitLabel)
 		}
 		
 		override protected function commitProperties():void
@@ -90,17 +115,19 @@ package com.xiaomu.view.userBarView
 			
 			typeIcon.source = typeSource;
 			number.text = count;
+			unitLabel.text = unit
 		}
 		
 		override protected function updateDisplayList():void
 		{
 			super.updateDisplayList()
 			
-			typeIcon.x = typeIcon.y = -2;
 			number.y = 0
-			number.x = iconWidthHeight[0]/3
+			unitLabel.x = width - unitLabel.width
 			addIcon.x = number.x+number.width-addIcon.width;
+			
 			typeIcon.width = iconWidthHeight[0]
+			typeIcon.x = - typeIcon.width / 2
 			typeIcon.height =  iconWidthHeight[1]
 			typeIcon.y = (height-typeIcon.height)/2;
 		}

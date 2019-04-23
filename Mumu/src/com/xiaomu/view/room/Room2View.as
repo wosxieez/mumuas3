@@ -103,7 +103,6 @@ package com.xiaomu.view.room
 		private var checkWaitTip:Image
 		private var chatButton:ImageButton
 		private var talkButton:ImageButton
-		private var tingCardsView:TingCardsView
 		private var goback:ImageButton
 		private var refreshButton:ImageButton
 		private var myActionUser:Object
@@ -215,11 +214,6 @@ package com.xiaomu.view.room
 			newCardTip.visible = false
 			newCardTip.source = Assets.getInstane().getAssets('fight_txt_finger_tips.png')
 			bgLayer.addChild(newCardTip)
-			
-			// 听牌显示
-			tingCardsView = new TingCardsView()
-			tingCardsView.visible = false
-			bgLayer.addChild(tingCardsView)
 			
 			// 卡牌层
 			cardLayer = new UIComponent()
@@ -474,8 +468,6 @@ package com.xiaomu.view.room
 				}
 				
 				if (newCardTip.visible) {
-					tingCardsView.tingCards = null
-					invalidateMyHandCardUIsCanOutTing(true)
 					Audio.getInstane().playTimeout()
 				}
 				
@@ -545,9 +537,6 @@ package com.xiaomu.view.room
 			zhunbeiButton2.x = (width - zhunbeiButton2.width) / 2
 			zhunbeiButton2.y = (height - zhunbeiButton2.height) / 2
 			
-			tingCardsView.x = 30
-			tingCardsView.y = (height - tingCardsView.height) / 2
-			
 			goback.x = width - goback.width - 200
 			goback.y = 10
 			
@@ -563,7 +552,6 @@ package com.xiaomu.view.room
 			this.roomrule = room.ru
 			Api.getInstane().addEventListener(ApiEvent.ON_ROOM, onNotificationHandler)
 			Api.getInstane().addEventListener(ApiEvent.JOIN_ROOM, onJoinRoomHandler)
-			tingCardsView.tingCards = null
 			Api.getInstane().queryRoomStatus(function (response:Object):void {
 				if (response.code == 0) {
 					roomData = response.data
@@ -599,7 +587,6 @@ package com.xiaomu.view.room
 			var cardUI:PdkCardUI
 			for each(cardUI in myHandCardUIs) {
 				cardUI.visible = false
-				cardUI.tingCards = null
 			}
 			for each(cardUI in myGroupCardUIs) {
 				cardUI.visible = false
@@ -831,7 +818,6 @@ package com.xiaomu.view.room
 				var oldMyHandCardUIs:Array = []
 				for each(var cardUI: PdkCardUI in myHandCardUIs) {
 					cardUI.visible = false
-					cardUI.tingCards = null
 					oldMyHandCardUIs.push(cardUI)
 				}
 				myHandCardUIs = []
@@ -867,7 +853,6 @@ package com.xiaomu.view.room
 							cardLayer.addChild(newCardUI)
 						}
 						newCardUI.visible = true
-						newCardUI.canDeal = canDeal
 						newCardUI.width = myHandCardWidth
 						newCardUI.height = cardHeight
 						newCardUI.x = myHandCardStartX + i * (newCardUI.width + myHandCardHorizontalGap)
@@ -879,87 +864,7 @@ package com.xiaomu.view.room
 				}
 			}
 		}
-		
-		
-		//------------------------------------------------------------------------------------------------------------------------
-		//
-		//	失效出听的牌
-		//
-		//------------------------------------------------------------------------------------------------------------------------
-		
-		private var invalidateMyHandCardUIsCanOutTingFlag:Boolean = false; // 出听牌失效
-		private var outTingData:Array
-		private var needRecheck:Boolean = false
-		
-		private function invalidateMyHandCardUIsCanOutTing(recheck:Boolean = false):void
-		{
-			needRecheck = recheck
-			if (!invalidateMyHandCardUIsCanOutTingFlag)
-			{
-				invalidateMyHandCardUIsCanOutTingFlag = true;
-				callLater(validateMyHandCardUIsCanOutTing)
-			}
-		}
-		
-		private function validateMyHandCardUIsCanOutTing():void
-		{
-			if (invalidateMyHandCardUIsCanOutTingFlag)
-			{
-				invalidateMyHandCardUIsCanOutTingFlag = false;
-				updateMyHandCardUIsCanOutTing();
-			}
-		}
-		
-		private function updateMyHandCardUIsCanOutTing():void {
-			if (myUser) {
-				if (needRecheck) {
-					outTingData = CardUtil.getInstane().canOutCardTing(myUser.groupCards, myUser.handCards, this.roomrule.hx)
-				}
-				if (outTingData) {
-					for each(var item:Object in outTingData) {
-						for each(var cardUI:PdkCardUI in myHandCardUIs) {
-							if (cardUI.card == item.card && !cardUI.tingCards) {
-								cardUI.tingCards = item.tingCards
-								break
-							}
-						}
-					}
-				}
-			}
-		}
-		
-		//------------------------------------------------------------------------------------------------------------------------
-		//
-		//	失效听的牌
-		//
-		//------------------------------------------------------------------------------------------------------------------------
-		
-		//		private var invalidateMyHandCardUIsCanTingFlag:Boolean = false; // 听牌失效
-		//		
-		//		private function invalidateMyHandCardUIsCanTing():void
-		//		{
-		//			if (!invalidateMyHandCardUIsCanTingFlag)
-		//			{
-		//				invalidateMyHandCardUIsCanTingFlag = true;
-		//				callLater(validateMyHandCardUIsCanTing)
-		//			}
-		//		}
-		//		
-		//		private function validateMyHandCardUIsCanTing():void
-		//		{
-		//			if (invalidateMyHandCardUIsCanTingFlag)
-		//			{
-		//				invalidateMyHandCardUIsCanTingFlag = false;
-		//				updateMyHandCardUIsCanTing();
-		//			}
-		//		}
-		//		
-		//		private function updateMyHandCardUIsCanTing():void {
-		//			if (myUser) {
-		//				tingCardsView.tingCards = CardUtil.getInstane().canTing(myUser.groupCards, myUser.handCards, this.roomrule.hx)
-		//			}
-		//		}
-		
+
 		/**
 		 *  更新我的组合牌视图
 		 */		
@@ -988,9 +893,6 @@ package com.xiaomu.view.room
 							newCardUI = new PdkCardUI()
 							cardLayer.addChild(newCardUI)
 						}
-						newCardUI.isReverse = false
-						if (group.name == 'ti' || group.name == 'wei') newCardUI.isReverse = true
-						if (j == (cardsLength - 1)) newCardUI.isReverse = false
 						newCardUI.visible = true
 						newCardUI.width = cardWidth
 						newCardUI.height = cardHeight
@@ -1068,9 +970,6 @@ package com.xiaomu.view.room
 							newCardUI = new PdkCardUI()
 							cardLayer.addChild(newCardUI)
 						}
-						newCardUI.isReverse = false
-						if (group.name == 'ti' || group.name == 'wei') newCardUI.isReverse = true
-						if (j == (cardsLength - 1)) newCardUI.isReverse = false
 						newCardUI.visible = true
 						newCardUI.width = cardWidth
 						newCardUI.height = cardHeight
@@ -1150,9 +1049,6 @@ package com.xiaomu.view.room
 							newCardUI = new PdkCardUI()
 							cardLayer.addChild(newCardUI)
 						}
-						newCardUI.isReverse = false
-						if (group.name == 'ti' || group.name == 'wei') newCardUI.isReverse = true
-						if (j == (cardsLength - 1)) newCardUI.isReverse = false
 						newCardUI.visible = true
 						newCardUI.width = cardWidth
 						newCardUI.height = cardHeight
@@ -1209,15 +1105,12 @@ package com.xiaomu.view.room
 		protected function cardUI_mouseDownHandler(event:MouseEvent):void
 		{
 			var cardUI:PdkCardUI = event.currentTarget as PdkCardUI
-			if (cardUI && cardUI.canDeal) {
+			if (cardUI) {
 				si = getMyHandCardsIndex(this.mouseX)
 				draggingCardUI = cardUI
 				draggingCardUI.parent.setChildIndex(draggingCardUI, draggingCardUI.parent.numChildren - 1)
 				oldPoint = cardLayer.localToGlobal(new Point(draggingCardUI.x, draggingCardUI.y))
 				draggingCardUI.startDrag()
-				if (newCardTip.visible) {
-					tingCardsView.tingCards = draggingCardUI.tingCards
-				}
 				this.addEventListener(MouseEvent.MOUSE_UP, this_mouseUpHandler)
 				this.addEventListener(MouseEvent.MOUSE_MOVE, this_mouseMoveHandler)
 			}
@@ -1233,36 +1126,8 @@ package com.xiaomu.view.room
 			this.removeEventListener(MouseEvent.MOUSE_MOVE, this_mouseMoveHandler)
 			if (draggingCardUI) {
 				draggingCardUI.stopDrag()
-				if (myActionUser && myActionUser.nd) {
-					// 在需要我出牌的情况下
-					if (this.mouseY <= height / 2) { 
-						myActionUser.nd.dt = draggingCardUI.card
-						myActionUser.nd.ac = 1
-						var action:Object = { name: Actions.NewCard, data: myActionUser  }
-						Api.getInstane().sendAction(action)
-						draggingCardUI.visible = false
-						Audio.getInstane().stopTimeout()
-						// 从myHandCards 删除出的牌 
-						if (myHandCards[si]) {
-							var index:int = (myHandCards[si] as Array).indexOf(draggingCardUI.card)
-							if (index >= 0) {
-								myHandCards[si].splice(index, 1) // 删除这个元素
-							}
-						}
-						meNewCard(draggingCardUI.card)
-					} else {
-						riffleCard()
-						invalidateMyHandCardUIs()
-						if (newCardTip.visible)
-							invalidateMyHandCardUIsCanOutTing()
-					}
-				} else {
-					// 如果不是我出牌的 整理牌
-					riffleCard()
-					invalidateMyHandCardUIs()
-					if (newCardTip.visible)
-						invalidateMyHandCardUIsCanOutTing()
-				}
+				riffleCard()
+				invalidateMyHandCardUIs()
 			}
 		}
 		
@@ -1364,7 +1229,6 @@ package com.xiaomu.view.room
 				}
 				case Notifications.onWin:///赢家界面 //一把
 				{
-					tingCardsView.tingCards = null
 					Audio.getInstane().playHandle('hu')
 					roomData = notification.data
 					trace("roomView一把玩家赢牌1:",JSON.stringify(roomData));
@@ -1375,7 +1239,6 @@ package com.xiaomu.view.room
 				}
 				case Notifications.onRoundEnd://荒庄
 				{
-					tingCardsView.tingCards = null
 					Audio.getInstane().playHandle('hz')
 					roomData = notification.data
 					trace("roomView一把荒庄1:",JSON.stringify(roomData));
@@ -1386,7 +1249,6 @@ package com.xiaomu.view.room
 				}
 				case Notifications.onGameOver: 
 				{
-					tingCardsView.tingCards = null
 					roomData = notification.data
 					if (roomData.hn) {
 						Audio.getInstane().playHandle('hu')

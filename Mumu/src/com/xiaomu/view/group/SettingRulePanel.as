@@ -12,6 +12,7 @@ package com.xiaomu.view.group
 	import flash.events.MouseEvent;
 	
 	import coco.component.ButtonGroup;
+	import coco.component.Image;
 	import coco.component.Label;
 	import coco.component.Scroller;
 	import coco.component.TextAlign;
@@ -24,8 +25,6 @@ package com.xiaomu.view.group
 		public function SettingRulePanel()
 		{
 			super();
-			
-			title = '设置玩法'
 		}
 		
 		private var bgUI:UIComponent;//底部UI
@@ -52,6 +51,7 @@ package com.xiaomu.view.group
 		private var ruleTC1Tool:CountTool;
 		private var minPlzLab:Label;
 		private var minPlzTool:CountTool;///最低疲劳值
+		private var titleImg:Image
 		
 		private var _ruleData:Object
 		
@@ -277,6 +277,12 @@ package com.xiaomu.view.group
 			minPlzTool.stepSize = 10;
 			minPlzTool.maximum = 1000;
 			bgUI.addChild(minPlzTool);
+			
+			titleImg = new Image()
+			titleImg.width = 293
+			titleImg.height = 86
+			titleImg.source = 'assets/group/guild_title_floorSet.png'
+			addRawChild(titleImg)
 		}
 		
 		override protected function commitProperties():void {
@@ -324,6 +330,9 @@ package com.xiaomu.view.group
 			minPlzLab.y = minPlzTool.y = topPadding+gap*10;
 			
 			ruleNameInput.x =ruleCountBtnGroup.x= ruleHXBtnGroup.x=ruleXFTool.x=ruleNFTool.x=ruleFDBtnGroup.x=ruleTFTool.x=ruleTCTool.x=ruleTC1Tool.x=ruleTC2Tool.x=minPlzTool.x=320;
+			
+			titleImg.x = (width - titleImg.width) / 2
+			titleImg.y = 5
 		}
 		
 		/**
