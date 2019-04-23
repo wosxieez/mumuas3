@@ -31,7 +31,7 @@ package com.xiaomu.renderer
 			lab2 = new Label();
 			lab2.textAlign = TextAlign.LEFT;
 			lab2.fontSize = 19;
-			lab2.color = 0x72af85;
+			lab2.color = 0xFFFFFF;
 			addChild(lab2);
 			
 			xianimg = new Image();

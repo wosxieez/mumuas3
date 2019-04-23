@@ -120,7 +120,7 @@ package com.xiaomu.view.login
 						(new LoginPanel).doLogin();
 					}
 				}
-			},10);
+			},500);
 		}
 		
 	}

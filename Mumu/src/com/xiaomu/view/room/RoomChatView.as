@@ -18,11 +18,12 @@ package com.xiaomu.view.room
 			
 			borderColor = 0x000000
 			backgroundColor = 0x000000
+			radius = 10
 			backgroundAlpha = 0.6
 			titleHeight = 60
 			title = '聊天'
-			width = 500
-			height = 600
+			width = 400
+			height = 520
 		}
 		
 		private static var instance:RoomChatView
@@ -43,8 +44,9 @@ package com.xiaomu.view.room
 			titleDisplay.fontSize = 30
 				
 			list = new List()
+			list.padding = 10
 			list.verticalScrollEnabled = false
-			list.itemRendererHeight = 60
+			list.itemRendererHeight = 50
 			list.itemRendererClass = ChatRenderer
 			list.dataProvider = ['快点啊，都等得我花儿都谢了',
 				'怎么又短线了，网络怎么这么差啊',

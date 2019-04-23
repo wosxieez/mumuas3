@@ -2,6 +2,7 @@ package com.xiaomu.view.login
 {
 	import com.xiaomu.component.AppAlert;
 	import com.xiaomu.component.ImageButton;
+	import com.xiaomu.component.Loading;
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.HttpApi;
 	import com.xiaomu.view.MainView;
@@ -165,8 +166,10 @@ package com.xiaomu.view.login
 		public function doLogin():void
 		{
 			PopUpManager.removePopUp(this);
+			Loading.getInstance().open()
 			HttpApi.getInstane().login({un: phoneNumInput.text, pwd: passwordInput.text, vn: AppData.getInstane().versionNum}, 
 				function (ee:Event):void {
+					Loading.getInstance().close()
 					try
 					{
 						var response:Object = JSON.parse(ee.currentTarget.data)
@@ -186,6 +189,7 @@ package com.xiaomu.view.login
 						AppAlert.show('登录失败')
 					}
 				}, function (ee:Event):void {
+					Loading.getInstance().close()
 					AppAlert.show('登录失败, 网络错误')
 				})
 			
