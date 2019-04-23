@@ -1,7 +1,7 @@
 package com.xiaomu.view.group
 {
 	import com.xiaomu.component.AppAlert;
-	import com.xiaomu.component.AppSmallAlert;
+	import com.xiaomu.component.AppAlertSmall;
 	import com.xiaomu.event.AppManagerEvent;
 	import com.xiaomu.manager.AppManager;
 	import com.xiaomu.renderer.GroupUserMenuRender;
@@ -129,14 +129,14 @@ package com.xiaomu.view.group
 								function (e:Event):void {
 									var response:Object = JSON.parse(e.currentTarget.data)
 									if (response.code == 0) {
-										AppSmallAlert.show('升职成功')
+										AppAlertSmall.show('升职成功')
 										AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.UPDATE_MEMBER_INFO_SUCCESS));
 									} else {
-										AppSmallAlert.show('升职失败')
+										AppAlertSmall.show('升职失败')
 									}
 								})
 						} else {
-							AppSmallAlert.show('无法再升职了')
+							AppAlertSmall.show('无法再升职了')
 						}
 					}},null);
 			}
@@ -152,14 +152,14 @@ package com.xiaomu.view.group
 								function (e:Event):void {
 									var response:Object = JSON.parse(e.currentTarget.data)
 									if (response.code == 0) {
-										AppSmallAlert.show('降职成功')
+										AppAlertSmall.show('降职成功')
 										AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.UPDATE_MEMBER_INFO_SUCCESS));
 									} else {
-										AppSmallAlert.show('降职失败')
+										AppAlertSmall.show('降职失败')
 									}
 								})
 						} else {
-							AppSmallAlert.show('无法再降职了')
+							AppAlertSmall.show('无法再降职了')
 						}
 					}},null);
 			}
@@ -179,18 +179,18 @@ package com.xiaomu.view.group
 										HttpApi.getInstane().removeGroupUser({gid: toUser.gid, uid: toUser.uid}, function (ee:Event):void {
 											var response2:Object = JSON.parse(ee.currentTarget.data)
 											if (response2.code == 0) {
-												AppSmallAlert.show('踢出成功')
+												AppAlertSmall.show('踢出成功')
 												AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.CHANGE_MEMBER_SUCCESS));
 											} else {
-												AppSmallAlert.show('踢出失败')
+												AppAlertSmall.show('踢出失败')
 											}
 										})
 									} else {
-										AppSmallAlert.show('踢出失败')
+										AppAlertSmall.show('踢出失败')
 									}
 								})
 						} else {
-							AppSmallAlert.show('您没有权限操作')
+							AppAlertSmall.show('您没有权限操作')
 						}
 					} else {
 						trace('cancel');

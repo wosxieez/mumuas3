@@ -1,6 +1,6 @@
 package com.xiaomu.view.hall
 {
-	import com.xiaomu.component.AppSmallAlert;
+	import com.xiaomu.component.AppAlertSmall;
 	import com.xiaomu.component.ImageButton;
 	import com.xiaomu.renderer.KeyBoardRender;
 	import com.xiaomu.util.AppData;
@@ -327,7 +327,7 @@ package com.xiaomu.view.hall
 		protected function okBtnHandler(event:MouseEvent):void
 		{
 			if(numberArr.length==0){
-				AppSmallAlert.show("请输入正确的群号");
+				AppAlertSmall.show("请输入正确的群号");
 				return;
 			}
 			actionHandler();
@@ -344,7 +344,7 @@ package com.xiaomu.view.hall
 		{
 			var groupNumber:int = parseInt(numberArr.join(''));
 			if(AppData.getInstane().alljoinedGroups&&AppData.getInstane().alljoinedGroups.indexOf(groupNumber)!=-1){
-				AppSmallAlert.show('您已经在该群中了');
+				AppAlertSmall.show('您已经在该群中了');
 				numberArr = [];
 				return
 			}
@@ -361,22 +361,22 @@ package com.xiaomu.view.hall
 							HttpApi.getInstane().joinApplyrecord({uid:AppData.getInstane().user.id,gid:groupNumber,finish:'F',uname:AppData.getInstane().user.username},function(e:Event):void{
 								var respone1:Object = JSON.parse(e.currentTarget.data);
 								if(respone1.code==0){
-									AppSmallAlert.show('申请提交成功，请等待群主确认')
+									AppAlertSmall.show('申请提交成功，请等待群主确认')
 									numberArr = [];
 									closeHandler();
 								}else{
-									AppSmallAlert.show('申请提交失败')
+									AppAlertSmall.show('申请提交失败')
 								}
 							},null);
 							
 						}else{
-							AppSmallAlert.show('该申请已经存在，请等待群主确认')
+							AppAlertSmall.show('该申请已经存在，请等待群主确认')
 							numberArr = [];
 						}
 					},null);
 					
 				}else{
-					AppSmallAlert.show("输入的群号不存在")
+					AppAlertSmall.show("输入的群号不存在")
 					numberArr = [];
 				}
 			},null);

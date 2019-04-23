@@ -2,7 +2,7 @@ package com.xiaomu.view.group
 {
 	import com.xiaomu.component.AppAlert;
 	import com.xiaomu.component.AppPanelSmall;
-	import com.xiaomu.component.AppSmallAlert;
+	import com.xiaomu.component.AppAlertSmall;
 	import com.xiaomu.event.AppManagerEvent;
 	import com.xiaomu.manager.AppManager;
 	import com.xiaomu.util.AppData;
@@ -84,7 +84,7 @@ package com.xiaomu.view.group
 								function (ee:Event):void {
 									var response2:Object = JSON.parse(ee.currentTarget.data)
 									if (response2.code == 0) {
-										AppSmallAlert.show("添加成员成功");
+										AppAlertSmall.show("添加成员成功");
 										AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.CHANGE_MEMBER_SUCCESS));
 										close()
 									} else {
@@ -92,10 +92,10 @@ package com.xiaomu.view.group
 									}
 								})
 						} else {
-							AppSmallAlert.show('添加群成员失败');
+							AppAlertSmall.show('添加群成员失败');
 						}
 					} catch(error:Error) {
-						AppSmallAlert.show('添加群成员失败');
+						AppAlertSmall.show('添加群成员失败');
 					}
 				})
 		}

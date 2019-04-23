@@ -1,7 +1,7 @@
 package com.xiaomu.view.group
 {
 	import com.xiaomu.component.AppAlert;
-	import com.xiaomu.component.AppSmallAlert;
+	import com.xiaomu.component.AppAlertSmall;
 	import com.xiaomu.event.AppManagerEvent;
 	import com.xiaomu.manager.AppManager;
 	import com.xiaomu.renderer.GroupRuleMenuRender;
@@ -78,7 +78,7 @@ package com.xiaomu.view.group
 				function (ee:Event):void {
 					var response:Object = JSON.parse(ee.currentTarget.data)
 					if (response.code == 0) {
-						AppSmallAlert.show("添加成员成功");
+						AppAlertSmall.show("添加成员成功");
 						///修改申请表状态
 						updateApplyrecords(true);
 						AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.CHANGE_MEMBER_SUCCESS));

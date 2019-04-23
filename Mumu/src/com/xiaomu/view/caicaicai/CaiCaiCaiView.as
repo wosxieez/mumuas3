@@ -1,6 +1,6 @@
 package com.xiaomu.view.caicaicai
 {
-	import com.xiaomu.component.AppSmallAlert;
+	import com.xiaomu.component.AppAlertSmall;
 	import com.xiaomu.component.ImageButton;
 	import com.xiaomu.component.LabelhasBg;
 	import com.xiaomu.event.AppDataEvent;
@@ -301,17 +301,17 @@ package com.xiaomu.view.caicaicai
 				return
 			}
 			if(AppData.getInstane().user.jb==0){
-				AppSmallAlert.show('您的金币不够了');
+				AppAlertSmall.show('您的金币不够了');
 				allowClick = true;
 				return
 			}
 			if(parseInt(xiazhuInput.text)>AppData.getInstane().user.jb){
-				AppSmallAlert.show('押宝数不可大于剩余金币数');
+				AppAlertSmall.show('押宝数不可大于剩余金币数');
 				allowClick = true;
 				return;
 			}
 			if(parseInt(xiazhuInput.text) < 0){
-				AppSmallAlert.show('押宝数不可小于0');
+				AppAlertSmall.show('押宝数不可小于0');
 				allowClick = true;
 				return;
 			}
@@ -324,17 +324,17 @@ package com.xiaomu.view.caicaicai
 				return
 			}
 			if(AppData.getInstane().user.jb==0){
-				AppSmallAlert.show('您的金币不够了');
+				AppAlertSmall.show('您的金币不够了');
 				allowClick = true;
 				return
 			}
 			if(parseInt(xiazhuInput.text)>AppData.getInstane().user.jb){
-				AppSmallAlert.show('押宝数不可大于剩余金币数');
+				AppAlertSmall.show('押宝数不可大于剩余金币数');
 				allowClick = true;
 				return;
 			}
 			if(parseInt(xiazhuInput.text) < 0){
-				AppSmallAlert.show('押宝数不可小于0');
+				AppAlertSmall.show('押宝数不可小于0');
 				allowClick = true;
 				return;
 			}
@@ -419,7 +419,7 @@ package com.xiaomu.view.caicaicai
 			newJinBin = AppData.getInstane().user.jb+Math.floor(parseInt(xiazhuInput.text));
 			updateHandler();
 			setTimeout(function():void{
-				AppSmallAlert.show('恭喜你，你猜对了！',AppSmallAlert.SUCCESS)
+				AppAlertSmall.show('恭喜你，你猜对了！',AppAlertSmall.SUCCESS)
 				allowClick = true;
 				refreshData();
 			},1000);
@@ -430,7 +430,7 @@ package com.xiaomu.view.caicaicai
 			newJinBin= AppData.getInstane().user.jb-Math.floor(parseInt(xiazhuInput.text));
 			updateHandler();
 			setTimeout(function():void{
-				AppSmallAlert.show('很遗憾，你猜错了。',AppSmallAlert.WARNING)
+				AppAlertSmall.show('很遗憾，你猜错了。',AppAlertSmall.WARNING)
 				allowClick = true;
 				refreshData();
 			},1000);

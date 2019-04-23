@@ -37,7 +37,7 @@ package com.xiaomu.renderer
 			addChild(statusImg);
 			
 			lab = new Label();
-			lab.fontSize = 24;
+			lab.fontSize = 20;
 			lab.textAlign = TextAlign.LEFT;
 			lab.color = 0x6f1614;
 			addChild(lab);
@@ -58,8 +58,8 @@ package com.xiaomu.renderer
 			statusImg.height = height*0.7;
 			statusImg.width = (130/42)*statusImg.height;
 			
-			lab.x = statusImg.height+20;
-			lab.y = 2;
+			lab.x = statusImg.height+5;
+			lab.height = height
 		}
 	}
 }

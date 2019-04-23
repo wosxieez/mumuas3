@@ -6,9 +6,9 @@ package com.xiaomu.component
 	/**
 	 * 自动消失的提示
 	 */
-	public class AppSmallAlert extends UIComponent
+	public class AppAlertSmall extends UIComponent
 	{
-		public function AppSmallAlert()
+		public function AppAlertSmall()
 		{
 			super();
 		}

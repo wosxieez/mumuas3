@@ -1,7 +1,7 @@
 package com.xiaomu.view.group
 {
 	import com.xiaomu.component.AppAlert;
-	import com.xiaomu.component.AppSmallAlert;
+	import com.xiaomu.component.AppAlertSmall;
 	import com.xiaomu.component.ImageButton;
 	import com.xiaomu.component.Loading;
 	import com.xiaomu.event.ApiEvent;
@@ -112,7 +112,7 @@ package com.xiaomu.view.group
 			fenBar.height = 50;
 			fenBar.iconWidthHeight = [fenBar.height,fenBar.height];
 			fenBar.typeSource = 'assets/user/zuanshi.png';
-			fenBar.unit = '积分'
+			fenBar.unit = '分'
 			addChild(fenBar);
 			
 			roomsList = new List()
@@ -211,7 +211,7 @@ package com.xiaomu.view.group
 			createGroupPrivate.downImageSource = 'assets/guild/btn_guild2_create_group_p.png';
 			createGroupPrivate.addEventListener(MouseEvent.CLICK, function (e:MouseEvent):void {
 				if(!AppData.getInstane().rule){
-					AppSmallAlert.show("请先选择玩法");
+					AppAlertSmall.show("请先选择玩法");
 					return
 				}
 				if(AppData.getInstane().rule.plz&&fenBar.count<AppData.getInstane().rule.plz){
@@ -242,7 +242,7 @@ package com.xiaomu.view.group
 			createGroupPublic.downImageSource = 'assets/guild/btn_guild2_create_public_p.png';
 			createGroupPublic.addEventListener(MouseEvent.CLICK, function (e:MouseEvent):void {
 				if(!AppData.getInstane().rule){
-					AppSmallAlert.show("请先选择玩法");
+					AppAlertSmall.show("请先选择玩法");
 					return
 				}
 				if(AppData.getInstane().rule.plz&&fenBar.count<AppData.getInstane().rule.plz){
@@ -506,7 +506,7 @@ package com.xiaomu.view.group
 		{
 			//			trace("allRules,",JSON.stringify(AppData.getInstane().allRules));
 			if(!AppData.getInstane().rule){
-				AppSmallAlert.show("请先选择玩法");
+				AppAlertSmall.show("请先选择玩法");
 				return
 			}
 			if(AppData.getInstane().rule.plz&&fenBar.count<AppData.getInstane().rule.plz){

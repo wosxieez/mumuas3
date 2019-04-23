@@ -1,7 +1,7 @@
 package com.xiaomu.view.home
 {
 	import com.xiaomu.component.AppAlert;
-	import com.xiaomu.component.AppSmallAlert;
+	import com.xiaomu.component.AppAlertSmall;
 	import com.xiaomu.component.ImageButton;
 	import com.xiaomu.component.Loading;
 	import com.xiaomu.itemRender.HomeBottomBarRender;
@@ -207,7 +207,7 @@ package com.xiaomu.view.home
 		protected function ziPaiImg_clickHandler(event:MouseEvent):void
 		{
 			if (AppData.getInstane().user.jb <= 0) {
-				AppSmallAlert.show('您的金币不足，无法进入休闲场', AppSmallAlert.WARNING)
+				AppAlertSmall.show('您的金币不足，无法进入休闲场', AppAlertSmall.WARNING)
 				return
 			}
 			
@@ -317,7 +317,7 @@ package com.xiaomu.view.home
 				AppAlert.show("请用浏览器打开此链接\r\nhttps://fir.im/niuniu1","",Alert.OK, function (e:UIEvent):void {
 					if (e.detail == Alert.OK) {
 						System.setClipboard("https://fir.im/niuniu1");
-						AppSmallAlert.show("复制成功")
+						AppAlertSmall.show("复制成功")
 					}})
 			} else if (btnGroup.selectedItem.name == '公告') {
 				AppAlert.show(
@@ -344,7 +344,7 @@ package com.xiaomu.view.home
 		protected function joinRoomClickHandler(event:MouseEvent):void
 		{
 			if (AppData.getInstane().user.jb <= 0) {
-				AppSmallAlert.show('您的金币不足，无法加入休闲场', AppSmallAlert.WARNING)
+				AppAlertSmall.show('您的金币不足，无法加入休闲场', AppAlertSmall.WARNING)
 				return
 			}
 			
@@ -367,7 +367,7 @@ package com.xiaomu.view.home
 			AppAlert.show('请联系客服为您处理\r\n微信号: wxniuniu007',"",Alert.OK, function (e:UIEvent):void {
 				if (e.detail == Alert.OK) {
 					System.setClipboard(" wxniuniu007");
-					AppSmallAlert.show("复制成功")
+					AppAlertSmall.show("复制成功")
 				}})
 		}
 		
@@ -379,7 +379,7 @@ package com.xiaomu.view.home
 			AppAlert.show('请联系客服为您处理\r\n微信号: wxniuniu007',"",Alert.OK, function (e:UIEvent):void {
 				if (e.detail == Alert.OK) {
 					System.setClipboard(" wxniuniu007");
-					AppSmallAlert.show("复制成功")
+					AppAlertSmall.show("复制成功")
 				}})
 		}
 		
@@ -398,7 +398,7 @@ package com.xiaomu.view.home
 				}else if(respones.data=='check_in repeat'){
 					AppAlert.show("今日已签到。\r\n请明日再来哦亲！")
 				}else{
-					AppSmallAlert.show("签到失败");
+					AppAlertSmall.show("签到失败");
 				}
 			},null);
 		}

@@ -1,7 +1,7 @@
 package com.xiaomu.view.login
 {
 	import com.xiaomu.component.AppAlert;
-	import com.xiaomu.component.AppSmallAlert;
+	import com.xiaomu.component.AppAlertSmall;
 	import com.xiaomu.component.ImageButton;
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.util.HttpApi;
@@ -166,13 +166,13 @@ package com.xiaomu.view.login
 		protected function registerHandler(event:MouseEvent):void
 		{
 			if(!phoneNumInput.text||!passwordInput.text){
-				AppSmallAlert.show("请完善账号和密码")
+				AppAlertSmall.show("请完善账号和密码")
 				return
 			}
 			var phoneArr:Array = phoneNumInput.text.split('');
 			var passwordArr:Array = passwordInput.text.split('');
 			if(phoneArr.indexOf(" ")!=-1||passwordArr.indexOf(" ")!=-1){
-				AppSmallAlert.show("格式有误，请检查是否有空格存在");
+				AppAlertSmall.show("格式有误，请检查是否有空格存在");
 				return
 			}
 			HttpApi.getInstane().addUser({username: phoneNumInput.text, password: passwordInput.text, mobile: passwordInput2.text},

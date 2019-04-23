@@ -1,6 +1,6 @@
 package com.xiaomu.view.group
 {
-	import com.xiaomu.component.AppSmallAlert;
+	import com.xiaomu.component.AppAlertSmall;
 	import com.xiaomu.component.ImageButton;
 	import com.xiaomu.renderer.HistoryListRenderForLeveL0;
 	import com.xiaomu.renderer.HistoryListRenderForLeveL12;
@@ -147,7 +147,7 @@ package com.xiaomu.view.group
 						})
 						historyData = respones.data;
 					}else{
-						AppSmallAlert.show("查询失败")
+						AppAlertSmall.show("查询失败")
 					}
 				},null);
 			}else if(AppData.getInstane().groupLL==0){ ///如果是普通成员，只能看的自己的分值变动情况（上下分，和战绩）
@@ -168,7 +168,7 @@ package com.xiaomu.view.group
 						})
 						historyData = respones.data;
 					}else{
-						AppSmallAlert.show("查询失败")
+						AppAlertSmall.show("查询失败")
 					}
 				},null);
 			}else{///如果是一二级管理员，你能看到自己底下的人的分值变动情况。和自己的变动情况（战绩等）
@@ -194,7 +194,7 @@ package com.xiaomu.view.group
 						})
 						historyData = respones.data;
 					}else{
-						AppSmallAlert.show("查询失败")
+						AppAlertSmall.show("查询失败")
 					}
 				},null);
 			}

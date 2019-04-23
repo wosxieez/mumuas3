@@ -1,6 +1,6 @@
 package com.xiaomu.itemRender
 {
-	import com.xiaomu.component.AppSmallAlert;
+	import com.xiaomu.component.AppAlertSmall;
 	import com.xiaomu.component.ImageButton;
 	
 	import flash.events.MouseEvent;
@@ -42,7 +42,7 @@ package com.xiaomu.itemRender
 			event.stopImmediatePropagation()
 			event.preventDefault()
 				
-			AppSmallAlert.show('您的金币不足，无法兑换', AppSmallAlert.WARNING)
+			AppAlertSmall.show('您的金币不足，无法兑换', AppAlertSmall.WARNING)
 		}
 		
 		override protected function commitProperties():void {

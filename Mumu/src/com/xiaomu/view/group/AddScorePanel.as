@@ -2,7 +2,7 @@ package com.xiaomu.view.group
 {
 	import com.xiaomu.component.AppAlert;
 	import com.xiaomu.component.AppPanelSmall;
-	import com.xiaomu.component.AppSmallAlert;
+	import com.xiaomu.component.AppAlertSmall;
 	import com.xiaomu.event.AppManagerEvent;
 	import com.xiaomu.manager.AppManager;
 	import com.xiaomu.util.AppData;
@@ -91,7 +91,7 @@ package com.xiaomu.view.group
 		
 		private function doAction():void {
 			if (fromUser.ll != 4 && fromUser.ll != 3 && fromUser.uid != toUser.pid) {
-				AppSmallAlert.show('您没有权限操作');
+				AppAlertSmall.show('您没有权限操作');
 				return
 			}
 			var score:Number = Number(addScoreInput.text)
@@ -100,18 +100,18 @@ package com.xiaomu.view.group
 					function (e:Event):void {
 						var response:Object = JSON.parse(e.currentTarget.data)
 						if (response.code == 0) {
-							AppSmallAlert.show('增加疲劳值成功');
+							AppAlertSmall.show('增加疲劳值成功');
 							AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.UPDATE_MEMBER_INFO_SUCCESS));
 							close()
 						} else {
-							AppSmallAlert.show('增加疲劳值失败');
+							AppAlertSmall.show('增加疲劳值失败');
 						}
 					},
 					function (e:Event):void {
-						AppSmallAlert.show('增加疲劳值失败');
+						AppAlertSmall.show('增加疲劳值失败');
 					})
 			} else {
-				AppSmallAlert.show('您的疲劳值不足，无法为他人增加');
+				AppAlertSmall.show('您的疲劳值不足，无法为他人增加');
 			}
 		}
 		

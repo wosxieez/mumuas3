@@ -1,7 +1,7 @@
 package com.xiaomu.view.group
 {
 	import com.xiaomu.component.AppAlert;
-	import com.xiaomu.component.AppSmallAlert;
+	import com.xiaomu.component.AppAlertSmall;
 	import com.xiaomu.event.AppManagerEvent;
 	import com.xiaomu.manager.AppManager;
 	import com.xiaomu.renderer.GroupRuleMenuRender;
@@ -74,14 +74,14 @@ package com.xiaomu.view.group
 											HttpApi.getInstane().removeRule({id: ruleData.id}, function (ee:Event):void {
 												var response2:Object = JSON.parse(ee.currentTarget.data)
 												if (response2.code == 0) {
-													AppSmallAlert.show("删除成功");
+													AppAlertSmall.show("删除成功");
 													AppManager.getInstance().dispatchEvent(new AppManagerEvent(AppManagerEvent.UPDATE_GROUP_RULES_SUCCESS));
 												} else {
-													AppSmallAlert.show("删除成功");
+													AppAlertSmall.show("删除成功");
 												}
 											})
 										} else {
-											AppSmallAlert.show("您没有权限操作");
+											AppAlertSmall.show("您没有权限操作");
 										}
 									}
 								} 
