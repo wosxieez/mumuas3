@@ -158,5 +158,13 @@ package com.xiaomu.util
 			},null);
 		}
 		
+		public function getRuleFromAllRules(rid:int):Object {
+			for each(var rule:Object in allRules) {
+				if (rule.id == rid) 
+					return rule
+			}
+			return null
+		}
+		
 	}
 }

@@ -29,7 +29,7 @@ package
 		{
 			super();
 			
-			CocoUI.fontSize = 20
+			CocoUI.fontSize = 22
 			addEventListener(Event.ADDED_TO_STAGE, this_addedToStageHandler)
 			
 			var localXML:XML = NativeApplication.nativeApplication.applicationDescriptor

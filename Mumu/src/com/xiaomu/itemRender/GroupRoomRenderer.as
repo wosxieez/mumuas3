@@ -12,7 +12,9 @@ package com.xiaomu.itemRender
 		{
 			super();
 			mouseChildren = true
-			backgroundAlpha=0;
+			backgroundAlpha=.1;
+			backgroundColor = 0x000000
+			radius = 10
 			borderAlpha = 0;
 		}
 		
@@ -24,37 +26,33 @@ package com.xiaomu.itemRender
 		override protected function createChildren():void {
 			super.createChildren()
 			
+			labelDisplay.visible = false
+			
 			tableImg = new Image();
 			addChild(tableImg);
 			
 			player1 = new Label();
-			player1.fontSize = 24;
+			player1.fontSize = 22;
 			player1.color = 0xffffff;
 			addChild(player1);
 			
 			player2 = new Label();
-			player2.fontSize = 24;
+			player2.fontSize = 22;
 			player2.color = 0xffffff;
 			addChild(player2);
 			
 			ruleName = new Label();
-			ruleName.fontSize = 24;
+			ruleName.fontSize = 22;
 			ruleName.color = 0xffffff;
 			addChild(ruleName);
 		}
 		
 		override protected function commitProperties():void {
 			super.commitProperties()
-			
 			if (data) {
-				labelDisplay.text = JSON.stringify(data)
-				labelDisplay.visible =false;
-//				trace("数据：：",JSON.stringify(data));// {"users":["wosxieez4","xiebao"],"name":"room878234","rid":1}
-//				trace("玩法：",JSON.stringify(AppData.getInstane().allRules));
 				for each (var ruleObj:Object in AppData.getInstane().allRules) 
 				{
 					if(ruleObj.id==data.rid){
-//						trace("人数：",ruleObj.cc);
 						tableImg.source = "assets/guild/guild2_bg_table"+parseInt(ruleObj.cc)+"_phz.png"
 						player1.text = data.users[0]
 						player2.text = data.users[1]
@@ -67,7 +65,7 @@ package com.xiaomu.itemRender
 		
 		override protected function updateDisplayList():void {
 			super.updateDisplayList()
-				
+			
 			tableImg.height = height*0.8;
 			tableImg.width = tableImg.height*383/340;
 			tableImg.x = (width-tableImg.width)/2;
@@ -80,9 +78,8 @@ package com.xiaomu.itemRender
 			player2.x = width-player2.width-width/12;
 			player2.y = height/5-20;
 			
-			ruleName.width = width/2;
+			ruleName.width = width
 			ruleName.height = 40;
-			ruleName.x = (width-ruleName.width)/2;
 			ruleName.y = (height-ruleName.height)/2-40;
 		}
 		

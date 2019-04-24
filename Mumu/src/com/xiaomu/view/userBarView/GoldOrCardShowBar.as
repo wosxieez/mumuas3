@@ -77,17 +77,16 @@ package com.xiaomu.view.userBarView
 			super.createChildren()
 			
 			number = new TextInput();
-			number.backgroundColor = 0x9999FF;
-			number.backgroundAlpha = .1;
-			number.borderAlpha = 0.6;
+			number.backgroundColor = 0x000000;
+			number.backgroundAlpha = .3;
+			number.borderAlpha = 1;
 			number.editable = false;
-			number.radius =  height*0.6;
+			number.radius =  height*0.5;
 			number.fontSize = height*0.6;
 			number.width = width;
 			number.height = height;
 			number.color = 0xFFCC33;
-			number.textAlign = TextAlign.LEFT;
-			number.leftMargin = 25
+			number.textAlign = TextAlign.CENTER
 			addChild(number);
 			
 			typeIcon = new Image();

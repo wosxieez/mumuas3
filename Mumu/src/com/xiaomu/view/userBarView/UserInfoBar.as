@@ -14,7 +14,6 @@ package com.xiaomu.view.userBarView
 			width = 306;
 		}
 		private var headBg:Image;
-		private var contentBg:Image;
 		private var userIcon: Image
 		private var userNameLab : Label
 		private var userGold:Label
@@ -41,14 +40,6 @@ package com.xiaomu.view.userBarView
 			headBg.width = headBg.height = 94
 			headBg.x = headBg.y = 0
 			addChild(headBg)
-			
-			contentBg = new Image()
-			contentBg.source = 'assets/user/HeadBk.png'
-			contentBg.height = 78
-			contentBg.width = 212
-			contentBg.x = headBg.x+headBg.width-5;
-			contentBg.y = (headBg.height-contentBg.height)/2;
-			addChild(contentBg)
 			
 			userIcon = new Image();
 			userIcon.source = 'assets/hall/headIcon.png'
@@ -78,10 +69,10 @@ package com.xiaomu.view.userBarView
 		{
 			super.drawSkin();
 			
-			/*graphics.clear();
-			graphics.beginFill(0xffffff,0.2);
-			graphics.drawRect(0,0,width,height);
-			graphics.endFill();*/
+//			graphics.clear();
+//			graphics.beginFill(0x000000,0.3);
+//			graphics.drawRect(0,0,width,height);
+//			graphics.endFill();
 		}
 	}
 }

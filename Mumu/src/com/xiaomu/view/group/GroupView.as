@@ -5,6 +5,7 @@ package com.xiaomu.view.group
 	import com.xiaomu.component.ImageButton;
 	import com.xiaomu.component.Loading;
 	import com.xiaomu.event.ApiEvent;
+	import com.xiaomu.event.AppDataEvent;
 	import com.xiaomu.event.AppManagerEvent;
 	import com.xiaomu.itemRender.GroupRoomRenderer;
 	import com.xiaomu.manager.AppManager;
@@ -46,6 +47,7 @@ package com.xiaomu.view.group
 			AppManager.getInstance().addEventListener(AppManagerEvent.CHANGE_SELECTED_RULE,changSelectedRuleHandler);
 			AppManager.getInstance().addEventListener(AppManagerEvent.UPDATE_MEMBER_INFO_SUCCESS,updateMemberHander);
 			AppManager.getInstance().addEventListener(AppManagerEvent.REFRESH_GROUP_DATA,refrshGroupDataHandler);
+			AppData.getInstane().addEventListener(AppDataEvent.USER_DATA_CHAGNED, userDataChangedHandler)
 		}
 		
 		private var bg:Image
@@ -116,13 +118,13 @@ package com.xiaomu.view.group
 			addChild(fenBar);
 			
 			roomsList = new List()
-			roomsList.itemRendererColumnCount = 4
+			roomsList.itemRendererColumnCount = 5
 			roomsList.horizontalAlign = HorizontalAlign.JUSTIFY;
 			roomsList.itemRendererClass = GroupRoomRenderer
-			roomsList.gap = 30;
+			roomsList.gap = 10;
 			roomsList.addEventListener(UIEvent.CHANGE, roomsList_changeHandler)
 			roomsList.padding = 10;
-			roomsList.paddingTop =100;
+			roomsList.paddingTop =60;
 			addChild(roomsList)
 			
 			bg1 = new Image()
@@ -282,19 +284,25 @@ package com.xiaomu.view.group
 		
 		override protected function commitProperties():void {
 			super.commitProperties()
-			if (!roomsData) {
-				roomsList.dataProvider = null
-				return 
-			}
-			roomsList.dataProvider = roomsData.filter(function (item:*, index:int, array:Array):Boolean {
-				if (item.pub) {
-					return true
-				} else {
-					return false
-				}
-			})
 			
-			roomCardBar.count = AppData.getInstane().user.fc?AppData.getInstane().user.fc:"0";
+			if (AppData.getInstane().user) {
+				roomCardBar.count = AppData.getInstane().user.fc
+			} else {
+				roomCardBar.count = '0'
+			}
+			
+			var allRoomsData:Array = []
+			for each(var rule:Object in AppData.getInstane().allRules) {
+				allRoomsData.push({rulename: rule.rulename, rid: rule.id, users:[], pub: true, isRuleRoom: true})
+			}
+			if (roomsData) {
+				// 对房间数据进行排序
+				allRoomsData = allRoomsData.concat(roomsData.reverse())
+			} 
+			
+			roomsList.dataProvider = allRoomsData.filter(function (item:Object, index:int, array:Array):Boolean {
+				return item.pub
+			})
 		}
 		
 		override protected function updateDisplayList():void {
@@ -316,7 +324,7 @@ package com.xiaomu.view.group
 			roomsList.y = roomsList.paddingTop;
 			roomsList.height = height - roomsList.y-bg1.height;
 			roomsList.width = width
-			roomsList.itemRendererHeight = (roomsList.width- roomsList.padding * 2 - roomsList.gap*3) / 4
+			roomsList.itemRendererHeight = (roomsList.width- roomsList.padding * 2 - roomsList.gap*4) / 5
 			
 			userSettingButton.x = width - userSettingButton.width - 20
 			userSettingButton.y = 10
@@ -380,6 +388,7 @@ package com.xiaomu.view.group
 											}
 										}
 									})
+									return
 								}
 							}
 						}
@@ -518,14 +527,30 @@ package com.xiaomu.view.group
 		
 		protected function roomsList_changeHandler(event:UIEvent):void
 		{
-			for each (var itemRule:Object in AppData.getInstane().allRules) 
-			{
-				if(itemRule.id==roomsList.selectedItem.rid){
-					if(fenBar.count<itemRule.plz){
-						AppAlert.show("很遗憾，您的疲劳值不够进入此桌的玩法")
-						roomsList.selectedIndex = -1
-						return
-					}else{
+			var rule:Object = AppData.getInstane().getRuleFromAllRules(roomsList.selectedItem.rid)
+			if (rule) {
+				if(fenBar.count<rule.plz){
+					AppAlert.show("很遗憾，您的疲劳值不够进入此桌的玩法")
+					roomsList.selectedIndex = -1
+					return
+				}else{
+					if (roomsList.selectedItem.isRuleRoom) {
+						// 创建桌子
+						Loading.getInstance().open()
+						rule.pub = true // 公共房间
+						Api.getInstane().createRoom(rule, function (response:Object):void {
+							Loading.getInstance().close() 
+							if (response.code == 0) {
+								if (response.data.ru.type == 1) {
+									Room2View(MainView.getInstane().pushView(Room2View)).init(response.data)
+								} else {
+									RoomView(MainView.getInstane().pushView(RoomView)).init(response.data)
+								}
+							} else {
+								AppAlert.show(JSON.stringify(response.data))
+							}
+						})
+					} else {
 						Loading.getInstance().open()
 						Api.getInstane().joinRoom(roomsList.selectedItem.name, function (response:Object):void {
 							Loading.getInstance().close()
@@ -596,5 +621,11 @@ package com.xiaomu.view.group
 				}
 			},null);
 		}
+		
+		protected function userDataChangedHandler(event:AppDataEvent):void
+		{
+			invalidateProperties()
+		}
+		
 	}
 }
