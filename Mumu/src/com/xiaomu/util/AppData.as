@@ -166,5 +166,36 @@ package com.xiaomu.util
 			return null
 		}
 		
+		public function getRobotRuleFromAllRules():Object {
+			for each(var rule:Object in allRules) {
+				if (rule.cc == 2) return rule
+			}
+			
+			return null
+		}
+		
+		public function getRobotsFromAllGroupUsers():Array {
+			var robots:Array = []
+			for each(var user:Object in groupUsers) {
+				if (user.ir) {
+					robots.push(user.username)
+				}
+			}
+			return robots
+		}
+		
+		public function getRobotRooms():Array {
+			var robotRooms:Array = []
+			var robots:Array = getRobotsFromAllGroupUsers()	
+			while (robots.length >= 2) {
+				var rule:Object = getRobotRuleFromAllRules()
+				if (rule) {
+					var users:Array = [robots.pop(), robots.pop()]
+					robotRooms.push({rulename: rule.rulename, pub: true, rid: rule.id, users: users})
+				}
+			}
+			return robotRooms
+		}
+		
 	}
 }

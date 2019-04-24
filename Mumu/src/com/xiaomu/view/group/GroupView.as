@@ -292,14 +292,17 @@ package com.xiaomu.view.group
 			}
 			
 			var allRoomsData:Array = []
+			// 规则桌子
 			for each(var rule:Object in AppData.getInstane().allRules) {
 				allRoomsData.push({rulename: rule.rulename, rid: rule.id, users:[], pub: true, isRuleRoom: true})
 			}
+			// Room桌子
 			if (roomsData) {
 				// 对房间数据进行排序
 				allRoomsData = allRoomsData.concat(roomsData.reverse())
 			} 
-			
+			// Robot桌子
+			allRoomsData = allRoomsData.concat(AppData.getInstane().getRobotRooms())
 			roomsList.dataProvider = allRoomsData.filter(function (item:Object, index:int, array:Array):Boolean {
 				return item.pub
 			})
@@ -439,6 +442,7 @@ package com.xiaomu.view.group
 								AppData.getInstane().groupUsers = groupusers;
 								//trace("当前群中的所有用户信息:",JSON.stringify(groupusers));
 								actionHandler();
+								invalidateProperties()
 							}
 						})
 					} else {
@@ -530,7 +534,7 @@ package com.xiaomu.view.group
 			var rule:Object = AppData.getInstane().getRuleFromAllRules(roomsList.selectedItem.rid)
 			if (rule) {
 				if(fenBar.count<rule.plz){
-					AppAlert.show("很遗憾，您的疲劳值不够进入此桌的玩法")
+					AppAlert.show('"很遗憾，您的疲劳值不够进入此桌的玩法"')
 					roomsList.selectedIndex = -1
 					return
 				}else{
@@ -551,19 +555,23 @@ package com.xiaomu.view.group
 							}
 						})
 					} else {
-						Loading.getInstance().open()
-						Api.getInstane().joinRoom(roomsList.selectedItem.name, function (response:Object):void {
-							Loading.getInstance().close()
-							if (response.code == 0) {
-								if (response.data.ru.type == 1) {
-									Room2View(MainView.getInstane().pushView(Room2View)).init(response.data)
+						if (roomsList.selectedItem.users.length >= rule.cc && roomsList.selectedItem.users.indexOf(AppData.getInstane().username) == -1) {
+							AppAlert.show('"加入失败，房间人数已满"')
+						} else {
+							Loading.getInstance().open()
+							Api.getInstane().joinRoom(roomsList.selectedItem.name, function (response:Object):void {
+								Loading.getInstance().close()
+								if (response.code == 0) {
+									if (response.data.ru.type == 1) {
+										Room2View(MainView.getInstane().pushView(Room2View)).init(response.data)
+									} else {
+										RoomView(MainView.getInstane().pushView(RoomView)).init(response.data)
+									}
 								} else {
-									RoomView(MainView.getInstane().pushView(RoomView)).init(response.data)
+									AppAlert.show(JSON.stringify(response.data))
 								}
-							} else {
-								AppAlert.show(JSON.stringify(response.data))
-							}
-						})
+							})
+						}
 					}
 				}
 			}

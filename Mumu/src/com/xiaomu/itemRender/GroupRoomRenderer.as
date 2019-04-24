@@ -5,6 +5,7 @@ package com.xiaomu.itemRender
 	import coco.component.DefaultItemRenderer;
 	import coco.component.Image;
 	import coco.component.Label;
+	import coco.component.TextAlign;
 	
 	public class GroupRoomRenderer extends DefaultItemRenderer
 	{
@@ -32,18 +33,20 @@ package com.xiaomu.itemRender
 			addChild(tableImg);
 			
 			player1 = new Label();
-			player1.fontSize = 22;
-			player1.color = 0xffffff;
+			player1.textAlign = TextAlign.LEFT
+			player1.fontSize = 21;
+			player1.color = 0xCFCFCF;
 			addChild(player1);
 			
 			player2 = new Label();
 			player2.fontSize = 22;
-			player2.color = 0xffffff;
+			player2.textAlign = TextAlign.RIGHT
+			player2.color = 0xCFCFCF;
 			addChild(player2);
 			
 			ruleName = new Label();
-			ruleName.fontSize = 22;
-			ruleName.color = 0xffffff;
+			ruleName.fontSize = 21;
+			ruleName.color = 0xFFFFFF;
 			addChild(ruleName);
 		}
 		
@@ -71,12 +74,12 @@ package com.xiaomu.itemRender
 			tableImg.x = (width-tableImg.width)/2;
 			tableImg.y = (height-tableImg.height)/2;
 			
-			player1.width = width/2;
-			player2.width = width/2;
-			player1.x = width/12;
-			player1.y = height/2;
-			player2.x = width-player2.width-width/12;
-			player2.y = height/5-20;
+			player2.width = width
+			player2.height = 70
+				
+			player1.width = width
+			player1.height = 70
+			player1.y = height/2 - 20
 			
 			ruleName.width = width
 			ruleName.height = 40;
