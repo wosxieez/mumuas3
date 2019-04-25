@@ -441,5 +441,18 @@ package com.xiaomu.util
 			var urlLoader:CocoURLLoader = new CocoURLLoader(resultHandler, faultHandler, true, 20000);
 			urlLoader.load(urlrequest)
 		}
+		
+		/**
+		 * @param resultHandler
+		 * @param faultHandler
+		 */			
+		public function getNotice(resultHandler:Function = null, faultHandler:Function = null):void
+		{
+			var urlrequest:URLRequest = new URLRequest(AppData.getInstane().webUrl + 'get_notice');
+			urlrequest.method = URLRequestMethod.GET
+			urlrequest.contentType = 'application/json'
+			var urlLoader:CocoURLLoader = new CocoURLLoader(resultHandler, faultHandler, true, 20000);
+			urlLoader.load(urlrequest)
+		}
 	}
 }

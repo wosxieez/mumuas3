@@ -79,7 +79,7 @@ package com.xiaomu.view.userBarView
 			number = new TextInput();
 			number.backgroundColor = 0x000000;
 			number.backgroundAlpha = .3;
-			number.borderAlpha = 1;
+			number.borderAlpha = 0.3;
 			number.editable = false;
 			number.radius =  height*0.5;
 			number.fontSize = height*0.6;

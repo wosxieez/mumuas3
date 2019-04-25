@@ -193,10 +193,9 @@ package com.xiaomu.view.home
 			addChild(waiterBtn);
 			
 			noticeBar = new NoticeBar();
-			noticeBar.width = 500;
-			noticeBar.height = 32;
+			noticeBar.width = 800;
+			noticeBar.height = 40;
 			addChild(noticeBar);
-			noticeBar.visible = false;
 		}
 		
 		protected function paoDeKuaiImg_clickHandler(event:MouseEvent):void

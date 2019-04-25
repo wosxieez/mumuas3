@@ -1,5 +1,10 @@
 package com.xiaomu.view.home.noticeBar
 {
+	import com.xiaomu.util.HttpApi;
+	
+	import flash.events.Event;
+	import flash.utils.setTimeout;
+	
 	import coco.component.Image;
 	import coco.component.Label;
 	import coco.core.UIComponent;
@@ -12,44 +17,81 @@ package com.xiaomu.view.home.noticeBar
 			super();
 		}
 		
+		private var _notice:String
+		
+		public function get notice():String
+		{
+			return _notice;
+		}
+		
+		public function set notice(value:String):void
+		{
+			_notice = value;
+			invalidateProperties()
+		}
+		
 		private var laba:Image;
-		private var bgImg:Image;
 		private var noticeLab:Label;
+		
 		override protected function createChildren():void
 		{
 			super.createChildren();
 			
-			bgImg = new Image();
-			bgImg.source = 'assets/home/noticeBar/bgBar.png';
-			bgImg.width = width;
-			bgImg.height = height;
-			bgImg.alpha = 0.3;
-			addChild(bgImg);
-			
 			noticeLab = new Label();
-			noticeLab.text = "测试测试测试测试测试测试测试测试测试测试测试测试测试测试。"
 			noticeLab.width = 300;
 			noticeLab.height = height;
+			noticeLab.x = height
 			noticeLab.fontSize = 20;
 			noticeLab.color = 0xffffff;
 			addChild(noticeLab);
 			
 			laba = new Image();
 			laba.source = 'assets/home/noticeBar/laba.png';
-			laba.width = height;
-			laba.height = height;
+			laba.width = laba.height = 32;
+			laba.x = laba.y = 4
 			addChild(laba);
+			
+			getNotice()
+		}
+		
+		override protected function commitProperties():void
+		{
+			super.commitProperties();
+			
+			noticeLab.text = notice
 		}
 		
 		override protected function updateDisplayList():void
 		{
 			super.updateDisplayList();
+			noticeLab.width = width - noticeLab.x
+		}
+		
+		override protected function drawSkin():void {
+			super.drawSkin()
 			
-			laba.x = 0;
-			laba.y = 0;
+			graphics.clear()
+			graphics.beginFill(0x000000, .3)
+			graphics.drawRoundRect(0, 0, width, height, 10, 10)
+			graphics.endFill()
+		}
+		
+		private function getNotice():void {
+			HttpApi.getInstane().getNotice(function (e:Event):void {
+				try
+				{
+					var response:Object = JSON.parse(e.currentTarget.data)
+					if (response.code == 0) {
+						notice = response.data
+					}
+				} 
+				catch(error:Error) 
+				{
+				}
+			})
 			
-			bgImg.x = 0;
-			bgImg.y = 0;
+			// 10分钟刷新一次公告
+			setTimeout(getNotice, 600000)
 		}
 		
 	}
