@@ -14,7 +14,6 @@ package
 	import flash.events.KeyboardEvent;
 	import flash.net.URLRequest;
 	import flash.net.navigateToURL;
-	import flash.ui.Keyboard;
 	
 	import coco.component.Alert;
 	import coco.component.Image;
@@ -127,8 +126,8 @@ package
 		
 		protected function handleKeys(event:KeyboardEvent):void
 		{
-			if(event.keyCode == Keyboard.BACK)
-				NativeApplication.nativeApplication.exit();  //退出程序
+//			if(event.keyCode == Keyboard.BACK)
+//				NativeApplication.nativeApplication.exit();  //退出程序
 		}
 		
 	}

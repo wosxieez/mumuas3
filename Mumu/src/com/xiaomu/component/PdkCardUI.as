@@ -1,6 +1,6 @@
 package com.xiaomu.component
 {
-	import flash.events.MouseEvent;
+	import com.xiaomu.util.Assets;
 	
 	import coco.component.Image;
 	import coco.core.UIComponent;
@@ -14,9 +14,6 @@ package com.xiaomu.component
 			width = 35
 			height = 50
 			mouseChildren = false
-			this.addEventListener(MouseEvent.CLICK, function (e:MouseEvent):void {
-				selected = !selected
-			})
 		}
 		
 		private var _card:int = 1
@@ -45,6 +42,19 @@ package com.xiaomu.component
 			invalidateProperties()
 		}
 		
+		private var _isReverse:Boolean = false
+		
+		public function get isReverse():Boolean
+		{
+			return _isReverse;
+		}
+		
+		public function set isReverse(value:Boolean):void
+		{
+			_isReverse = value;
+			invalidateProperties()
+		}
+		
 		private var imageDisplay:Image
 		private var mask:UIComponent
 		
@@ -63,10 +73,10 @@ package com.xiaomu.component
 		override protected function commitProperties():void {
 			super.commitProperties()
 			
-			if (card > 0) {
+			if (!isReverse && card > 0) {
 				imageDisplay.source = 'assets/pdk/' + card + '.png'
 			} else {
-				imageDisplay.source = 'assets/pdk/0.png'
+				imageDisplay.source = Assets.getInstane().getAssets('fight_small_card.png')
 			}
 			
 			mask.visible = selected
@@ -93,7 +103,7 @@ package com.xiaomu.component
 			
 			mask.graphics.clear()
 			mask.graphics.beginFill(0x000000, 0.4)
-			mask.graphics.drawRoundRect(0, 0, mask.width, mask.height, 2)
+			mask.graphics.drawRoundRect(0, 0, mask.width, mask.height, 20)
 			mask.graphics.endFill()
 		}
 		

@@ -15,6 +15,7 @@ package com.xiaomu.view.home
 	import com.xiaomu.view.home.noticeBar.NoticeBar;
 	import com.xiaomu.view.home.popUp.PaiHangPanel;
 	import com.xiaomu.view.home.setting.SettingPanelView;
+	import com.xiaomu.view.room.Room2View;
 	import com.xiaomu.view.room.RoomView;
 	import com.xiaomu.view.userBarView.UserInfoView;
 	
@@ -114,8 +115,9 @@ package com.xiaomu.view.home
 			xiuXianImg = new ImageButton();
 			xiuXianImg.width = 260;
 			xiuXianImg.height = 190;
-			xiuXianImg.upImageSource = 'assets/home/other/paodekuai.png';
-			xiuXianImg.downImageSource = 'assets/home/other/paodekuai.png';
+			xiuXianImg.upImageSource = 'assets/home/other/zi_up.png';
+			xiuXianImg.downImageSource = 'assets/home/other/zi_down.png';
+			xiuXianImg.addEventListener(MouseEvent.CLICK, xiuXianImg_clickHandler)
 			addChild(xiuXianImg);
 			
 			paoDeKuaiImg = new ImageButton();
@@ -217,6 +219,30 @@ package com.xiaomu.view.home
 						Loading.getInstance().close()
 						if (response.code == 0) {
 							RoomView(MainView.getInstane().pushView(RoomView)).init(response.data)
+						} else {
+							AppAlert.show(response.data)
+						}
+					})
+				} else {
+					Loading.getInstance().close()
+				}
+			})
+		}
+		
+		protected function xiuXianImg_clickHandler(event:MouseEvent):void
+		{
+			if (AppData.getInstane().user.jb <= 0) {
+				AppAlertSmall.show('您的金币不足，无法进入休闲场', AppAlertSmall.WARNING)
+				return
+			}
+			
+			Loading.getInstance().open()
+			Api.getInstane().joinGroup(AppData.getInstane().user.username, 0, function (response:Object):void {
+				if (response.code == 0) {
+					Api.getInstane().createRoom({cc: 2, hx: 15, id: 0, xf: 1, nf: 0, type: 1}, function (response:Object):void {
+						Loading.getInstance().close()
+						if (response.code == 0) {
+							Room2View(MainView.getInstane().pushView(Room2View)).init(response.data)
 						} else {
 							AppAlert.show(response.data)
 						}

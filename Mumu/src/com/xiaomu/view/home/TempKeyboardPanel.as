@@ -7,6 +7,7 @@ package com.xiaomu.view.home
 	import com.xiaomu.util.Api;
 	import com.xiaomu.util.AppData;
 	import com.xiaomu.view.MainView;
+	import com.xiaomu.view.room.Room2View;
 	import com.xiaomu.view.room.RoomView;
 	
 	import flash.events.MouseEvent;
@@ -304,7 +305,11 @@ package com.xiaomu.view.home
 						Api.getInstane().joinRoom('room' + numberArr.join(''), function (response:Object):void {
 							Loading.getInstance().close()
 							if (response.code == 0) {
-								RoomView(MainView.getInstane().pushView(RoomView)).init(response.data)
+								if (response.data.ru.type == 1) {
+									Room2View(MainView.getInstane().pushView(Room2View)).init(response.data)
+								} else {
+									RoomView(MainView.getInstane().pushView(RoomView)).init(response.data)
+								}
 							} else {
 								AppAlert.show(JSON.stringify(response.data))
 							}

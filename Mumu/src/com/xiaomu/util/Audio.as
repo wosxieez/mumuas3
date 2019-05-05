@@ -101,6 +101,27 @@ package com.xiaomu.util
 			cardChannel.soundTransform = new SoundTransform(int(AppData.getInstane().gameMusicValue) / 100, 0)
 		}
 		
+		private var pdkCardChannel:SoundChannel
+		private var pdkCardSound:Sound
+		
+		public function playPdkCard(card:String):void {
+			if (!isActivate) return
+			if (pdkCardChannel) {
+				try
+				{
+					pdkCardChannel.stop()
+				} 
+				catch(error:Error) 
+				{
+					
+				}
+			}
+			
+			pdkCardSound = new Sound(new URLRequest('sound/pdk/' + card + '.mp3'))
+			pdkCardChannel = pdkCardSound.play()
+			pdkCardChannel.soundTransform = new SoundTransform(int(AppData.getInstane().gameMusicValue) / 100, 0)
+		}
+		
 		private var handleChannel:SoundChannel
 		private var handleSound:Sound
 		
