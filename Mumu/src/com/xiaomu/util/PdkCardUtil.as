@@ -34,7 +34,7 @@ package com.xiaomu.util
 			var result:Array = []
 			for each(var es:Array in dic) {
 				for each(var e:int in es) {
-					result.push(e)
+					result.unshift(e)
 				}
 			}
 			return result

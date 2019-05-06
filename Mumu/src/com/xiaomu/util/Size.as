@@ -15,6 +15,9 @@ package com.xiaomu.util
 		public static const MIDDLE_CARD_WIDTH:Number = 97 // 97
 		public static const MIDDLE_CARD_HEIGHT:Number = 111  // 111
 			
+		public static const PDK_MIDDLE_CARD_WIDTH:Number = 109 // 97
+		public static const PDK_MIDDLE_CARD_HEIGHT:Number = 150  // 111
+			
 		public static const SMALL_CARD_WIDTH:Number = 31
 		public static const SMALL_CARD_HEIGHT:Number = 37
 			

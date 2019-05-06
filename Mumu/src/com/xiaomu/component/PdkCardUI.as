@@ -56,18 +56,12 @@ package com.xiaomu.component
 		}
 		
 		private var imageDisplay:Image
-		private var mask:UIComponent
-		
 		
 		override protected function createChildren():void {
 			super.createChildren()
 			
 			imageDisplay = new Image()
 			addChild(imageDisplay)
-			
-			mask = new UIComponent()
-			mask.visible = false
-			addChild(mask)
 		}
 		
 		override protected function commitProperties():void {
@@ -79,7 +73,7 @@ package com.xiaomu.component
 				imageDisplay.source = Assets.getInstane().getAssets('fight_small_card.png')
 			}
 			
-			mask.visible = selected
+			imageDisplay.y = selected ? - 20 : 0
 		}
 		
 		override protected function measure():void {
@@ -91,20 +85,6 @@ package com.xiaomu.component
 			
 			imageDisplay.width = width
 			imageDisplay.height = height
-			
-			mask.width = imageDisplay.width
-			mask.height = imageDisplay.height
-			mask.x = imageDisplay.x
-			mask.y = imageDisplay.y
-		}
-		
-		override protected function drawSkin():void {
-			super.drawSkin()
-			
-			mask.graphics.clear()
-			mask.graphics.beginFill(0x000000, 0.4)
-			mask.graphics.drawRoundRect(0, 0, mask.width, mask.height, 20)
-			mask.graphics.endFill()
 		}
 		
 	}

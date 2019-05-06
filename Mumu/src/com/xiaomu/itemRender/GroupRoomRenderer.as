@@ -34,18 +34,18 @@ package com.xiaomu.itemRender
 			
 			player1 = new Label();
 			player1.textAlign = TextAlign.LEFT
-			player1.fontSize = 21;
-			player1.color = 0xCFCFCF;
+			player1.fontSize = 22;
+			player1.color = 0xFFFFFF;
 			addChild(player1);
 			
 			player2 = new Label();
 			player2.fontSize = 22;
 			player2.textAlign = TextAlign.RIGHT
-			player2.color = 0xCFCFCF;
+			player2.color = 0xFFFFFF;
 			addChild(player2);
 			
 			ruleName = new Label();
-			ruleName.fontSize = 21;
+			ruleName.fontSize = 22;
 			ruleName.color = 0xFFFFFF;
 			addChild(ruleName);
 		}
