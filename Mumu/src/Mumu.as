@@ -16,7 +16,6 @@ package
 	import flash.net.navigateToURL;
 	
 	import coco.component.Alert;
-	import coco.component.Image;
 	import coco.core.Application;
 	import coco.core.coco;
 	import coco.event.UIEvent;
@@ -36,18 +35,9 @@ package
 			AppData.getInstane().versionNum = localXML.nss::versionNumber
 		}
 		
-		[Embed(source="assets/bg.png")]
-		private var BgClass:Class
-		
-		private var bg:Image
-		
 		override protected function createChildren():void {
 			super.createChildren()
-			bg = new Image()
-			bg.source = new BgClass().bitmapData
-			addChild(bg)
-			bg.visible = false;
-			
+				
 			addChild(MainView.getInstane())
 			LoginView(MainView.getInstane().pushView(LoginView)).init()
 			

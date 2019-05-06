@@ -94,6 +94,7 @@ package com.xiaomu.view.room
 		private var nextPassCardUIs:Array = []
 		private var zhunbeiButton:ImageButton
 		private var zhunbeiButton2:ImageButton
+		private var canOutButton:ImageButton
 		private var canChiButton:ImageButton
 		private var cancelButton:ImageButton
 		private var chatButton:ImageButton
@@ -180,6 +181,15 @@ package com.xiaomu.view.room
 			canChiButton.addEventListener(MouseEvent.CLICK, canChiButton_clickHandler)
 			iconLayer.addChild(canChiButton)
 			
+			canOutButton = new ImageButton()
+			canOutButton.upImageSource = 'assets/pdk/btn_co_up.png'
+			canOutButton.downImageSource = 'assets/pdk/btn_co_down.png'
+			canOutButton.width = 148
+			canOutButton.height = 74
+			canOutButton.visible = false
+			canOutButton.addEventListener(MouseEvent.CLICK, canOutButton_clickHandler)
+			iconLayer.addChild(canOutButton)
+			
 			cancelButton = new ImageButton()
 			cancelButton.upImageSource = 'assets/pdk/btn_bp_up.png'
 			cancelButton.downImageSource = 'assets/pdk/btn_bp_down.png'
@@ -258,6 +268,12 @@ package com.xiaomu.view.room
 			refreshButton.downImageSource = 'assets/group/btn_guild2_refresh_p.png';
 			refreshButton.addEventListener(MouseEvent.CLICK, refreshButton_clickHandler)
 			addChild(refreshButton)
+		}
+		
+		protected function canOutButton_clickHandler(event:MouseEvent):void
+		{
+			event.preventDefault()
+			event.stopImmediatePropagation()
 		}
 		
 		override protected function commitProperties():void {
@@ -350,10 +366,10 @@ package com.xiaomu.view.room
 				if (myActionUser) {
 					if (myActionUser.nd) {
 						myUserHead.isFocus = true
-						canChiButton.visible = true
+						canOutButton.visible = canChiButton.visible = true
 					} else if (myActionUser.cd) {
 						myUserHead.isFocus = true
-						canChiButton.visible = cancelButton.visible = true
+						canOutButton.visible = canChiButton.visible = cancelButton.visible = true
 					}
 					invalidateDisplayList()
 				}
@@ -409,13 +425,14 @@ package com.xiaomu.view.room
 			refreshButton.y = talkButton.y + talkButton.height + 10
 			
 			if (cancelButton.visible) {
-				canChiButton.x = (width - cancelButton.width - canChiButton.width - 10) / 2
-				canChiButton.y = height - 270
-				cancelButton.x = canChiButton.x + canChiButton.width + 10
-				cancelButton.y = canChiButton.y + (canChiButton.height - cancelButton.height) / 2
+				canOutButton.x = (width - cancelButton.width - canChiButton.width - 30 - canOutButton.width) / 2
+				canChiButton.x = canOutButton.x + canOutButton.width + 15
+				cancelButton.x = canChiButton.x + canChiButton.width + 15
+				canOutButton.y = canChiButton.y = cancelButton.y = height - 270
 			} else {
-				canChiButton.x = (width - cancelButton.width) / 2
-				canChiButton.y = height - 270
+				canOutButton.x = (width - canChiButton.width - 15 - canOutButton.width) / 2
+				canChiButton.x = canOutButton.x + canOutButton.width + 15
+				canOutButton.y = canChiButton.y = height - 270
 			}
 			
 			zhunbeiButton.x = (width - zhunbeiButton.width) / 2
@@ -515,6 +532,7 @@ package com.xiaomu.view.room
 			nextUserHead.isFocus = nextUserHead.isNiao = nextUserHead.visible = false
 			zhunbeiButton2.visible = zhunbeiButton.visible = false
 			cancelButton.visible = false
+			canOutButton.visible = false
 			canChiButton.visible = false
 			
 			PopUpManager.removePopUp(ChiSelectView.getInstane())
@@ -938,7 +956,7 @@ package com.xiaomu.view.room
 				case Notifications.onNewCard: 
 				{
 					roomData = notification.data
-					var validCard:Object = PdkCardUtil.getInstane().isValidNewCards(roomData.pc)
+					var validCard:Object = PdkCardUtil.getInstane().isValidCards(roomData.pc)
 					if (validCard) {
 						switch(validCard.type)
 						{
@@ -1038,7 +1056,7 @@ package com.xiaomu.view.room
 					}
 				}
 				if (myActionUser.nd) { // 出牌
-					if (PdkCardUtil.getInstane().isValidNewCards(selectedCards)) {
+					if (PdkCardUtil.getInstane().isValidCards(selectedCards)) {
 						myActionUser.nd.dt = selectedCards.sort()
 						myActionUser.nd.ac = 1
 						var action:Object = { name: Actions.NewCard, data: myActionUser}
@@ -1048,9 +1066,9 @@ package com.xiaomu.view.room
 					}
 				} else if (myActionUser.cd) { 
 					// 吃牌需要看符合规则不
-					var outCards:Object = PdkCardUtil.getInstane().isValidNewCards(selectedCards)
+					var outCards:Object = PdkCardUtil.getInstane().isValidCards(selectedCards)
 					if (outCards) {
-						var curCards:Object = PdkCardUtil.getInstane().isValidNewCards(roomData.pc)
+						var curCards:Object = PdkCardUtil.getInstane().isValidCards(roomData.pc)
 						if  (curCards.type != PdkCardType.BOMB) {
 							// 当前牌不是炸弹 那么出的牌是同类型大的牌 或者是炸弹 就可以
 							if ((outCards.type == curCards.type && outCards.card > curCards.card) || outCards.type == PdkCardType.BOMB) {
@@ -1081,7 +1099,7 @@ package com.xiaomu.view.room
 		
 		protected function cancelButton_clickHandler(event:MouseEvent):void
 		{
-			canChiButton.visible = cancelButton.visible = false
+			canOutButton.visible = canChiButton.visible = cancelButton.visible = false
 			Audio.getInstane().playPdkCard('no')
 			if (myActionUser) {
 				undoActionUser()

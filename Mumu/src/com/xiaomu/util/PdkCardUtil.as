@@ -40,13 +40,17 @@ package com.xiaomu.util
 			return result
 		}
 		
-		public function isValidNewCards(cards:Array):Object {
+		public function isValidCards(cards:Array):Object {
 			return isOne(cards) || 
 				isTwo(cards) || 
 				isThree(cards) || 
 				isShun(cards) ||
 				isFeiJi(cards) ||
 				isBomb(cards)
+		}
+		
+		public function findValidCards(cards:Array):Array{
+			return null
 		}
 		
 		//------------------------------------------------------------------------------------------------
@@ -145,6 +149,24 @@ package com.xiaomu.util
 				}
 			}
 			return null
+		}
+		
+		private function findShun(cards:Array):Object {
+			var countedCards:Dictionary = countBy(cards)
+			var newCards:Array = []
+			for (var card:int in countedCards) {
+				newCards.push(card)
+			}
+			
+			var result:Array = []
+			while (newCards.length >= 5) {
+				if (shouShun(newCards)) {
+					result.push(JSON.parse(JSON.stringify(newCards)))
+				}
+				newCards.pop()
+			} 
+			
+			return result
 		}
 		
 		private function isShun(cards:Array):Object {
