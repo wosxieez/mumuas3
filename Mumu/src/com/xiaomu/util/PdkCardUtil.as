@@ -41,12 +41,19 @@ package com.xiaomu.util
 		}
 		
 		public function isValidCards(cards:Array):Object {
-			return isOne(cards) || 
-				isTwo(cards) || 
-				isThree(cards) || 
-				isShun(cards) ||
-				isFeiJi(cards) ||
-				isBomb(cards)
+			var result:Object = isOne(cards)
+			if (result) return result
+			result = isTwo(cards)
+			if (result) return result
+			result = isBomb(cards)
+			if (result) return result
+			result = isThree(cards)
+			if (result) return result
+			result = isShun(cards)
+			if (result) return result
+			result = isFeiJi(cards)
+			if (result) return result
+			return null
 		}
 		
 		public function findValidCards(cards:Array):Array{
@@ -119,9 +126,10 @@ package com.xiaomu.util
 			return null
 		}
 		
-		/**
-		 * 三不带
-		 */		
+		private function findThree(cards:Array):Array {
+			return null
+		}
+		
 		private function isThree(cards:Array):Object {
 			if (cards.length < 3 || cards.length > 5) return null
 			var countedCards:Dictionary = countBy(cards.map(function(card:int, index:int, arr:Array):int { return card%100 }))
@@ -151,21 +159,80 @@ package com.xiaomu.util
 			return null
 		}
 		
+		private function getCards(newCards:Array, cards:Array):Array {
+			var oldCards:Array = []
+			for each(var newCard:int in newCards) {
+				if (cards.indexOf(newCard + 100) >= 0) {
+					oldCards.push(newCard + 100)
+				} else if (cards.indexOf(newCard + 200) >= 0) {
+					oldCards.push(newCard + 200)
+				} else if (cards.indexOf(newCard + 300) >= 0) {
+					oldCards.push(newCard + 300)
+				} else if (cards.indexOf(newCard + 400) >= 0) {
+					oldCards.push(newCard + 400)
+				} else {
+					return []
+				}				
+			}
+			return oldCards
+		}
+		
 		private function findShun(cards:Array):Array {
-			if (cards.length < 5) return null
+			var result:Array = []
+			if (cards.length < 5) return result
 			var countedCards:Dictionary = countBy(cards.map(function(card:int, index:int, arr:Array):int { return card%100 }))
 			var newCards:Array = []
 			for (var card:int in countedCards) {
 				newCards.push(card)
 			}
-			var result:Array = []
+			
+			var item:Object
 			while (newCards.length >= 5) {
 				if (shouShun(newCards)) {
-					result.push(JSON.parse(JSON.stringify(newCards)))
+					item = {card: newCards[0], cards: getCards(newCards, cards)}
+					switch(newCards.length) {
+						case 5: {
+							item.type = PdkCardType.SHUN_FIVE
+							break;
+						}
+						case 6: {
+							item.type = PdkCardType.SHUN_SIX
+							break;
+						}
+						case 7: {
+							item.type = PdkCardType.SHUN_SEVEN
+							break;
+						}
+						case 8: {
+							item.type = PdkCardType.SHUN_EIGHT
+							break;
+						}
+						case 9: {
+							item.type = PdkCardType.SHUN_NINE
+							break;
+						}
+						case 10: {
+							item.type = PdkCardType.SHUN_TEN
+							break;
+						}
+						case 11: {
+							item.type = PdkCardType.SHUN_ELEVEN
+							break;
+						}
+						case 12: {
+							item.type = PdkCardType.SHUN_TWELVE
+							break;
+						}
+						default:
+						{
+							break;
+						}
+					}
+					result.push(item)
 				}
 				newCards.pop()
 			} 
-			return result.length == 0 ? null : result
+			return result
 		}
 		
 		private function isShun(cards:Array):Object {
@@ -251,11 +318,16 @@ package com.xiaomu.util
 		}
 		
 		private function isBomb(cards:Array):Object {
-			if (cards.length != 4) return null
 			var newCards:Array = cards.map(function(card:int, index:int, arr:Array):int { return card%100 })
-			if (newCards[0] == newCards[1] &&
+			if (newCards.length ==4 &&
+				newCards[0] == newCards[1] &&
 				newCards[1] == newCards[2] &&
 				newCards[2] == newCards[3]) {
+				return {type: PdkCardType.BOMB, card: newCards[0]}
+			} else if (newCards.length ==3 &&   // 3 个 A A A
+				newCards[0] == 14 &&
+				newCards[1] == 14 &&
+				newCards[2] == 14) {
 				return {type: PdkCardType.BOMB, card: newCards[0]}
 			} else {
 				return null
@@ -286,7 +358,7 @@ package com.xiaomu.util
 				else return 1
 			})
 			for (var i:int = 0; i < cards.length; i++) {
-				if (i > 0 && cards[i] != cards[i -1 ] + 1 ) {
+				if (i > 0 && cards[i] != (cards[i-1] + 1)) {
 					return false
 				}
 			}

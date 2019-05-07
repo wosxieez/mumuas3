@@ -3,6 +3,7 @@ package com.xiaomu.component
 	import com.xiaomu.util.Assets;
 	
 	import coco.component.Image;
+	import coco.component.SkinComponent;
 	import coco.core.UIComponent;
 	
 	public class PdkCardUI extends UIComponent
@@ -55,13 +56,34 @@ package com.xiaomu.component
 			invalidateProperties()
 		}
 		
+		private var _isOver:Boolean = false
+		
+		public function get isOver():Boolean
+		{
+			return _isOver;
+		}
+		
+		public function set isOver(value:Boolean):void
+		{
+			_isOver = value;
+			invalidateProperties()
+		}
+		
 		private var imageDisplay:Image
+		private var overLayer:SkinComponent
 		
 		override protected function createChildren():void {
 			super.createChildren()
 			
 			imageDisplay = new Image()
 			addChild(imageDisplay)
+			
+			overLayer = new SkinComponent()
+			overLayer.radius = 10
+			overLayer.borderAlpha = 0
+			overLayer.backgroundAlpha = 0.3
+			overLayer.backgroundColor = 0xFFFF00
+			addChild(overLayer)
 		}
 		
 		override protected function commitProperties():void {
@@ -73,7 +95,9 @@ package com.xiaomu.component
 				imageDisplay.source = Assets.getInstane().getAssets('fight_small_card.png')
 			}
 			
+			overLayer.y = selected ? - 17 : 3
 			imageDisplay.y = selected ? - 20 : 0
+			overLayer.visible = isOver
 		}
 		
 		override protected function measure():void {
@@ -85,6 +109,9 @@ package com.xiaomu.component
 			
 			imageDisplay.width = width
 			imageDisplay.height = height
+			overLayer.x = 3
+			overLayer.width = width - 6
+			overLayer.height = height - 6
 		}
 		
 	}

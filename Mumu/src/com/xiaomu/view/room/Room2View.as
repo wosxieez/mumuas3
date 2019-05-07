@@ -437,10 +437,6 @@ package com.xiaomu.view.room
 		}
 		
 		override protected function drawSkin():void {
-			iconLayer.graphics.clear()
-			iconLayer.graphics.beginFill(0x000000, 0.2)
-			iconLayer.graphics.drawRect(mouseDownPoint.x, mouseDownPoint.y, mouseUpPoint.x - mouseDownPoint.x, mouseUpPoint.y - mouseDownPoint.y)
-			iconLayer.graphics.endFill()
 			var minx:Number = Math.min(mouseDownPoint.x, mouseUpPoint.x)
 			var miny:Number = Math.min(mouseDownPoint.y, mouseUpPoint.y)
 			var maxx:Number = Math.max(mouseDownPoint.x, mouseUpPoint.x)
@@ -449,9 +445,9 @@ package com.xiaomu.view.room
 				for each(var cardUI:PdkCardUI in myHandCardUIs) {
 					if (minx <= cardUI.x + 60 && cardUI.x <= maxx &&
 						miny <= cardUI.y + cardUI.height && cardUI.y <= maxy) {
-						cardUI.selected = true
+						cardUI.isOver = true
 					} else {
-						//						cardUI.selected = false
+						cardUI.isOver = false
 					}
 				}
 			}
@@ -1102,15 +1098,14 @@ package com.xiaomu.view.room
 		{
 			event.preventDefault()
 			event.stopImmediatePropagation()
-			
-			var selectedCards:Array = []
-			for each(var cardUI:PdkCardUI in myHandCardUIs) {
-				if (cardUI.selected) {
-					selectedCards.push(cardUI.card)
-				}
-			}
-			
-			PdkCardUtil.getInstane().findValidCards(selectedCards)
+			//			var selectedCards:Array = []
+			//			for each(var cardUI:PdkCardUI in myHandCardUIs) {
+			//				if (cardUI.selected) {
+			//					selectedCards.push(cardUI.card)
+			//				}
+			//			}
+			//			
+			//			PdkCardUtil.getInstane().findValidCards(selectedCards)
 		}
 		
 		protected function cancelButton_clickHandler(event:MouseEvent):void
@@ -1315,7 +1310,14 @@ package com.xiaomu.view.room
 				event.target != canChiButton && 
 				event.target != canOutButton) {
 				for each(var cardUI:PdkCardUI in myHandCardUIs) {
-					cardUI.selected = false
+					cardUI.selected = cardUI.isOver = false
+				}
+			} else {
+				for each(var cardUI2:PdkCardUI in myHandCardUIs) {
+					if (cardUI2.isOver) {
+						cardUI2.selected = !cardUI2.selected
+					}
+					cardUI2.isOver = false
 				}
 			}
 			
