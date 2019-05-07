@@ -270,12 +270,6 @@ package com.xiaomu.view.room
 			addChild(refreshButton)
 		}
 		
-		protected function canOutButton_clickHandler(event:MouseEvent):void
-		{
-			event.preventDefault()
-			event.stopImmediatePropagation()
-		}
-		
 		override protected function commitProperties():void {
 			super.commitProperties()
 			
@@ -385,11 +379,6 @@ package com.xiaomu.view.room
 						preUserHead.isFocus = true
 					}
 				}
-				
-				if (canChiButton.visible) {
-					Audio.getInstane().playTimeout()
-				}
-				
 			} else {
 				updateReadyUI()
 			}
@@ -425,14 +414,14 @@ package com.xiaomu.view.room
 			refreshButton.y = talkButton.y + talkButton.height + 10
 			
 			if (cancelButton.visible) {
-				canOutButton.x = (width - cancelButton.width - canChiButton.width - 30 - canOutButton.width) / 2
-				canChiButton.x = canOutButton.x + canOutButton.width + 15
-				cancelButton.x = canChiButton.x + canChiButton.width + 15
-				canOutButton.y = canChiButton.y = cancelButton.y = height - 270
+				cancelButton.x = (width - cancelButton.width - canChiButton.width - 120 - canOutButton.width) / 2
+				canOutButton.x = cancelButton.x + cancelButton.width + 60
+				canChiButton.x = canOutButton.x + canOutButton.width + 60
+				canOutButton.y = canChiButton.y = cancelButton.y = height - 300
 			} else {
-				canOutButton.x = (width - canChiButton.width - 15 - canOutButton.width) / 2
-				canChiButton.x = canOutButton.x + canOutButton.width + 15
-				canOutButton.y = canChiButton.y = height - 270
+				canOutButton.x = (width - canChiButton.width - 60 - canOutButton.width) / 2
+				canChiButton.x = canOutButton.x + canOutButton.width + 60
+				canOutButton.y = canChiButton.y = height - 300
 			}
 			
 			zhunbeiButton.x = (width - zhunbeiButton.width) / 2
@@ -462,7 +451,7 @@ package com.xiaomu.view.room
 						miny <= cardUI.y + cardUI.height && cardUI.y <= maxy) {
 						cardUI.selected = true
 					} else {
-						cardUI.selected = false
+						//						cardUI.selected = false
 					}
 				}
 			}
@@ -560,12 +549,21 @@ package com.xiaomu.view.room
 					oldNewCardUIs.push(cardUI)
 				}
 				newCardUIs = []
-				var cardWidth:Number = Size.MIDDLE_CARD_WIDTH
-				var cardHeight:Number = Size.MIDDLE_CARD_HEIGHT
+				var cardWidth:Number = Size.PDK_MIDDLE_CARD_WIDTH
+				var cardHeight:Number = Size.PDK_MIDDLE_CARD_HEIGHT
 				var horizontalGap:Number = 60
 				var verticalGap:Number = cardHeight * 3 / 4
 				var newCardUI:PdkCardUI
-				var startX:Number = (width - horizontalGap * (roomData.pc.length - 1) - cardWidth) / 2
+				var startX:Number = 0
+				var startY:Number = 0
+				if (preUser && roomData.pn == preUser.username) {
+					startX = 160
+					startY = 50
+				} else {
+					startX = (width - horizontalGap * (roomData.pc.length - 1) - cardWidth) / 2
+					startY = height - 340 - cardHeight
+				}
+				
 				roomData.pc.sort(function (a:int, b:int):Number {
 					if (a%100 < b%100) return -1
 					else return 1
@@ -580,7 +578,7 @@ package com.xiaomu.view.room
 					newCardUI.width = cardWidth
 					newCardUI.height = cardHeight
 					newCardUI.x = startX + i * horizontalGap
-					newCardUI.y = (height - cardHeight) / 2
+					newCardUI.y = startY
 					newCardUI.card = roomData.pc[i]
 					cardLayer.setChildIndex(newCardUI, cardLayer.numChildren - 1)
 					myGroupCardUIs.push(newCardUI)
@@ -1048,6 +1046,9 @@ package com.xiaomu.view.room
 		
 		protected function canChiButton_clickHandler(event:MouseEvent):void
 		{
+			event.preventDefault()
+			event.stopImmediatePropagation()
+			
 			if (myActionUser) {
 				var selectedCards:Array = []
 				for each(var cardUI:PdkCardUI in myHandCardUIs) {
@@ -1095,6 +1096,21 @@ package com.xiaomu.view.room
 					}
 				}
 			}
+		}
+		
+		protected function canOutButton_clickHandler(event:MouseEvent):void
+		{
+			event.preventDefault()
+			event.stopImmediatePropagation()
+			
+			var selectedCards:Array = []
+			for each(var cardUI:PdkCardUI in myHandCardUIs) {
+				if (cardUI.selected) {
+					selectedCards.push(cardUI.card)
+				}
+			}
+			
+			PdkCardUtil.getInstane().findValidCards(selectedCards)
 		}
 		
 		protected function cancelButton_clickHandler(event:MouseEvent):void
@@ -1277,7 +1293,6 @@ package com.xiaomu.view.room
 		{
 			mouseDownPoint.x = this.mouseX 
 			mouseDownPoint.y = this.mouseY
-			trace('mousedown')
 			this.addEventListener(MouseEvent.MOUSE_MOVE, this_mouseMoveHandler)
 		}
 		
@@ -1286,7 +1301,6 @@ package com.xiaomu.view.room
 			mouseUpPoint.x = this.mouseX 
 			mouseUpPoint.y = this.mouseY
 			invalidateSkin()
-			trace('mousemove')
 		}
 		
 		protected function this_mouseUpHandler(event:MouseEvent):void
@@ -1295,7 +1309,11 @@ package com.xiaomu.view.room
 			mouseUpPoint.x = this.mouseX 
 			mouseUpPoint.y = this.mouseY
 			
-			if (mouseDownPoint.equals(mouseUpPoint) && !(event.target is PdkCardUI) && event.target != canChiButton) {
+			if (Math.abs(mouseUpPoint.x - mouseDownPoint.x) <= 15 && 
+				Math.abs(mouseUpPoint.y - mouseDownPoint.y) <= 15 &&
+				!(event.target is PdkCardUI) && 
+				event.target != canChiButton && 
+				event.target != canOutButton) {
 				for each(var cardUI:PdkCardUI in myHandCardUIs) {
 					cardUI.selected = false
 				}

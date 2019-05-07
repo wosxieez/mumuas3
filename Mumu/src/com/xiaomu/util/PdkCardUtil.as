@@ -50,7 +50,7 @@ package com.xiaomu.util
 		}
 		
 		public function findValidCards(cards:Array):Array{
-			return null
+			return findShun(cards)
 		}
 		
 		//------------------------------------------------------------------------------------------------
@@ -151,13 +151,13 @@ package com.xiaomu.util
 			return null
 		}
 		
-		private function findShun(cards:Array):Object {
-			var countedCards:Dictionary = countBy(cards)
+		private function findShun(cards:Array):Array {
+			if (cards.length < 5) return null
+			var countedCards:Dictionary = countBy(cards.map(function(card:int, index:int, arr:Array):int { return card%100 }))
 			var newCards:Array = []
 			for (var card:int in countedCards) {
 				newCards.push(card)
 			}
-			
 			var result:Array = []
 			while (newCards.length >= 5) {
 				if (shouShun(newCards)) {
@@ -165,14 +165,12 @@ package com.xiaomu.util
 				}
 				newCards.pop()
 			} 
-			
-			return result
+			return result.length == 0 ? null : result
 		}
 		
 		private function isShun(cards:Array):Object {
 			if (cards.length < 5) return null
 			var newCards:Array = cards.map(function(card:int, index:int, arr:Array):int { return card%100 })
-			newCards.sort()
 			if (shouShun(newCards)) {
 				switch(newCards.length) {
 					case 5: {
