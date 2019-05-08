@@ -1098,14 +1098,14 @@ package com.xiaomu.view.room
 		{
 			event.preventDefault()
 			event.stopImmediatePropagation()
-			//			var selectedCards:Array = []
-			//			for each(var cardUI:PdkCardUI in myHandCardUIs) {
-			//				if (cardUI.selected) {
-			//					selectedCards.push(cardUI.card)
-			//				}
-			//			}
-			//			
-			//			PdkCardUtil.getInstane().findValidCards(selectedCards)
+			var selectedCards:Array = []
+			for each(var cardUI:PdkCardUI in myHandCardUIs) {
+				if (cardUI.selected) {
+					selectedCards.push(cardUI.card)
+				}
+			}
+			
+			PdkCardUtil.getInstane().findValidCards(selectedCards)
 		}
 		
 		protected function cancelButton_clickHandler(event:MouseEvent):void

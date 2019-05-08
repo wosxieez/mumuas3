@@ -57,6 +57,7 @@ package com.xiaomu.util
 		}
 		
 		public function findValidCards(cards:Array):Array{
+			findThree(cards)
 			return findShun(cards)
 		}
 		
@@ -127,7 +128,49 @@ package com.xiaomu.util
 		}
 		
 		private function findThree(cards:Array):Array {
-			return null
+			var groupedCards:Dictionary = groupBy(cards.map(function(card:int, index:int, arr:Array):int { return card }))
+			
+			var all3groupkeys:Array = []
+			for (var groupkey:int in groupedCards) {
+				if (groupedCards[groupkey].length == 3) {
+					all3groupkeys.push(groupkey)
+				}
+			}
+			
+			var result:Array = []
+			var gk:int
+			var lcs:Array
+			var cards3:Array
+			for each (gk in all3groupkeys) {
+				lcs = []
+				for (var ik:int in groupedCards) {
+					if (ik != gk) {
+						lcs.push(groupedCards[ik])
+					}
+				}
+				
+				// 对lcs进行排序
+				lcs.sort(function (a:Array, b:Array):Number {
+					if (a.length > b.length) return -1
+					else if (a.length == b.length) return 0
+					else return 1
+				})
+				
+				var tarr:Array = []
+				for each(var arr:Array in lcs) {
+					tarr = tarr.concat(arr)
+				}
+				
+				if (tarr.length >= 2) {
+					cards3 = groupedCards[gk].concat([tarr.pop(), tarr.pop()])
+					result.push({type: PdkCardType.THREE_TWO, card: gk, cards: cards3})
+				} else {
+					cards3 = groupedCards[gk]
+					result.push({type: PdkCardType.THREE_ZERO, card: gk, cards: cards3})
+				}
+			}
+			
+			return result
 		}
 		
 		private function isThree(cards:Array):Object {
@@ -146,12 +189,12 @@ package com.xiaomu.util
 			}
 			if (has3Card >= 0) {
 				if (has2Card >= 0) {
-					return {type: PdkCardType.THREE_DUI, card: has3Card}	 
+					return {type: PdkCardType.THREE_TWO, card: has3Card}	 
 				} 
 				else if (countCard == 1) {
 					return {type: PdkCardType.THREE_ZERO, card: has3Card}	 
 				} else if (countCard == 2) {
-					return {type: PdkCardType.THREE_ONE, card: has3Card}	 
+					//					return {type: PdkCardType.THREE_ONE, card: has3Card}	 
 				} else if (countCard == 3) {
 					return {type: PdkCardType.THREE_TWO, card: has3Card}	 
 				}
@@ -350,6 +393,19 @@ package com.xiaomu.util
 				}
 			}
 			return countedCards
+		}
+		private function groupBy(cards:Array):Dictionary {
+			var groupCards:Dictionary = new Dictionary()
+			var groupKey:int
+			for each(var card:int in cards) {
+				groupKey = card%100
+				if (groupCards.hasOwnProperty(groupKey)) {
+					groupCards[groupKey].push(card)
+				} else {
+					groupCards[groupKey] = [card]
+				}
+			}
+			return groupCards
 		}
 		private function shouShun(cards:Array):Boolean {
 			if (cards.length == 0) return false
