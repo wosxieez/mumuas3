@@ -58,6 +58,7 @@ package com.xiaomu.util
 		
 		public function findValidCards(cards:Array):Array{
 			findThree(cards)
+			findTwo(cards)
 			return findShun(cards)
 		}
 		
@@ -72,6 +73,66 @@ package com.xiaomu.util
 			else return null
 		}
 		
+		private function findTwo(cards:Array):Array {
+			var groupedCards:Dictionary = groupBy(cards.map(function(card:int, index:int, arr:Array):int { return card }))
+			var result:Array = []
+			for (var groupkey:int in groupedCards) {
+				if (groupedCards[groupkey].length == 2) {
+					result.push({card: groupkey, type: PdkCardType.TWO_ONE})
+				}
+			}
+			
+			var twoKeys:Array = []
+			for (var key:int in groupedCards) {
+				if (groupedCards[key] == 2) twoKeys.push(key)
+			}
+			
+			var item:Object
+			while (twoKeys.length >= 2) {
+				if (shouShun(twoKeys)) {
+					item = {card: twoKeys[0]}
+					switch(twoKeys.length) {
+						case 2: {
+							item.type = PdkCardType.TWO_TWO
+							break;
+						}
+						case 3: {
+							item.type = PdkCardType.TWO_THREE
+							break;
+						}
+						case 4: {
+							item.type = PdkCardType.TWO_FOUR
+							break;
+						}
+						case 5: {
+							item.type = PdkCardType.TWO_FIVE
+							break;
+						}
+						case 6: {
+							item.type = PdkCardType.TWO_SIX
+							break;
+						}
+						case 7: {
+							item.type = PdkCardType.TWO_SEVEN
+							break;
+						}
+						case 7: {
+							item.type = PdkCardType.TWO_EIGHT
+							break;
+						}
+						default:
+						{
+							break;
+						}
+					}
+					result.push(item)
+				}
+				twoKeys.pop()
+			} 
+			
+			return result
+		}
+		
 		/**
 		 * 一对 
 		 */		
@@ -84,7 +145,6 @@ package com.xiaomu.util
 				newCards.push(key)
 			}
 			if (shouShun(newCards)) {
-				newCards.sort()
 				switch(newCards.length) {
 					case 1: {
 						return {type: PdkCardType.TWO_ONE, card: newCards[0]}	
