@@ -2,7 +2,7 @@
 
 * 前端基于as3 cocoui组件框架
 * 后端基于nodejs koa-web框架和网易pomelo游戏服务框架
-* 全栈开发(In Free Time)
+* 全栈开发 In Free Time
 <br/>
 <br/>
 <br/>
